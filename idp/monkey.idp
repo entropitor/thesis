@@ -1,21 +1,21 @@
 // Monkey Business (https://dmcommunity.org/challenge/challenge-nov-2015/)
-// Mrs. Robinson’s 4th grade class took a field trip to the local zoo. The day was sunny and warm – a perfect day to spend at the zoo. The kids had a great time and the monkeys were voted the class favorite animal. The zoo had four monkeys – two males and two females. It was lunchtime for the monkeys and as the kids watched, 
+// Mrs. Robinson’s 4th grade class took a field trip to the local zoo. The day was sunny and warm – a perfect day to spend at the zoo. The kids had a great time and the monkeys were voted the class favorite animal. The zoo had four monkeys – two males and two females. It was lunchtime for the monkeys and as the kids watched,
 // each one ate a different fruit in their favorite resting place:
 // Sam, who doesn’t like bananas, likes sitting on the grass
 // The monkey who sat on the rock ate the apple. The monkey who ate the pear didn’t sit on the tree branch
 // Anna sat by the stream but she didn’t eat the pear
 // Harriet didn’t sit on the tree branch. Mike doesn’t like oranges.
 
-vocabulary V {    
+vocabulary V {
     // There are exactly 4 monkeys: Sam, Anna, Mike and Harriet
     type Monkey constructed from {Sam, Anna, Mike, Harriet}
-    
+
     // There are exactly 4 places: the grass, the tree bench, by the stream and the rock
     type Place constructed from {Grass, Tree, Stream, Rock}
-    
+
     // There are exactly 4 types of food: bananas, oranges, apples, pears
     type Food constructed from {banana, orange, apple, pear}
-    
+
     eat(Monkey, Food)
     rest(Monkey, Place)
 }
@@ -27,43 +27,43 @@ theory T : V {
     // each one ate a different fruit in their favorite resting place:
     // No 2 monkeys eat the same fruit.
     ~ ?x y f: eat(x, f) & eat(y, f) & x ~= y.
-    
+
 	// Sam, who doesn’t like bananas, likes sitting on the grass
     // Sam doesn't eat banana
     ~ eat(Sam, banana).
     // Sam sits on the grass
     rest(Sam, Grass).
-    
+
 	// The monkey who sat on the rock ate the apple.
     ?x: rest(x, Rock) & eat(x, apple).
-    
+
     // The monkey who ate the pear didn’t rest on the tree branch
     !x: eat(x, pear) => ~ rest(x, Tree).
-    
+
     // There is a monkey that rest on the rock and eats an apple
     ?x: rest(x, Rock) & eat(x, apple).
-    
+
 	// Anna sat by the stream but she didn’t eat the pear
     // Anna rests by the stream
     rest(Anna, Stream).
     // Anna didn't eat the pear
     ~ eat(Anna, pear).
-    
+
 	// Harriet didn’t rest on the tree branch.
     ~ rest(Harriet, Tree).
-    
-    // Mike doesn’t eat oranges. 
+
+    // Mike doesn’t eat oranges.
     ~ eat(Mike, orange).
-    
+
     // Everyone eats something
     !x: ?y: eat(x, y).
-    
+
     // Everyone rests somewhere
     !x: ?y: rest(x, y).
-    
+
     // Everyone rests only at one place
     !x: ?=1 y: rest(x,y).
-    
+
     // No 2 monkeys rest at the same place
     ~ ?x y p: rest(x, p) & rest(y, p) & x ~= y.
 }

@@ -2,7 +2,7 @@
 // Let’s assume that Rene and Leo are both heads of household, and, what a coincidence, both families include three girls and three boys. The youngest child in Leo’s family is a girl, and in Rene’s family, a little girl has just arrived. In other words, there is a girl in Rene’s family whose age is less than one year. Neither family includes any twins, nor any children closer in  age than a year. All the children are under age ten. In each family, the sum of the ages of the girls is equal to the sum of the ages of the boys. The sum of the ages of all these children is 60.
 // What are the ages of the children in these two families?
 vocabulary V {
-    
+
     type Family constructed from {Leo, Rene}
     type Gender constructed from {boy, girl}
     type Number isa nat
@@ -23,29 +23,29 @@ theory T : V {
     // There are 3 girls in every family
     !f: ?=3 b: family(f, b) & gender(b) = boy.
     !f: ?=3 g: family(f, g) & gender(g) = girl.
-    
+
     // The youngest child in Leo’s family is a girl
     // The youngest child within Leo's family is a girl.
     // The youngest child within a set is the child with the lowest age.
     // => Second order logic!!!
     ? minage: min { c : family(Leo, c) : age(c)} = minage & ?g: age(g) = minage & family(Leo, g) & gender(g) = girl.
-    
+
     // in Rene’s family, a little girl has just arrived. In other words, there is a girl in Rene’s family whose age is less than one year
     ? g: family(Rene, g) & gender(g) = girl & age(g) < 1.
-    
+
     // Neither family includes any twins, nor any children closer in  age than a year.
     // There is no family with two children with the same age.
     ~ ? f: ?c1, c2: family(f, c1) & family(f, c2) & age(c1) = age(c2) & c1 ~= c2.
-    
-    //All the children are under age ten. 
+
+    //All the children are under age ten.
     !c: age(c) < 10.
-    
+
     // In each family, the sum of the ages of the girls is equal to the sum of the ages of the boys.
     ! f: sum {c : family(f, c) & gender(c) = girl : age(c) } = sum {c : family(f, c) & gender(c) = boy : age(c) }.
-    
+
     // The sum of the ages of all these children is 60.
     sum {c : true : age(c)} = 60.
-    
+
     // Implied: The families don't share any children
     // Every child belongs to 1 family
     ! c: ?=1 f: family(f, c).

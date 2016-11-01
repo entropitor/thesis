@@ -6,16 +6,16 @@
 // 2. Employees with at least 30 years of service and also employees of age 60 or more, receive 3 extra days, on top of possible additionale days already given.
 // 3. If an employee has at least 15 but less than 30 years of service, 2 extra days are given. These 2 days are also provided for employees of age 45 or more. These 2 extra days can not be combined with the 5 extra days.
 
-vocabulary V {  
+vocabulary V {
     // given
     type Number isa nat
-    
+
     // An employee receives a number of extra days.
     type Employee
     type NbExtraDays isa Number
     receives(Employee, NbExtraDays)
-    
-    // An employee has an age, a number of years of service and a number of vacation days. 
+
+    // An employee has an age, a number of years of service and a number of vacation days.
     // type Employee // (already in the vocabulary)
     type Age isa Number // isa Number from theorem. Or otherwise "has a number of ages"
     type NbYearsOfService isa Number
@@ -23,27 +23,27 @@ vocabulary V {
     age(Employee): Age
     years_of_service(Employee): NbYearsOfService
     vacation_days(Employee): NbVacationDays
-    
+
     // An employee can have a pet
     // type Pet
     // partial pet(Employee): Pet
-    
+
     // An employee [can have | has] multiple houses
     // type House
     // house(Employee, House)
-    // + theorem if employee 
+    // + theorem if employee
 }
 
 structure S : V {
     // [Numbers varies from 1 to 100]
     Number = {1..100}
-    
+
     // One of:
     // There are 3 employees. => employee1, ...
     // There are 3 employees: Ann, Bob, Charles => Ann, Bob, Charles
     // There are 3 employees including Ann => Ann, employee2, employee3
 	Employee = {employee1; employee2; employee3}
-    
+
     // Ann has age 18 and 30 years of service.
     // The second employee has age 45 and 29 years of service.
     // The third employee has age 60 and 30 years of service.
@@ -66,8 +66,8 @@ theory T : V {
 	// 3.
 	// - If the years of service of an employee is between 15 and 30 and he does not receive 5 extra days then he receives 2 extra days
 	// - If the age of an employee is at least 45 and he does not receive 5 extra days then he receives 2 extra days
-    
-    
+
+
     {
         ! employee: receives(employee, 5) <- age(employee) < 18 | age(employee) > 60.
         ! employee: receives(employee, 5) <- years_of_service(employee) >= 30.
@@ -76,7 +76,7 @@ theory T : V {
         ! employee: receives(employee, 2) <- (years_of_service(employee) >= 15 & years_of_service(employee) =< 30) & ~ receives(employee, 5).
         ! employee: receives(employee, 2) <- age(employee) >= 45 & ~ receives(employee, 5).
     }
-    
+
     // Each employee has a number of vacation days equal to 22 plus the sum of the extra days he receives.
     ! employee: vacation_days(employee) = 22 + sum {d: receives(employee, d) : d}.
 }
