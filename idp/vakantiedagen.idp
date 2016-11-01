@@ -1,0 +1,95 @@
+// Jan Van Thienen vakantiedagen (https://dmcommunity.wordpress.com/challenge/challenge-jan-2016/)
+// Every emloyee receives at least 22 days.
+// Additional days are provided according to the following criteria:
+
+// 1. Only employees younger than 18 or at least 60 years or employees with at least 30 years of service will receive 5 extra days
+// 2. Employees with at least 30 years of service and also employees of age 60 or more, receive 3 extra days, on top of possible additionale days already given.
+// 3. If an employee has at least 15 but less than 30 years of service, 2 extra days are given. These 2 days are also provided for employees of age 45 or more. These 2 extra days can not be combined with the 5 extra days.
+
+vocabulary V {  
+    // given
+    type Number isa nat
+    
+    // An employee receives a number of extra days.
+    type Employee
+    type NbExtraDays isa Number
+    receives(Employee, NbExtraDays)
+    
+    // An employee has an age, a number of years of service and a number of vacation days. 
+    // type Employee // (already in the vocabulary)
+    type Age isa Number // isa Number from theorem. Or otherwise "has a number of ages"
+    type NbYearsOfService isa Number
+    type NbVacationDays isa Number
+    age(Employee): Age
+    years_of_service(Employee): NbYearsOfService
+    vacation_days(Employee): NbVacationDays
+    
+    // An employee can have a pet
+    // type Pet
+    // partial pet(Employee): Pet
+    
+    // An employee [can have | has] multiple houses
+    // type House
+    // house(Employee, House)
+    // + theorem if employee 
+}
+
+structure S : V {
+    // [Numbers varies from 1 to 100]
+    Number = {1..100}
+    
+    // One of:
+    // There are 3 employees. => employee1, ...
+    // There are 3 employees: Ann, Bob, Charles => Ann, Bob, Charles
+    // There are 3 employees including Ann => Ann, employee2, employee3
+	Employee = {employee1; employee2; employee3}
+    
+    // Ann has age 18 and 30 years of service.
+    // The second employee has age 45 and 29 years of service.
+    // The third employee has age 60 and 30 years of service.
+    age = {employee1 -> 18; employee2 -> 45 ; employee3 -> 60}
+    years_of_service = {employee1 -> 30; employee2 -> 29 ; employee3 -> 30}
+}
+
+theory T : V {
+
+	//1.
+	// - If the age of an employee is less than 18 or greather than 60 then he receives 5 extra days
+    // => type age isa Number.
+    // - If the years of service of an empolyee is at least 30 then he receives 5 extra days
+
+
+	// 2.
+	// - If years of service of an employee is at least 30, then he receives 3 extra days
+	// - If age of an employee is at least 60 then he receives 3 extra days
+
+	// 3.
+	// - If the years of service of an employee is between 15 and 30 and he does not receive 5 extra days then he receives 2 extra days
+	// - If the age of an employee is at least 45 and he does not receive 5 extra days then he receives 2 extra days
+    
+    
+    {
+        ! employee: receives(employee, 5) <- age(employee) < 18 | age(employee) > 60.
+        ! employee: receives(employee, 5) <- years_of_service(employee) >= 30.
+        ! employee: receives(employee, 3) <- years_of_service(employee) >= 30.
+        ! employee: receives(employee, 3) <- age(employee) >= 60.
+        ! employee: receives(employee, 2) <- (years_of_service(employee) >= 15 & years_of_service(employee) =< 30) & ~ receives(employee, 5).
+        ! employee: receives(employee, 2) <- age(employee) >= 45 & ~ receives(employee, 5).
+    }
+    
+    // Each employee has a number of vacation days equal to 22 plus the sum of the extra days he receives.
+    ! employee: vacation_days(employee) = 22 + sum {d: receives(employee, d) : d}.
+}
+
+query Q : V {
+    {e d: vacation_days(e) = d}
+}
+
+
+procedure main() {
+    stdoptions.nbmodels = 2;
+	printmodels(modelexpand(T,S))
+    model = modelexpand(T,S)
+    print(query(Q, model[1]))
+    print('Correct solution: { "e1",30; "e2",24; "e3",30 }')
+}

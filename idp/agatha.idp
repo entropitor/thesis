@@ -1,0 +1,61 @@
+// Who killed Agatha (https://dmcommunity.org/challenge/challenge-nov-2014/)
+// Someone in Dreadsbury Mansion killed Aunt Agatha. Agatha, the butler, and Charles live in Dreadsbury Mansion, and are the only ones to live there. A killer always hates, and is no richer than his victim. Charles hates noone that Agatha hates. Agatha hates everybody except the butler. The butler hates everyone not richer than Aunt Agatha. The butler hates everyone whom Agatha hates. Noone hates everyone. Who killed Agatha?
+vocabulary V {    
+    type Person constructed from {Agatha, Butler, Charles}
+    killed(Person, Person)
+    hate(Person, Person)
+    richer(Person, Person)
+}
+
+structure S : V {
+}
+
+theory T : V {
+    // Someone in Dreadsbury Mansion killed Aunt Agatha. 
+    // There is someone who killed Agatha.
+    ? x: killed(x, Agatha).
+    
+    // Agatha, the butler, and Charles live in Dreadsbury Mansion, and are the only ones to live there.
+    // There are exactly 3 persons: Agatha, the butler and Charles
+    // -> Structure
+    
+    // A killer always hates, and is no richer than his victim. 
+    // All killers hate the person they killed
+    ! x y: killed(x, y) => hate(x, y).
+    // All killers are not richer than the person they killed
+    ! x y: killed(x, y) => ~ richer(x, y).
+    
+    
+    // Charles hates no-one that Agatha hates. 
+    // There is nobody that Charles and Agatha both hate.
+    ~ ? x: hate(Charles, x) & hate(Agatha, x).
+    
+    // Agatha hates everybody except the butler.
+    // Agatha hates everybody that is not the butler.
+    ! x: x  ~= Butler => hate(Agatha, x).
+    
+    // The butler hates everyone not richer than Aunt Agatha.
+    // The butler hates everyone that is not richer than Agatha
+    ! x: ~ richer(x, Agatha) => hate(Butler, x).
+    
+    // The butler hates everyone whom Agatha hates.
+    // The butler hates everyone whom Agatha hates.
+    ! x: hate(Agatha, x) => hate(Butler, x).
+    
+    // Noone hates everyone.
+    // Nobody hates everyone.
+    ~ ? x: !y: hate(x, y).    
+    
+}
+
+query Q : V {
+    // Who killed Agatha?
+    {k: killed(k, Agatha)}
+}
+
+procedure main() {
+    stdoptions.nbmodels = 2;
+	printmodels(modelexpand(T,S))
+    model = modelexpand(T,S)
+    print(query(Q, model[1]))
+}
