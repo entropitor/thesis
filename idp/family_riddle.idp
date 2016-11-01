@@ -2,74 +2,101 @@
 // Let’s assume that Rene and Leo are both heads of household, and, what a coincidence, both families include three girls and three boys. The youngest child in Leo’s family is a girl, and in Rene’s family, a little girl has just arrived. In other words, there is a girl in Rene’s family whose age is less than one year. Neither family includes any twins, nor any children closer in  age than a year. All the children are under age ten. In each family, the sum of the ages of the girls is equal to the sum of the ages of the boys. The sum of the ages of all these children is 60.
 // What are the ages of the children in these two families?
 vocabulary V {
-
-    type Family constructed from {Leo, Rene}
-    type Gender constructed from {boy, girl}
+    // implied to limit nat
     type Number isa nat
+
+    // There are 2 family's: Leo and Rene
+    type Family constructed from {Leo, Rene}
+    // There are 2 genders: boy and girl
+    type Gender constructed from {boy, girl}
+
     type Child
-    family(Family, Child)
+    // A child belongs to a family
+    belongs_to(Child): Family
+
+    // A child has a gender.
     gender(Child): Gender
+
+    // A child has an age
+    type Age isa Number // from theorem?
     age(Child): Number
+
+    // A child can be younger than multiple other children
+    younger(Child, Child)
 }
 
 structure S : V {
-	Child = {1..12}
+    // Numbers varies from 1 to 100
     Number = {0..100}
+
+    // There are 12 children
+	Child = {1..12}
+    //or: Child = {child1, child2, ...}
 }
 
 theory T : V {
+    // From voc:
+    // "other"
+    ? x y: younger(x, y) => x ~= y.
+
     // There are 3 boys and 3 girls in every family
-    // There are 3 boys in every family
-    // There are 3 girls in every family
-    !f: ?=3 b: family(f, b) & gender(b) = boy.
-    !f: ?=3 g: family(f, g) & gender(g) = girl.
+    // Every family has exactly 3 children whose gender is boy.
+    // Every family has exactly 3 children whose gender is girl.
+    !f: ?=3 b: belongs_to(b) = f & gender(b) = boy.
+    !f: ?=3 g: belongs_to(g) = f & gender(g) = girl.
+
+    // A child is younger than another child if the age of the former is lower than the age of the latter.
+    {! x y: younger(x, y) <- age(x) < age(y). }
 
     // The youngest child in Leo’s family is a girl
-    // The youngest child within Leo's family is a girl.
-    // The youngest child within a set is the child with the lowest age.
-    // => Second order logic!!!
-    ? minage: min { c : family(Leo, c) : age(c)} = minage & ?g: age(g) = minage & family(Leo, g) & gender(g) = girl.
+    // There is a child whose gender is girl, that belongs to Leo's family and that is younger than any other children that belong to Leo's family
+    ? x: gender(x) = girl & belongs_to(x) = Leo & ! y: x ~= y & belongs_to(y) = Leo => younger(x, y).
+    //? minage: min { c : belongs_to(c) = Leo : age(c)} = minage & ?g: age(g) = minage & belongs_to(g) = Leo & gender(g) = girl.
 
     // in Rene’s family, a little girl has just arrived. In other words, there is a girl in Rene’s family whose age is less than one year
-    ? g: family(Rene, g) & gender(g) = girl & age(g) < 1.
+    // There is a girl that belongs to Rene's family, whose age is less than one.
+    ? g: belongs_to(g) = Rene & gender(g) = girl & age(g) < 1.
 
     // Neither family includes any twins, nor any children closer in  age than a year.
-    // There is no family with two children with the same age.
-    ~ ? f: ?c1, c2: family(f, c1) & family(f, c2) & age(c1) = age(c2) & c1 ~= c2.
+    // Every child that has the same age as another child, belongs to a different family than the family that the latter child belongs to.
+    ! x y: x ~= y & age(x) = age(y) => belongs_to(x) ~= belongs_to(y).
+    // For every family, there are is not a child children that belong to that family and .
+    // ! f: ~ ? >= 2 c: belongs_to(c) = f & age(c1) = age(c2) & c1 ~= c2.
 
     //All the children are under age ten.
+    // Every child has an age less than ten
     !c: age(c) < 10.
 
-    // In each family, the sum of the ages of the girls is equal to the sum of the ages of the boys.
-    ! f: sum {c : family(f, c) & gender(c) = girl : age(c) } = sum {c : family(f, c) & gender(c) = boy : age(c) }.
+    // In every family, the sum of the ages of the children whose gender is girl, is equal to the sum of the ages of the children whose gender is boy.
+    ! f: sum {c : belongs_to(c) = f & gender(c) = girl : age(c) } = sum {c : belongs_to(c) = f & gender(c) = boy : age(c) }.
 
-    // The sum of the ages of all these children is 60.
+    // The sum of the ages of all children is 60.
     sum {c : true : age(c)} = 60.
 
     // Implied: The families don't share any children
     // Every child belongs to 1 family
-    ! c: ?=1 f: family(f, c).
+    //! c: ?=1 f: belongs_to(c) = f.
 }
 
 query LeoBoys : V {
-    {a: ? c: family(Leo, c) & gender(c) = boy & age(c) = a}
+    {a: ? c: belongs_to(c) = Leo & gender(c) = boy & age(c) = a}
 }
 query LeoGirls : V {
-    {a: ? c: family(Leo, c) & gender(c) = girl & age(c) = a}
+    {a: ? c: belongs_to(c) = Leo & gender(c) = girl & age(c) = a}
 }
 query ReneBoys : V {
-    {a: ? c: family(Rene, c) & gender(c) = boy & age(c) = a}
+    {a: ? c: belongs_to(c) = Rene & gender(c) = boy & age(c) = a}
 }
 query ReneGirls : V {
-    {a: ? c: family(Rene, c) & gender(c) = girl & age(c) = a}
+    {a: ? c: belongs_to(c) = Rene & gender(c) = girl & age(c) = a}
 }
 
 procedure main() {
-    stdoptions.nbmodels = 2;
+    // Many solutions!!!
+    stdoptions.nbmodels = 4;
 	printmodels(modelexpand(T,S))
     model = modelexpand(T,S)
-    print(query(LeoBoys, model[1]))
-    print(query(LeoGirls, model[1]))
-    print(query(ReneBoys, model[1]))
-    print(query(ReneGirls, model[1]))
+    for i=1,stdoptions.nbmodels do
+    print("Leo's boys: " .. tostring(query(LeoBoys, model[i])) .. " Leo's girls: " .. tostring(query(LeoGirls, model[i])) .. " Rene's boys: " .. tostring(query(ReneBoys, model[i])) .. " Rene's girls: " .. tostring(query(ReneGirls, model[i])))
+    end
 }

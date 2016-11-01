@@ -14,10 +14,12 @@ vocabulary V {
     type Place constructed from {Grass, Tree, Stream, Rock}
 
     // There are exactly 4 types of food: bananas, oranges, apples, pears
-    type Food constructed from {banana, orange, apple, pear}
+    type Food constructed from {Banana, Orange, Apple, Pear}
 
-    eat(Monkey, Food)
-    rest(Monkey, Place)
+    // A monkey eats a food.
+    eat(Monkey): Food
+    // A monkey rests at a place.
+    rest_at(Monkey): Place
 }
 
 structure S : V {
@@ -25,47 +27,54 @@ structure S : V {
 
 theory T : V {
     // each one ate a different fruit in their favorite resting place:
-    // No 2 monkeys eat the same fruit.
-    ~ ?x y f: eat(x, f) & eat(y, f) & x ~= y.
+    // There is no fruit that is eaten by 2 or more monkeys.
+    ~ ? f: ? >= 2 x: eat(x) = f.
+    //~ ?x y f: eat(x) = f & eat(y) = f & x ~= y.
 
 	// Sam, who doesn’t like bananas, likes sitting on the grass
-    // Sam doesn't eat banana
-    ~ eat(Sam, banana).
-    // Sam sits on the grass
-    rest(Sam, Grass).
+    // Sam doesn't eat bananas
+    ~ eat(Sam) = Banana.
+    // Sam rests on the grass
+    rest_at(Sam) = Grass.
 
 	// The monkey who sat on the rock ate the apple.
-    ?x: rest(x, Rock) & eat(x, apple).
+    // The monkey who rests on the rock, eats the apple
+    ?=1 x: rest_at(x) = Rock.
+    ?=1 x: rest_at(x) = Rock & eat(x) = Apple.
 
     // The monkey who ate the pear didn’t rest on the tree branch
-    !x: eat(x, pear) => ~ rest(x, Tree).
+    // The monkey who eats the pear, didn't rest on the tree branch
+    ?=1 x: eat(x) = Pear.
+    ?=1 x: eat(x) = Pear & ~ rest_at(x) = Tree.
 
     // There is a monkey that rest on the rock and eats an apple
-    ?x: rest(x, Rock) & eat(x, apple).
+    ?x: rest_at(x) = Rock & eat(x) = Apple.
 
 	// Anna sat by the stream but she didn’t eat the pear
     // Anna rests by the stream
-    rest(Anna, Stream).
+    rest_at(Anna) = Stream.
     // Anna didn't eat the pear
-    ~ eat(Anna, pear).
+    ~ eat(Anna) = Pear.
 
 	// Harriet didn’t rest on the tree branch.
-    ~ rest(Harriet, Tree).
+    ~ rest_at(Harriet) = Tree.
 
     // Mike doesn’t eat oranges.
-    ~ eat(Mike, orange).
+    ~ eat(Mike) = Orange.
 
     // Everyone eats something
-    !x: ?y: eat(x, y).
+    // implied in vocabulary.
+    // !x: ?y: eat(x) = y.
 
     // Everyone rests somewhere
-    !x: ?y: rest(x, y).
+    // !x: ?y: rest_at(x) = y.
 
     // Everyone rests only at one place
-    !x: ?=1 y: rest(x,y).
+    // !x: ?=1 y: rest_at(x) = y.
 
-    // No 2 monkeys rest at the same place
-    ~ ?x y p: rest(x, p) & rest(y, p) & x ~= y.
+    //No 2 monkeys rest at the same place
+    // There is no place where 2 or more monkeys rest.
+    ~ ? p: ? >= 2 x: rest_at(x) = p.
 }
 
 procedure main() {
