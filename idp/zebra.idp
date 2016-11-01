@@ -26,21 +26,24 @@ vocabulary V {
     type Drink constructed from {Coffee, Tea, Milk, OrangeJuice, Water}
     type Cigarette constructed from {Chesterfields, OldGold, LuckyStrike, Kools, Parliaments}
 
-    // ???
-    type House constructed from {House1, House2, House3, House4, House5}
+    // There are exaclty 5 houses identified by its position.
+    // identified implies nat
+    type House = {1; 2; 3; 4; 5} isa nat
+    position(House): House
 
-    // ???
-    type Position = {1; 2; 3; 4; 5} isa nat
+    // A person keeps an animal, drinks a drink, smokes a cigarette.
+    keeps(Person): Animal
+    drinks(Person): Drink
+    smokes(Person): Cigarette
 
-    //lives(Person, Color)
-    keeps(Person, Animal)
-    drinks(Person, Drink)
-    smokes(Person, Cigarette)
-    //placed(Color, Position)
+    // A person lives in a house
+    lives_in(Person): House
 
-    lives(Person, House)
-    colored(House, Color)
-    placed(House, Position)
+    // A house has a color
+    colored(House): Color
+
+    // A house can be next to multiple other houses.
+    // other => not to itself
     next(House, House)
 }
 
@@ -48,104 +51,88 @@ structure S : V {
 }
 
 theory T : V {
-    // There are five houses.
+    // from voc:
+    // "identified by"
+    ! x y: position(x) = y => x = y.
+    ! x: position(x) = x.
+    // "other"
+    ! x y: next(x, y) => x ~= y.
 
     // The Englishman lives in the red house.
-    //lives(Englishman, Red).
-    ? x: lives(Englishman, x) & colored(x, Red).
+    //lives_in(Englishman, Red).
+    ? x: lives_in(Englishman) = x & colored(x) = Red.
 
     // The Spaniard owns the dog.Color
     // The Spaniard keeps the dog.
-    keeps(Spaniard, Dog).
+    keeps(Spaniard) = Dog.
 
     // Coffee is drunk in the green house.
     // There is a person who lives in the green house and drinks coffee.
-    ? x y: lives(x, y) & colored(y, Green) & drinks(x, Coffee).
+    ? x y: lives_in(x) = y & colored(y) = Green & drinks(x) = Coffee.
 
     // The Ukrainian drinks tea.
-    drinks(Ukrainian, Tea).
+    drinks(Ukrainian) = Tea.
 
     // The green house is immediately to the right of the ivory house.
-    // The green house is placed at the position of the ivory house plus 1
-    ? x y a b: colored(x, Green) & colored(y, Ivory) & placed(x, a) & placed(y, b) & a = b + 1.
+    // The position of the green house is the position of the ivory house plus 1
+    ? x y: colored(x) = Green & colored(y) = Ivory & position(x) = position(y) + 1.
 
     // The Old Gold smoker owns snails.
-    // Every person who smokes Old Gold, keeps the snail.
-    ! x: smokes(x, OldGold) => keeps(x, Snail).
+    // There is a person who smokes Old Gold and keeps the snail.
+    ? x: smokes(x) = OldGold & keeps(x) = Snail.
 
     // Kools are smoked in the yellow house.
-    // Every person who lives in the yellow house, smokes Kools
-    ! x y: lives(x, y) & colored(y, Yellow) => smokes(x, Kools).
+    // There is a person who lives in a yellow house and smokes Kools
+    ? x y: lives_in(x) = y & colored(y) = Yellow & smokes(x) = Kools.
 
     // Milk is drunk in the middle house.
     // The person who lives in the third house, drinks milk.
-    ? x y: lives(x, y) & placed(y, 3) & drinks(x, Milk).
+    ?=1 x: ?=1 y: lives_in(x) = y & position(y) = 3 & drinks(x) = Milk.
 
     // The Norwegian lives in the first house.
     // The Norwergian lives in the first house
-    ? x: lives(Norwegian, x) & placed(x, 1).
+    ? x: lives_in(Norwegian) = x & position(x) = 1.
 
-    // A house A is next to a house B, if the absolute value of the difference between the position of house A and house B is 1.
-    {! a b c d: next(a, b) <- abs(c-d) = 1 & placed(a, c) & placed(b, d).}
+    // A house A is next to a house B if the absolute value of the difference between the position of house A and house B is 1.
+    {! a b: next(a, b) <- abs(position(a)-position(b)) = 1.}
 
     // The man who smokes Chesterfields lives in the house next to the man with the fox.
-    // The absolute value of the difference between the position of the house where the person who smokes Chesterfields lives and the position of the house where the person who keeps a fox lives, is one.
-    //? a b c s t u: smokes(a, Chesterfields) & lives(a, b) & placed(b, c) & keeps(s, Fox) & lives(s, t) & placed(t, u) & abs(c-u) = 1.
-    // The house where the person who smokes Chesterfields lives, is next to the house where the person who keeps the fox lives.
-    ? a b s t: lives(a, b) & smokes(a, Chesterfields) & lives(s, t) & keeps(s, Fox) & next(b, t).
+    // The house in which the person who smokes Chesterfields lives, is next to the house in which the person who keeps the fox lives.
+    ? a b s t: lives_in(a) = b & smokes(a) = Chesterfields & lives_in(s) = t & keeps(s) = Fox & next(b, t).
 
     // Kools are smoked in the house next to the house where the horse is kept
-    // The absolute value of the difference between the position of the house where the person who smokes Chesterfields lives and the position of the house where the person who keeps a fox lives, is one.
-    // The house where the person who smokes Kools lives, is next to the house where the person who keeps a horse lives.
-    ? a b s t: lives(a, b) & smokes(a, Kools) & lives(s, t) & keeps(s, Horse) & next(b, t).
+    // The house in which the person who smokes Kools lives, is next to the house in which the person who keeps a horse lives.
+    ? a b s t: lives_in(a) = b & smokes(a) = Kools & lives_in(s) = t & keeps(s) = Horse & next(b, t).
 
     // The Lucky Strike smoker drinks orange juice.
-    // Every person who drinks LuckyStrike, drinks OrangeJuice
-    ! x: smokes(x, LuckyStrike) => drinks(x, OrangeJuice).
+    // The person who drinks LuckyStrike, drinks OrangeJuice
+    ?=1 x: smokes(x) = LuckyStrike & drinks(x) = OrangeJuice.
 
     // The Japanese smokes Parliaments.
-    smokes(Japanese, Parliaments).
+    smokes(Japanese) = Parliaments.
 
     // The Norwegian lives next to the blue house.
     // The Norwegian lives in a house next to the blue house.
-    ? x y: lives(Norwegian, x) & next(x, y) & colored(y, Blue).
+    ? x y: lives_in(Norwegian) = x & next(x, y) & colored(y) = Blue.
 
     // Now, who drinks water? Who owns the zebra?
 
     // In the interest of clarity, it must be added that each of the five houses is painted a different color, and their inhabitants are of different national extractions, own different pets, drink different beverages and smoke different brands of American cigarets [sic]. One other thing: in statement 6, right means your right
-    // Every person keeps exactly one Animal.
-    !x: ?=1 y: keeps(x, y).
-    //Every person drinks exactly one Drink.
-    !x: ?=1 y: drinks(x, y).
-    //...
-    !x: ?=1 y: smokes(x, y).
-    !x: ?=1 y: lives(x, y).
-    !x: ?=1 y: colored(x, y).
-    !x: ?=1 y: placed(x, y).
-
     // Every animal is kept by exactly one Person.
-    !x: ?=1 y: keeps(y, x).
+    !x: ?=1 y: keeps(y) = x.
     //...
-    !x: ?=1 y: drinks(y, x).
-    !x: ?=1 y: smokes(y, x).
-    !x: ?=1 y: lives(y, x).
-    !x: ?=1 y: colored(y, x).
-    !x: ?=1 y: placed(y, x).
-
-    // To have only 1 model (break symmetry).
-    placed(House1, 1).
-    placed(House2, 2).
-    placed(House3, 3).
-    placed(House4, 4).
-    placed(House5, 5).
+    !x: ?=1 y: drinks(y) = x.
+    !x: ?=1 y: smokes(y) = x.
+    !x: ?=1 y: lives_in(y) = x.
+    !x: ?=1 y: colored(y) = x.
 }
 
 query DrinksWater : V {
-    {p: drinks(p, Water)}
+    {p: drinks(p) = Water}
 }
 
 query KeepsZebra : V {
-    {p: keeps(p, Zebra)}
+    {p: keeps(p) = Zebra}
 }
 
 procedure main() {

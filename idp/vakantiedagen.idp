@@ -24,6 +24,7 @@ vocabulary V {
     years_of_service(Employee): NbYearsOfService
     vacation_days(Employee): NbVacationDays
 
+    // Other cardinalities:
     // An employee can have a pet
     // type Pet
     // partial pet(Employee): Pet
@@ -31,7 +32,7 @@ vocabulary V {
     // An employee [can have | has] multiple houses
     // type House
     // house(Employee, House)
-    // + theorem if employee
+    // + theorem rule if "has multiple" to indicate at least one
 }
 
 structure S : V {
