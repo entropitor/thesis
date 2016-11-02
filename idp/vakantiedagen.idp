@@ -61,7 +61,7 @@ theory T : V {
 
 
 	// 2.
-	// - If years of service of an employee is at least 30, then he receives 3 extra days
+	// - If years of service of an employee is at least 30 then he receives 3 extra days
 	// - If age of an employee is at least 60 then he receives 3 extra days
 
 	// 3.
