@@ -65,7 +65,7 @@ problem(zebra, [
             "The Spaniard keeps the dog",
             "There is a person who lives in the green house and drinks coffee",
             "The Ukrainian drinks tea",
-            "The position of the green house is the position of the ivory house plus 1",
+            "The position of the green house is equal to the position of the ivory house plus 1",
             "There is a person who smokes Old Gold and keeps the snail",
             "There is a person who lives in a yellow house and smokes Kools",
             "The person who lives in the third house, drinks milk",

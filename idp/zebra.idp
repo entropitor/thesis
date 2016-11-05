@@ -74,7 +74,7 @@ theory T : V {
     drinks(Ukrainian) = Tea.
 
     // The green house is immediately to the right of the ivory house.
-    // The position of the green house is the position of the ivory house plus 1
+    // The position of the green house is equal to the position of the ivory house plus 1
     ? x y: colored(x) = Green & colored(y) = Ivory & position(x) = position(y) + 1.
 
     // The Old Gold smoker owns snails.

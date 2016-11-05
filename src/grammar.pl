@@ -41,6 +41,7 @@ entity_phrase ---> [X], {member(X, [each, every, a, an, the])}, property_value, 
 entity_phrase ---> [he].
 
 comparison ---> comparison_function, amount.
+comparison ---> [between], amount, [and], amount.
 comparison ---> comparison_function, amount, [or], comparison.
 comparison ---> comparison_function, amount, [and], comparison.
 
@@ -48,20 +49,24 @@ comparison_function ---> [less, than].
 comparison_function ---> [at, least].
 comparison_function ---> [more, than].
 comparison_function ---> [greather, than].
-comparison_function ---> [between], amount, [and].
+comparison_function ---> [equal, to].
 
 amount ---> amount1.
-amount ---> amount1, [plus, the, sum, of], property_phrase, entity_phrase, verb.
+amount ---> amount1, [plus], amount.
 
-amount1 ---> [X], {number(X)}.
-amount1 ---> [X], {atom(X), atom_number(X, _)}.
+amount1 ---> amount_literal.
+amount1 ---> property_phrase, [of], entity_phrase.
+amount1 ---> [the, sum, of], property_phrase, entity_phrase, verb.
+
+amount_literal ---> [X], {number(X)}.
+amount_literal ---> [X], {atom(X), atom_number(X, _)}.
 
 object ---> amount, property.
 object ---> opt_determiner, property_value.
 
 place ---> [X], {member(X, [in, at])}, entity_phrase.
 
-subsentence ---> [X], {member(X, [who, that])}, verb, place, [and], verb, object.
+subsentence ---> [X], {member(X, [who, that])}, verb_phrase.
 
 opt_determiner ---> [].
 opt_determiner ---> determiner.
