@@ -3,9 +3,16 @@
           ]).
 :- use_module(dcg_tree_expansion).
 
+:- discontiguous entity/3.
+:- discontiguous verb/3.
+:- discontiguous property/3.
+
 s ---> [if], cond, optional(','), [then], expr.
 s ---> expr, [if], cond.
 s ---> cond.
+
+optional(X) ---> [X].
+optional(_) ---> [].
 
 expr ---> property_phrase, [of], entity_phrase, [equals], amount.
 expr ---> entity_phrase, verb, object.
@@ -20,6 +27,7 @@ cond1 ---> entity_phrase, verb, object.
 cond1 ---> entity_phrase, verb, place.
 cond1 ---> entity_phrase, [does, not], verb, object.
 cond1 ---> entity_phrase, [has, a, number, of], property_phrase, [equal, to], amount.
+cond1 ---> [there, is], entity_phrase, subsentence.
 
 property_phrase ---> [X], {member(X, [the, a, an])}, property.
 property_phrase ---> property.
@@ -45,11 +53,17 @@ amount1 ---> [X], {number(X)}.
 amount1 ---> [X], {atom(X), atom_number(X, _)}.
 
 object ---> amount, property.
+object ---> opt_determiner, property_value.
 
 place ---> [X], {member(X, [in, at])}, entity_phrase.
 
-optional(X) ---> [X].
-optional(_) ---> [].
+subsentence ---> [X], {member(X, [who, that])}, verb, place, [and], verb, object.
+
+
+opt_determiner ---> [].
+opt_determiner ---> determiner.
+
+determiner ---> [X], {member(X, [each, every, a, an, the])}.
 
 % Vakantiedagen!
 property ---> [years, of, service].
