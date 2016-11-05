@@ -6,6 +6,7 @@
 :- discontiguous entity/3.
 :- discontiguous verb/3.
 :- discontiguous property/3.
+:- discontiguous property_value/3.
 
 s ---> [if], cond, optional(','), [then], expr.
 s ---> expr, [if], cond.
@@ -26,6 +27,7 @@ cond1 ---> entity_phrase, verb_phrase.
 cond1 ---> entity_phrase, [does, not], verb, object.
 cond1 ---> entity_phrase, [has, a, number, of], property_phrase, [equal, to], amount.
 cond1 ---> [there, is], entity_phrase, subsentence.
+cond1 ---> entity_phrase, subsentence, verb_phrase.
 
 verb_phrase ---> verb_phrase1.
 verb_phrase ---> verb_phrase1, [and], verb_phrase.
@@ -99,6 +101,7 @@ property_value ---> [lucky, strike].
 
 entity ---> [house].
 property ---> [position].
+property_value ---> [X], {member(X, [first, second, third, fourth, fifth])}.
 property ---> [color].
 
 verb ---> [lives].
