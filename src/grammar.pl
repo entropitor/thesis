@@ -15,19 +15,23 @@ optional(X) ---> [X].
 optional(_) ---> [].
 
 expr ---> property_phrase, [of], entity_phrase, [equals], amount.
-expr ---> entity_phrase, verb, object.
-expr ---> entity_phrase, verb, place.
+expr ---> entity_phrase, verb_phrase.
 
 cond ---> cond1.
 cond ---> cond1, [and], cond.
 cond ---> cond1, [or], cond.
 
 cond1 ---> property_phrase, [of], entity_phrase, [is], comparison.
-cond1 ---> entity_phrase, verb, object.
-cond1 ---> entity_phrase, verb, place.
+cond1 ---> entity_phrase, verb_phrase.
 cond1 ---> entity_phrase, [does, not], verb, object.
 cond1 ---> entity_phrase, [has, a, number, of], property_phrase, [equal, to], amount.
 cond1 ---> [there, is], entity_phrase, subsentence.
+
+verb_phrase ---> verb_phrase1.
+verb_phrase ---> verb_phrase1, [and], verb_phrase.
+
+verb_phrase1 ---> verb, object.
+verb_phrase1 ---> verb, place.
 
 property_phrase ---> [X], {member(X, [the, a, an])}, property.
 property_phrase ---> property.
@@ -58,7 +62,6 @@ object ---> opt_determiner, property_value.
 place ---> [X], {member(X, [in, at])}, entity_phrase.
 
 subsentence ---> [X], {member(X, [who, that])}, verb, place, [and], verb, object.
-
 
 opt_determiner ---> [].
 opt_determiner ---> determiner.
