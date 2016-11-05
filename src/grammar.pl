@@ -34,13 +34,23 @@ verb_phrase ---> verb_phrase1, [and], verb_phrase.
 
 verb_phrase1 ---> verb, object.
 verb_phrase1 ---> verb, place.
+verb_phrase1 ---> verb, entity_phrase.
 
 property_phrase ---> [X], {member(X, [the, a, an])}, property.
 property_phrase ---> property.
+property_phrase ---> [the, absolute, value, of], property_phrase.
+property_phrase ---> [the, difference, between], property_phrase, [and], property_phrase.
+property_phrase ---> [X], {member(X, [the, a, an])}, property, [of], entity_phrase.
+property_phrase ---> property, [of], entity_phrase.
 
 entity_phrase ---> [X], {member(X, [each, every, a, an, the])}, entity.
+entity_phrase ---> [X], {member(X, [each, every, a, an, the])}, entity, variable_name.
 entity_phrase ---> [X], {member(X, [each, every, a, an, the])}, property_value, entity.
+entity_phrase ---> entity, variable_name.
+entity_phrase ---> variable_name.
 entity_phrase ---> [he].
+
+variable_name ---> [X], {member(X, [a, b, c, d, e])}.
 
 comparison ---> comparison_function, amount.
 comparison ---> [between], amount, [and], amount.
@@ -109,3 +119,4 @@ verb ---> [be].
 verb ---> [keeps].
 verb ---> [drinks].
 verb ---> [smokes].
+verb ---> [is, next, to].

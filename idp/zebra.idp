@@ -62,7 +62,7 @@ theory T : V {
     //lives_in(Englishman, Red).
     ? x: lives_in(Englishman) = x & colored(x) = Red.
 
-    // The Spaniard owns the dog.Color
+    // The Spaniard owns the dog.
     // The Spaniard keeps the dog.
     keeps(Spaniard) = Dog.
 

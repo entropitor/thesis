@@ -1,4 +1,4 @@
-:- module(parser, [input_atoms/2, parse/2, parse_string/3, all_parses/2, problem/2]).
+:- module(parser, [input_atoms/2, parse/2, parse_string/3, all_parses/2, problem/2, parse_problem_using/2, parse_using/3]).
 :- use_module(grammar).
 
 input_atoms(I, A) :-
@@ -39,7 +39,9 @@ parse_problem(Name, FirstFailedSentence) :-
     (
         pairs_keys(FailedPairs, [FirstFailedSentence | _])
      ->
-         writeln(FirstFailedSentence)
+         writeln(FirstFailedSentence),
+         retractall(problem_sentence(_)),
+         assert(problem_sentence(FirstFailedSentence))
      ;
          FirstFailedSentence = nil
     ),
@@ -70,7 +72,7 @@ problem(zebra, [
             "There is a person who lives in a yellow house and smokes Kools",
             "The person who lives in the third house, drinks milk",
             "The Norwegian lives in the first house",
-            "A house A is next to a house B if the absolute value of the difference between the position of house A and house B is 1",
+            "A house A is next to a house B if the absolute value of the difference between the position of house A and the position of house B is equal to 1",
             "The house in which the person who smokes Chesterfields lives, is next to the house in which the person who keeps the fox lives",
             "The house in which the person who smokes Kools lives, is next to the house in which the person who keeps a horse lives",
             "The person who drinks LuckyStrike, drinks OrangeJuice",
@@ -78,3 +80,21 @@ problem(zebra, [
             "The Norwegian lives in a house next to the blue house",
             "Every animal is kept by exactly one Person"
       ]).
+
+parse_problem_using(Rest, Terms) :-
+    problem_sentence(X),
+    parse_using(X, Rest, Terms).
+
+parse_using(Atoms, Atoms, []).
+parse_using(Atoms, Rest, [[] | Terms]) :-
+    !,
+    parse_using(Atoms, Rest, Terms).
+parse_using([H | Rest], Rest2, [[H | T] | Terms]) :-
+    !,
+    parse_using(Rest, Rest2, [T | Terms]).
+parse_using(Atoms, Rest2, [Term | Terms]) :-
+    Term =.. [Functor | Args],
+    Functor \= '[|]',
+    Term2 =.. [Functor, _ | Args],
+    phrase(grammar:Term2, Atoms, Rest),
+    parse_using(Rest, Rest2, Terms).
