@@ -26,8 +26,7 @@ cond1 ---> property_phrase, [of], entity_phrase, [is], comparison.
 cond1 ---> entity_phrase, verb_phrase.
 cond1 ---> entity_phrase, [does, not], verb, object.
 cond1 ---> entity_phrase, [has, a, number, of], property_phrase, [equal, to], amount.
-cond1 ---> [there, is], entity_phrase, subsentence.
-cond1 ---> entity_phrase, subsentence, verb_phrase.
+cond1 ---> [there, is], entity_phrase.
 
 verb_phrase ---> verb_phrase1.
 verb_phrase ---> verb_phrase1, [and], verb_phrase.
@@ -35,6 +34,7 @@ verb_phrase ---> verb_phrase1, [and], verb_phrase.
 verb_phrase1 ---> verb, object.
 verb_phrase1 ---> verb, place.
 verb_phrase1 ---> verb, entity_phrase.
+verb_phrase1 ---> entity_phrase, verb.
 
 property_phrase ---> [X], {member(X, [the, a, an])}, property.
 property_phrase ---> property.
@@ -43,12 +43,15 @@ property_phrase ---> [the, difference, between], property_phrase, [and], propert
 property_phrase ---> [X], {member(X, [the, a, an])}, property, [of], entity_phrase.
 property_phrase ---> property, [of], entity_phrase.
 
-entity_phrase ---> [X], {member(X, [each, every, a, an, the])}, entity.
-entity_phrase ---> [X], {member(X, [each, every, a, an, the])}, entity, variable_name.
-entity_phrase ---> [X], {member(X, [each, every, a, an, the])}, property_value, entity.
-entity_phrase ---> entity, variable_name.
-entity_phrase ---> variable_name.
-entity_phrase ---> [he].
+entity_phrase ---> entity_phrase1.
+entity_phrase ---> entity_phrase1, subsentence.
+
+entity_phrase1 ---> [X], {member(X, [each, every, a, an, the])}, entity.
+entity_phrase1 ---> [X], {member(X, [each, every, a, an, the])}, entity, variable_name.
+entity_phrase1 ---> [X], {member(X, [each, every, a, an, the])}, property_value, entity.
+entity_phrase1 ---> entity, variable_name.
+entity_phrase1 ---> variable_name.
+entity_phrase1 ---> [he].
 
 variable_name ---> [X], {member(X, [a, b, c, d, e])}.
 
@@ -79,6 +82,7 @@ object ---> opt_determiner, property_value.
 place ---> [X], {member(X, [in, at])}, entity_phrase.
 
 subsentence ---> [X], {member(X, [who, that])}, verb_phrase.
+subsentence ---> [in, which], verb_phrase.
 
 opt_determiner ---> [].
 opt_determiner ---> determiner.
