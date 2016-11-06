@@ -1,7 +1,22 @@
-:- module(dcg_tree_expansion, [
-              op(1200, xfx, (--->))
+:- module(dcg_macro, [
+              op(1200, xfx, (--->)),
+              op(600, xfy, (::))
           ]).
 :- op(1200, xfx, (--->)).
+:- op(600, xfy, (::)).
+
+% The :: operators
+% optional
+to_yprime(optional :: Y, Yprimes, Ns) :-
+    to_yprime((Y ; []), Yprimes, Ns).
+% option
+to_yprime(option::[], [], []).
+to_yprime(option::[H | T], Yprimes, Ns) :-
+    H = [_|_],
+    !,
+    to_yprime((H ; option::T), Yprimes, Ns).
+to_yprime(option::[H | T], Yprimes, Ns) :-
+    to_yprime(([H] ; option::T), Yprimes, Ns).
 
 to_yprime((Y, Ys), Yprimes3, Ns3) :-
     !,

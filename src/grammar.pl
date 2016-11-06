@@ -1,19 +1,16 @@
 :- module(grammar, [
               s/3
           ]).
-:- use_module(dcg_tree_expansion).
+:- use_module(dcg_macro).
 
 :- discontiguous entity/3.
 :- discontiguous verb/3.
 :- discontiguous property/3.
 :- discontiguous property_value/3.
 
-s ---> [if], cond, optional(','), [then], expr.
+s ---> [if], cond, [then], expr.
 s ---> expr, [if], cond.
 s ---> cond.
-
-optional(X) ---> [X].
-optional(_) ---> [].
 
 expr ---> property_phrase, [of], entity_phrase, [equals], amount.
 expr ---> entity_phrase, verb_phrase.
@@ -39,35 +36,32 @@ verb_attachment ---> object.
 verb_attachment ---> place.
 verb_attachment ---> entity_phrase.
 
-property_phrase ---> [X], {member(X, [the, a, an])}, property.
+property_phrase ---> option::[the, a, an], property.
 property_phrase ---> property.
 property_phrase ---> [the, absolute, value, of], property_phrase.
 property_phrase ---> [the, difference, between], property_phrase, [and], property_phrase.
-property_phrase ---> [X], {member(X, [the, a, an])}, property, [of], entity_phrase.
+property_phrase ---> option::[the, a, an], property, [of], entity_phrase.
 property_phrase ---> property, [of], entity_phrase.
 
 entity_phrase ---> entity_phrase1.
 entity_phrase ---> entity_phrase1, subsentence.
 
-entity_phrase1 ---> [X], {member(X, [each, every, a, an, the])}, entity.
-entity_phrase1 ---> [X], {member(X, [each, every, a, an, the])}, entity, variable_name.
-entity_phrase1 ---> [X], {member(X, [each, every, a, an, the])}, property_value, entity.
+entity_phrase1 ---> determiner, entity.
+entity_phrase1 ---> determiner, entity, variable_name.
+entity_phrase1 ---> determiner, property_value, entity.
 entity_phrase1 ---> entity, variable_name.
 entity_phrase1 ---> variable_name.
 entity_phrase1 ---> [he].
 
-variable_name ---> [X], {member(X, [a, b, c, d, e])}.
+variable_name ---> option::[a, b, c, d, e, f, g, h, i, j, k, l, m, n, p, q, r, s, t, u, v, w, x, y, z].
 
 comparison ---> comparison_function, amount.
 comparison ---> [between], amount, [and], amount.
 comparison ---> comparison_function, amount, [or], comparison.
 comparison ---> comparison_function, amount, [and], comparison.
 
-comparison_function ---> [less, than].
-comparison_function ---> [at, least].
-comparison_function ---> [more, than].
-comparison_function ---> [greather, than].
-comparison_function ---> [equal, to].
+comparison_function ---> option::[[less, than], [at, least], [more, than],
+                                  [greather, than], [equal, to]].
 
 amount ---> [exactly], amount1.
 amount ---> amount1.
@@ -82,17 +76,13 @@ amount_literal ---> [X], {atom(X), atom_number(X, _)}.
 
 object ---> amount, property.
 object ---> amount, entity.
-object ---> opt_determiner, property_value.
+object ---> optional::determiner, property_value.
 
-place ---> [X], {member(X, [in, at])}, entity_phrase.
+place ---> option::[in, at], entity_phrase.
 
-subsentence ---> [X], {member(X, [who, that])}, verb_phrase.
-subsentence ---> [in, which], verb_phrase.
+subsentence ---> option::[who, that, [in, which]], verb_phrase.
 
-opt_determiner ---> [].
-opt_determiner ---> determiner.
-
-determiner ---> [X], {member(X, [each, every, a, an, the])}.
+determiner ---> option::[each, every, a, an, the].
 
 % Vakantiedagen!
 property ---> [years, of, service].
@@ -105,23 +95,17 @@ verb ---> [receive].
 
 % Zebra
 entity ---> [person].
-entity ---> [X], {member(X, [englishman, spaniard, ukrainian, japanese, norwegian])}.
-% property ---> [animal].
-% property ---> [drink].
-% property ---> [cigarette].
-property_value ---> [X], {member(X, [red, green, ivory, yellow, blue])}.
+entity ---> option::[englishman, spaniard, ukrainian, japanese, norwegian].
+property_value ---> option::[red, green, ivory, yellow, blue].
 entity ---> [animal].
-property_value ---> [X], {member(X, [dog, zebra, snail, fox, horse])}.
-property_value ---> [X], {member(X, [coffee, tea, milk, water])}.
-property_value ---> [orange, juice].
-property_value ---> [cigarette].
-property_value ---> [X], {member(X, [chesterfields, kools, parliaments])}.
-property_value ---> [old, gold].
-property_value ---> [lucky, strike].
+property_value ---> option::[dog, zebra, snail, fox, horse].
+property_value ---> option::[coffee, tea, milk, water, [orange, juice]].
+entity ---> [cigarette].
+property_value ---> option::[chesterfields, kools, parliaments, [old, gold], [lucky, strike]].
 
 entity ---> [house].
 property ---> [position].
-property_value ---> [X], {member(X, [first, second, third, fourth, fifth])}.
+property_value ---> option::[first, second, third, fourth, fifth].
 property ---> [color].
 
 verb ---> [lives].
