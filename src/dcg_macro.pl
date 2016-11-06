@@ -6,17 +6,17 @@
 :- op(600, xfy, (::)).
 
 % The :: operators
-% optional
+% optional: the next goal is optional
 to_yprime(optional :: Y, Yprimes, Ns) :-
     to_yprime((Y ; []), Yprimes, Ns).
-% option
-to_yprime(option::[], [], []).
-to_yprime(option::[H | T], Yprimes, Ns) :-
+% one_of: choose a literal from the list, multi-words are supported as nested list
+to_yprime(one_of::[], [], []).
+to_yprime(one_of::[H | T], Yprimes, Ns) :-
     H = [_|_],
     !,
-    to_yprime((H ; option::T), Yprimes, Ns).
-to_yprime(option::[H | T], Yprimes, Ns) :-
-    to_yprime(([H] ; option::T), Yprimes, Ns).
+    to_yprime((H ; one_of::T), Yprimes, Ns).
+to_yprime(one_of::[H | T], Yprimes, Ns) :-
+    to_yprime(([H] ; one_of::T), Yprimes, Ns).
 
 to_yprime((Y, Ys), Yprimes3, Ns3) :-
     !,

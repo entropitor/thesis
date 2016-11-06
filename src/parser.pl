@@ -1,5 +1,9 @@
-:- module(parser, [input_atoms/2, parse/2, parse_string/3, all_parses/2, problem/2, parse_problem_using/2, parse_using/3]).
+:- module(parser, [input_atoms/2, parse/2, parse_string/3, all_parses/2, problem/2, parse_problem_using/2, parse_using/3, test/0]).
 :- use_module(grammar).
+
+test :-
+    parse_problem(zebra, nil),
+    parse_problem(vakantiedagen, nil).
 
 input_atoms(I, A) :-
     % to lower case
