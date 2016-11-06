@@ -93,7 +93,7 @@ theory T : V {
     // The Norwegian lives in the first house
     ? x: lives_in(Norwegian) = x & position(x) = 1.
 
-    // A house A is next to a house B if the absolute value of the difference between the position of house A and house B is 1.
+    // A house A is next to a house B if the absolute value of the difference between the position of house A and the position of house B is equal to 1.
     {! a b: next(a, b) <- abs(position(a)-position(b)) = 1.}
 
     // The man who smokes Chesterfields lives in the house next to the man with the fox.
@@ -105,14 +105,14 @@ theory T : V {
     ? a b s t: lives_in(a) = b & smokes(a) = Kools & lives_in(s) = t & keeps(s) = Horse & next(b, t).
 
     // The Lucky Strike smoker drinks orange juice.
-    // The person who drinks LuckyStrike, drinks OrangeJuice
+    // The person who drinks Lucky Strike, drinks Orange Juice
     ?=1 x: smokes(x) = LuckyStrike & drinks(x) = OrangeJuice.
 
     // The Japanese smokes Parliaments.
     smokes(Japanese) = Parliaments.
 
     // The Norwegian lives next to the blue house.
-    // The Norwegian lives in a house next to the blue house.
+    // The Norwegian lives in a house that is next to the blue house.
     ? x y: lives_in(Norwegian) = x & next(x, y) & colored(y) = Blue.
 
     // Now, who drinks water? Who owns the zebra?

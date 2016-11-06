@@ -24,17 +24,20 @@ cond ---> cond1, [or], cond.
 
 cond1 ---> property_phrase, [of], entity_phrase, [is], comparison.
 cond1 ---> entity_phrase, verb_phrase.
-cond1 ---> entity_phrase, [does, not], verb, object.
+cond1 ---> entity_phrase, [is], verb, [by], verb_attachment.
+cond1 ---> entity_phrase, [does, not], verb_phrase.
 cond1 ---> entity_phrase, [has, a, number, of], property_phrase, [equal, to], amount.
 cond1 ---> [there, is], entity_phrase.
 
 verb_phrase ---> verb_phrase1.
 verb_phrase ---> verb_phrase1, [and], verb_phrase.
 
-verb_phrase1 ---> verb, object.
-verb_phrase1 ---> verb, place.
-verb_phrase1 ---> verb, entity_phrase.
-verb_phrase1 ---> entity_phrase, verb.
+verb_phrase1 ---> verb, verb_attachment.
+verb_phrase1 ---> verb_attachment, verb.
+
+verb_attachment ---> object.
+verb_attachment ---> place.
+verb_attachment ---> entity_phrase.
 
 property_phrase ---> [X], {member(X, [the, a, an])}, property.
 property_phrase ---> property.
@@ -66,6 +69,7 @@ comparison_function ---> [more, than].
 comparison_function ---> [greather, than].
 comparison_function ---> [equal, to].
 
+amount ---> [exactly], amount1.
 amount ---> amount1.
 amount ---> amount1, [plus], amount.
 
@@ -77,6 +81,7 @@ amount_literal ---> [X], {number(X)}.
 amount_literal ---> [X], {atom(X), atom_number(X, _)}.
 
 object ---> amount, property.
+object ---> amount, entity.
 object ---> opt_determiner, property_value.
 
 place ---> [X], {member(X, [in, at])}, entity_phrase.
@@ -105,6 +110,7 @@ entity ---> [X], {member(X, [englishman, spaniard, ukrainian, japanese, norwegia
 % property ---> [drink].
 % property ---> [cigarette].
 property_value ---> [X], {member(X, [red, green, ivory, yellow, blue])}.
+entity ---> [animal].
 property_value ---> [X], {member(X, [dog, zebra, snail, fox, horse])}.
 property_value ---> [X], {member(X, [coffee, tea, milk, water])}.
 property_value ---> [orange, juice].
@@ -121,6 +127,7 @@ property ---> [color].
 verb ---> [lives].
 verb ---> [be].
 verb ---> [keeps].
+verb ---> [kept].
 verb ---> [drinks].
 verb ---> [smokes].
 verb ---> [is, next, to].

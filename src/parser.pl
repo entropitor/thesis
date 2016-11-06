@@ -75,10 +75,10 @@ problem(zebra, [
             "A house A is next to a house B if the absolute value of the difference between the position of house A and the position of house B is equal to 1",
             "The house in which the person who smokes Chesterfields lives, is next to the house in which the person who keeps the fox lives",
             "The house in which the person who smokes Kools lives, is next to the house in which the person who keeps a horse lives",
-            "The person who drinks LuckyStrike, drinks OrangeJuice",
+            "The person who drinks Lucky Strike, drinks Orange Juice",
             "The Japanese smokes Parliaments",
-            "The Norwegian lives in a house next to the blue house",
-            "Every animal is kept by exactly one Person"
+            "The Norwegian lives in a house that is next to the blue house",
+            "Every animal is kept by exactly 1 Person"
       ]).
 
 parse_problem_using(Rest, Terms) :-
