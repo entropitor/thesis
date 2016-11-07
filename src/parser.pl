@@ -2,8 +2,10 @@
 :- use_module(grammar).
 
 test :-
-    parse_problem(zebra, nil),
-    parse_problem(vakantiedagen, nil).
+    parse_problem(vakantiedagen, Y),
+    parse_problem(zebra, X),
+    X == nil,
+    Y == nil.
 
 input_atoms(I, A) :-
     % to lower case
@@ -25,10 +27,12 @@ join_string(JoinChar, [String | Strings], Result) :-
     string_concat(Temp, Joined, Result).
 
 parse(Atoms, Tree) :-
-    phrase(s(Tree), Atoms).
+    phrase(grammar:s(Tree, Facts), Atoms),
+    writeln(Atoms),
+    writeln(Facts).
 parse_string(Sentence, Tree, Atoms) :-
     input_atoms(Sentence, Atoms),
-    parse_string(Tree, Atoms).
+    parse(Atoms, Tree).
 
 all_parses(Atoms, Parses) :-
     findall(Tree, parse(Atoms, Tree), Parses).
@@ -49,7 +53,8 @@ parse_problem(Name, FirstFailedSentence) :-
      ;
          FirstFailedSentence = nil
     ),
-    write(NbMatches).
+    writeln(NbMatches),
+    nl.
 
 success(_-1).
 
