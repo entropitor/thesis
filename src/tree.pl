@@ -20,7 +20,7 @@ display_tree(Direction, Tree) :-
 draw_tree(_, Node, T) :-
     atom(Node),
     !,
-    draw_node(T, Node).
+    draw_node(Node, T).
 draw_tree(_, L, T) :-
     L = [_ | _],
     !,
@@ -30,6 +30,7 @@ draw_tree(Direction, Tree, T) :-
     Tree =.. [Node | Children],
     new(T, tree(text(Node))),
     send(T, neighbour_gap, 10),
+    send(T, level_gap, 30),
     send(T, direction, Direction),
     maplist(draw_tree(Direction), Children, SubTrees),
     send_list(T, son, SubTrees).
