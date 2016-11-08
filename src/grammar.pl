@@ -30,7 +30,7 @@ cond(CIn, [or(COut1, COut2) | CIn]) ---> cond1([], COut1), [or], cond([], COut2)
 
 cond1(CIn, COut) ---> property_phrase(Property, CIn, COut1), [is], comparison(Property, COut1, COut).
 cond1(CIn, COut) ---> entity_phrase(Entity, CIn, COut1), verb_phrase(Entity, COut1, COut).
-cond1 ---> entity_phrase, [is], verb, [by], verb_attachment.
+cond1(CIn, COut) ---> entity_phrase(Entity, CIn, COut1), [is], verb(Verb), [by], verb_attachment(Entity, Verb, COut1, COut).
 cond1 ---> entity_phrase, [does, not], verb_phrase.
 cond1 ---> entity_phrase, [has, a, number, of], property_phrase, [equal, to], amount.
 cond1(CIn, [exists(Entity, COut)]) ---> [there, is], entity_phrase(Entity, CIn, COut).
@@ -39,7 +39,7 @@ verb_phrase(Entity, CIn, COut) ---> verb_phrase1(Entity, CIn, COut).
 verb_phrase(Entity, CIn, [and(COut1, COut2) | CIn]) ---> verb_phrase1(Entity, [], COut1), [and], verb_phrase(Entity, [], COut2).
 
 verb_phrase1(Entity, CIn, COut) ---> verb(Verb), verb_attachment(Entity, Verb, CIn, COut).
-verb_phrase1 ---> verb_attachment, verb.
+verb_phrase1(Entity, CIn, COut) ---> verb_attachment(Entity, Verb, CIn, COut), verb(Verb).
 
 verb_attachment(Entity, Verb, CIn, COut) ---> object(Entity, Verb, CIn, COut).
 verb_attachment(Entity, Verb, CIn, COut) ---> place(Entity, Verb, CIn, COut).
@@ -72,7 +72,7 @@ comparison_function(=(A, B), A, B) ---> [equal, to].
 comparison_function(<(A, B), A, B) ---> [less, than].
 comparison_function ---> one_of::[[at, least], [more, than], [greather, than]].
 
-amount ---> [exactly], amount1.
+amount(exactly(Amount), CIn, COut) ---> [exactly], amount1(Amount, CIn, COut).
 amount(Amount, CIn, COut) ---> amount1(Amount, CIn, COut).
 amount(+(Amount1, Amount2), CIn, COut) ---> amount1(Amount1, CIn, COut1), [plus], amount(Amount2, COut1, COut).
 
@@ -84,15 +84,18 @@ amount_literal(X) ---> [X], {number(X)}.
 amount_literal(X) ---> [X], {atom(X), atom_number(X, _)}.
 
 object ---> amount, property.
-object ---> amount, entity.
-object(Entity, Verb, CIn, [predicate(Verb, Entity, Value) | CIn]) ---> optional::determiner, property_value(_PropertyName, Value). % TODO: type check PropertyName with Verb
+object(Entity1, Verb, CIn, [quantified(Amount, Entity2, [predicate(Verb, Entity1, Entity2) | COut1]) | CIn]) ---> amount(Amount, [], COut1), entity(Entity2, unnamed(_)).
+% TODO: type check PropertyName with Verb
+object(Entity, Verb, CIn, [predicate(Verb, Entity, Value) | CIn]) ---> optional::determiner, property_value(_PropertyName, Value).
 
 place(Entity, Verb, CIn, [predicate(Verb, Entity, Place) | COut1]) ---> one_of::[in, at], entity_phrase(Place, CIn, COut1).
 
 
 subsentence(Entity, CIn, COut) ---> one_of::[who, that], verb_phrase(Entity, CIn, COut).
-subsentence ---> [in, which], verb_phrase.
+% TODO: fix the rev() thingy
+subsentence(Entity, CIn, COut) ---> [in, which], verb_phrase(rev(Entity), CIn, COut).
 
+% TODO: fix quantors
 determiner ---> one_of::[each, every, a, an, the].
 
 % Vakantiedagen!
