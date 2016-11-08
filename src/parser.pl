@@ -1,5 +1,6 @@
 :- module(parser, [input_atoms/2, parse/2, parse_string/3, all_parses/2, problem/2, parse_problem_using/2, parse_using/3, test/0]).
 :- use_module(grammar).
+:- use_module(print).
 
 test :-
     parse_problem(vakantiedagen, Y),
@@ -29,7 +30,7 @@ join_string(JoinChar, [String | Strings], Result) :-
 parse(Atoms, Tree) :-
     phrase(grammar:s(Tree, Facts), Atoms),
     writeln(Atoms),
-    writeln(Facts).
+    show(Facts).
 parse_string(Sentence, Tree, Atoms) :-
     input_atoms(Sentence, Atoms),
     parse(Atoms, Tree).
