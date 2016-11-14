@@ -8,62 +8,57 @@
 :- discontiguous property/4.
 :- discontiguous property_value/5.
 
-:- discontiguous cond1/3.
-:- discontiguous cond1/5.
-:- discontiguous entity_phrase1/6.
-:- discontiguous entity_phrase1/3.
-:- discontiguous amount1/3.
-:- discontiguous amount/3.
+:- discontiguous cond1/4.
 :- discontiguous property_phrase/3.
-:- discontiguous property_phrase/6.
+:- discontiguous property_phrase/5.
 
-s(if(Cond, Expr)) ---> [if], cond([], Cond), [then], expr([], Expr).
-s(if(Cond, Expr)) ---> expr([], Expr), [if], cond([], Cond).
-s(COut) ---> cond([], COut).
+s(if(Cond, Expr)) ---> [if], cond([]-Cond), [then], expr([]-Expr).
+s(if(Cond, Expr)) ---> expr([]-Expr), [if], cond([]-Cond).
+s(Out) ---> cond([]-Out).
 
-expr(CIn, [equal(property(Property, Entity), Amount) | COut3]) ---> property_phrase(Property, CIn, COut1), [of], entity_phrase(Entity, COut1, COut2), [equals], amount(Amount, COut2, COut3).
-expr(CIn, COut2) ---> entity_phrase(Entity, CIn, COut1), verb_phrase(Entity, COut1, COut2).
+expr(In-[equal(property(Property, Entity), Amount) | Out3]) ---> property_phrase(Property, In-Out1), [of], entity_phrase(Entity, Out1-Out2), [equals], amount(Amount, Out2-Out3).
+expr(In-Out2) ---> entity_phrase(Entity, In-Out1), verb_phrase(Entity, Out1-Out2).
 
-cond(CIn, COut) ---> cond1(CIn, COut).
-cond(CIn, [and(COut1, COut2) | CIn]) ---> cond1([], COut1), [and], cond([], COut2).
-cond(CIn, [or(COut1, COut2) | CIn]) ---> cond1([], COut1), [or], cond([], COut2).
+cond(In-Out) ---> cond1(In-Out).
+cond(In-[and(Out1, Out2) | In]) ---> cond1([]-Out1), [and], cond([]-Out2).
+cond(In-[or(Out1, Out2) | In]) ---> cond1([]-Out1), [or], cond([]-Out2).
 
-cond1(CIn, COut) ---> property_phrase(Property, CIn, COut1), [is], comparison(Property, COut1, COut).
-cond1(CIn, COut) ---> entity_phrase(Entity, CIn, COut1), verb_phrase(Entity, COut1, COut).
-cond1(CIn, COut) ---> entity_phrase(Entity, CIn, COut1), [is], verb(Verb), [by], verb_attachment(Entity, Verb, COut1, COut).
+cond1(In-Out) ---> property_phrase(Property, In-Out1), [is], comparison(Property, Out1-Out).
+cond1(In-Out) ---> entity_phrase(Entity, In-Out1), verb_phrase(Entity, Out1-Out).
+cond1(In-Out) ---> entity_phrase(Entity, In-Out1), [is], verb(Verb), [by], verb_attachment(Entity, Verb, Out1-Out).
 cond1 ---> entity_phrase, [does, not], verb_phrase.
 cond1 ---> entity_phrase, [has, a, number, of], property_phrase, [equal, to], amount.
-cond1(CIn, [exists(Entity, COut)]) ---> [there, is], entity_phrase(Entity, CIn, COut).
+cond1(In-exists(Entity, Out)) ---> [there, is], entity_phrase(Entity, In-Out).
 
-verb_phrase(Entity, CIn, COut) ---> verb_phrase1(Entity, CIn, COut).
-verb_phrase(Entity, CIn, [and(COut1, COut2) | CIn]) ---> verb_phrase1(Entity, [], COut1), [and], verb_phrase(Entity, [], COut2).
+verb_phrase(Entity, In-Out) ---> verb_phrase1(Entity, In-Out).
+verb_phrase(Entity, In-[and(Out1-Out2) | In]) ---> verb_phrase1(Entity, []-Out1), [and], verb_phrase(Entity, []-Out2).
 
-verb_phrase1(Entity, CIn, COut) ---> verb(Verb), verb_attachment(Entity, Verb, CIn, COut).
-verb_phrase1(Entity, CIn, COut) ---> verb_attachment(Entity, Verb, CIn, COut), verb(Verb).
+verb_phrase1(Entity, In-Out) ---> verb(Verb), verb_attachment(Entity, Verb, In-Out).
+verb_phrase1(Entity, In-Out) ---> verb_attachment(Entity, Verb, In-Out), verb(Verb).
 
-verb_attachment(Entity, Verb, CIn, COut) ---> object(Entity, Verb, CIn, COut).
-verb_attachment(Entity, Verb, CIn, COut) ---> place(Entity, Verb, CIn, COut).
-verb_attachment(Entity1, Verb, CIn, [predicate(Verb, Entity1, Entity2) | COut1]) ---> entity_phrase(Entity2, CIn, COut1).
+verb_attachment(Entity, Verb, In-Out) ---> object(Entity, Verb, In-Out).
+verb_attachment(Entity, Verb, In-Out) ---> place(Entity, Verb, In-Out).
+verb_attachment(Entity1, Verb, In-[predicate(Verb, Entity1, Entity2) | Out1]) ---> entity_phrase(Entity2, In-Out1).
 
-property_phrase(Property, CIn, CIn) ---> one_of::[the, a, an], property(Property).
+property_phrase(Property, In-In) ---> one_of::[the, a, an], property(Property).
 property_phrase ---> property.
-property_phrase(abs(Property), CIn, COut) ---> [the, absolute, value, of], property_phrase(Property, CIn, COut).
-property_phrase(-(Property1, Property2), CIn, COut) ---> [the, difference, between], property_phrase(Property1, CIn, COut1), [and], property_phrase(Property2, COut1, COut).
-property_phrase(property(Property, Entity), CIn, COut) ---> one_of::[the, a, an], property(Property), [of], entity_phrase(Entity, CIn, COut).
+property_phrase(abs(Property), In-Out) ---> [the, absolute, value, of], property_phrase(Property, In-Out).
+property_phrase(-(Property1, Property2), In-Out) ---> [the, difference, between], property_phrase(Property1, In-Out1), [and], property_phrase(Property2, Out1-Out).
+property_phrase(property(Property, Entity), In-Out) ---> one_of::[the, a, an], property(Property), [of], entity_phrase(Entity, In-Out).
 property_phrase ---> property, [of], entity_phrase.
 
-entity_phrase(Entity, CIn, COut) ---> entity_phrase1(Entity, CIn, COut).
-entity_phrase(Entity, CIn, COut) ---> entity_phrase1(Entity, CIn, COut1), subsentence(Entity, COut1, COut).
+entity_phrase(Entity, In-Out) ---> entity_phrase1(Entity, In-Out).
+entity_phrase(Entity, In-Out) ---> entity_phrase1(Entity, In-Out1), subsentence(Entity, Out1-Out).
 
-entity_phrase1(Entity, C, C) ---> determiner, entity(Entity, unnamed(_)).
-entity_phrase1(Entity, C, C) ---> optional::determiner, entity(Entity, named(Name)), variable_name(Name).
-entity_phrase1(Entity, CIn, [predicate(PropertyName, Entity, PropertyValue) | CIn]) ---> determiner, property_value(PropertyName, PropertyValue), entity(Entity, unnamed(_)).
+entity_phrase1(Entity, In-In) ---> determiner, entity(Entity, unnamed(_)).
+entity_phrase1(Entity, In-In) ---> optional::determiner, entity(Entity, named(Name)), variable_name(Name).
+entity_phrase1(Entity, In-[predicate(PropertyName, Entity, PropertyValue) | In]) ---> determiner, property_value(PropertyName, PropertyValue), entity(Entity, unnamed(_)).
 entity_phrase1 ---> variable_name.
 entity_phrase1 ---> [he].
 
 variable_name(Name) ---> [Name], {member(Name, [a, b, c, d, e, f, g, h, i, j, k, l, m, n, p, q, r, s, t, u, v, w, x, y, z])}.
 
-comparison(LeftHand, CIn, [Cond | COut]) ---> comparison_function(Cond, LeftHand, RightHand), amount(RightHand, CIn, COut).
+comparison(LeftHand, In-[Cond | Out]) ---> comparison_function(Cond, LeftHand, RightHand), amount(RightHand, In-Out).
 comparison ---> [between], amount, [and], amount.
 comparison ---> comparison_function, amount, [or], comparison.
 comparison ---> comparison_function, amount, [and], comparison.
@@ -72,28 +67,27 @@ comparison_function(=(A, B), A, B) ---> [equal, to].
 comparison_function(<(A, B), A, B) ---> [less, than].
 comparison_function ---> one_of::[[at, least], [more, than], [greather, than]].
 
-amount(exactly(Amount), CIn, COut) ---> [exactly], amount1(Amount, CIn, COut).
-amount(Amount, CIn, COut) ---> amount1(Amount, CIn, COut).
-amount(+(Amount1, Amount2), CIn, COut) ---> amount1(Amount1, CIn, COut1), [plus], amount(Amount2, COut1, COut).
+amount(exactly(Amount), In-Out) ---> [exactly], amount1(Amount, In-Out).
+amount(Amount, In-Out) ---> amount1(Amount, In-Out).
+amount(+(Amount1, Amount2), In-Out) ---> amount1(Amount1, In-Out1), [plus], amount(Amount2, Out1-Out).
 
-amount1(literal(X), CIn, CIn) ---> amount_literal(X).
-amount1(property(Property, Entity), CIn, COut) ---> property_phrase(Property, CIn, COut1), [of], entity_phrase(Entity, COut1, COut).
+amount1(literal(X), In-In) ---> amount_literal(X).
+amount1(property(Property, Entity), In-Out) ---> property_phrase(Property, In-Out1), [of], entity_phrase(Entity, Out1-Out).
 amount1 ---> [the, sum, of], property_phrase, entity_phrase, verb.
 
 amount_literal(X) ---> [X], {number(X)}.
 amount_literal(X) ---> [X], {atom(X), atom_number(X, _)}.
 
 object ---> amount, property.
-object(Entity1, Verb, CIn, [quantified(Amount, Entity2, [predicate(Verb, Entity1, Entity2) | COut1]) | CIn]) ---> amount(Amount, [], COut1), entity(Entity2, unnamed(_)).
+object(Entity1, Verb, In-[quantified(Amount, Entity2, [predicate(Verb, Entity1, Entity2) | Out1]) | In]) ---> amount(Amount, []-Out1), entity(Entity2, unnamed(_)).
 % TODO: type check PropertyName with Verb
-object(Entity, Verb, CIn, [predicate(Verb, Entity, Value) | CIn]) ---> optional::determiner, property_value(_PropertyName, Value).
+object(Entity, Verb, In-[predicate(Verb, Entity, Value) | In]) ---> optional::determiner, property_value(_PropertyName, Value).
 
-place(Entity, Verb, CIn, [predicate(Verb, Entity, Place) | COut1]) ---> one_of::[in, at], entity_phrase(Place, CIn, COut1).
+place(Entity, Verb, In-[predicate(Verb, Entity, Place) | Out1]) ---> one_of::[in, at], entity_phrase(Place, In-Out1).
 
-
-subsentence(Entity, CIn, COut) ---> one_of::[who, that], verb_phrase(Entity, CIn, COut).
+subsentence(Entity, In-Out) ---> one_of::[who, that], verb_phrase(Entity, In-Out).
 % TODO: fix the rev() thingy
-subsentence(Entity, CIn, COut) ---> [in, which], verb_phrase(rev(Entity), CIn, COut).
+subsentence(Entity, In-Out) ---> [in, which], verb_phrase(rev(Entity), In-Out).
 
 % TODO: fix quantors
 determiner ---> one_of::[each, every, a, an, the].
@@ -116,3 +110,18 @@ property_list::[position, color].
 property_value_list::position-[first, second, third, fourth, fifth].
 
 verb_list::[lives, be, keeps, kept, drinks, smokes, [is, next, to]].
+
+
+
+%% _.default() := grammar{
+%%              conditions: [],
+%%              quantors: []
+%%          }.
+%% _.from_condition(Cond) := _.default().add_condition(Cond).
+
+%% In.add_condition(Cond) := In.put([conditions = [Cond | In.conditions]]).
+%% In.add_quantor(Quantor) := In.put([quantors = [Quantor | In.quantors]]).
+
+%% In.add_condition(Cond, Out1, Out2) := In.add_condition(Cond).put([quantors = Qs]) :-
+%%     append(In.quantors, Out1.quantors, Qs1),
+%%     append(Qs1, Out2.quantors, Qs).
