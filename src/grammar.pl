@@ -25,13 +25,13 @@ cond(In-[or(Out1, Out2) | In]) ---> cond1([]-Out1), [or], cond([]-Out2).
 
 cond1(In-Out) ---> property_phrase(Property, In-Out1), [is], comparison(Property, Out1-Out).
 cond1(In-Out) ---> entity_phrase(Entity, In-Out1), verb_phrase(Entity, Out1-Out).
-cond1(In-[predicate(rev(Verb), Attachment, Entity) | Out]) ---> entity_phrase(Entity, In-Out1), [is], verb(Verb), [by], verb_attachment(Attachment, Out1-Out).
+cond1(In-[predicate(passive:Verb, Attachment, Entity) | Out]) ---> entity_phrase(Entity, In-Out1), [is], verb(Verb), [by], verb_attachment(Attachment, Out1-Out).
 cond1 ---> entity_phrase, [does, not], verb_phrase.
 cond1 ---> entity_phrase, [has, a, number, of], property_phrase, [equal, to], amount.
 cond1(In-exists(Entity, Out)) ---> [there, is], entity_phrase(Entity, In-Out).
 
 verb_phrase(Entity, In-Out) ---> verb_phrase1(Entity, In-Out).
-verb_phrase(Entity, In-[and(Out1-Out2) | In]) ---> verb_phrase1(Entity, []-Out1), [and], verb_phrase(Entity, []-Out2).
+verb_phrase(Entity, In-[and(Out1, Out2) | In]) ---> verb_phrase1(Entity, []-Out1), [and], verb_phrase(Entity, []-Out2).
 
 verb_phrase1(Entity, In-[predicate(Verb, Entity, Attachment) | Out]) ---> verb(Verb), verb_attachment(Attachment, In-Out).
 verb_phrase1(Entity, In-[predicate(Verb, Attachment, Entity) | Out]) ---> verb_attachment(Attachment, In-Out), verb(Verb).
@@ -43,7 +43,7 @@ verb_attachment(Entity, In-Out) ---> entity_phrase(Entity, In-Out).
 object ---> amount, property.
 object(Entity, In-[quantified(Amount, Entity) | Out1]) ---> amount(Amount, In-Out1), entity(Entity, unnamed(_)).
 % TODO: type check PropertyName with Verb
-object(Value, In-In) ---> optional::determiner, property_value(_PropertyName, Value).
+object(Value, In-In) ---> optional::determiner(_Quantor), property_value(_PropertyName, Value).
 
 place(Place, In-Out1) ---> one_of::[in, at], entity_phrase(Place, In-Out1).
 
@@ -57,9 +57,10 @@ property_phrase ---> property, [of], entity_phrase.
 entity_phrase(Entity, In-Out) ---> entity_phrase1(Entity, In-Out).
 entity_phrase(Entity, In-Out) ---> entity_phrase1(Entity, In-Out1), subsentence(Entity, Out1-Out).
 
-entity_phrase1(Entity, In-In) ---> determiner, entity(Entity, unnamed(_)).
-entity_phrase1(Entity, In-In) ---> optional::determiner, entity(Entity, named(Name)), variable_name(Name).
-entity_phrase1(Entity, In-[predicate(PropertyName, Entity, PropertyValue) | In]) ---> determiner, property_value(PropertyName, PropertyValue), entity(Entity, unnamed(_)).
+entity_phrase1(Entity, In-[quantor(Quantor, Entity) | In]) ---> determiner(Quantor), entity(Entity, unnamed(_)).
+entity_phrase1(Entity, In-[quantor(Quantor, Entity) | In]) ---> determiner(Quantor), entity(Entity, named(Name)), variable_name(Name).
+entity_phrase1(Entity, In-In) ---> entity(Entity, named(Name)), variable_name(Name).
+entity_phrase1(Entity, In-[predicate(PropertyName, Entity, PropertyValue), quantor(Quantor, Entity) | In]) ---> determiner(Quantor), property_value(PropertyName, PropertyValue), entity(Entity, unnamed(_)).
 entity_phrase1 ---> variable_name.
 entity_phrase1 ---> [he].
 
@@ -90,7 +91,8 @@ subsentence(Entity, In-Out) ---> one_of::[who, that], verb_phrase(Entity, In-Out
 subsentence(Entity, In-Out) ---> [in, which], verb_phrase(rev(Entity), In-Out).
 
 % TODO: fix quantors
-determiner ---> one_of::[each, every, a, an, the].
+determiner(exists) ---> one_of::[a, an].
+determiner(forall) ---> one_of::[each, every, the].
 
 % Vakantiedagen!
 property_list::[[years, of, service], [age], [extra, days], [vacation, days]].

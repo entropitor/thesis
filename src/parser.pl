@@ -3,9 +3,9 @@
 :- use_module(print).
 
 test :-
-    parse_problem(vakantiedagen, Y),
-    parse_problem(zebra, X),
-    X == nil,
+    %parse_problem(vakantiedagen, X),
+    parse_problem(zebra, Y),
+    %X == nil,
     Y == nil.
 
 input_atoms(I, A) :-
@@ -29,8 +29,7 @@ join_string(JoinChar, [String | Strings], Result) :-
 
 parse(Atoms, Tree) :-
     phrase(grammar:s(Tree, Facts), Atoms),
-    writeln(Atoms),
-    show(Facts).
+    show_rules(Atoms, Facts).
 parse_string(Sentence, Tree, Atoms) :-
     input_atoms(Sentence, Atoms),
     parse(Atoms, Tree).
