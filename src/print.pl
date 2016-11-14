@@ -63,14 +63,12 @@ show(exists(X, Y), In-Out) :-
     show_argument(X, In-Temp),
     write(': '),
     show(Y, Temp-Out).
-show(quantified(exactly(literal(Times)), X, Y), In-Out) :-
+show(quantified(exactly(literal(Times)), X), In-Out) :-
     !,
     write('?='),
     write(Times),
     write(' '),
-    show_argument(X, In-Temp),
-    write(': '),
-    show(Y, Temp-Out).
+    show_argument(X, In-Out).
 show(and(X, Y), In-Out) :-
     !,
     show(X, In-Temp),

@@ -25,7 +25,7 @@ cond(In-[or(Out1, Out2) | In]) ---> cond1([]-Out1), [or], cond([]-Out2).
 
 cond1(In-Out) ---> property_phrase(Property, In-Out1), [is], comparison(Property, Out1-Out).
 cond1(In-Out) ---> entity_phrase(Entity, In-Out1), verb_phrase(Entity, Out1-Out).
-cond1(In-Out) ---> entity_phrase(Entity, In-Out1), [is], verb(Verb), [by], verb_attachment(Entity, Verb, Out1-Out).
+cond1(In-[predicate(rev(Verb), Attachment, Entity) | Out]) ---> entity_phrase(Entity, In-Out1), [is], verb(Verb), [by], verb_attachment(Attachment, Out1-Out).
 cond1 ---> entity_phrase, [does, not], verb_phrase.
 cond1 ---> entity_phrase, [has, a, number, of], property_phrase, [equal, to], amount.
 cond1(In-exists(Entity, Out)) ---> [there, is], entity_phrase(Entity, In-Out).
@@ -33,12 +33,19 @@ cond1(In-exists(Entity, Out)) ---> [there, is], entity_phrase(Entity, In-Out).
 verb_phrase(Entity, In-Out) ---> verb_phrase1(Entity, In-Out).
 verb_phrase(Entity, In-[and(Out1-Out2) | In]) ---> verb_phrase1(Entity, []-Out1), [and], verb_phrase(Entity, []-Out2).
 
-verb_phrase1(Entity, In-Out) ---> verb(Verb), verb_attachment(Entity, Verb, In-Out).
-verb_phrase1(Entity, In-Out) ---> verb_attachment(Entity, Verb, In-Out), verb(Verb).
+verb_phrase1(Entity, In-[predicate(Verb, Entity, Attachment) | Out]) ---> verb(Verb), verb_attachment(Attachment, In-Out).
+verb_phrase1(Entity, In-[predicate(Verb, Attachment, Entity) | Out]) ---> verb_attachment(Attachment, In-Out), verb(Verb).
 
-verb_attachment(Entity, Verb, In-Out) ---> object(Entity, Verb, In-Out).
-verb_attachment(Entity, Verb, In-Out) ---> place(Entity, Verb, In-Out).
-verb_attachment(Entity1, Verb, In-[predicate(Verb, Entity1, Entity2) | Out1]) ---> entity_phrase(Entity2, In-Out1).
+verb_attachment(Object, In-Out) ---> object(Object, In-Out).
+verb_attachment(Place, In-Out) ---> place(Place, In-Out).
+verb_attachment(Entity, In-Out) ---> entity_phrase(Entity, In-Out).
+
+object ---> amount, property.
+object(Entity, In-[quantified(Amount, Entity) | Out1]) ---> amount(Amount, In-Out1), entity(Entity, unnamed(_)).
+% TODO: type check PropertyName with Verb
+object(Value, In-In) ---> optional::determiner, property_value(_PropertyName, Value).
+
+place(Place, In-Out1) ---> one_of::[in, at], entity_phrase(Place, In-Out1).
 
 property_phrase(Property, In-In) ---> one_of::[the, a, an], property(Property).
 property_phrase ---> property.
@@ -77,13 +84,6 @@ amount1 ---> [the, sum, of], property_phrase, entity_phrase, verb.
 
 amount_literal(X) ---> [X], {number(X)}.
 amount_literal(X) ---> [X], {atom(X), atom_number(X, _)}.
-
-object ---> amount, property.
-object(Entity1, Verb, In-[quantified(Amount, Entity2, [predicate(Verb, Entity1, Entity2) | Out1]) | In]) ---> amount(Amount, []-Out1), entity(Entity2, unnamed(_)).
-% TODO: type check PropertyName with Verb
-object(Entity, Verb, In-[predicate(Verb, Entity, Value) | In]) ---> optional::determiner, property_value(_PropertyName, Value).
-
-place(Entity, Verb, In-[predicate(Verb, Entity, Place) | Out1]) ---> one_of::[in, at], entity_phrase(Place, In-Out1).
 
 subsentence(Entity, In-Out) ---> one_of::[who, that], verb_phrase(Entity, In-Out).
 % TODO: fix the rev() thingy
