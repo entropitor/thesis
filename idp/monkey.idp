@@ -40,7 +40,8 @@ theory T : V {
 	// The monkey who sat on the rock ate the apple.
     // The monkey who rests on the rock, eats the apple
     ?=1 x: rest_at(x) = Rock.
-    ?=1 x: rest_at(x) = Rock & eat(x) = Apple.
+    // ?=1 x: rest_at(x) = Rock & eat(x) = Apple.
+    ! x: rest_at(x) = Rock => eat(x) = Apple.
 
     // The monkey who ate the pear didn’t rest on the tree branch
     // The monkey who eats the pear, didn't rest on the tree branch
