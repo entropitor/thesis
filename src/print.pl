@@ -3,15 +3,19 @@
 
 show(X) :-
     writeln(X),
+    writeln('---'),
     show(X, print{}.default()-_),
-    nl.
+    nl, nl, nl.
 
 show([], In-In) :-
     !.
+show([H], In-Out) :-
+    !,
+    show(H, In-Out).
 show([H | T], In-Out) :-
     !,
     show(H, In-Temp),
-    nl,
+    write(' ??? '),
     show(T, Temp-Out).
 show(=(X, Y), In-Out) :-
     !,
@@ -23,9 +27,22 @@ show(+(X, Y), In-Out) :-
     show(X, In-Temp),
     write('+'),
     show(Y, Temp-Out).
+show(-(X, Y), In-Out) :-
+    !,
+    show(X, In-Temp),
+    write('-'),
+    show(Y, Temp-Out).
+show(abs(X), In-Out) :-
+    !,
+    write('|'),
+    show(X, In-Out),
+    write('|').
 show(literal(X), In-In) :-
     !,
     write(X).
+show(predicate(X, rev(Y), Z), In-Out) :-
+    !,
+    show(predicate(X, Z, Y), In-Out).
 show(predicate(X, Y, Z), In-Out) :-
     !,
     write(X),
@@ -40,10 +57,35 @@ show(property(X, Y), In-Out) :-
     write('('),
     show_argument(Y, In-Out),
     write(')').
+show(exists(X, Y), In-Out) :-
+    !,
+    write('? '),
+    show_argument(X, In-Temp),
+    write(': '),
+    show(Y, Temp-Out).
+show(quantified(exactly(literal(Times)), X, Y), In-Out) :-
+    !,
+    write('?='),
+    write(Times),
+    write(' '),
+    show_argument(X, In-Temp),
+    write(': '),
+    show(Y, Temp-Out).
+show(and(X, Y), In-Out) :-
+    !,
+    show(X, In-Temp),
+    write(' & '),
+    show(Y, Temp-Out).
+show(if(Cond, Expr), In-Out) :-
+    !,
+    show(Expr, In-Temp),
+    write(' <- '),
+    show(Cond, Temp-Out).
 show(Y, In-In) :-
     !,
-    write("Unknown: "),
-    writeln(Y).
+    write("Unknown: {"),
+    write(Y),
+    write(' }').
 
 
 show_argument(literal(Name, _Variable), In-In) :-
@@ -63,6 +105,7 @@ show_argument(Y, In-In) :-
 _.default() := print{variables: [], counter: 1}.
 In.add_variable(Variable) := In.put(variables, [Variable | In.variables]) :- true.
 
+In.get_variable(named(X), X) := In.
 In.get_variable(unnamed(X), Y) := In.put([variables=[X=Y | In.variables], counter=Counter1]) :-
     var(X),
     !,
