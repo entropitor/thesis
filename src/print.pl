@@ -83,7 +83,7 @@ show(if(Cond, Expr), In-Out) :-
     show(Cond, Temp-Out).
 show(Y, In-In) :-
     !,
-    write("Unknown: {"),
+    write("Unknown: { "),
     write(Y),
     write(' }').
 
@@ -96,23 +96,23 @@ show_argument(literal(Name), In-In) :-
     write(Name).
 show_argument(var(X, _Type), In-Out) :-
     !,
-    Out = In.get_variable(X, Y),
+    Out = In.get_variable_name(X, Y),
     write(Y).
 show_argument(Y, In-In) :-
     !,
     write(Y).
 
 _.default() := print{variables: [], counter: 1}.
-In.add_variable(Variable) := In.put(variables, [Variable | In.variables]) :- true.
+%In.add_variable(Variable) := In.put(variables, [Variable | In.variables]) :- true.
 
-In.get_variable(named(X), X) := In.
-In.get_variable(unnamed(X), Y) := In.put([variables=[X=Y | In.variables], counter=Counter1]) :-
+In.get_variable_name(named(X), X) := In.
+In.get_variable_name(unnamed(X), Y) := In.put([variables=[X=Y | In.variables], counter=Counter1]) :-
     var(X),
     !,
     atom_concat(x, In.counter, Y),
     X=Y,
     Counter1 is In.counter + 1.
-In.get_variable(unnamed(X), Y) := In :-
+In.get_variable_name(unnamed(X), Y) := In :-
     member(X=Y, In.variables),
     !.
 
