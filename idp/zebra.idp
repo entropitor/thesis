@@ -102,7 +102,8 @@ theory T : V {
 
     // Kools are smoked in the house next to the house where the horse is kept
     // The house in which the person who smokes Kools lives, is next to the house in which the person who keeps a horse lives.
-    ? a b s t: lives_in(a) = b & smokes(a) = Kools & lives_in(s) = t & keeps(s) = Horse & next(b, t).
+    // ? a b s t: lives_in(a) = b & smokes(a) = Kools & lives_in(s) = t & keeps(s) = Horse & next(b, t).
+    ! a b c d: lives_in(b) = a & smokes(b) = Kools & lives_in(d) = c & keeps(d) = Horse => next(a, c).
 
     // The Lucky Strike smoker drinks orange juice.
     // The person who drinks Lucky Strike, drinks Orange Juice
