@@ -106,7 +106,7 @@ theory T : V {
     ! a b c d: lives_in(b) = a & smokes(b) = Kools & lives_in(d) = c & keeps(d) = Horse => next(a, c).
 
     // The Lucky Strike smoker drinks orange juice.
-    // The person who drinks Lucky Strike, drinks Orange Juice
+    // The person who smokes Lucky Strike, drinks Orange Juice
     ?=1 x: smokes(x) = LuckyStrike & drinks(x) = OrangeJuice.
 
     // The Japanese smokes Parliaments.

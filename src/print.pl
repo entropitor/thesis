@@ -2,32 +2,51 @@
 :- use_module(dcg_macro).
 
 show_rules(Atoms, Facts) :-
-    writeln('####################################################################'),
     atomics_to_string(Atoms, ' ', Sentence),
-    wwriteln(Sentence),
-    section,
-    wwriteln(Facts),
-    section,
-    show(Facts, print{}.default()-Out),
-    wwriteln(Out.body),
-    section,
-    wwriteln(Out.variables),
-    wwriteln(Out.bound),
-    section,
-    maplist(show_quantified_variable(Out), Out.bound, Strs),
-    atomics_to_string(Strs, ' ', Str),
-    wwrite(Str),
-    write(' '),
-    writeln(Out.body),
-    writeln('####################################################################'),
+    simplify_quantors(Facts.quantors, QuantifiedVariables),
+    maplist(quantified_variable_string, QuantifiedVariables, QuantorStrs),
+    join_strings(QuantorStrs, QuantorStr),
+    simplify_conditions(Facts.conditions, QuantifiedVariables, Conditionss),
+    findall(Str, (member(Condition, Conditionss), show_body(Condition, QuantorStr, Str)), Strs),
     !,
-    nl, nl.
-show(X) :-
-    writeln('Unknown: FAILED ERROR'),
-    writeln(X),
+    writeln(Sentence),
+    writeln(Facts.conditions),
+    maplist(writeln, Strs),
     nl,
-    writeln('---').
+    %% header,
+    %% wwriteln(Sentence),
+    %% section,
+    %% maplist(wwriteln, Strs),
+    %% header,
+    %wwriteln(Facts.conditions),
+    %section,
+    %wwriteln(Out.body),
+    %section,
+    %wwriteln(Facts.quantors),
+    %wwriteln(QuantifiedVariables),
+    %section,
+    %maplist(show_quantified_variable(Out), Out.bound, Strs),
+    %atomics_to_string(Strs, ' ', Str),
+    %wwrite(Str),
+    %write(' '),
+    %writeln(Out.body),
+    %wwriteln(Str2),
+    %nl, nl,
+    true.
+show_rules(_Atoms, Facts) :-
+    header,
+    wwriteln('Unknown: FAILED ERROR'),
+    wwriteln(Facts),
+    header,
+    nl.
 
+show_body(Conditions, QuantorStr, Str) :-
+    show(Conditions, print{}.default()-Out),
+    join_strings([QuantorStr, Out.body, "."], Str).
+
+
+header :-
+    writeln('####################################################################').
 
 wwrite(X) :-
     write('###   '),
@@ -38,6 +57,84 @@ wwriteln(X) :-
 section :-
     wwriteln('--------------------------------------------------------   ###').
 
+% ------------------------
+simplify_quantors(Quantors, Simplified) :-
+    foldl(simplify_quantor, Quantors, Simplified1, 1, _),
+    exclude(literal, Simplified1, Simplified).
+
+simplify_quantor(quantor(quantified(Quantity), Variable), quantified(SimplifiedQuantity):Name, In, Out) :-
+    !,
+    simplify_quantity(Quantity, SimplifiedQuantity),
+    simplify_variable(Variable, Name, In, Out).
+simplify_quantor(quantor(Quantor, Variable), Quantor:Name, In, Out) :-
+    !,
+    simplify_variable(Variable, Name, In, Out).
+
+simplify_quantity(exactly(literal(Times)), =(Times)).
+simplify_quantity(at_least(literal(Times)), >=(Times)).
+
+simplify_variable(literal(Name, _Variable), literal:Name, In, In) :-
+    !.
+simplify_variable(literal(Name), literal:Name, In, In) :-
+    !.
+simplify_variable(var(Variable, _Type), Name, In, Out) :-
+    !,
+    simplify_variable_name(Variable, Name, In, Out).
+
+simplify_variable_name(named(X), X, In, In) :-
+    !.
+simplify_variable_name(unnamed(X), X, In, Out) :-
+    var(X),
+    !,
+    atom_concat(x, In, X),
+    Out is In + 1.
+simplify_variable_name(unnamed(X), X, In, In) :-
+    !.
+
+literal(_Quantor:literal:_Name).
+
+quantified_variable_string(Quantor:Variable, String) :-
+    quantor_string(Quantor, S1),
+    join_strings([S1, " ", Variable, ": "], String).
+quantor_string(forall, "∀").
+quantor_string(exists, "∃").
+quantor_string(quantified(Q), Str) :-
+    Q =.. [Functor, Amount],
+    join_strings(["∃", Functor, Amount], Str).
+
+join_strings(Strs, Str) :-
+    foldl(string_concat_, Strs, "", Str).
+string_concat_(A, B, C) :-
+    string_concat(B, A, C).
+
+simplify_conditions(Conds, Quantors, NewConds) :-
+    findall(NewCond, (
+                simplify_condition(Conds, Quantors, NewCond)
+            ), NewConds).
+
+simplify_condition([Head | Body], Quantors, impl(Body, Head)) :-
+    last(Quantors, forall:_),
+    length(Body, L),
+    L >= 1,
+    !.
+simplify_condition([and(X1, X2) | Rest], Quantors, impl(Body, [Head1, Head2])) :-
+     !,
+     X1.conditions = [Head1 | Body1],
+     X2.conditions = [Head2 | Body2],
+     append(Body1, Body2, Bodies),
+     append(Bodies, Rest, Body),
+     last(Quantors, forall:_),
+     length(Body, L),
+     L >= 1.
+%% simplify_condition([and(Cond1, Cond2) | Rest], Quantors, NewCond) :-
+%%     !,
+%%     member(Cond, [Cond1, Cond2]),
+%%     append(Cond.conditions, Rest, Conds),
+%%     simplify_condition(Conds, Quantors, NewCond).
+simplify_condition(In, _Quantors, In).
+
+% ------------------------
+
 show([], In-In) :-
     !.
 show([H], In-Out) :-
@@ -46,7 +143,7 @@ show([H], In-Out) :-
 show([H | T], In-Out) :-
     !,
     show(H, In-Out1),
-    Out2 = Out1.write(' ??? '),
+    Out2 = Out1.write(' ∧ '),
     show(T, Out2-Out).
 show(=(X, Y), In-Out) :-
     !,
@@ -71,6 +168,9 @@ show(abs(X), In-Out) :-
 show(literal(X), In-Out) :-
     !,
     Out = In.write(X).
+show(predicate(X, rev(Y), Z), In-Out) :-
+    !,
+    show(predicate(X, Z, Y), In-Out).
 show(predicate(X, Y, Z), In-Out) :-
     !,
     Out1 = In.write(X).write('('),
@@ -83,63 +183,25 @@ show(property(X, Y), In-Out) :-
     Out1 = In.write(X).write('('),
     show_argument(Y, Out1-Out2),
     Out = Out2.write(')').
-show(exists(X, Y), In-Out) :-
-    !,
-    Out1 = In.write('? '),
-    show_argument(X, Out1-Out2),
-    Out3 = Out2.bound_variable(X, exists),
-    Out4 = Out3.write(': '),
-    show(Y, Out4-Out).
-show(quantified(Quantity, X), In-Out) :-
-    Quantity = exactly(literal(Times)),
-    !,
-    Out1 = In.write('?=').write(Times).write(' '),
-    show_argument(X, Out1-Out2),
-    Out = Out2.bound_variable(X, quantified(Quantity)).
-show(quantor(Quantor, Variable), In-Out) :-
-    !,
-    show_quantor(Quantor, In-Out1),
-    Out2 = Out1.write(' '),
-    show_argument(Variable, Out2-Out3),
-    Out = Out3.bound_variable(Variable, Quantor).
 show(and(X, Y), In-Out) :-
     !,
-    show(X, In-Out1),
-    Out2 = Out1.write(' & '),
-    show(Y, Out2-Out).
+    show(X.conditions, In-Out1),
+    Out2 = Out1.write(' ∧ '),
+    show(Y.conditions, Out2-Out).
 show(if(Cond, Expr), In-Out) :-
     !,
-    show(Expr, In-Out1),
+    show(Expr.conditions, In-Out1),
     Out2 = Out1.write(' <- '),
-    show(Cond, Out2-Out).
+    show(Cond.conditions, Out2-Out).
+show(impl(Body, Head), In-Out) :-
+    !,
+    show(Body, In-Out1),
+    Out2 = Out1.write(' => '),
+    show(Head, Out2-Out).
 show(Y, In-Out) :-
     !,
     Out = In.write('Unknown: { ').write(Y).write(' }').
 
-show_quantified_variable(_, _:literal(_, _), "") :-
-    !.
-show_quantified_variable(In, Quantor:Variable, Str) :-
-    Out1 = In.reset_body(),
-    show_quantor(Quantor, Out1-Out2),
-    Out3 = Out2.write(' '),
-    show_argument(Variable, Out3-Out4),
-    Str = Out4.body.
-
-show_quantor(exists, In-Out) :-
-    !,
-    Out = In.write('?').
-show_quantor(forall, In-Out) :-
-    !,
-    Out = In.write('!').
-show_quantor(quantified(exactly(literal(X))), In-Out) :-
-    !,
-    Out = In.write('?=').write(X).
-show_quantor(quantified(at_least(literal(X))), In-Out) :-
-    !,
-    Out = In.write('?>=').write(X).write(' ').
-show_quantor(X, In-Out) :-
-    !,
-    Out = In.write('Quantor(').write(X).write(')').
 
 show_argument(literal(Name, _Variable), In-Out) :-
     !,
@@ -149,34 +211,16 @@ show_argument(literal(Name), In-Out) :-
     Out = In.write(Name).
 show_argument(var(X, _Type), In-Out) :-
     !,
-    Out1 = In.get_variable_name(X, Y),
-    Out = Out1.write(Y).
+    variable_name(X, Y),
+    Out = In.write(Y).
 show_argument(Y, In-Out) :-
     !,
     Out = In.write(Y).
 
-_.default() := print{variables: [], counter: 1, bound: [], body: ""}.
+_.default() := print{body: ""}.
 
-In.get_variable_name(named(X), X) := Out :-
-    (
-        member(X=X, In.variables)
-    ->
-        Out = In
-    ;
-        Out = In.put([variables=[X=X | In.variables]])
-    ).
-In.get_variable_name(unnamed(X), Y) := In.put([variables=[X=Y | In.variables], counter=Counter1]) :-
-    var(X),
-    !,
-    atom_concat(x, In.counter, Y),
-    X=Y,
-    Counter1 is In.counter + 1.
-In.get_variable_name(unnamed(X), Y) := In :-
-    member(X=Y, In.variables),
-    !.
+variable_name(named(X), X).
+variable_name(unnamed(X), X).
 
-In.bound_variable(X, Quantor) := In.put([bound = [Quantor:X | In.bound]]).
-
-In.write(Term) := In.put([body = NewBody]) :- format(atom(Str), "~w", [Term]), string_concat(In.body, Str, NewBody).
-
-In.reset_body() := In.put([body = ""]).
+In.write(Term) := In.put([body = NewBody]) :-
+    format(atom(Str), "~w", [Term]), string_concat(In.body, Str, NewBody).

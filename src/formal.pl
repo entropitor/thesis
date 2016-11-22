@@ -9,6 +9,3 @@
 % The Englishman lives in the red house
 % ? x: lives(Englishman, x) & color(x, red).
 % exists(var(X, house), and(predicate(lives, literal(Englishman), var(X, house)), predicate(color, var(X, house), literal(red))))
-
-
-
