@@ -1,4 +1,4 @@
-:- module(parser, [input_atoms/2, parse/2, parse_string/3, all_parses/2, problem/2, parse_problem_using/2, parse_using/3, test/0]).
+:- module(parser, [input_atoms/2, parse/2, parse_string/3, all_parses/2, problem/2, parse_problem_using/2, parse_using/3, test/0, test/1, test/2]).
 :- use_module(grammar).
 :- use_module(print).
 
@@ -7,6 +7,12 @@ test :-
     parse_problem(zebra, Y),
     %X == nil,
     Y == nil.
+test(Sentence) :-
+    test_problem([Sentence], _).
+test(Name, N) :-
+    problem(Name, Sentences),
+    nth1(N, Sentences, Sentence),
+    test(Sentence).
 
 input_atoms(I, A) :-
     % to lower case
@@ -29,7 +35,7 @@ join_string(JoinChar, [String | Strings], Result) :-
 
 parse(Atoms, Tree) :-
     phrase(grammar:s(Tree, Facts), Atoms),
-    show_rules(Atoms, Facts).
+    show_rules(Atoms, Facts, Tree).
 parse_string(Sentence, Tree, Atoms) :-
     input_atoms(Sentence, Atoms),
     parse(Atoms, Tree).
@@ -39,6 +45,8 @@ all_parses(Atoms, Parses) :-
 
 parse_problem(Name, FirstFailedSentence) :-
     problem(Name, Sentences),
+    test_problem(Sentences, FirstFailedSentence).
+test_problem(Sentences, FirstFailedSentence) :-
     maplist(input_atoms, Sentences, Atoms),
     maplist(all_parses, Atoms, Parses),
     maplist(length, Parses, NbMatches),

@@ -1,16 +1,20 @@
-:- module(print, [show_rules/2]).
+:- module(print, [show_rules/3]).
 :- use_module(dcg_macro).
+:- use_module(tree).
 
-show_rules(Atoms, Facts) :-
+show_rules(Atoms, Facts, _Tree) :-
     atomics_to_string(Atoms, ' ', Sentence),
-    simplify_quantors(Facts.quantors, QuantifiedVariables),
+    reverse(Facts.quantors, ReversedQuantors),
+    simplify_quantors(ReversedQuantors, QuantifiedVariables),
     maplist(quantified_variable_string, QuantifiedVariables, QuantorStrs),
     join_strings(QuantorStrs, QuantorStr),
     simplify_conditions(Facts.conditions, QuantifiedVariables, Conditionss),
     findall(Str, (member(Condition, Conditionss), show_body(Condition, QuantorStr, Str)), Strs),
     !,
     writeln(Sentence),
-    writeln(Facts.conditions),
+    %writeln(Tree),
+    %display_tree(vertical, Tree),
+    %writeln(Facts.conditions),
     maplist(writeln, Strs),
     nl,
     %% header,
@@ -33,7 +37,7 @@ show_rules(Atoms, Facts) :-
     %wwriteln(Str2),
     %nl, nl,
     true.
-show_rules(_Atoms, Facts) :-
+show_rules(_Atoms, Facts, _Tree) :-
     header,
     wwriteln('Unknown: FAILED ERROR'),
     wwriteln(Facts),
@@ -112,25 +116,29 @@ simplify_conditions(Conds, Quantors, NewConds) :-
                 simplify_condition(Conds, Quantors, NewCond)
             ), NewConds).
 
-simplify_condition([Head | Body], Quantors, impl(Body, Head)) :-
+simplify_condition([Head | Body], Quantors, impl(ReversedBody, Head)) :-
     last(Quantors, forall:_),
     length(Body, L),
     L >= 1,
-    !.
+    !,
+    reverse(Body, ReversedBody).
 simplify_condition([and(X1, X2) | Rest], Quantors, impl(Body, [Head1, Head2])) :-
-     !,
-     X1.conditions = [Head1 | Body1],
-     X2.conditions = [Head2 | Body2],
-     append(Body1, Body2, Bodies),
-     append(Bodies, Rest, Body),
-     last(Quantors, forall:_),
-     length(Body, L),
-     L >= 1.
+    last(Quantors, forall:_),
+    !,
+    X1.conditions = [Head1 | Body1],
+    X2.conditions = [Head2 | Body2],
+    append(Body1, Body2, Bodies),
+    append(Bodies, Rest, Body),
+    length(Body, L),
+    L >= 1.
 %% simplify_condition([and(Cond1, Cond2) | Rest], Quantors, NewCond) :-
 %%     !,
 %%     member(Cond, [Cond1, Cond2]),
 %%     append(Cond.conditions, Rest, Conds),
 %%     simplify_condition(Conds, Quantors, NewCond).
+simplify_condition([H | T], _Quantors, Reversed) :-
+    !,
+    reverse([H | T], Reversed).
 simplify_condition(In, _Quantors, In).
 
 % ------------------------

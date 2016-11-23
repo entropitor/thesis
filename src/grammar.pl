@@ -129,5 +129,5 @@ In.add_quantor(Quantor) := In.put([quantors = [Quantor | In.quantors]]).
 In.with_condition(Cond) := In.put([conditions = Cond]).
 
 In.add_condition(Cond, Out1, Out2) := In.add_condition(Cond).put([quantors = Qs]) :-
-    append(In.quantors, Out1.quantors, Qs1),
-    append(Qs1, Out2.quantors, Qs).
+    append(Out1.quantors, In.quantors, Qs1),
+    append(Out2.quantors, Qs1, Qs).
