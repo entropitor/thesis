@@ -1,4 +1,6 @@
-:- module(main, [test/0, test/1, test/2]).
+:- module(main, [test/0,
+                 test/1,
+                 test/2]).
 
 :- use_module(problems).
 :- use_module(parser).
