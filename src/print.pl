@@ -14,7 +14,7 @@ show_rules(Atoms, Facts, _Tree) :-
     writeln(Sentence),
     %writeln(Tree),
     %display_tree(vertical, Tree),
-    %writeln(Facts.conditions),
+    writeln(Facts.conditions),
     maplist(writeln, Strs),
     nl,
     %% header,
@@ -195,6 +195,11 @@ show(and(X, Y), In-Out) :-
     !,
     show(X.conditions, In-Out1),
     Out2 = Out1.write(' ∧ '),
+    show(Y.conditions, Out2-Out).
+show(or(X, Y), In-Out) :-
+    !,
+    show(X.conditions, In-Out1),
+    Out2 = Out1.write(' ∨ '),
     show(Y.conditions, Out2-Out).
 show(if(Cond, Expr), In-Out) :-
     !,

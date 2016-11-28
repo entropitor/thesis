@@ -25,7 +25,7 @@ cond(In-Out) ---> cond1(grammar{}.default()-Out1), [or], cond(grammar{}.default(
 
 cond1(In-Out) ---> property_phrase(Property, In-Out1), [is], comparison(Property, Out1-Out).
 cond1(In-Out) ---> entity_phrase(Entity, In-Out1), verb_phrase(Entity, Out1-Out).
-cond1(In-Out) ---> entity_phrase(Entity, In-Out1), [is], verb(Verb), [by], verb_attachment(Attachment, Out1-Out2), {Out = Out2.add_condition(predicate(passive:Verb, Attachment, Entity))}.
+cond1(In-Out) ---> entity_phrase(Entity, In-Out1), [is], verb(Verb), [by], verb_attachment(Attachment, Out1-Out2), {Out = Out2.add_condition(predicate(Verb, Attachment, Entity))}.
 cond1 ---> entity_phrase, [does, not], verb_phrase.
 cond1 ---> entity_phrase, [has, a, number, of], property_phrase, [equal, to], amount.
 % TODO: "There is every man" should not be allowed
@@ -33,6 +33,7 @@ cond1(In-Out1) ---> [there, is], entity_phrase(_Entity, In-Out1).
 
 verb_phrase(Entity, In-Out) ---> verb_phrase1(Entity, In-Out).
 verb_phrase(Entity, In-Out) ---> verb_phrase1(Entity, grammar{}.default()-Out1), [and], verb_phrase(Entity, grammar{}.default()-Out2), {Out = In.add_condition(and(Out1, Out2), Out1, Out2)}.
+verb_phrase(Entity, In-Out) ---> verb_phrase1(Entity, grammar{}.default()-Out1), [or], verb_phrase(Entity, grammar{}.default()-Out2), {Out = In.add_condition(or(Out1, Out2), Out1, Out2)}.
 
 verb_phrase1(Entity, In-Out) ---> verb(Verb), verb_attachment(Attachment, In-Out1), {Out = Out1.add_condition(predicate(Verb, Entity, Attachment))}.
 verb_phrase1(Entity, In-Out) ---> verb_attachment(Attachment, In-Out1), verb(Verb), {Out = Out1.add_condition(predicate(Verb, Attachment, Entity))}.
@@ -72,8 +73,8 @@ comparison ---> [between], amount, [and], amount.
 comparison ---> comparison_function, amount, [or], comparison.
 comparison ---> comparison_function, amount, [and], comparison.
 
-comparison_function(=(A, B), A, B) ---> [equal, to].
-comparison_function(<(A, B), A, B) ---> [less, than].
+comparison_function(compare('=', A, B), A, B) ---> [equal, to].
+comparison_function(compare('<', A, B), A, B) ---> [less, than].
 comparison_function ---> one_of::[[at, least], [more, than], [greather, than]].
 
 amount(exactly(Amount), In-Out) ---> [exactly], amount1(Amount, In-Out).
