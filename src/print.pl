@@ -193,14 +193,14 @@ show(property(X, Y), In-Out) :-
     Out = Out2.write(')').
 show(and(X, Y), In-Out) :-
     !,
-    show(X.conditions, In-Out1),
+    show(X, In-Out1),
     Out2 = Out1.write(' ∧ '),
-    show(Y.conditions, Out2-Out).
+    show(Y, Out2-Out).
 show(or(X, Y), In-Out) :-
     !,
-    show(X.conditions, In-Out1),
+    show(X, In-Out1),
     Out2 = Out1.write(' ∨ '),
-    show(Y.conditions, Out2-Out).
+    show(Y, Out2-Out).
 show(if(Cond, Expr), In-Out) :-
     !,
     show(Expr.conditions, In-Out1),

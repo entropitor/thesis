@@ -5,8 +5,8 @@
         }.
 :- type condition :=
         equal(property, amount)
-        | and(conditions, conditions)
-        | or(conditions, conditions)
+        | and(condition, condition)
+        | or(condition, condition)
         | predicate(verb, entity, verb_attachment)
         | predicate(verb, verb_attachment, entity)
         | predicate(property_name, entity, property_value)

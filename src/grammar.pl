@@ -20,8 +20,8 @@ expr(In-Out) ---> property_phrase(Property, In-Out1), [of], entity_phrase(Entity
 expr(In-Out) ---> entity_phrase(Entity, In-Out1), verb_phrase(Entity, Out1-Out).
 
 cond(In-Out) ---> cond1(In-Out).
-cond(In-Out) ---> cond1(grammar{}.default()-Out1), [and], cond(grammar{}.default()-Out2), {Out = In.add_condition(and(Out1, Out2), Out1, Out2)}.
-cond(In-Out) ---> cond1(grammar{}.default()-Out1), [or], cond(grammar{}.default()-Out2), {Out = In.add_condition(or(Out1, Out2), Out1, Out2)}.
+cond(In-Out) ---> cond1(grammar{}.default()-Out1), [and], cond(grammar{}.default()-Out2), {Out = In.add_combined_condition(and, Out1, Out2)}.
+cond(In-Out) ---> cond1(grammar{}.default()-Out1), [or], cond(grammar{}.default()-Out2), {Out = In.add_combined_condition(or, Out1, Out2)}.
 
 cond1(In-Out) ---> property_phrase(Property, In-Out1), [is], comparison(Property, Out1-Out).
 cond1(In-Out) ---> entity_phrase(Entity, In-Out1), verb_phrase(Entity, Out1-Out).
@@ -32,8 +32,8 @@ cond1 ---> entity_phrase, [has, a, number, of], property_phrase, [equal, to], am
 cond1(In-Out1) ---> [there, is], entity_phrase(_Entity, In-Out1).
 
 verb_phrase(Entity, In-Out) ---> verb_phrase1(Entity, In-Out).
-verb_phrase(Entity, In-Out) ---> verb_phrase1(Entity, grammar{}.default()-Out1), [and], verb_phrase(Entity, grammar{}.default()-Out2), {Out = In.add_condition(and(Out1, Out2), Out1, Out2)}.
-verb_phrase(Entity, In-Out) ---> verb_phrase1(Entity, grammar{}.default()-Out1), [or], verb_phrase(Entity, grammar{}.default()-Out2), {Out = In.add_condition(or(Out1, Out2), Out1, Out2)}.
+verb_phrase(Entity, In-Out) ---> verb_phrase1(Entity, grammar{}.default()-Out1), [and], verb_phrase(Entity, grammar{}.default()-Out2), {Out = In.add_combined_condition(and, Out1, Out2)}.
+verb_phrase(Entity, In-Out) ---> verb_phrase1(Entity, grammar{}.default()-Out1), [or], verb_phrase(Entity, grammar{}.default()-Out2), {Out = In.add_combined_condition(or, Out1, Out2)}.
 
 verb_phrase1(Entity, In-Out) ---> verb(Verb), verb_attachment(Attachment, In-Out1), {Out = Out1.add_condition(predicate(Verb, Entity, Attachment))}.
 verb_phrase1(Entity, In-Out) ---> verb_attachment(Attachment, In-Out1), verb(Verb), {Out = Out1.add_condition(predicate(Verb, Attachment, Entity))}.
@@ -125,10 +125,14 @@ _.from_condition(Cond) := grammar{}.default().add_condition(Cond).
 _.from_condition(Cond, Out1, Out2) := grammar{}.default().add_condition(Cond, Out1, Out2).
 
 In.add_condition(Cond) := In.put([conditions = [Cond | In.conditions]]).
+In.add_conditions(Conds) := In.put([conditions = NewConds]) :-
+    append(Conds, In.conditions, NewConds).
 In.add_quantor(Quantor) := In.put([quantors = [Quantor | In.quantors]]).
 
-In.with_condition(Cond) := In.put([conditions = Cond]).
-
+In.add_combined_condition(Functor, Out1, Out2) := In.add_condition(Cond, Out1, Out2).add_conditions(Conds1).add_conditions(Conds2) :-
+    [Cond1 | Conds1] = Out1.conditions,
+    [Cond2 | Conds2] = Out2.conditions,
+    Cond =.. [Functor, Cond1, Cond2].
 In.add_condition(Cond, Out1, Out2) := In.add_condition(Cond).put([quantors = Qs]) :-
     append(Out1.quantors, In.quantors, Qs1),
     append(Out2.quantors, Qs1, Qs).
