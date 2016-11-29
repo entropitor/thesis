@@ -8,10 +8,12 @@
 :- use_module(grammar).
 :- use_module(print).
 :- use_module(problems).
+:- use_module(processor).
 
 parse(Atoms, Tree) :-
     phrase(grammar:s(Tree, Facts), Atoms),
-    show_rules(Atoms, Facts, Tree).
+    process(Atoms, Facts, Tree, _Theory).
+    %show_rules(Atoms, Facts, Tree).
 parse_string(Sentence, Tree, Atoms) :-
     input_atoms(Sentence, Atoms),
     parse(Atoms, Tree).

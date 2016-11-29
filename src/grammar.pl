@@ -43,7 +43,7 @@ verb_attachment(Place, In-Out) ---> place(Place, In-Out).
 verb_attachment(Entity, In-Out) ---> entity_phrase(Entity, In-Out).
 
 object ---> amount, property.
-object(Entity, In-Out) ---> amount(Amount, In-Out1), entity(Entity, unnamed(_)), {Out = Out1.add_quantor(quantor(quantified(Amount), Entity))}.
+object(Entity, In-Out) ---> amount(Amount, In-Out1), entity(Entity, _), {Out = Out1.add_quantor(quantor(quantified(Amount), Entity))}.
 % TODO: type check PropertyName with Verb
 object(Value, In-In) ---> optional::determiner(_Quantor), property_value(_PropertyName, Value).
 
@@ -59,10 +59,10 @@ property_phrase ---> property, [of], entity_phrase.
 entity_phrase(Entity, In-Out) ---> entity_phrase1(Entity, In-Out).
 entity_phrase(Entity, In-Out) ---> entity_phrase1(Entity, In-Out1), subsentence(Entity, Out1-Out).
 
-entity_phrase1(Entity, In-Out) ---> determiner(Quantor), entity(Entity, unnamed(_)), {Out = In.add_quantor(quantor(Quantor, Entity))}.
-entity_phrase1(Entity, In-Out) ---> determiner(Quantor), entity(Entity, named(Name)), variable_name(Name), {Out = In.add_quantor(quantor(Quantor, Entity))}.
-entity_phrase1(Entity, In-In) ---> entity(Entity, named(Name)), variable_name(Name).
-entity_phrase1(Entity, In-Out) ---> determiner(Quantor), property_value(PropertyName, PropertyValue), entity(Entity, unnamed(_)), {Out = In.add_condition(predicate(PropertyName, Entity, PropertyValue)).add_quantor(quantor(Quantor, Entity))}.
+entity_phrase1(Entity, In-Out) ---> determiner(Quantor), entity(Entity, _), {Out = In.add_quantor(quantor(Quantor, Entity))}.
+entity_phrase1(Entity, In-Out) ---> determiner(Quantor), entity(Entity, Name), variable_name(Name), {Out = In.add_quantor(quantor(Quantor, Entity))}.
+entity_phrase1(Entity, In-In) ---> entity(Entity, Name), variable_name(Name).
+entity_phrase1(Entity, In-Out) ---> determiner(Quantor), property_value(PropertyName, PropertyValue), entity(Entity, _), {Out = In.add_condition(predicate(PropertyName, Entity, PropertyValue)).add_quantor(quantor(Quantor, Entity))}.
 entity_phrase1 ---> variable_name.
 entity_phrase1 ---> [he].
 
@@ -129,7 +129,7 @@ In.add_conditions(Conds) := In.put([conditions = NewConds]) :-
     append(Conds, In.conditions, NewConds).
 In.add_quantor(Quantor) := In.put([quantors = [Quantor | In.quantors]]).
 
-In.add_combined_condition(Functor, Out1, Out2) := In.add_condition(Cond, Out1, Out2).add_conditions(Conds1).add_conditions(Conds2) :-
+In.add_combined_condition(Functor, Out1, Out2) := In.add_conditions(Conds1).add_conditions(Conds2).add_condition(Cond, Out1, Out2) :-
     [Cond1 | Conds1] = Out1.conditions,
     [Cond2 | Conds2] = Out2.conditions,
     Cond =.. [Functor, Cond1, Cond2].

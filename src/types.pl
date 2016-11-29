@@ -1,3 +1,5 @@
+% -------------------------------------------------------------------------------
+% Grammar Types
 :- type conditions :=
         grammar{
             conditions: [condition],
@@ -7,6 +9,7 @@
         equal(property, amount)
         | and(condition, condition)
         | or(condition, condition)
+        | if(conditions, conditions)
         | predicate(verb, entity, verb_attachment)
         | predicate(verb, verb_attachment, entity)
         | predicate(property_name, entity, property_value)
@@ -21,7 +24,7 @@
 
 :- type amount :=
         exactly(amount_value)
-        | +(amount_value, amount_value)
+        | +(amount, amount_value)
         | amount_value.
 :- type amount_value :=
         literal(number)
@@ -34,7 +37,8 @@
         | '<='.
 
 :- type property :=
-        atom(property).
+        literal(property_value)
+        | atom(property).
 :- type property_value :=
         atom(property_value).
 :- type verb :=
@@ -47,5 +51,15 @@
         | property_value.
 
 :- type variable :=
-        unnamed(atom(unnamed_variable))
-        | named(atom(named_variable)).
+        atom(variable_name).
+% -------------------------------------------------------------------------------
+% Simplified types
+
+:- type quantified_variable :=
+        quantor:variable.
+:- type variable :=
+        atom(variable).
+:- type quantor :=
+        quantified(<comparison>(number))
+        | exists
+        | forall.
