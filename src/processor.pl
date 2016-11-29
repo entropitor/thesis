@@ -130,8 +130,8 @@ combine_conditions(P-P, [], [], _Variables).
 combine_conditions(Pairs-PairsOut, [Quantor:Variable | QuantifiedVariables], quantify(Quantor, Variable, Expression), Variables) :-
     partition(at_most_variables([Variable]), Pairs, BodyPairs, RestPairs),
     partition(at_most_variables([Variable | Variables]), RestPairs, HeadPairs, RestPairs2),
-    combine(Quantor, BodyPairs, HeadPairs, Head, Expression),
-    combine_conditions(RestPairs2-PairsOut, QuantifiedVariables, Head, [Variable | Variables]).
+    combine_conditions(RestPairs2-PairsOut, QuantifiedVariables, Head, [Variable | Variables]),
+    combine(Quantor, BodyPairs, HeadPairs, Head, Expression).
 combine_conditions(Pairs-PairsOut, [and(QsA, QsB) | QuantifiedVariables], and(ExprA, ExprB), Variables) :-
     handle_sub_conditions(Pairs-PairsOut, QsA, QsB, ExprA, ExprB, QuantifiedVariables, Variables).
 combine_conditions(Pairs-PairsOut, [or(QsA, QsB) | QuantifiedVariables], or(ExprA, ExprB), Variables) :-
@@ -145,16 +145,18 @@ handle_sub_condition(Pairs-PairsOut, Qs, Expr, QuantifiedVariables, Variables) :
     append(Qs, QuantifiedVariables, Qs2),
     combine_conditions(Pairs-PairsOut, Qs2, Expr, Variables).
 
+combine(Quantor, BodyPairs, HeadPairs, Head2, Theory) :-
+    pairs_values(BodyPairs, Body),
+    pairs_values(HeadPairs, Head1),
+    append(Head1, Head2, Head),
+    combine_(Quantor, Body, Head, Theory).
 
-combine(forall, BodyPairs, HeadPairs, Head2, impl(Body, Heads)) :-
+combine_(Quantor, [Head | Body], [], Theory) :-
     !,
-    pairs_values(BodyPairs, Body),
-    pairs_values(HeadPairs, Head),
-    append(Head, Head2, Heads).
-combine(_, BodyPairs, HeadPairs, Head2, and(Body, Heads)) :-
-    pairs_values(BodyPairs, Body),
-    pairs_values(HeadPairs, Head),
-    append(Head, Head2, Heads).
+    combine_(Quantor, Body, Head, Theory).
+combine_(forall, Body, Head, impl(Body, Head)) :-
+    !.
+combine_(_, Body, Head, and(Body, Head)).
 
 % ----------------------------------------------------------------------------------
 get_variables(equal(_, Amount), Vars) :-
@@ -223,6 +225,8 @@ write_theory(and(A, [])) :-
     write_theory(A).
 write_theory(and(A, and([], B))) :-
     write_theory(and(A, B)).
+write_theory(impl([], A)) :-
+    write_theory(A).
 
 write_theory([]) :-
     write("true").
