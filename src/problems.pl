@@ -31,3 +31,18 @@ problem(zebra, [
             "The Norwegian lives in a house that is next to the blue house",
             "Every animal is kept by exactly 1 Person"
       ]).
+
+problem(extra, [
+            "There is a blue house or every person who smokes Lucky Strike, drinks Orange Juice",
+            "There is a blue house in which the Norwegian lives or every person who smokes Lucky Strike drinks Orange Juice",
+            "Every blue house is next to a red house or is next to every green house",
+            "Every blue house is next to every green house or is next to a red house",
+            %"Every blue house is next to a red house in which the person who drinks tea lives or is next to the green house",
+            "Every blue house is next to the green house or is next to a red house in which the person who drinks tea lives",
+            "There is a person who lives in the green house",
+            "Every person who drinks tea lives in a blue house",
+            "There is a person who lives in the green house and drinks coffee and keeps the snail",
+            "There is a person who lives in the green house and lives in a red house and lives in every blue house",
+            "There is a house in which the Norwegian lives and the Ukrainian lives and the Spaniard lives",
+            "The person who lives in the green house or lives in the red house, lives in the blue house"
+        ]).

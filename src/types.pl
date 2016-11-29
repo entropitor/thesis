@@ -16,7 +16,9 @@
         | compare(comparison_function, property, amount).
 
 :- type quantified_variable :=
-        quantor(quantor, entity).
+        quantor(quantor, entity),
+        | and([quantified_variable], [quantified_variable]).
+        | or([quantified_variable], [quantified_variable]).
 :- type quantor :=
         quantified(amount)
         | exists
@@ -57,6 +59,8 @@
 
 :- type quantified_variable :=
         quantor:variable.
+        | and([quantified_variable], [quantified_variable]).
+        | or([quantified_variable], [quantified_variable]).
 :- type variable :=
         atom(variable).
 :- type quantor :=

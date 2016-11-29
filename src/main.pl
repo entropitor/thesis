@@ -6,13 +6,14 @@
 :- use_module(parser).
 
 test :-
-    %parse_problem(vakantiedagen, X),
-    parse_problem(zebra, Y),
-    %X == nil,
-    Y == nil.
+    test_problems([zebra, extra]).
 test(Sentence) :-
     parse_sentences([Sentence], _).
 test(Name, N) :-
     problem(Name, Sentences),
     nth1(N, Sentences, Sentence),
     test(Sentence).
+
+test_problems(Problems) :-
+    maplist(parse_problem, Problems, WrongSentences),
+    maplist(=(nil), WrongSentences).

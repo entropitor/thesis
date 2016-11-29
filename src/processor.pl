@@ -4,28 +4,48 @@
 % and the given parse tree resulting in the theory.
 process(Atoms, Facts, _Tree, Theory) :-
     atomics_to_string(Atoms, ' ', Sentence),
-    reverse(Facts.quantors, ReversedQuantors),
+    reverse_quantors(Facts.quantors, ReversedQuantors),
+    %writeln(ReversedQuantors),
     simplify_quantors(ReversedQuantors, QuantifiedVariables),
+    %writeln(QuantifiedVariables),
     %simplify_conditions(Facts.conditions, SimplifiedConditions),
     combine_conditions(Facts.conditions, QuantifiedVariables, Theory),
     !,
     writeln(Sentence),
     %writeln(Tree),
     %display_tree(vertical, Tree),
-    writeln(Facts.conditions),
+    %writeln(Facts.conditions),
     %writeln(SimplifiedConditions),
     once(maplist(write_theory, Theory)), nl,
     nl.
-process(_Atoms, Facts, _Tree, []) :-
+process(Atoms, Facts, _Tree, []) :-
+    atomics_to_string(Atoms, ' ', Sentence),
+    writeln(Sentence),
     writeln('Unknown: FAILED ERROR'),
     writeln(Facts),
     nl.
 
 % ----------------------------------------------------------------------------------
+reverse_quantors(Quantors, Reversed) :-
+    reverse(Quantors, Reversed1),
+    once(maplist(reverse_sub_quantors, Reversed1, Reversed)).
+
+reverse_sub_quantors(and(A, B), and(ReversedA, ReversedB)) :-
+    reverse_quantors(A, ReversedA),
+    reverse_quantors(B, ReversedB).
+reverse_sub_quantors(or(A, B), or(ReversedA, ReversedB)) :-
+    reverse_quantors(A, ReversedA),
+    reverse_quantors(B, ReversedB).
+reverse_sub_quantors(X, X).
+
+% ----------------------------------------------------------------------------------
 
 simplify_quantors(Quantors, Simplified) :-
-    foldl(simplify_quantor, Quantors, Simplified1, 1, _),
+    simplify_quantors(Quantors, Simplified, 1, _).
+simplify_quantors(Quantors, Simplified, In, Out) :-
+    foldl(simplify_quantor, Quantors, Simplified1, In, Out),
     exclude(quantified_literal, Simplified1, Simplified).
+
 
 simplify_quantor(quantor(quantified(Quantity), Variable), quantified(SimplifiedQuantity):Name, In, Out) :-
     !,
@@ -34,6 +54,14 @@ simplify_quantor(quantor(quantified(Quantity), Variable), quantified(SimplifiedQ
 simplify_quantor(quantor(Quantor, Variable), Quantor:Name, In, Out) :-
     !,
     simplify_variable(Variable, Name, In, Out).
+simplify_quantor(and(QsA, QsB), and(SimplifiedQsA, SimplifiedQsB), In, Out) :-
+    !,
+    simplify_quantors(QsA, SimplifiedQsA, In, Out1),
+    simplify_quantors(QsB, SimplifiedQsB, Out1, Out).
+simplify_quantor(or(QsA, QsB), or(SimplifiedQsA, SimplifiedQsB), In, Out) :-
+    !,
+    simplify_quantors(QsA, SimplifiedQsA, In, Out1),
+    simplify_quantors(QsB, SimplifiedQsB, Out1, Out).
 
 simplify_quantity(exactly(literal(Times)), =(Times)).
 simplify_quantity(at_least(literal(Times)), >=(Times)).
@@ -96,14 +124,27 @@ combine_conditions(Conds, QuantifiedVariables, [and(Body, Theory)]) :-
     %maplist(writeln, Pairs),
     partition(at_most_variables([]), Pairs, BodyPairs, RestPairs),
     pairs_values(BodyPairs, Body),
-    combine_conditions(RestPairs, QuantifiedVariables, Theory, []).
+    combine_conditions(RestPairs-[], QuantifiedVariables, Theory, []).
 
-combine_conditions([], [], [], _Variables).
-combine_conditions(Pairs, [Quantor:Variable | QuantifiedVariables], quantify(Quantor, Variable, Expression), Variables) :-
+combine_conditions(P-P, [], [], _Variables).
+combine_conditions(Pairs-PairsOut, [Quantor:Variable | QuantifiedVariables], quantify(Quantor, Variable, Expression), Variables) :-
     partition(at_most_variables([Variable]), Pairs, BodyPairs, RestPairs),
     partition(at_most_variables([Variable | Variables]), RestPairs, HeadPairs, RestPairs2),
     combine(Quantor, BodyPairs, HeadPairs, Head, Expression),
-    combine_conditions(RestPairs2, QuantifiedVariables, Head, [Variable | Variables]).
+    combine_conditions(RestPairs2-PairsOut, QuantifiedVariables, Head, [Variable | Variables]).
+combine_conditions(Pairs-PairsOut, [and(QsA, QsB) | QuantifiedVariables], and(ExprA, ExprB), Variables) :-
+    handle_sub_conditions(Pairs-PairsOut, QsA, QsB, ExprA, ExprB, QuantifiedVariables, Variables).
+combine_conditions(Pairs-PairsOut, [or(QsA, QsB) | QuantifiedVariables], or(ExprA, ExprB), Variables) :-
+    handle_sub_conditions(Pairs-PairsOut, QsA, QsB, ExprA, ExprB, QuantifiedVariables, Variables).
+
+handle_sub_conditions(Pairs-PairsOut, QsA, QsB, ExprA, ExprB, QuantifiedVariables, Variables) :-
+    handle_sub_condition(Pairs-RestPairsA, QsA, ExprA, QuantifiedVariables, Variables),
+    handle_sub_condition(Pairs-RestPairsB, QsB, ExprB, QuantifiedVariables, Variables),
+    intersection(RestPairsA, RestPairsB, PairsOut).
+handle_sub_condition(Pairs-PairsOut, Qs, Expr, QuantifiedVariables, Variables) :-
+    append(Qs, QuantifiedVariables, Qs2),
+    combine_conditions(Pairs-PairsOut, Qs2, Expr, Variables).
+
 
 combine(forall, BodyPairs, HeadPairs, Head2, impl(Body, Heads)) :-
     !,
@@ -180,6 +221,8 @@ write_theory(and([], A)) :-
     write_theory(A).
 write_theory(and(A, [])) :-
     write_theory(A).
+write_theory(and(A, and([], B))) :-
+    write_theory(and(A, B)).
 
 write_theory([]) :-
     write("true").
@@ -194,9 +237,15 @@ write_theory(and(A, B)) :-
     write(" ∧ "),
     write_theory(B).
 write_theory(or(A, B)) :-
+    write('['),
+    write('('),
     write_theory(A),
+    write(')'),
     write(" ∨ "),
-    write_theory(B).
+    write('('),
+    write_theory(B),
+    write(')'),
+    write(']').
 write_theory(impl(A, B)) :-
     write_theory(A),
     write(" => "),

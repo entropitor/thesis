@@ -129,10 +129,17 @@ In.add_conditions(Conds) := In.put([conditions = NewConds]) :-
     append(Conds, In.conditions, NewConds).
 In.add_quantor(Quantor) := In.put([quantors = [Quantor | In.quantors]]).
 
-In.add_combined_condition(Functor, Out1, Out2) := In.add_conditions(Conds1).add_conditions(Conds2).add_condition(Cond, Out1, Out2) :-
-    [Cond1 | Conds1] = Out1.conditions,
-    [Cond2 | Conds2] = Out2.conditions,
-    Cond =.. [Functor, Cond1, Cond2].
+In.add_combined_condition(Functor, Out1, Out2) := In.add_conditions(Conds1).add_conditions(Conds2).put([quantors = Quantors]) :-
+    %.add_condition(Cond),
+    Conds1 = Out1.conditions,
+    Conds2 = Out2.conditions,
+    %Cond1 = [],
+    %Cond2 = [],
+    %[Cond1 | Conds1] = Out1.conditions,
+    %[Cond2 | Conds2] = Out2.conditions,
+    %Cond =.. [Functor, Cond1, Cond2],
+    NewQuantor =.. [Functor, Out1.quantors, Out2.quantors],
+    Quantors = [NewQuantor | In.quantors].
 In.add_condition(Cond, Out1, Out2) := In.add_condition(Cond).put([quantors = Qs]) :-
     append(Out1.quantors, In.quantors, Qs1),
     append(Out2.quantors, Qs1, Qs).
