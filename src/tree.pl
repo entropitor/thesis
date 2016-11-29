@@ -1,4 +1,5 @@
-:- module(tree, [parse_tree/2, display_tree/2]).
+:- module(tree, [parse_tree/2,
+                 display_tree/2]).
 :- use_module(parser).
 
 parse_tree(S, Symbol) :-
