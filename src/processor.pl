@@ -16,6 +16,7 @@ process(Atoms, Facts, _Tree, Theory) :-
     %display_tree(vertical, Tree),
     %writeln(Facts.conditions),
     %writeln(SimplifiedConditions),
+    writeln(Theory),
     once(maplist(write_theory, Theory)), nl,
     nl.
 process(Atoms, Facts, _Tree, []) :-
