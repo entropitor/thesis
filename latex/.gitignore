@@ -8,3 +8,8 @@
 *.blg
 *.log
 *.gz
+
+_region_.tex
+*.el
+*.fdb_latexmk
+*.fls
