@@ -1,6 +1,7 @@
 \documentclass[]{article}
 
 \usepackage{pgf-pie}
+\usepackage{url}
 \usepackage[utf8]{inputenc}
 
 \title{Natural Language processing for Knowledge Representation} \author{Jens
@@ -13,46 +14,15 @@
 \maketitle
 
 \section{Probleemstelling}
-\paragraph{} Bedrijfsprocessen worden geregeld door specificaties. Deze worden
-vaak geschreven in een natuurlijke taal, door een domein expert. Vervolgens
-worden deze specificaties vertaald naar uitvoerbare programma's. Bij deze
-vertaling slopen er vaak fouten in. Bovendien zijn er vaak meerdere programma's
-die elk opnieuw de specificatie moeten implementeren. Zo ontstaan er niet allen
-inconsistenties met de specificatie, maar ook tussen de verschillende
-programma's onderling zijn er inconsistenties. Ten slotte is het moeilijke om de
-specificatie achteraf nog aan te passen omdat alle programma's dan aangepast
-moeten worden.
+\paragraph{} Bedrijfsprocessen worden geregeld door specificaties. Deze worden vaak geschreven in een natuurlijke taal, door een domein expert. Vervolgens worden deze specificaties vertaald naar uitvoerbare programma's. Bij deze vertaling slopen er vaak fouten in. Bovendien zijn er vaak meerdere programma's die elk opnieuw de specificatie moeten implementeren. Zo ontstaan er niet allen inconsistenties met de specificatie, maar ook tussen de verschillende programma's onderling zijn er inconsistenties. Ten slotte is het moeilijke om de specificatie achteraf nog aan te passen omdat alle programma's dan aangepast moeten worden.
 
-\paragraph{} Het antwoord van de academische wereld op deze problemen, zijn
-\textit{Knowledge Base Systems} (KBS). In dit paradigma worden de specificaties in
-natuurlijke taal vertaald naar specificaties in een formele taal. Deze formele
-specificatie wordt gebruikt in alle programma's. Zo is het niet meer mogelijk
-dat de programma's onderling inconsistent zijn. Ze gebruiken namelijk allemaal
-de formele specificatie. Daardoor is ook het aanpassen van de specificatie
-makkelijker. Enkel de formele specificatie moet aangepast worden, de programma's
-blijven hetzelfde.
+\paragraph{} Het antwoord van de academische wereld op deze problemen, zijn \textit{Knowledge Base Systems} (KBS). In dit paradigma worden de specificaties in natuurlijke taal vertaald naar specificaties in een formele taal. Deze formele specificatie wordt gebruikt in alle programma's. Zo is het niet meer mogelijk dat de programma's onderling inconsistent zijn. Ze gebruiken namelijk allemaal de formele specificatie. Daardoor is ook het aanpassen van de specificatie makkelijker. Enkel de formele specificatie moet aangepast worden, de programma's blijven hetzelfde.
 
-\paragraph{} Het probleem met deze aanpak is dat er nog steeds een vertaling
-moet gebeuren van natuurlijke taal naar een formele taal. De specificatie in
-natuurlijke taal wordt vaak opgesteld door een domein expert die formele talen
-niet machtig is. De formele specificatie wordt dan weer opgesteld door een KBS
-expert. Deze persoon kent formele talen maar heeft een beperkte kennis van het
-domein. Door deze mismatch van kennis, is de feedback loop tussen de twee
-experten beperkt. Het is dus nog steeds mogelijk dat er fouten sluipen in de
-vertaling.
+\paragraph{} Het probleem met deze aanpak is dat er nog steeds een vertaling moet gebeuren van natuurlijke taal naar een formele taal. De specificatie in natuurlijke taal wordt vaak opgesteld door een domein expert die formele talen niet machtig is. De formele specificatie wordt dan weer opgesteld door een KBS expert. Deze persoon kent formele talen maar heeft een beperkte kennis van het domein. Door deze mismatch van kennis, is de feedback loop tussen de twee experten beperkt. Het is dus nog steeds mogelijk dat er fouten sluipen in de vertaling.
 
-\paragraph{} De vraag rijst dus of we een formele taal kunnen ontwerpen die
-toegankelijk is voor domein experten, rijk genoeg is voor praktische problemen
-en toepasbaar is binnen het KBS paradigma.
+\paragraph{} De vraag rijst dus of we een formele taal kunnen ontwerpen die toegankelijk is voor domein experten, rijk genoeg is voor praktische problemen en toepasbaar is binnen het KBS paradigma.
 
-\paragraph{} Deze thesis onderzoekt of een formele natuurlijke taal het antwoord
-is op die vraag. Natuurlijke taal wordt immers al gebruikt bij het opstellen van
-de specificatie. Figuur \ref{fig:natural-language-use} toont het gebruik van
-natuurlijke taal in vereistenanalyse in 1999. Slechts 5 procent werd toen in een
-formele taal opgesteld. 16 procent werd in gestructureerde natuurlijke taal
-opgesteld. Dit wil zeggen dat de specificatie in een natuurlijke taal is
-opgesteld maar slechts een beperkt aantal zinsconstructies zijn toegestaan, om
-de leesbaarheid te verhogen.
+\paragraph{} Deze thesis onderzoekt of een formele natuurlijke taal het antwoord is op die vraag. Natuurlijke taal wordt immers al gebruikt bij het opstellen van de specificatie. Figuur \ref{fig:natural-language-use} toont het gebruik van natuurlijke taal in vereistenanalyse in 1999. Slechts 5 procent werd toen in een formele taal opgesteld. 16 procent werd in gestructureerde natuurlijke taal opgesteld. Dit wil zeggen dat de specificatie in een natuurlijke taal is opgesteld maar slechts een beperkt aantal zinsconstructies zijn toegestaan, om de leesbaarheid te verhogen.
 
 \begin{figure}
   \label{fig:natural-language-use}
@@ -62,114 +32,44 @@ de leesbaarheid te verhogen.
   \caption{Gebruik van natuurlijke taal in vereistenanalyse in 1999 (van figuur 5 in \cite{Luisa2004})}
 \end{figure}
 
-\paragraph{} In deze thesis ontwerpen we een nieuwe gestructureerde natuurlijke
-taal (vanaf nu CNL genoemd naar de Engelse term Controlled Natural Language).
-Het doel van deze taal is dat ze leesbaar is voor de domein expert, de KBS
-expert en computers. Zo kan een programma de formele specificatie opstellen
-vanuit de specificatie in de natuurlijke taal. Er is dan nog maar 1 bron van
-waaruit alles geregeld wordt. Inconsistenties zijn niet meer mogelijk. Bovendien
-kan men nog steeds makkelijk de specificatie aanpassen.
+\paragraph{} In deze thesis ontwerpen we een nieuwe gestructureerde natuurlijke taal (vanaf nu CNL genoemd naar de Engelse term Controlled Natural Language). Het doel van deze taal is dat ze leesbaar is voor de domein expert, de KBS expert en computers. Zo kan een programma de formele specificatie opstellen vanuit de specificatie in de natuurlijke taal. Er is dan nog maar 1 bron van waaruit alles geregeld wordt. Inconsistenties zijn niet meer mogelijk. Bovendien kan men nog steeds makkelijk de specificatie aanpassen.
 
 \section{Literatuurstudie}
-In het verleden zijn er al meerdere pogingen gedaan om teksten in natuurlijke
-taal te transformeren naar formele modellen.
+In het verleden zijn er al meerdere pogingen gedaan om teksten in natuurlijke taal te transformeren naar formele modellen.
 
-\paragraph{Circe} Zo wordt de tool Circe\cite{Ambriola1997} gebruikt in
-vereistenanalyse. De gebruiker moet een vocabularium, een set van substitutie
-regels en een specificatie in natuurlijke aanleveren. De tool probeert dan
-steeds de beste regel te vinden om zo de tekst geleidelijk aan te transformeren
-naar een formeel model. Het grote voordeel van de methode is dat er regelsets
-bestaan voor meerdere soorten modellen: data flow modellen, entity-relationship
-modellen, ...
+\paragraph{Circe} Zo wordt de tool Circe\cite{Ambriola1997} gebruikt in vereistenanalyse. De gebruiker moet een vocabularium, een set van substitutie regels en een specificatie in natuurlijke aanleveren. De tool probeert dan steeds de beste regel te vinden om zo de tekst geleidelijk aan te transformeren naar een formeel model. Het grote voordeel van de methode is dat er regelsets bestaan voor meerdere soorten modellen: data flow modellen, entity-relationship modellen, ...
 
-Verder is het in Circe mogelijk om in het vocabularium woorden te taggen. De
-regels kunnen hier dan gebruik van maken om te bepalen of ze van toepassing zijn
-op bepaalde zinnen. Op die manier introduceert Circe types in het vocabularium.
+Verder is het in Circe mogelijk om in het vocabularium woorden te taggen. De regels kunnen hier dan gebruik van maken om te bepalen of ze van toepassing zijn op bepaalde zinnen. Op die manier introduceert Circe types in het vocabularium.
 
-Een voorbeeld (uit \cite{Ambriola1997}): \example{bron/UIT STUURT data/INFO NAAR
-  doel/IN}. De woorden \example{stuurt} en \example{naar} liggen vast in
-de regelset. De andere 3 woorden komen uit het vocabularium. Deze moeten een
-bepaalde tag hebben om te matchen met de regel.
+Een voorbeeld (uit \cite{Ambriola1997}): \example{bron/UIT STUURT data/INFO NAAR doel/IN}. De woorden \example{stuurt} en \example{naar} liggen vast in de regelset. De andere 3 woorden komen uit het vocabularium. Deze moeten een bepaalde tag hebben om te matchen met de regel. 
 
-\paragraph{ACE} Attempto Controlled English (ACE)\cite{Fuchs2008} is een
-gestructureerde taal voor kennisrepresentatie. Het is een subset van Engels die
-naar een subset van eerste-orde-logica vertaald. Het is echter wel een formele
-taal: elke zin in ACE heeft slechts één betekenis, ook al is de Engelse zin
-ambigu. Om de juiste betekenis te kennen, kan men gebruik maken van de
-parafraseertool van ACE. Deze tool zet de interne representatie terug om naar
-één of meerdere zinnen in ACE. Op die manier kan men niet alleen de betekenis
-van de zin leren, maar ook de taal zelf.
+\paragraph{ACE} Attempto Controlled English (ACE)\cite{Fuchs2008} is een gestructureerde taal voor kennisrepresentatie. Het is een subset van Engels die naar een subset van eerste-orde-logica vertaald. Het is echter wel een formele taal: elke zin in ACE heeft slechts één betekenis, ook al is de Engelse zin ambigu. Om de juiste betekenis te kennen, kan men gebruik maken van de parafraseertool van ACE. Deze tool zet de interne representatie terug om naar één of meerdere zinnen in ACE. Op die manier kan men niet alleen de betekenis van de zin leren, maar ook de taal zelf.
 
-ACE is een general purpose CNL: Het bevat een ingebouwd vocabularium. De
-gebruiker moet dus zelf geen vocabularium opstellen en kan direct beginnen met
-het schrijven van de specificatie. Het nadeel aan deze aanpak is dat ACE dus ook
-geen domeinkennis kan gebruiken voor het analyseren van de zinnen. Sommige
-constructies moeten daarom met een koppelteken geschreven worden. Zo wordt er in
-\cite{ACEConstructionRules} het voorbeeld gegeven van \example{A student is
-  interested-in a course} en \example{A student is interested in a classroom}.
+ACE is een general purpose CNL: Het bevat een ingebouwd vocabularium. De gebruiker moet dus zelf geen vocabularium opstellen en kan direct beginnen met het schrijven van de specificatie. Het nadeel aan deze aanpak is dat ACE dus ook geen domeinkennis kan gebruiken voor het analyseren van de zinnen. Sommige constructies moeten daarom met een koppelteken geschreven worden. Zo wordt er in \cite{ACEConstructionRules} het voorbeeld gegeven van \example{A student is interested-in a course} en \example{A student is interested in a classroom}.
 
-Op die manier probeert ACE sommige ambiguïteiten op te lossen. Een gelijkaardige
-truk wordt bijvoorbeeld ook gebruikt om de voorrang van \example{en} en
-\example{of} op te lossen. Standaard heeft \example{en} voorrang. Maar als de
-\example{en} voorafgegaan wordt door een komma, dan heeft \example{of} voorrang.
-\cite{ACEConstructionRules} geeft het voorbeeld \example{A client \{enters a red
-  card or enters a blue card\}, and enters a code.}
+Op die manier probeert ACE sommige ambiguïteiten op te lossen. Een gelijkaardige truk wordt bijvoorbeeld ook gebruikt om de voorrang van \example{en} en \example{of} op te lossen. Standaard heeft \example{en} voorrang. Maar als de \example{en} voorafgegaan wordt door een komma, dan heeft \example{of} voorrang. \cite{ACEConstructionRules} geeft het voorbeeld \example{A client \{enters a red card or enters a blue card\}, and enters a code.}
 
-In andere gevallen kiest ACE gewoon hoe de zin geïnterpreteerd moet worden op
-basis van een set van \textit{interpration rules}. Zo slaat de
-\example{manually} in \example{A customer who {enters a card manually} types
-  a code.}\cite{ACEConstructionRules} op \example{enters} en niet op
-\example{types} omdat een bijwoord bij voorkeur achter het werkwoord staat.
+In andere gevallen kiest ACE gewoon hoe de zin geïnterpreteerd moet worden op basis van een set van \textit{interpration rules}. Zo slaat de \example{manually} in \example{A customer who {enters a card manually} types a code.}\cite{ACEConstructionRules} op \example{enters} en niet op \example{types} omdat een bijwoord bij voorkeur achter het werkwoord staat.
 
-Één van de sterke punten van ACE is het oplossen van anaforische referenties
-(referenties naar woorden eerder in de zin of naar woorden van vorige zinnen).
-De invoertekst wordt namelijk als één geheel vertaald. Daardoor is het niet
-nodig om lange zinnen te schrijven met veel bijzinnen. Men kan zo'n zinnen
-namelijk opbreken in een aantal kortere zinnen. Zo kan \example{A customer
-  inserts a card that carries a code.} geschreven worden als \example{A card
-  carries a code. A customer inserts the card.}\cite{Fuchs2008}. Op deze manier
-kan de specificatie veel leesbaarder gehouden worden.
+Één van de sterke punten van ACE is het oplossen van anaforische referenties (referenties naar woorden eerder in de zin of naar woorden van vorige zinnen). De invoertekst wordt namelijk als één geheel vertaald. Daardoor is het niet nodig om lange zinnen te schrijven met veel bijzinnen. Men kan zo'n zinnen namelijk opbreken in een aantal kortere zinnen. Zo kan \example{A customer inserts a card that carries a code.} geschreven worden als \example{A card carries a code. A customer inserts the card.}\cite{Fuchs2008}. Op deze manier kan de specificatie veel leesbaarder gehouden worden.
 
-Origineel was ACE bedoeld voor het opstellen van specificaties voor software.
-Ondertussen kent de taal al meerdere toepassingen, in verschillende domeinen. Er
-zijn ook meerdere tools die overweg kunnen met ACE als input.
+Origineel was ACE bedoeld voor het opstellen van specificaties voor software. Ondertussen kent de taal al meerdere toepassingen, in verschillende domeinen. Er zijn ook meerdere tools die overweg kunnen met ACE als input.
 
-Zo is er de Attempto Parsing Engine APE die ACE zinnen omzet naar Discourse
-Representation Structures (DRS). Deze variant op eerste-orde-logica wordt vooral
-gebruikt om makkelijker te acherhalen naar wat de anaforische referenties
-refereren. APE geeft ook een parafrasering van de invoertekst. Zodat de
-gebruiker kan controleren of de tool de tekst op de juiste manier leest.
-Bovendien kan APE waarschuwingen geven bij mogelijke problemen. Bijvoorbeeld het
-gebruik van een bepaald lidwoord zonder een antecedent waarnaar de
-naamwoordgroep kan verwijzen.
+Zo is er de Attempto Parsing Engine APE die ACE zinnen omzet naar Discourse Representation Structures (DRS). Deze variant op eerste-orde-logica wordt vooral gebruikt om makkelijker te acherhalen naar wat de anaforische referenties refereren. APE geeft ook een parafrasering van de invoertekst. Zodat de gebruiker kan controleren of de tool de tekst op de juiste manier leest. Bovendien kan APE waarschuwingen geven bij mogelijke problemen. Bijvoorbeeld het gebruik van een bepaald lidwoord zonder een antecedent waarnaar de naamwoordgroep kan verwijzen.
 
-Verder is er ook de Attempto Reasoner RACE. Deze tool kan controleren of een
-specificatie consistent is met zichzelf. De tool zal dan zeggen welke zinnen met
-elkaar in conflict zijn. Op die manier weet de gebruiker dat er een fout is en
-waar deze zich ongeveer bevindt. Verder kan de tool ook vragen beantwoorden. Ook
-deze vragen kunnen in natuurlijke taal geschreven worden. RACE antwoordt niet
-alleen de vraag maar geeft ook de zinnen die nodig zijn om te bewijzen dat het
-gegeven antwoord juist is. Ten slotte kan RACE bewijzen of een bepaalde zin het
-logische gevolg is van de specificatie. Op die manier kan de gebruiker testen of
-de specificatie correct is.
+Verder is er ook de Attempto Reasoner RACE. Deze tool kan controleren of een specificatie consistent is met zichzelf. De tool zal dan zeggen welke zinnen met elkaar in conflict zijn. Op die manier weet de gebruiker dat er een fout is en waar deze zich ongeveer bevindt. Verder kan de tool ook vragen beantwoorden. Ook deze vragen kunnen in natuurlijke taal geschreven worden. RACE antwoordt niet alleen de vraag maar geeft ook de zinnen die nodig zijn om te bewijzen dat het gegeven antwoord juist is. Ten slotte kan RACE bewijzen of een bepaalde zin het logische gevolg is van de specificatie. Op die manier kan de gebruiker testen of de specificatie correct is.
 
-APE en RACE zijn de twee belangrijkste tools. Er zijn er echter nog veel meer.
-Zo is er de ACE View Protégé plug-in. Dit is een plugin die de vertaling tussen
-OWL en ACE doet binnen de Protégé-omgeving (een editor voor het maken van
-ontologiën). Op die manier ziet de gebruiker enkel ACE zinnen en hoeft dus de
-formele OWL taal niet te kennen om met bestaande modellen om te gaan of om
-nieuwe modellen te maken. Ten slotte is er ook nog AceRules. Hiermee kan de
-gebruiker de zinnen die geïmpliceerd worden door de specificatie te weten komen.
+APE en RACE zijn de twee belangrijkste tools. Er zijn er echter nog veel meer. Zo is er de ACE View Protégé plug-in. Dit is een plugin die de vertaling tussen OWL en ACE doet binnen de Protégé-omgeving (een editor voor het maken van ontologiën). Op die manier ziet de gebruiker enkel ACE zinnen en hoeft dus de formele OWL taal niet te kennen om met bestaande modellen om te gaan of om nieuwe modellen te maken. Ten slotte is er ook nog AceRules. Hiermee kan de gebruiker de zinnen die geïmpliceerd worden door de specificatie te weten komen.
 
-Over het algemeen is ACE een zeer uitgebreide taal. Veel Engelse zinnen zijn ook
-geldige ACE zinnen, echter niet allemaal. Dit zorgt ervoor dat het soms niet
-duidelijk is welke zinnen geldig zijn en welke niet. Volgens \cite{Fuchs2008}
-heeft een gebruiker 2 dagen nodig om de taal te leren. Andere talen zoals PENG
-hebben een beperktere grammatica waardoor het mogelijk is om een tool te maken
-die suggesties geeft aan de gebruiker om de zin te vervolledigen.
+Over het algemeen is ACE een zeer uitgebreide taal. Veel Engelse zinnen zijn ook geldige ACE zinnen, echter niet allemaal. Dit zorgt ervoor dat het soms niet duidelijk is welke zinnen geldig zijn en welke niet. Volgens \cite{Fuchs2008} heeft een gebruiker 2 dagen nodig om de taal te leren.
 
+Andere talen zoals PENG hebben een beperktere grammatica waardoor het mogelijk is om een tool te maken die suggesties geeft aan de gebruiker om de zin te vervolledigen.
+
+PENG is een CNL specifiek voor het semantische web. Net zoals de ACE View Protégé plug-in kan PENG vertalen van en naar OWL. 
+
+\subsection{Todo}
 \begin{enumerate}
-  \item ACE\cite{Fuchs2008} \cite{Fuchs}:Niet, Master Thesis\cite{Dellis2010} 
+  \item ACE\cite{Fuchs2008} Niet: \cite{Fuchs}, Master Thesis\cite{Dellis2010} 
   \item PENG\cite{Schwitter2003, Schwitter2006}, PENG Light\cite{Schwitter2008},
     PENG D\cite{Schwitter2004},\cite{Schwitter2005} 
   \item Model checking\cite{Flake2002, Konrad2005, Nelken, Jak2008}
