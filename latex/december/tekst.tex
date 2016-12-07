@@ -63,15 +63,23 @@ APE en RACE zijn de twee belangrijkste tools. Er zijn er echter nog veel meer. Z
 
 Over het algemeen is ACE een zeer uitgebreide taal. Veel Engelse zinnen zijn ook geldige ACE zinnen, echter niet allemaal. Dit zorgt ervoor dat het soms niet duidelijk is welke zinnen geldig zijn en welke niet. Volgens \cite{Fuchs2008} heeft een gebruiker 2 dagen nodig om de taal te leren.
 
-Andere talen zoals PENG hebben een beperktere grammatica waardoor het mogelijk is om een tool te maken die suggesties geeft aan de gebruiker om de zin te vervolledigen.
+\paragraph{PENG} Een gelijkaardige taal aan ACE is PENG\cite{Schwitter2002}. PENG is ook een CNL die vertaald naar DRS structuren. In tegenstelling tot ACE bevat PENG geen groot ingebouwd lexicon. De gebruiker moet zelf de woorden aanbrengen die gebruikt worden. De gebruiker kan dit doen tijdens het bewerken en moet dus niet op voorhand aangeven wat het lexicon is. De categorieën voor deze domeinspecifieke woorden zijn: zelfstandig naamwoord, bijvoeglijk naamwoord, werkwoord en bijwoord. PENG biedt ook de mogelijkheid om synoniemen of afkortingen te introduceren. Op die manier kan de tekst leesbaarder gemaakt worden. Naast de domeinspecifieke woorden kent PENG ook een aantal functionele woorden die ingebakken zitten in de taal. Deze woorden helpen PENG om de zinsconstructies te herkennen.
 
-PENG is een CNL specifiek voor het semantische web. Net zoals de ACE View Protégé plug-in kan PENG vertalen van en naar OWL. 
+Net zoals ACE kent PENG het principe van constructieregels en interpretatieregels. %TODO complete
+%TODO: alles van 2002 al opgeschreven?
+
+%TODO use Schwitter2003
+\paragraph{PENG} Andere talen zoals PENG\cite{Schwitter2002} hebben een beperktere grammatica waardoor het mogelijk is om een tool te maken die suggesties geeft aan de gebruiker om de zin te vervolledigen. Op deze manier moet de gebruiker de taal niet leren. Hij kan gewoon de tool beginnen gebruiken en de tool zal de gebruiker helpen in het opstellen van zinnen.
+
+PENG is een CNL specifiek voor het semantische web. Net zoals de ACE View Protégé plug-in kan PENG vertalen van en naar OWL. Meer specifiek beperkt PENG zich tot de subset OWL DL. Deze subset kan vertaald worden naar Description Logics en is dus wel beslisbaar.
+
+\cite{Schwitter2006} vermeldt drie klassieke manieren van voorstellen van een ontologie (N-Triples, RDF/XML en OWL Abstract) en toont dan verder aan dat PENG een vierde manier is om hetzelfde voor te stellen. Het grote voordeel van PENG t.o.v. de andere voorstellingswijzen is dat PENG ook leesbaar en begrijpbaar is voor de mens. De paper toont dit aan door verschillende constructies uit OWL te mappen op zinnen in PENG.
 
 \subsection{Todo}
 \begin{enumerate}
   \item ACE\cite{Fuchs2008} Niet: \cite{Fuchs}, Master Thesis\cite{Dellis2010} 
-  \item PENG\cite{Schwitter2003, Schwitter2006}, PENG Light\cite{Schwitter2008},
-    PENG D\cite{Schwitter2004},\cite{Schwitter2005} 
+  \item PENG\cite{Schwitter2002, Schwitter2004b, Schwitter2003, Schwitter2006}, PENG Light\cite{Schwitter2008, White2009},
+    PENG D\cite{Schwitter2004}, ook van Schwitter:\cite{Schwitter2005} 
   \item Model checking\cite{Flake2002, Konrad2005, Nelken, Jak2008}
   \item Lijst van ambiguïteiten \cite{Berry2003} 
   \item Writing support for CNL's\cite{Kuhn2008} 
@@ -85,7 +93,7 @@ PENG is een CNL specifiek voor het semantische web. Net zoals de ACE View Proté
 \end{enumerate}
 			
 \section{Referenties}
-\bibliographystyle{plain}
+\bibliographystyle{unsrt}
 \bibliography{tekst}
 
 \end{document}
