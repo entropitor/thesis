@@ -3,6 +3,24 @@
 \usepackage{pgf-pie}
 \usepackage{url}
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsthm}
+\usepackage{qtree}
+
+\theoremstyle{definition}
+\newtheorem{ex}{Voorbeeld}[section]
+
+% \newcounter{examplecounter}
+% \newenvironment{ex2}
+%   {
+%     \begin{verse}
+%       \refstepcounter{examplecounter}
+%       (vb\arabic{examplecounter})
+%       \quad
+%   }
+%   {
+%     \end{verse}
+%   }
 
 \title{Natural Language processing for Knowledge Representation} \author{Jens
   Claes}
@@ -78,19 +96,114 @@ Net zoals in ACE is het ook in PENG mogelijk om te controleren of een specificat
 Naast de general purpose CNL bevat PENG ook een subset specifiek voor het semantische web: PENG-D\cite{Schwitter2004}. Deze subset is wel beslisbaar en kan vertaald worden naar description logic, een subset van eerste-orde-logica. PENG-D kan dus gezien worden als het alternatief voor de ACE View Protégé plug-in.
 \cite{Schwitter2006} vermeldt drie klassieke manieren van voorstellen van een ontologie (N-Triples, RDF/XML en OWL Abstract) en toont dan verder aan dat PENG een vierde manier is om hetzelfde voor te stellen. De paper toont dit aan door verschillende constructies uit OWL te mappen op zinnen in PENG. Het grote voordeel van PENG t.o.v. de andere voorstellingswijzen is dat PENG ook leesbaar en begrijpbaar is voor de mens.
 
-\paragraph{Implementatie}
+\paragraph{Implementatie} Zowel ACE als PENG zijn geïmplementeerd in prolog met behulp van Definite Clause Grammars (DCG) en feature structures\cite{Fuchs2008, Schwitter2006}. Definite Clause Grammars\cite{Pereira1980} zitten vaak ingebakken in logische talen. Deze grammatica's zijn een uitbreiding van contextvrije grammatica's. Zo is het mogelijk dat non-terminals argumenten hebben. \cite{Pereira1980} lijst 3 manieren op waarbij DCG's kunnen helpen bij het parsen van natuurlijke talen:
 
-% TODO: Feature structures in prolog == ???: http://cs.union.edu/~striegnk/courses/nlp-with-prolog/html/index.html
+\begin{enumerate}
+  \item De woordvorm kan afhankelijk gemaakt worden van de context waarin deze verschijnt. Zo kan men eisen dat een werkwoord in de juiste vervoeging voorkomt.
+  \item Tijdens het parsen kan men een boom opbouwen die de semantiek van de zin moet vatten. Deze boom hoeft niet isomorf te zijn met de structuur van de grammatica.
+  \item Het is mogelijk om prolog code toe te voegen die extra restricties oplegt aan de grammatica.
+\end{enumerate}
+
+\begin{ex}
+  Een voorbeeld van een DCG grammatica is:
+  \begin{quote}
+    \texttt{s ---> np, vp.} \\
+    \texttt{np ---> [ik].} \\
+    \texttt{np ---> [hem].} \\
+    \texttt{vp ---> v, np.} \\
+    \texttt{v ---> [zie].}
+  \end{quote}
+  s is het startsymbool. np staat voor noun phrase, vp voor verb phrase en v voor verb. We gebruiken de Engelse namen voor gelijkaardigheid met de literatuur.
+\end{ex} 
+
+Deze grammatica bevat de zin \example{ik zie hem}. Maar ook de zin \example{ik zie ik} is deel van de taal. Om dit op te lossen kunnen we argumenten meegeven aan de niet-terminaal \texttt{np}.
+
+\begin{ex}
+  \label{ex:nom-acc-features}
+  Een verbeterde grammatica houdt rekening met welke woordvorm kan voorkomen in de context.
+  \begin{quote}
+    \texttt{s ---> np(nom), vp.} \\
+    \texttt{np(nom) ---> [ik].} \\
+    \texttt{np(acc) ---> [hem].} \\
+    \texttt{vp ---> v, np(acc).} \\
+    \texttt{v ---> [zie].} \\
+  \end{quote}
+\end{ex} 
+
+De \texttt{nom} en \texttt{acc} slaan hier op nominatief en accusatief. Ze geven aan in welke functie de noun phrases gebruikt mogen worden.
+
+\begin{ex} Het is ook mogelijk om een boom op te bouwen tijdens het parsen:
+  \begin{quote}
+    \texttt{s(s(VP, NP)) ---> np(NP, nom), vp(VP).} \\
+    \texttt{np(np(ik), nom) ---> [ik].} \\
+    \texttt{np(np(hem), acc) ---> [hem].} \\
+    \texttt{vp(vp(Verb, SemNP)) ---> v(Verb), np(NP, acc).} \\
+    \texttt{v(zie) ---> [zie].} \\
+  \end{quote}
+\end{ex} 
+
+Bij het parsen van \example{ik zie hem} krijgen we nu volgende boom:
+
+\Tree[.s
+         [.vp \textit{zie}
+              [.np \textit{hem} ]]
+         [.np [ \textit{ik} ]]]
+
+Merk op dat de \texttt{vp}-tak voor de \texttt{np}-tak komt in onze boom. Dit is om aan te tonen dat de boom niet per se de structuur van de grammatica moet volgen.
+
+\begin{ex} Ten slotte is het mogelijk om prolog code uit te voeren in de grammatica door deze goals tussen accolades te plaatsen.
+  \begin{quote}
+    \texttt{expression(X) ---> factor(X).} \\
+    \texttt{expression(X) ---> term(X).} \\
+
+    \texttt{factor(X) ---> number(X).} \\
+    \texttt{factor(X) ---> number(A), [*], factor(B), \{X is A * B\}.} \\
+    \texttt{term(X) ---> factor(A), [+], expression(B), \{X is A + B\}.} \\
+
+    \texttt{number(X) ---> [X], \{number(X)\}.} \\
+  \end{quote}
+\end{ex} 
+
+Bovenstaande grammatica kan simpele wiskunde expressies omvormen tot de wiskundige waarde. Zo wordt \texttt{2 + 4 * 5} omgevormd tot \texttt{X = 22} volgens volgende boom:
+
+\Tree[.expression(22)
+        [.term(22) [.factor(2) [.number(2) 2 ]]
+                   +
+                   [.expression(20) [.factor(20) [.number(4) 4 ] * [.factor(5) [.number(5) 5 ]]]]]]
+
+De grammatica is als volgt opgebouwd: Een expressie is ofwel een factor ofwel een term. De waarde van de expressie komt overeen met de waarde van de factor of de term.
+
+Een factor is ofwel een getal, ofwel een vermenigvuldiging van een getal met een factor. In het laatste geval is de waarde van de factor gelijk aan de vermenigvuldiging van de waardes van de 2 subexpressies.
+De uitdrukking voor een term is gelijkaardig aan die van een factor.
+
+Ten slotte definiëren we een getal als een terminaal maar daarbij testen we nog eens of de waarde een getal is volgens prolog. \example{two + four * five} is dus geen geldige uitdrukking.
+
+Merk op dat een factor niet gedefinieerd kan worden als de vermenigvuldiging van 2 factoren. DCG's worden namelijk net als prolog top-down en van links naar rechts ``uitgevoerd''. Het is dus verboden om links recursieve regels te hebben in de grammatica want deze leiden tot een oneindige lus. Gelukkig is het altijd mogelijk om een links recursieve grammatica om te vormen tot een normale grammatica.
+
+\paragraph{} DCG's zonder prolog code, zijn zeer declaratief: Men kan ze als object gaan gebruiken en niet langer enkel als parser/generator. Op die manier kan men ook een chart parser schrijven voor deze grammatica's. Dit is wat PENG doet in ECOLE\cite{Schwitter2003} en ACE gebruikt in AceWiki\cite{Kuhn2008}, een subset van ACE voor semantische wiki's. Een chart parser is niet alleen sneller, het is ook makkelijk om te voorspellen wat er nog kan volgen. Op die manier kan men een editor maken die voorspelt welke woordcategorie moet volgen. Maar het is ook mogelijk om in een volledige zin aan te duiden waarom die zin ongeldig is. Bijvoorbeeld in de zin \example{zag haar}, kan men zeggen \texttt{Onverwacht werkwoord ``zag''. Een onderwerp (noun phrase) werd verwacht}. \cite{Kuhn2008} legt in detail uit hoe zo'n chart parser gemaakt kan worden.
+
+\paragraph{Feature structures} Naast DCG's wordt er in ACE en PENG ook gebruikt gemaakt van feature structures\cite{Shieber2003}. Een feature structure is een geavanceerde parse tree die vooral binnen de (computationele) linguïstiek gebruikt worden. Ze verschillen van een parse tree doordat ze een gerichte acyclische graaf zijn i.p.v. een boom. Bovendien hebben alle kinderen namen en maakt de volgorde niet uit. Men kan ze dus zien als een hashmap-achtige datastructuur waarbij de waarden ook terug een hash-map kunnen zijn. De grammatica's die gebruik maken van feature structures, gebruiken ook unificatie voor het samenvoegen van meerdere structuren. Niet alle features moeten namelijk een waarde toegekend krijgen. Zo kan een eigennaam voorkomen als onderwerp of als lijdend voorwerp. Terwijl \example{ik} enkel als onderwerp kan voorkomen.
+
+Binnen ACE en PENG zorgen de feature structures voor de syntactische correctheid van de zinnen in de gast taal, het Engels. Via unificatie kan men namelijk testen of een bepaalde woordgroep voldoet aan de voorwaarden. Deze structuren bevatten bijvoorbeeld informatie over het getal van het onderwerp en van het werkwoord. Enkel wanneer deze 2 unificeren, is de zin geldig. Op die manier zijn zinnen die in ACE en/of PENG geldig zijn, ook geldig in het Engels. Dit is gelijkaardig aan de rol van \texttt{nom} en de \texttt{acc} in voorbeeld \ref{ex:nom-acc-features}.
+
+Zoals \cite{Shieber2003} aanhaalt, verschillen prolog termen van feature structures enkel doordat in prolog de volgorde en de ariteit wel een rol speelt. De \textit{namen} in prolog zijn dus de index in de term. En alle features die mogelijk zijn, moeten voorkomen in de term, eventueel ongebonden. Daarom is het handiger om feature structures te gebruiken. Zo hoeft men niet alle voorkomens van een structure aan te passen voor het toevoegen van een argument. Bovendien moet men niet te onthouden op welke positie welk argument voorkomt. Qua expressiviteit zijn feature structures echter gelijkwaardig aan DCG's.
+
+\paragraph{} Feature structures zijn, net als Discourse Representation Theory een concept binnen de linguïstiek. Ze worden gebruikt om de natuurlijke taal en haar semantiek te modelleren. Zo helpen feature structures om een explosie van het aantal grammatica regels te voorkomen. Discourse Representation Theory wordt dan weer vooral gebruikt om de coreferentie-analyse te vergemakkelijken. Ze passen mooi binnen ACE en PENG omdat deze talen ook ontstaan zijn in het vakgebied van computationele linguïstiek.
+
+% TODO a principled approach to CNL's
+% TODO: computer linguistic vs computer science!!!
+
 % TODO: Korte samenvatting van ACE en PENG en dan vooral vergelijken
 % TODO: Ander werk even kort voorstellen.
 % TODO: ~15 papers is genoeg als referenties
 
 \subsection{Todo}
 \begin{enumerate}
-  \item ACE\cite{Fuchs2008} Niet: \cite{Fuchs}, Master Thesis\cite{Dellis2010} 
+  \item ACE\cite{Fuchs2008} \verb+\cite{Fuchs}, Master Thesis\cite{Dellis2010}+ 
   \item PENG\cite{Schwitter2002, Schwitter2004b, Schwitter2003, Schwitter2006}, PENG Light\cite{Schwitter2008, White2009},
     PENG D\cite{Schwitter2004}, ook van Schwitter:\cite{Schwitter2005} 
   \item Writing support for CNL's\cite{Kuhn2008} 
+  \item A principled approach to CNL's\cite{Kuhn2013} 
   \item Model checking\cite{Flake2002, Konrad2005, Nelken, Jak2008}
   \item Lijst van ambiguïteiten \cite{Berry2003} 
   \item RuleSpeak\cite{Ross2009a, Ross2013, Ross2013a, Ross2009} 
@@ -98,13 +211,12 @@ Naast de general purpose CNL bevat PENG ook een subset specifiek voor het semant
   \item CELT\cite{Pease2010, Dellis2010}
   \item Overzicht + classificatie\cite{Kuhn2014}
   \item Evaluation CNL\cite{Kuhn2010}
-  \item A principled approach to CNL's\cite{Kuhn2013} 
   \item SBVR\cite{Spreeuwenberg2010, Levy2013} 
 \end{enumerate}
 			
 
 \section{Planning}
-TODO: Write
+TODO: write
 
 \section{Referenties}
 \bibliographystyle{unsrt}
