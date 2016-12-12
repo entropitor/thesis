@@ -55,34 +55,44 @@ In andere gevallen kiest ACE gewoon hoe de zin geïnterpreteerd moet worden op b
 
 Origineel was ACE bedoeld voor het opstellen van specificaties voor software. Ondertussen kent de taal al meerdere toepassingen, in verschillende domeinen. Er zijn ook meerdere tools die overweg kunnen met ACE als input.
 
-Zo is er de Attempto Parsing Engine APE die ACE zinnen omzet naar Discourse Representation Structures (DRS). Deze variant op eerste-orde-logica wordt vooral gebruikt om makkelijker te acherhalen naar wat de anaforische referenties refereren. APE geeft ook een parafrasering van de invoertekst. Zodat de gebruiker kan controleren of de tool de tekst op de juiste manier leest. Bovendien kan APE waarschuwingen geven bij mogelijke problemen. Bijvoorbeeld het gebruik van een bepaald lidwoord zonder een antecedent waarnaar de naamwoordgroep kan verwijzen.
+Zo is er de Attempto Parsing Engine APE die ACE zinnen omzet naar Discourse Representation Structures (DRS). Deze variant op eerste-orde-logica wordt vooral gebruikt om makkelijker te acherhalen naar wat de anaforische referenties refereren. APE geeft ook een parafrasering van de invoertekst. Zodat de gebruiker kan controleren of de tool de tekst op de juiste manier leest. Bovendien kan APE waarschuwingen geven bij mogelijke problemen. Bijvoorbeeld het gebruik van een bepaald lidwoord zonder een antecedent waarnaar de noun phrase kan verwijzen.
 
-Verder is er ook de Attempto Reasoner RACE. Deze tool kan controleren of een specificatie consistent is met zichzelf. De tool zal dan zeggen welke zinnen met elkaar in conflict zijn. Op die manier weet de gebruiker dat er een fout is en waar deze zich ongeveer bevindt. Verder kan de tool ook vragen beantwoorden. Ook deze vragen kunnen in natuurlijke taal geschreven worden. RACE antwoordt niet alleen de vraag maar geeft ook de zinnen die nodig zijn om te bewijzen dat het gegeven antwoord juist is. Ten slotte kan RACE bewijzen of een bepaalde zin het logische gevolg is van de specificatie. Op die manier kan de gebruiker testen of de specificatie correct is.
+Verder is er ook de Attempto Reasoner RACE. Deze tool kan controleren of een specificatie consistent is met zichzelf. De tool zal dan zeggen welke zinnen met elkaar in conflict zijn. Op die manier weet de gebruiker dat er een fout is en waar deze zich ongeveer bevindt. De tool kan ook vragen in natuurlijke taal beantwoorden. RACE antwoordt niet alleen op de vraag maar geeft ook de zinnen die nodig zijn om te bewijzen dat het gegeven antwoord juist is. Ten slotte kan RACE bewijzen of een bepaalde zin het logische gevolg is van de specificatie. Op die manier kan de gebruiker testen of de specificatie correct is.
 
 APE en RACE zijn de twee belangrijkste tools. Er zijn er echter nog veel meer. Zo is er de ACE View Protégé plug-in. Dit is een plugin die de vertaling tussen OWL en ACE doet binnen de Protégé-omgeving (een editor voor het maken van ontologiën). Op die manier ziet de gebruiker enkel ACE zinnen en hoeft dus de formele OWL taal niet te kennen om met bestaande modellen om te gaan of om nieuwe modellen te maken. Ten slotte is er ook nog AceRules. Hiermee kan de gebruiker de zinnen die geïmpliceerd worden door de specificatie te weten komen.
 
 Over het algemeen is ACE een zeer uitgebreide taal. Veel Engelse zinnen zijn ook geldige ACE zinnen, echter niet allemaal. Dit zorgt ervoor dat het soms niet duidelijk is welke zinnen geldig zijn en welke niet. Volgens \cite{Fuchs2008} heeft een gebruiker 2 dagen nodig om de taal te leren.
 
-\paragraph{PENG} Een gelijkaardige taal aan ACE is PENG\cite{Schwitter2002}. PENG is ook een CNL die vertaald naar DRS structuren. In tegenstelling tot ACE bevat PENG geen groot ingebouwd lexicon. De gebruiker moet zelf de woorden aanbrengen die gebruikt worden. De gebruiker kan dit doen tijdens het bewerken en moet dus niet op voorhand aangeven wat het lexicon is. De categorieën voor deze domeinspecifieke woorden zijn: zelfstandig naamwoord, bijvoeglijk naamwoord, werkwoord en bijwoord. PENG biedt ook de mogelijkheid om synoniemen of afkortingen te introduceren. Op die manier kan de tekst leesbaarder gemaakt worden. Naast de domeinspecifieke woorden kent PENG ook een aantal functionele woorden die ingebakken zitten in de taal. Deze woorden helpen PENG om de zinsconstructies te herkennen.
+\paragraph{PENG} Andere talen zoals PENG\cite{Schwitter2002} zijn makkelijker om te leren. PENG is ook een CNL die vertaald naar DRS structuren. In tegenstelling tot ACE bevat PENG geen groot ingebouwd lexicon. De gebruiker moet zelf de woorden aanbrengen die gebruikt worden. De gebruiker kan dit doen tijdens het bewerken en moet dus niet op voorhand aangeven wat het lexicon is. De categorieën voor deze domeinspecifieke woorden zijn: zelfstandig naamwoord, bijvoeglijk naamwoord, werkwoord en bijwoord. PENG biedt ook de mogelijkheid om synoniemen of afkortingen te introduceren. Op die manier kan de tekst leesbaarder gemaakt worden. Naast de domeinspecifieke woorden kent PENG ook een aantal functionele woorden die ingebakken zitten in de taal. Deze woorden helpen PENG om de zinsconstructies te herkennen.
 
-Net zoals ACE kent PENG het principe van constructieregels en interpretatieregels. %TODO complete
-%TODO: alles van 2002 al opgeschreven?
+Net zoals ACE kent PENG het principe van constructieregels en interpretatieregels. De constructieregels bepalen welke zinnen deel zijn van de taal. Bij PENG zijn deze regels eenvoudiger omdat de taal zeer simpel gehouden is. Op die manier willen ze het makkelijker maken om zinnen te maken in de taal. Over het algemeen lijken de constructieregels van PENG en ACE veel op elkaar.
 
-%TODO use Schwitter2003
-\paragraph{PENG} Andere talen zoals PENG\cite{Schwitter2002} hebben een beperktere grammatica waardoor het mogelijk is om een tool te maken die suggesties geeft aan de gebruiker om de zin te vervolledigen. Op deze manier moet de gebruiker de taal niet leren. Hij kan gewoon de tool beginnen gebruiken en de tool zal de gebruiker helpen in het opstellen van zinnen.
+De interpretatieregels bepalen hoe de zin vertaald wordt naar logica. Zo is er een interpretatieregel voor hoe anaforische referenties opgelost worden. Deze regel is gelijkaardig in ACE en PENG. Andere regels bepalen welke functiewoorden sterker binden. Zowel ACE als PENG gebruiken hiervoor dezelfde volgorde als in eerste-orde-logica. ACE staat wel uitzonderingen toe door het toevoegen van komma's. PENG houdt de taal simpel en staat dit niet toe.
 
-PENG is een CNL specifiek voor het semantische web. Net zoals de ACE View Protégé plug-in kan PENG vertalen van en naar OWL. Meer specifiek beperkt PENG zich tot de subset OWL DL. Deze subset kan vertaald worden naar Description Logics en is dus wel beslisbaar.
+PENG is makkelijker om te leren dan ACE omwille van ECOLE\cite{Schwitter2003}. Deze tool kan suggesties geven over de woordcategorieën die kunnen volgen op een bepaalde zin. Zo geeft \cite{Schwitter2003} het voorbeeld van \example{Een} dat gevolgd kan worden door een \texttt{adjectief} of een \texttt{substantief}. Indien de gebruiker de woordcategorie niet kent, kan hij doorklikken op die categorie voor een aantal mogelijkheden. Op die manier moet de gebruiker enkel de woordcategorieën leren en niet de geldige zinsconstructies.
 
-\cite{Schwitter2006} vermeldt drie klassieke manieren van voorstellen van een ontologie (N-Triples, RDF/XML en OWL Abstract) en toont dan verder aan dat PENG een vierde manier is om hetzelfde voor te stellen. Het grote voordeel van PENG t.o.v. de andere voorstellingswijzen is dat PENG ook leesbaar en begrijpbaar is voor de mens. De paper toont dit aan door verschillende constructies uit OWL te mappen op zinnen in PENG.
+Naast de suggestietool bevat PENG, net zoals ACE, ook een parafraseertool. Deze tool herschrijft de invoer zodat het duidelijker is hoe PENG de zin begrepen heeft. Anaforische referenties worden bijvoorbeeld omgezet in de noun phrase naarwaar ze verwijzen.
+
+Net zoals in ACE is het ook in PENG mogelijk om te controleren of een specificatie consistent is\cite{Schwitter2004b}. Daarnaast is het ook mogelijk om te controleren op redundantie. Indien een zin al door een andere zin geïmpliceerd wordt, hoeft deze niet expliciet deel uit te maken van de specificatie. Op die manier kan de specificatie kort gehouden worden, wat de leesbaarheid verhoogd.
+
+Naast de general purpose CNL bevat PENG ook een subset specifiek voor het semantische web: PENG-D\cite{Schwitter2004}. Deze subset is wel beslisbaar en kan vertaald worden naar description logic, een subset van eerste-orde-logica. PENG-D kan dus gezien worden als het alternatief voor de ACE View Protégé plug-in.
+\cite{Schwitter2006} vermeldt drie klassieke manieren van voorstellen van een ontologie (N-Triples, RDF/XML en OWL Abstract) en toont dan verder aan dat PENG een vierde manier is om hetzelfde voor te stellen. De paper toont dit aan door verschillende constructies uit OWL te mappen op zinnen in PENG. Het grote voordeel van PENG t.o.v. de andere voorstellingswijzen is dat PENG ook leesbaar en begrijpbaar is voor de mens.
+
+\paragraph{Implementatie}
+
+% TODO: Feature structures in prolog == ???: http://cs.union.edu/~striegnk/courses/nlp-with-prolog/html/index.html
+% TODO: Korte samenvatting van ACE en PENG en dan vooral vergelijken
+% TODO: Ander werk even kort voorstellen.
+% TODO: ~15 papers is genoeg als referenties
 
 \subsection{Todo}
 \begin{enumerate}
   \item ACE\cite{Fuchs2008} Niet: \cite{Fuchs}, Master Thesis\cite{Dellis2010} 
   \item PENG\cite{Schwitter2002, Schwitter2004b, Schwitter2003, Schwitter2006}, PENG Light\cite{Schwitter2008, White2009},
     PENG D\cite{Schwitter2004}, ook van Schwitter:\cite{Schwitter2005} 
+  \item Writing support for CNL's\cite{Kuhn2008} 
   \item Model checking\cite{Flake2002, Konrad2005, Nelken, Jak2008}
   \item Lijst van ambiguïteiten \cite{Berry2003} 
-  \item Writing support for CNL's\cite{Kuhn2008} 
   \item RuleSpeak\cite{Ross2009a, Ross2013, Ross2013a, Ross2009} 
   \item RuleCNL\cite{Njonko2014} 
   \item CELT\cite{Pease2010, Dellis2010}
@@ -92,6 +102,10 @@ PENG is een CNL specifiek voor het semantische web. Net zoals de ACE View Proté
   \item SBVR\cite{Spreeuwenberg2010, Levy2013} 
 \end{enumerate}
 			
+
+\section{Planning}
+TODO: Write
+
 \section{Referenties}
 \bibliographystyle{unsrt}
 \bibliography{tekst}
