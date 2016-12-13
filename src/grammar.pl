@@ -24,6 +24,7 @@ cond(In-Out) ---> cond1(grammar{}.default()-Out1), [and], cond(grammar{}.default
 cond(In-Out) ---> cond1(grammar{}.default()-Out1), [or], cond(grammar{}.default()-Out2), {Out = In.add_combined_condition(or, Out1, Out2)}.
 
 cond1(In-Out) ---> property_phrase(Property, In-Out1), [is], comparison(Property, Out1-Out).
+cond1(In-Out) ---> entity_phrase(Entity, In-Out1), [is], property_value(PropertyName, PropertyValue), {Out = Out1.add_condition(predicate(PropertyName, Entity, PropertyValue))}.
 cond1(In-Out) ---> entity_phrase(Entity, In-Out1), verb_phrase(Entity, Out1-Out).
 cond1(In-Out) ---> entity_phrase(Entity, In-Out1), [is], verb(Verb), [by], verb_attachment(Attachment, Out1-Out2), {Out = Out2.add_condition(predicate(Verb, Attachment, Entity))}.
 cond1 ---> entity_phrase, [does, not], verb_phrase.
