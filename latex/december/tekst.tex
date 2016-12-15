@@ -54,19 +54,29 @@
 \paragraph{} In deze thesis ontwerpen we een nieuwe gestructureerde natuurlijke taal (vanaf nu CNL genoemd naar de Engelse term Controlled Natural Language). Het doel van deze taal is dat ze leesbaar is voor de domein expert, de KBS expert en computers. Zo kan een programma de formele specificatie opstellen vanuit de specificatie in de natuurlijke taal. Er is dan nog maar 1 bron van waarheidwaaruit alles geregeld wordt. Inconsistenties zijn niet meer mogelijk. Bovendien kan men nog steeds makkelijk de specificatie aanpassen.
 
 \section{Literatuurstudie}
-In het verleden zijn er al meerdere pogingen gedaan om teksten in natuurlijke taal te transformeren naar formele modellen. Zowel binnen het domein van vereistenanalyse, in regelgebaseerde paradigma's als in de computationele linguïstiek.
+In het verleden zijn er al meerdere CNL's gemaakt. Sommige zijn ontwerpen om de leesbaarheid van de specificaties te verhogen en hebben geen formele semantiek. Kuhn heeft een classificatieschema ontwerpen voor al deze CNL's \cite{Kuhn2014} genaamd PENS: Precision (hoe ambigu/formeel is de taal), Expressivity (welke problemen kunnen we uitdrukken), Naturalness (hoe vlot leest de taal), Simplicity (hoe simpel is de taal). In dezelfde paper lijst Kuhn ook een heleboel CNL's op met hun geschiedenis en nut alsook hun classificatie volgens het PENS-schema.
 
-\paragraph{Circe} Zo wordt de tool Circe\cite{Ambriola1997} gebruikt in vereistenanalyse. De gebruiker moet een vocabularium, een set van substitutie regels en een specificatie in natuurlijke aanleveren. De tool probeert dan steeds de beste regel te vinden om zo de tekst geleidelijk aan te transformeren naar een formeel model. Het grote voordeel van de methode is dat er regelsets bestaan voor meerdere soorten modellen: data flow modellen, entity-relationship modellen, ...
+Teksten in natuurlijke taal omvormen tot formele modellen is al gebeurd in verschillende domeinen: vereistenanalyse, regelgebaseerde paradigma's maar ook binnen het domein van de computationele linguïstiek. Deze sectie geeft een kort overzicht van wat er al gebeurd is in deze domeinen. Voor een completer overzicht van CNL's, verwijzen we naar \cite{Kuhn2014}.
+
+\subsection{Vereistenanalyse}
+\paragraph{Circe} De tool Circe\cite{Ambriola1997} wordt gebruikt in vereistenanalyse. De gebruiker moet een vocabularium, een set van substitutieregels en een specificatie in natuurlijke aanleveren. De tool probeert dan steeds de beste regel te vinden om zo de tekst geleidelijk aan te transformeren naar een formeel model. Het grote voordeel van de methode is dat er regelsets bestaan voor meerdere soorten modellen: data flow modellen, entity-relationship modellen, ...
 
 Verder is het in Circe mogelijk om in het vocabularium woorden te taggen. De regels kunnen hier dan gebruik van maken om te bepalen of ze van toepassing zijn op bepaalde zinnen. Op die manier introduceert Circe types in het vocabularium.
 
-Een voorbeeld (uit \cite{Ambriola1997}): \example{bron/UIT STUURT data/INFO NAAR doel/IN}. De woorden \example{stuurt} en \example{naar} liggen vast in de regelset. De andere 3 woorden komen uit het vocabularium. Deze moeten een bepaalde tag hebben om te matchen met de regel. 
+Een voorbeeld (uit \cite{Ambriola1997}): \example{bron/UIT STUURT data/INFO NAAR doel/IN}. De woorden \example{stuurt} en \example{naar} liggen vast in de regelset. De andere 3 woorden komen uit het vocabularium. Deze moeten een bepaalde tag hebben om te matchen met de regel.
 
-\paragraph{TODO} andere talen kort bespreken
+Circe is geen CNL. Zinnen die niet matchen met een substitutieregel worden ook niet omgezet in een formeel model.
 
-\subsection{Computationele linguïstiek} Binnen het domein van de computationele linguïstiek zijn er al 2 belangrijke CNL's opgesteld die vertaald kunnen worden naar formele modellen: Attempto Controlled English (ACE) en Processable English (PENG). Beiden talen lijken op elkaar en hebben gelijkaardige tools om mee te werken. In de rest van deze sectie volgt een bespreking van ACE. Daarna bespreken we PENG met de nadruk op de verschillen en gelijkenissen tussen ACE en PENG. We sluiten af met een beschrijving van hoe deze talen geïmplementeerd zijn.
+\subsection{Business rules}
+Ook binnen het paradigma van business rules spelen zowel natuurlijke talen als formele talen een grote rol. SBVR Structured English (SBVR-SE)\cite{Levy2013} en RuleSpeak\cite{Ross2009a} zijn 2 CNL's die proberen om ambiguïteit in de natuurlijke taal te verminderen. Deze talen focussen echter vooral op het menselijke aspect. Het doel van deze talen is om ambiguïteit uit de specificatie te halen en niet zozeer om automatisch natuurlijke taal om te zetten naar een formele voorstelling. RuleCNL\cite{Njonko2014} heeft wel dit doel.
 
-\subsubsection{ACE}
+RuleCNL splitst de specificatie op in twee delen: een vocabularium en de regels zelf. Het vocabularium bestaat uit substantieven en werkwoorden alsook hoe deze in verhouding staan tot elkaar. Bijvoorbeeld \example{Auto heeft wiel} geeft aan dat er een relatie kan bestaan tussen een auto en een wiel. Voor de regels zelf bestaat er een contextvrije grammatica waaraan de zinnen moeten voldoen.
+
+Om de gebruikers te helpen bij het schrijven van de zinnen in RuleCNL, is er een plugin voor de Eclipse IDE die automatisch zinnen kan aanvullen en de structuur van bestaande zinnen aangeeft door het kleuren ervan. Bovendien is er een visuele representatie van het domein om de gebruiker te helpen bij het schrijven van het vocabularium.
+
+\subsection{Computationele linguïstiek} Binnen het domein van de computationele linguïstiek zijn er al 2 belangrijke CNL's opgesteld die vertaald kunnen worden naar formele modellen: Attempto Controlled English (ACE) en Processable English (PENG). Beiden talen lijken op elkaar en hebben gelijkaardige tools om mee te werken. In de rest van deze sectie volgt eerst een bespreking van ACE. Daarna bespreken we PENG. Hierbij ligt de nadruk op de gelijkenissen en verschillen met ACE. We sluiten af met een beschrijving van hoe deze twee talen geïmplementeerd zijn.
+
+\subsubsection{Attempto Controlled English (ACE)}
 \paragraph{} Attempto Controlled English\cite{Fuchs2008} is een gestructureerde taal voor kennisrepresentatie. Het is een subset van Engels die naar een subset van eerste-orde-logica vertaald. Het is echter wel een formele taal: elke zin in ACE heeft slechts één betekenis, ook al is de Engelse zin ambigu. Om de juiste betekenis te kennen, kan men gebruik maken van de parafraseertool van ACE. Deze tool zet de interne representatie terug om naar één of meerdere zinnen in ACE. Op die manier kan men niet alleen de betekenis van de zin leren, maar ook de taal zelf.
 
 ACE is een general purpose CNL: Het bevat een ingebouwd vocabularium. De gebruiker moet dus zelf geen vocabularium opstellen en kan direct beginnen met het schrijven van de specificatie. Het nadeel aan deze aanpak is dat ACE dus ook geen domeinkennis kan gebruiken voor het analyseren van de zinnen. Sommige constructies moeten daarom met een koppelteken geschreven worden. Zo wordt er in \cite{ACEConstructionRules} het voorbeeld gegeven van \example{A student is interested-in a course} en \example{A student is interested in a classroom}.
@@ -87,7 +97,7 @@ APE en RACE zijn de twee belangrijkste tools. Er zijn er echter nog veel meer. Z
 
 Over het algemeen is ACE een zeer uitgebreide taal. Veel Engelse zinnen zijn ook geldige ACE zinnen, echter niet allemaal. Dit zorgt ervoor dat het soms niet duidelijk is welke zinnen geldig zijn en welke niet. Volgens \cite{Fuchs2008} heeft een gebruiker 2 dagen nodig om de taal te leren.
 
-\subsubsection{PENG}
+\subsubsection{Processable English (PENG)}
 \paragraph{} Andere talen zoals PENG\cite{Schwitter2002} zijn makkelijker om te leren. PENG is ook een CNL die vertaald naar DRS-structuren. In tegenstelling tot ACE bevat PENG geen groot ingebouwd lexicon. De gebruiker moet zelf de woorden aanbrengen die gebruikt worden. De gebruiker kan dit doen tijdens het bewerken en moet dus niet op voorhand aangeven wat het lexicon is. De categorieën voor deze domeinspecifieke woorden zijn: zelfstandig naamwoord, bijvoeglijk naamwoord, werkwoord en bijwoord. PENG biedt ook de mogelijkheid om synoniemen of afkortingen te introduceren. Op die manier kan de specificatie vlotter gemaakt worden. Naast de domeinspecifieke woorden kent PENG ook een aantal functionele woorden die ingebakken zitten in de taal. Deze woorden helpen PENG om de zinsconstructies te herkennen.
 
 Net zoals ACE kent PENG het principe van constructieregels en interpretatieregels. De constructieregels bepalen welke zinnen deel zijn van de taal. Bij PENG zijn deze regels eenvoudiger omdat de taal zeer simpel gehouden is. Op die manier willen ze het makkelijker maken om zinnen te maken in de taal. Over het algemeen lijken de constructieregels van PENG en ACE veel op elkaar.
@@ -234,11 +244,11 @@ Door gebruik te maken van feature structures is de grammatica simpeler en leesba
 \paragraph{Conclusie} DCG's is een uitbreiding op contextvrije grammatica's uit de wereld van logisch programmeren. Feature structures en Discourse Representation Structures zijn concepten uit de linguïstiek. Ze worden gebruikt om de natuurlijke taal en haar semantiek te modelleren. Zo helpen feature structures om een explosie van het aantal grammatica regels te voorkomen. Discourse Representation Structures worden dan weer vooral gebruikt om de coreferentie-analyse te vergemakkelijken. Beiden concepten passen mooi binnen ACE en PENG omdat deze talen ook ontstaan zijn in het vakgebied van computationele linguïstiek.
 
 % TODO a principled approach to CNL's
+% TODO: evaluation CNL
 % TODO: computer linguistic vs computer science!!!
 
 % TODO: Korte samenvatting van ACE en PENG en dan vooral vergelijken
 % TODO: Ander werk even kort voorstellen.
-% TODO: ~15 papers is genoeg als referenties
 
 % \subsection{Interessante papers} */
 % \subsubsection{Done} */
@@ -246,25 +256,27 @@ Door gebruik te maken van feature structures is de grammatica simpeler en leesba
 %   \item ACE\cite{Fuchs2008} (\cite{Fuchs}, Master Thesis\cite{Dellis2010}) */
 %   \item PENG\cite{Schwitter2002, Schwitter2004b, Schwitter2003, Schwitter2006}, (PENG Light\cite{Schwitter2008, White2009}), PENG D\cite{Schwitter2004}, ook van Schwitter:\cite{Schwitter2005}  */
 %   \item Writing support for CNL's\cite{Kuhn2008}  */
+%   \item Overzicht + classificatie\cite{Kuhn2014} */
 % \end{enumerate} */
 
-% \subsubsection{Todo} */
-% \begin{enumerate} */
-%   \item A principled approach to CNL's\cite{Kuhn2013}  */
-%   \item Evaluation CNL\cite{Kuhn2010} */
-%   \item Overzicht + classificatie\cite{Kuhn2014} */
-%   \item ------------------------------------------------------------ */
-%   \item Model checking\cite{Flake2002, Konrad2005, Nelken, Jak2008} */
-%   \item Lijst van ambiguïteiten \cite{Berry2003}  */
-%   \item RuleSpeak\cite{Ross2009a, Ross2013, Ross2013a, Ross2009}  */
-%   \item RuleCNL\cite{Njonko2014}  */
-%   \item CELT\cite{Pease2010, Dellis2010} */
-%   \item SBVR\cite{Spreeuwenberg2010, Levy2013}  */
-% \end{enumerate} */
+% \subsubsection{Todo}
+% \begin{enumerate}
+%   \item A principled approach to CNL's\cite{Kuhn2013}
+%   \item Evaluation CNL\cite{Kuhn2010}
+%   \item ------------------------------------------------------------
+%   \item Model checking\cite{Flake2002, Konrad2005, Nelken, Jak2008}
+%   \item Lijst van ambiguïteiten \cite{Berry2003}
+%   \item RuleSpeak\cite{Ross2009a, Ross2013, Ross2013a, Ross2009}
+%   \item RuleCNL\cite{Njonko2014}
+%   \item CELT\cite{Pease2010, Dellis2010}
+%   \item SBVR\cite{Spreeuwenberg2010, Levy2013}
+% \end{enumerate}
 
 \section{Planning}
-TODO: write
+Momenteel kan ik al zinnen vertalen naar eerste-orde-logica. Hier zitten wel nog een aantal kleine foutjes in.
+Gedurende de blok- en examenperiode plan ik geen thesiswerk in. In februari wil ik het vocabularium formaliseren en gebruiken bij het parsen van zinnen voor de theorie. Ik wil het vocabularium dan ook uit natuurlijke taal kunnen afleiden. In maart wil ik verdere uitbreidingen van de taal bekijken die de formele expressiviteit verhogen (definities, aritmatiek, aggregaten, ...). In april wil ik al beginnen schrijven aan de tekst. Verder wil ik dan een groter probleem uitdrukken in de nieuwe natuurlijke taal om te testen hoe expressief ze is op formeel vlak en hoe leesbaar de specificatie is voor reële problemen. In mei plan ik enkel nog te schrijven aan mijn thesis.
 
+\pagebreak
 \section{Referenties}
 \bibliographystyle{unsrt}
 \bibliography{tekst}
