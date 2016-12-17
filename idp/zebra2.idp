@@ -82,12 +82,14 @@ drinks(ukrainian,tea).
 // The house in which the person who smokes Chesterfields lives, is next to the house in which the person who keeps the fox lives
 //!x1: (!x2: smokes(x2,chesterfields) => lives(x2,x1)) => (!x3: (!x4: lives(x4,x3) => keeps(x4,fox)) => next(x1,x3)).
 // Every house in which every person who smokes Kools lives, is next to the house in which the person who keeps the horse lives
-!x1: (!x2: smokes(x2,kools) => lives(x2,x1)) => (!x3: (!x4: lives(x4,x3) => keeps(x4,horse)) => next(x1,x3)).
+!x1: (!x2: smokes(x2,kools) => lives(x2,x1)) => (!x3: (!x4: keeps(x4,horse) => lives(x4,x3)) => next(x1,x3)).
 
 //The person who smokes chesterfields lives in a house that is next to the house in which the person who keeps the fox lives
-!x1: smokes(x1,chesterfields) => ?x2: lives(x1, x2) & !x3: (!x4: keeps(x4,fox) & lives(x4,x3) => next(x2, x3)).
+//!x1: smokes(x1,chesterfields) => ?x2: lives(x1, x2) & !x3: (!x4: keeps(x4,fox) & lives(x4,x3) => next(x2, x3)).
+!x1: smokes(x1,chesterfields) => (?x2: (!x3: (!x4: keeps(x4,fox) => lives(x4,x3)) => next(x2,x3)) & lives(x1,x2)).
 //The person who smokes kools lives in a house that is next to the house in which the person who keeps the horse lives
-//!x1: smokes(x1,kools) => (?x2: lives(x1, x2) & !x3: (!x4: keeps(x4,horse) & lives(x4,x3) => next(x2, x3))).
+//!x1: smokes(x1,kools) => (?x2: (!x3: (!x4: keeps(x4,horse) => lives(x4,x3)) => next(x2,x3)) & lives(x1,x2)).
+
 
 // The person who smokes Lucky Strike, drinks Orange Juice
 !x1: smokes(x1,luckyStrike) => drinks(x1,orangeJuice).

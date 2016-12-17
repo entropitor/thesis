@@ -243,7 +243,7 @@
   \begin{frame}{Zebra puzzel\cite{ZebraPuzzle}}
     \begin{enumerate}
       \setcounter{enumi}{15}
-      \hitem \badsentence{Kools are smoked in the house next to the house where the horse is kept.}{The house in which the person who smokes Kools lives, is next to the house in which the person who keeps a horse lives.}{$ \forall x1: \forall x2: smokes(x2,kools) \Rightarr\Rightarr\Rightarr\Rightarr\Rightarr\Rightarr\Rightarr\Rightarr\Rightarrow [lives(x2,x1) \land \forall x3: next(x1,x3) \land \{\forall x4: keeps(x4,horse) \Rightarrow lives(x4,x3)\}].$}{$\forall x1: [\forall x2: smokes(x2,kools) \Rightarrow lives(x2,x1)] \Rightarrow [\forall x3: \{\forall x4: lives(x4,x3) \Rightarrow keeps(x4,horse)\} \Rightarrow next(x1,x3)].$}
+      \hitem \badsentence{Kools are smoked in the house next to the house where the horse is kept.}{The house in which the person who smokes Kools lives, is next to the house in which the person who keeps a horse lives.}{$ \forall x1: \forall x2: smokes(x2,kools) \Rightarr\Rightarr\Rightarr\Rightarr\Rightarr\Rightarr\Rightarr\Rightarr\Rightarrow [lives(x2,x1) \land \forall x3: next(x1,x3) \land \{\forall x4: keeps(x4,horse) \Rightarrow lives(x4,x3)\}].$}{$\forall x1: smokes(x1,kools) \Rightarrow \bigl(\exists x2: \bigl[\forall x3: \bigl\{\forall x4: keeps(x4,horse) \Rightarrow lives(x4,x3)\bigr\} \Rightarrow next(x2,x3)\bigr] \land lives(x1,x2)\bigr).$}
       \nnote{zelfde structuur als vorige zin. Gewoon om aan te geven dat beide mogelijk zijn}
       
       \hitem \sentence{\textit{Domeinkennis}}{Every animal is kept by exactly 1 person.}{$\forall x1: \exists=1 x2: kept(x2,x1).$}
