@@ -1,4 +1,4 @@
-\documentclass[notes]{beamer}
+\documentclass[notes, dvipsnames]{beamer}
 
 \usepackage{default}
 \usepackage{pgfpages}
@@ -7,6 +7,7 @@
 
 \usetheme{Szeged}
 \usecolortheme{dolphin}
+\usecolortheme{beaver}
 \setbeamertemplate{note page}{\pagecolor{yellow!25}\insertnote}
 %\setbeamertemplate{note page}{\pagecolor{white}\insertnote}
 
@@ -35,6 +36,31 @@
 }
 \setbeameroption{hide notes} % Only slides
 \setbeameroption{show notes on second screen=right} % Both
+
+\newcommand{\sentence}[3]{
+  \alt<.>{
+    #1 \\
+    \textcolor{Blue}{#2} \\
+    \textcolor{ForestGreen}{#3} \\
+  }{
+    #1 \\
+    #2 \\
+    #3 \\
+  }
+}
+\newcommand{\badsentence}[4]{
+  \alt<.>{
+    #1 \\
+    \textcolor{Blue}{#2} \\
+    \textcolor{Red}{#3} \\
+    \textcolor{ForestGreen}{#4} \\
+  }{
+    #1 \\
+    #2 \\
+    #3 \\
+    #4 \\
+  }
+}
 
 %\graphicspath{ {../images/} }
 
@@ -159,18 +185,18 @@
       \hitem There are five houses.
       \nnote{Moeilijk af te dwingen met de theorie. Dit is iets voor vocabularium of structuur}
 
-      \hitem The Spaniard owns the dog. \\ The Spaniard keeps the dog. \\ $keeps(spaniard,dog).$ \\
-      \item The Japanese smokes Parliaments. \\ The Japanese smokes Parliaments. \\ $smokes(japanese,parliaments).$ \\
-      \item The Ukrainian drinks tea. \\ The Ukrainian drinks tea. \\ $drinks(ukrainian,tea).$ \\
+      \hitem \sentence{The Spaniard owns the dog.}{The Spaniard keeps the dog.}{$keeps(spaniard,dog).$}
+      \item \sentence{The Japanese smokes Parliaments.}{The Japanese smokes Parliaments.}{$smokes(japanese,parliaments).$}
+      \item \sentence{The Ukrainian drinks tea.}{The Ukrainian drinks tea.}{$drinks(ukrainian,tea).$}
       \nnote{Werkwoorden mappen op predicaten}
     \end{enumerate}
   \end{frame}
   \begin{frame}{Zebra puzzel\cite{ZebraPuzzle}}
     \begin{enumerate}
       \setcounter{enumi}{4}
-      \hitem The Englishman lives in the red house. \\ The Englishman lives in the red house. \\ $\forall x1: color(x1,red) \Rightarrow lives(englishman,x1).$ \\
-      \item The Norwegian lives in the first house. \\ The Norwegian lives in the first house. \\ $\forall x1: position(x1,first) \Rightarrow lives(norwegian,x1).$ \\
-      \item The Lucky Strike smoker drinks orange juice. \\ The person who smokes Lucky Strike, drinks Orange Juice. \\ $\forall x1: smokes(x1,[lucky,strike]) \Rightarrow drinks(x1,[orange,juice]).$ \\
+      \hitem \sentence{The Englishman lives in the red house.}{The Englishman lives in the red house.}{$\forall x1: color(x1,red) \Rightarrow lives(englishman,x1).$}
+      \item \sentence{The Norwegian lives in the first house.}{The Norwegian lives in the first house.}{$\forall x1: position(x1,first) \Rightarrow lives(norwegian,x1).$}
+      \item \sentence{The Lucky Strike smoker drinks orange juice.}{The person who smokes Lucky Strike, drinks Orange Juice.}{$\forall x1: smokes(x1,[lucky,strike]) \Rightarrow drinks(x1,[orange,juice]).$}
       \nnote{Adjectieven mappen ook op predicaten. Voorlopig op binaire predicaten, unaire predicaten kan logischer zijn, maar dan moet er nog connectie gemaakt worden met de binaire predicaten
       \\ Bepaalde lidwoorden wordt voorlopig op forall gemapt, moet nog verder onderzocht worden in minder artificieel probleem}
     \end{enumerate}
@@ -178,44 +204,49 @@
   \begin{frame}{Zebra puzzel\cite{ZebraPuzzle}}
     \begin{enumerate}
       \setcounter{enumi}{7}
-      \hitem The Old Gold smoker owns snails. \\ There is a person who smokes Old Gold and keeps the snail. \\ $\exists x1: keeps(x1,snail) \land smokes(x1,[old,gold]).$ \\
+      \hitem \sentence{The Old Gold smoker owns snails.}{There is a person who smokes Old Gold and keeps the snail.}{$\exists x1: keeps(x1,snail) \land smokes(x1,[old,gold]).$}
       \nnote{Onbepaalde lidwoorden mapt op existentiele. And wordt vertaald naar logische and}
-      \hitem Coffee is drunk in the green house. \\ There is a person who lives in the green house and drinks coffee. \\ $\exists x1: drinks(x1,coffee) \land [\forall x2: color(x2,green) \Rightarrow lives(x1,x2)].$ \\
-      \item Kools are smoked in the yellow house. \\ There is a person who lives in a yellow house and smokes Kools. \\ $\exists x1: smokes(x1,kools) \land [\exists x2: color(x2,yellow) \land lives(x1,x2)].$ \\
+      \hitem \sentence{Coffee is drunk in the green house.}{There is a person who lives in the green house and drinks coffee.}{$\exists x1: drinks(x1,coffee) \land [\forall x2: color(x2,green) \Rightarrow lives(x1,x2)].$}
+      \item \sentence{Kools are smoked in the yellow house.}{There is a person who lives in a yellow house and smokes Kools.}{$\exists x1: smokes(x1,kools) \land [\exists x2: color(x2,yellow) \land lives(x1,x2)].$}
       \nnote{2 zinnen met dezelfde structuur. 2e deel komt naar voor door manier van opbouwen van formules}
     \end{enumerate}
   \end{frame}
   \begin{frame}{Zebra puzzel\cite{ZebraPuzzle}}
     \begin{enumerate}
-      \setcounter{enumi}{8}
-      \hitem Milk is drunk in the middle house. \\ The person who lives in the third house, drinks milk. \\ $\forall x1: drinks(x1,milk) \Rightarrow [\forall x2: position(x2,third) \Rightarrow lives(x1,x2)].$ \\
+      \setcounter{enumi}{10}
+      \hitem \badsentence{Milk is drunk in the middle house.}{The person who lives in the third house, drinks milk.}{$\forall x1: drinks(x1,milk) \Rightarrow [\forall x2: position(x2,third) \Rightarrow lives(x1,x2)].$}{$\forall x1: [\forall x2: position(x2,third) \Rightarrow lives(x1,x2)] \Rightarrow drinks(x1, milk).$}
       \nnote{Nog een foute vertaling. In deze context klopt het wel maar niet de vertaling van de EN zin. Kan opgelost worden voor deze zin door ``the'' op exists te mappen maar zou nog altijd problemen geven bij Every person who...}
-      \hitem The Norwegian lives next to the blue house. \\ The Norwegian lives in a house that is next to the blue house. \\ $\exists x1: lives(norwegian,x1) \land [\forall x2: color(x2,blue) \Rightarrow [is,next,to](x1,x2)].$ \\
+      \hitem \sentence{The Norwegian lives next to the blue house.}{The Norwegian lives in a house that is next to the blue house.}{$\exists x1: lives(norwegian,x1) \land [\forall x2: color(x2,blue) \Rightarrow next(x1,x2)].$}
     \end{enumerate}
   \end{frame}
   \begin{frame}{Zebra puzzel\cite{ZebraPuzzle}}
     \begin{enumerate}
       \setcounter{enumi}{12}
-      \hitem The green house is immediately to the right of the ivory house. \\ The position of the green house is equal to the position of the ivory house plus 1. \\ $\forall x1: color(x1,green) => [\forall x2: color(x2,ivory) => position(x1)=position(x2)+1].$
+      \hitem \sentence{The green house is immediately to the right of the ivory house.}{The position of the green house is equal to the position of the ivory house plus 1.}{$\forall x1: color(x1,green) => [\forall x2: color(x2,ivory) => position(x1)=position(x2)+1].$} 
       \nnote{er zit al een beetje aritmetiek in de taal. Kan nog uitgebreid worden}
     \end{enumerate}
   \end{frame}
   \begin{frame}{Zebra puzzel\cite{ZebraPuzzle}}
     \begin{enumerate}
       \setcounter{enumi}{13}
-      \hitem \textit{Wereldkennis} \\ A house A is next to a house B if the absolute value of the difference between the position of house A and the position of house B is equal to 1. \\ $\forall a, b: [is,next,to](a, b) \leftarrow |position(a)-position(b)|=1.$
+      \hitem \badsentence{\textit{Domeinkennis}}{A house A is next to a house B if the absolute value of the difference between the position of house A and the position of house B is equal to 1.}{\textit{error}}{$\forall a, b: next(a, b) \leftarrow |position(a)-position(b)|=1.$}
       \nnote{``Next to'' is concept uit de wereld die we expliciet moeten vertalen. Vertaling naar logica werkt nog niet}
-      \hitem The man who smokes Chesterfields lives in the house next to the man with the fox. \\ The house in which the person who smokes Chesterfields lives, is next to the house in which the person who keeps the fox lives. \\ $\forall x1: \forall x2: smokes(x2,chesterfields) \Rightarrow [lives(x2,x1) \land \forall x3: [is,next,to](x1,x3) \land \{\forall x4: keeps(x4,fox) \Rightarrow lives(x4,x3)\}].$
-      \nnote{veruit de moeilijkste zin uit Zebra Puzzle}
+    \end{enumerate}
+  \end{frame}
+  \begin{frame}{Zebra puzzel\cite{ZebraPuzzle}}
+    \begin{enumerate}
+      \setcounter{enumi}{14}
+      \hitem \badsentence{The man who smokes Chesterfields lives in the house next to the man with the fox.}{The person who smokes Chesterfields lives in a house that is next to the house in which the person who keeps the fox lives.}{$\forall x1: smokes(x1,chesterfields) \Rightarrow [\exists x2: lives(x1,x2) \land \{\forall x3: next(x2,x3) \land \forall x4: keeps(x4,fox) \Rightarrow lives(x4,x3)\}].$}{$\forall x1: smokes(x1,chesterfields) \Rightarrow [\exists x2: lives(x1, x2) \land \forall x3: \{\forall x4: (keeps(x4,fox) \land lives(x4,x3)) \Rightarrow next(x2, x3)\}].$}
+      \nnote{veruit de moeilijkste zin uit Zebra Puzzle: 3 geneste bijzinnen. Lukt nog niet, maar vertaling komt eraan}
     \end{enumerate}
   \end{frame}
   \begin{frame}{Zebra puzzel\cite{ZebraPuzzle}}
     \begin{enumerate}
       \setcounter{enumi}{15}
-      \hitem Kools are smoked in the house next to the house where the horse is kept. \\ The house in which the person who smokes Kools lives, is next to the house in which the person who keeps a horse lives. \\ $ \forall x1: \forall x2: smokes(x2,kools) \Rightarr\Rightarr\Rightarr\Rightarr\Rightarr\Rightarr\Rightarr\Rightarr\Rightarrow [lives(x2,x1) \land \forall x3: [is,next,to](x1,x3) \land \{\forall x4: keeps(x4,horse) \Rightarrow lives(x4,x3)\}].$ \\
-      \nnote{zelfde structuur als vorige zin}
+      \hitem \badsentence{Kools are smoked in the house next to the house where the horse is kept.}{The house in which the person who smokes Kools lives, is next to the house in which the person who keeps a horse lives.}{$ \forall x1: \forall x2: smokes(x2,kools) \Rightarr\Rightarr\Rightarr\Rightarr\Rightarr\Rightarr\Rightarr\Rightarr\Rightarrow [lives(x2,x1) \land \forall x3: next(x1,x3) \land \{\forall x4: keeps(x4,horse) \Rightarrow lives(x4,x3)\}].$}{$\forall x1: [\forall x2: smokes(x2,kools) \Rightarrow lives(x2,x1)] \Rightarrow [\forall x3: \{\forall x4: lives(x4,x3) \Rightarrow keeps(x4,horse)\} \Rightarrow next(x1,x3)].$}
+      \nnote{zelfde structuur als vorige zin. Gewoon om aan te geven dat beide mogelijk zijn}
       
-      \hitem \textit{Domeinkennis} \\ Every animal is kept by exactly 1 person. \\ $\forall x1: \exists=1 x2: kept(x2,x1).$
+      \hitem \sentence{\textit{Domeinkennis}}{Every animal is kept by exactly 1 person.}{$\forall x1: \exists=1 x2: kept(x2,x1).$}
       \nnote{kept: passief, kennis van vervoegingen nodig}
     \end{enumerate}
   \end{frame}

@@ -1,0 +1,136 @@
+// Zebra Puzzle (https://en.wikipedia.org/wiki/Zebra_Puzzle)
+// There are five houses.
+// The Englishman lives in the red house.
+// The Spaniard owns the dog.
+// Coffee is drunk in the green house.
+// The Ukrainian drinks tea.
+// The green house is immediately to the right of the ivory house.
+// The Old Gold smoker owns snails.
+// Kools are smoked in the yellow house.
+// Milk is drunk in the middle house.
+// The Norwegian lives in the first house.
+// The man who smokes Chesterfields lives in the house next to the man with the fox.
+// Kools are smoked in the house next to the house where the horse is kept.
+// The Lucky Strike smoker drinks orange juice.
+// The Japanese smokes Parliaments.
+// The Norwegian lives next to the blue house.
+// Now, who drinks water? Who owns the zebra?
+
+// In the interest of clarity, it must be added that each of the five houses is painted a different color, and their inhabitants are of different national extractions, own different pets, drink different beverages and smoke different brands of American cigarets [sic]. One other thing: in statement 6, right means your right.
+
+vocabulary V {
+    // There are exactly 5 ...: ...
+    type Person constructed from {englishman, spaniard, ukrainian, japanese, norwegian}
+    type Color constructed from {red, green, ivory, yellow, blue}
+    type Animal constructed from {dog, zebra, snail, fox, horse}
+    type Drink constructed from {coffee, tea, milk, orangeJuice, water}
+    type Cigarette constructed from {chesterfields, oldGold, luckyStrike, kools, parliaments}
+
+    // There are exaclty 5 houses identified by its position.
+    // identified implies nat
+    type House = {1; 2; 3; 4; 5} isa nat
+
+    // A house can be next to multiple other houses.
+    // other => not to itself
+    next(House, House)
+    
+    color(House, Color)
+    lives(Person, House)
+    keeps(Person, Animal)
+    drinks(Person, Drink)
+    smokes(Person, Cigarette)
+    position(House): House
+}
+
+structure S : V {
+}
+
+theory T : V {
+// The Englishman lives in the red house
+!x1: color(x1,red) => lives(englishman,x1).
+
+//The Spaniard keeps the dog
+keeps(spaniard,dog).
+
+//There is a person who lives in the green house and drinks coffee
+? x1: drinks(x1,coffee) & !x2: color(x2,green) => lives(x1,x2).
+
+//The Ukrainian drinks tea
+drinks(ukrainian,tea).
+
+// The position of the green house is equal to the position of the ivory house plus 1
+!x1: color(x1,green) => (!x2: color(x2,ivory) => position(x1)=position(x2)+1).
+
+// There is a person who smokes Old Gold and keeps the snail
+?x1: keeps(x1,snail) & smokes(x1,oldGold).
+
+// There is a person who lives in a yellow house and smokes Kools
+?x1: smokes(x1,kools) & (?x2: color(x2,yellow) & lives(x1,x2)).
+
+// The person who lives in the third house, drinks milk
+//!x1: drinks(x1,milk) => (!x2: position(x2)=3 => lives(x1,x2)).
+!x1: (!x2: position(x2)=3 => lives(x1,x2)) => drinks(x1, milk).
+
+// The Norwegian lives in the first house
+!x1: position(x1)=1 => lives(norwegian,x1).
+
+// A house A is next to a house B if the absolute value of the difference between the position of house A and the position of house B is equal to 1
+{ 
+        ! a, b: next(a, b) <- abs(-(position(a), position(b))) = 1.
+}
+
+// The house in which the person who smokes Chesterfields lives, is next to the house in which the person who keeps the fox lives
+//!x1: (!x2: smokes(x2,chesterfields) => lives(x2,x1)) => (!x3: (!x4: lives(x4,x3) => keeps(x4,fox)) => next(x1,x3)).
+// Every house in which every person who smokes Kools lives, is next to the house in which the person who keeps the horse lives
+//!x1: (!x2: smokes(x2,kools) => lives(x2,x1)) => (!x3: (!x4: lives(x4,x3) => keeps(x4,horse)) => next(x1,x3)).
+
+//The person who smokes chesterfields lives in a house that is next to the house in which the person who keeps the fox lives
+//!x1: smokes(x1,chesterfields) => ?x2: lives(x1, x2) & !x3: (!x4: keeps(x4,fox) & lives(x4,x3) => next(x2, x3)).
+//The person who smokes kools lives in a house that is next to the house in which the person who keeps the horse lives
+!x1: smokes(x1,kools) => (?x2: lives(x1, x2) & !x3: (!x4: keeps(x4,horse) & lives(x4,x3) => next(x2, x3))).
+
+// The person who smokes Lucky Strike, drinks Orange Juice
+!x1: smokes(x1,luckyStrike) => drinks(x1,orangeJuice).
+
+// The Japanese smokes Parliaments
+smokes(japanese,parliaments).
+
+//The Norwegian lives in a house that is next to the blue house
+?x1: lives(norwegian,x1) & !x2: color(x2,blue) => next(x1,x2).
+
+!x1: ?=1 x2: keeps(x2,x1).
+!x1: ?=1 x2: color(x2,x1).
+!x1: ?=1 x2: lives(x2,x1).
+!x1: ?=1 x2: drinks(x2,x1).
+!x1: ?=1 x2: smokes(x2,x1).
+!x1 [House]: ?=1 x2 [House]: position(x2) = x1.
+    
+!x1: ?=1 x2: keeps(x1,x2).
+!x1: ?=1 x2: color(x1,x2).
+!x1: ?=1 x2: lives(x1,x2).
+!x1: ?=1 x2: drinks(x1,x2).
+!x1: ?=1 x2: smokes(x1,x2).
+    
+! x [House] y [House]: position(x) = y => x = y.
+! x [House]: position(x) = x.
+    
+    // "other"
+    //! x y: next(x, y) => x ~= y.
+}
+
+query DrinksWater : V {
+    {p: drinks(p, water)}
+}
+
+query KeepsZebra : V {
+    {p: keeps(p, zebra)}
+}
+
+procedure main() {
+    stdoptions.nbmodels = 3;
+	printmodels(modelexpand(T,S))
+    model = modelexpand(T,S)
+    print(query(DrinksWater, model[1]))
+    print(query(KeepsZebra, model[1]))
+    print('Correct solution: Norwegian & Japanese')
+}

@@ -10,13 +10,13 @@ process(Sentence, Facts, _Tree, Theory) :-
     %simplify_conditions(Facts.conditions, SimplifiedConditions),
     combine_conditions(Facts.conditions, QuantifiedVariables, Theory),
     !,
-    writeln(Sentence),
+    write(Sentence), write('.'), nl,
     %writeln(Tree),
     %display_tree(vertical, Tree),
     %writeln(Facts.conditions),
     %writeln(SimplifiedConditions),
     %writeln(Theory),
-    once(maplist(write_theory, Theory)), nl,
+    once(maplist(write_theory, Theory)), write('.'), nl,
     nl.
 process(Sentence, Facts, _Tree, []) :-
     writeln(Sentence),
