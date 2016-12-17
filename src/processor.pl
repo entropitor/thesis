@@ -2,8 +2,7 @@
 
 % process the list of atoms given the list of conditions
 % and the given parse tree resulting in the theory.
-process(Atoms, Facts, _Tree, Theory) :-
-    atomics_to_string(Atoms, ' ', Sentence),
+process(Sentence, Facts, _Tree, Theory) :-
     reverse_quantors(Facts.quantors, ReversedQuantors),
     %writeln(ReversedQuantors),
     simplify_quantors(ReversedQuantors, QuantifiedVariables),
@@ -16,11 +15,10 @@ process(Atoms, Facts, _Tree, Theory) :-
     %display_tree(vertical, Tree),
     %writeln(Facts.conditions),
     %writeln(SimplifiedConditions),
-    writeln(Theory),
+    %writeln(Theory),
     once(maplist(write_theory, Theory)), nl,
     nl.
-process(Atoms, Facts, _Tree, []) :-
-    atomics_to_string(Atoms, ' ', Sentence),
+process(Sentence, Facts, _Tree, []) :-
     writeln(Sentence),
     writeln('Unknown: FAILED ERROR'),
     writeln(Facts),

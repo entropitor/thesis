@@ -1,6 +1,6 @@
-:- module(parser, [parse/2,
+:- module(parser, [parse/3,
                    parse_string/3,
-                   all_parses/2,
+                   all_parses/3,
                    parse_using/3,
                    parse_problem/2,
                    parse_sentences/2]).
@@ -10,17 +10,17 @@
 :- use_module(problems).
 :- use_module(processor).
 
-parse(Atoms, Tree) :-
+parse(Sentence, Atoms, Tree) :-
     phrase(grammar:s(Tree, Facts), Atoms),
-    process(Atoms, Facts, Tree, _Theory).
+    process(Sentence, Facts, Tree, _Theory).
     %show_rules(Atoms, Facts, Tree).
-parse_string(Sentence, Tree, Atoms) :-
+parse_string(Sentence, Atoms, Tree) :-
     input_atoms(Sentence, Atoms),
-    parse(Atoms, Tree).
+    parse(Sentence, Atoms, Tree).
 
 % find all parses for the list of atoms
-all_parses(Atoms, Parses) :-
-    findall(Tree, parse(Atoms, Tree), Parses).
+all_parses(Sentence, Atoms, Parses) :-
+    findall(Tree, parse(Sentence, Atoms, Tree), Parses).
 
 % parse_using([atoms], [remaining_atoms], [grammar_symbols])
 % parses the list of atoms using the list of grammar_symbols leaving the list of remaining atoms
@@ -45,7 +45,7 @@ parse_problem(Name, FirstFailedSentence) :-
 % parse a list of sentences
 parse_sentences(Sentences, FirstFailedSentence) :-
     maplist(input_atoms, Sentences, Atoms),
-    maplist(all_parses, Atoms, Parses),
+    maplist(all_parses, Sentences, Atoms, Parses),
     maplist(length, Parses, NbMatches),
     pairs_keys_values(Pairs, Atoms, NbMatches),
     exclude(success, Pairs, FailedPairs),
