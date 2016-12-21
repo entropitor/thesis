@@ -242,27 +242,51 @@ Bovenstaande grammatica kan simpele wiskunde expressies omvormen tot de wiskundi
                    +
                    [.expression(20) [.factor(20) [.number(4) 4 ] * [.factor(5) [.number(5) 5 ]]]]]]
 
-De grammatica is als volgt opgebouwd: Een expressie is ofwel een factor ofwel een term. De waarde van de expressie komt overeen met de waarde van de factor of de term.
+De prologcode in de accolades heeft twee functies. Enerzijds berekent die de waarde van een subexpressie zoals een factor of een term. Anderzijds beperkt de prologcode de grammatica. Een numeral bestaat uit 1 token maar enkel als dat token een getal is volgens prolog. Zo'n beperking in prolog kan dus ook gebruikt worden om uit de beperkingen van een contextvrije grammatica te treden.
 
-Een factor is ofwel een getal, ofwel een vermenigvuldiging van een getal met een factor. In het laatste geval is de waarde van de factor gelijk aan de vermenigvuldiging van de waardes van de 2 subexpressies.
-De uitdrukking voor een term is gelijkaardig aan die van een factor.
+Een laatste opmerking bij deze grammatica is de asymmetrische vorm voor factoren en termen. Een factor is bijvoorbeeld niet gedefinieerd als de vermenigvuldiging van 2 factoren. Dit komt omdat DCG's naast hun declaratieve definities van grammatica's ook een uitvoeringsstrategie hebben. M.a.w. men krijgt er gratis een parser bij. Deze parser werkt, net als prolog, top-down en van links naar rechts. In het geval van links recursieve regels, zou de parser in een oneindige lus kunnen geraken. Men kan echter altijd een grammatica omvormen zodat deze niet langer links recursief is.
 
-Ten slotte definiëren we een getal als een terminaal maar daarbij testen we nog eens of de waarde een getal is volgens prolog. \example{two + four * five} is dus geen geldige uitdrukking.
+\paragraph{} DCG's zonder prolog code, zijn zeer declaratief. Men kan ze namelijk ook puur als definitie van een grammatica beschouwen. Zo kan men een chart parser schrijven die gebruik maken van deze definities van de grammatica. Chart parsers zijn interessant voor CNL's omdat ze onthouden welke partiële en volledige constituenten ze al gevonden hebben \cite{Kuhn2008}. Daardoor is er geen nood aan backtracking wat de parser sneller maakt. Men moet immers niet telkens opnieuw bewijzen dat \example{een man} een naamwoordgroep is. Bovendien kan men uit de partiële constituent afleiden welke woordcategorieën kunnen volgen op een partiële zin. Ten slotte kan men bij het toevoegen van een woord aan een partiële zin, de resultaten van de vorige parse blijven gebruiken, wat een extra performantiewinst geeft t.o.v. de gratis DCG parser bij incrementele parses. Het is daarom dat chart parsers gebruikt worden in de suggestietools van CNL's. Tijdens het schrijven van de zinnen, kan men namelijk heel snel voorspellen welke woordcategorieën kunnen volgen, wat de gebruiker kan helpen bij het schrijven van grammaticaal correcte zinnen.
+PENG gebruikt zo'n chart parsers in ECOLE \cite{Schwitter2003}. ACE heeft in navolging van PENG ook AceWiki \cite{Kuhn2008} gemaakt, een subset van ACE voor semantische wiki's. AceWiki bevat ook een suggestietool. Kuhn et al. \cite{Kuhn2008} leggen in detail uit hoe zo'n chart parser gemaakt kan worden voor een CNL en vergelijken de performantie van deze parsers met de gratis parser.
 
-Merk op dat een factor niet gedefinieerd wordt als de vermenigvuldiging van 2 factoren. DCG's worden namelijk net als prolog top-down en van links naar rechts ``uitgevoerd''. Het is dus verboden om links recursieve regels te hebben in de grammatica want deze leiden tot een oneindige lus. Gelukkig is het altijd mogelijk om een links recursieve grammatica om te vormen tot een normale grammatica.
 
-\paragraph{} DCG's zonder prolog code, zijn zeer declaratief: Men kan ze als object gaan gebruiken en niet langer enkel als parser/generator. Op die manier kan men ook een chart parser schrijven voor deze grammatica's. Dit is wat PENG doet in ECOLE \cite{Schwitter2003} en ACE gebruikt in AceWiki \cite{Kuhn2008}, een subset van ACE voor semantische wiki's. Een chart parser is niet alleen sneller, het is ook makkelijk om te voorspellen wat er nog kan volgen. Op die manier kan men een editor maken die voorspelt welke woordcategorie moet volgen. Maar het is ook mogelijk om in een volledige zin aan te duiden waarom die zin ongeldig is. Bijvoorbeeld in de zin \example{zag haar}, kan men zeggen \texttt{Onverwacht werkwoord ``zag''. Een onderwerp (noun phrase) werd verwacht}. \cite{Kuhn2008} legt in detail uit hoe zo'n chart parser gemaakt kan worden.
+% TODO: herschrijf
+\paragraph{Feature structures} Naast DCG's wordt er in ACE en PENG ook gebruikt gemaakt van feature structures \cite{Shieber2003}. Een feature structure \cite{NLPCourse} is een datatype gerelateerd aan een woordgroep. Het is een soort van hashmap met als keys de (grammaticale) features en als values de waarden voor die feature. Een feature is een eigenschap van een woordgroep. Zo is er de feature \texttt{categorie} die aangeeft welke syntactische rol een woordgroep speelt in een rol (bv. \texttt{np}, \texttt{vp}, ...). Andere features geven bijvoorbeeld de naamval aan van een naamwoordgroep. Grammatica's die gebruik maken van feature structures, gebruiken unificatie voor het samenvoegen van meerdere structuren. Niet alle features moeten namelijk een waarde toegekend krijgen. Zo kan een eigennaam voorkomen als onderwerp en als lijdend voorwerp (en heeft dus geen waarde voor de feature \texttt{naamval}). Terwijl \example{ik} enkel als onderwerp kan voorkomen (en dus wel een waarde heeft voor die feature). Bovendien kan men door unificatie controleren of het onderwerp en werkwoord hetzelfde getal hebben. Blackburn en Striegnitz \cite{NLPCourse} geven de volgende grammaticale regel als voorbeeld:
 
-Wanneer DCG's als declaratieve definitie van een grammatica worden gezien en de semantiek van de uitvoering wegvalt, is het wel mogelijk om links recursieve grammatica's toe te laten. De chart parser kan hier namelijk rekening mee houden.
+\[
+  \left [
+    \begin{tabular}{lr}
+      CAT & s
+    \end{tabular}
+  \right ]
+  \rightarrow
+  \left [
+    \begin{tabular}{lr}
+      CAT & np \\
+      NAAMVAL & nom \\
+      NUM & \framebox{1}
+    \end{tabular}
+  \right ]
+  \left [
+    \begin{tabular}{lr}
+      CAT & vp \\
+      NUM & \framebox{1}
+    \end{tabular}
+  \right ]
+\]
 
-\paragraph{Feature structures} Naast DCG's wordt er in ACE en PENG ook gebruikt gemaakt van feature structures \cite{Shieber2003}. Een feature structure is een geavanceerde parse tree die vooral binnen de (computationele) linguïstiek gebruikt worden. Ze verschillen van een parse tree doordat ze een gerichte acyclische graaf zijn i.p.v. een boom. Bovendien hebben alle kinderen namen en maakt de volgorde niet uit. Men kan ze dus zien als een hashmap-achtige datastructuur waarbij de waarden ook terug een hash-map kunnen zijn maar er geen cylci zijn toegestaan. De grammatica's die gebruik maken van feature structures, gebruiken unificatie voor het samenvoegen van meerdere structuren. Niet alle features moeten namelijk een waarde toegekend krijgen. Zo kan een eigennaam voorkomen als onderwerp en als lijdend voorwerp (en heeft dus geen waarde voor de feature \texttt{naamval}). Terwijl \example{ik} enkel als onderwerp kan voorkomen (en dus wel een waarde heeft voor die feature).
+Deze regel zegt dat een zin bestaat uit een \texttt{np} gevolgd door een \texttt{vp}. De \texttt{np} moet de naamval \texttt{nom} hebben. Bovendien moet het getal van de \texttt{np} en de \texttt{vp} unificeren (de \framebox{1} kan men zien als een variabele).
 
-\paragraph{} Binnen ACE en PENG zorgen de feature structures voor de syntactische correctheid van de zinnen in de gast taal, het Engels. Via unificatie kan men namelijk testen of een bepaalde woordgroep voldoet aan de voorwaarden van de context. Deze structuren bevatten bijvoorbeeld informatie over het getal van het onderwerp en van het werkwoord. Enkel wanneer deze 2 unificeren, is de zin geldig. Op die manier zijn zinnen die in ACE en/of PENG geldig zijn, ook geldig in het Engels. Dit is gelijkaardig aan de rol van \texttt{nom} en de \texttt{acc} in voorbeeld \ref{ex:nom-acc-features}.
+\paragraph{} Binnen ACE en PENG zorgen de feature structures voor de syntactische correctheid van de zinnen in de gasttaal, het Engels. Via unificatie kan men namelijk testen of een bepaalde woordgroep voldoet aan de voorwaarden van de context. Doordat het getal van het onderwerp en het werkwoord moeten unificeren, moeten ze ook overeenkomen in getal. Op die manier zijn zinnen die in ACE en/of PENG geldig zijn, ook geldig in het Engels. Dit is gelijkaardig aan de rol van \texttt{nom} en de \texttt{acc} in voorbeeld \ref{ex:nom-acc-features}.
 
-\paragraph{} Zoals \cite{Shieber2003} aanhaalt, verschillen prolog termen van feature structures enkel doordat in prolog de volgorde en de ariteit wel een rol speelt. De \textit{namen} van de features in prolog zijn dus de index in de term. En alle features die mogelijk zijn, moeten voorkomen in de term, eventueel ongebonden. Daarom is het handiger om feature structures te gebruiken. Zo hoeft men niet alle voorkomens van een structure aan te passen voor het toevoegen van een argument. Bovendien moet men niet te onthouden op welke positie welk argument voorkomt. Qua expressiviteit zijn feature structures echter gelijkwaardig aan DCG's.
+\paragraph{} Zoals Shieber et al. \cite{Shieber2003} aanhalen, verschillen prolog termen van feature structures enkel in vorm. Zo speelt de volgorde in prolog wel een rol speelt. Bovendien kan men de features geen naam geven maar worden ze bepaald door de volgorde in de term. Ten slotte moet men steeds alle features vermelden, ook als ze ongebonden zijn. Dit maakt het moeilijker om een extra feature toe te voegen. Feature structures zijn dus handiger om te programmeren. Qua expressiviteit zijn ze echter gelijkwaardig aan DCG's. Zo is bovenstaande grammaticale regel op basis van feature structures equivalent met volgende DCG-regel:
 
-\paragraph{} Feature structuren zijn handig om de explosie van grammatica regels te voorkomen.
-\begin{ex}  Een voorbeeld uit \cite{FeatureStructuresExplosion}:
+\[
+    \texttt{s ---> np(nom, Num), vp(Num).} \\
+\]
+
+\paragraph{} Feature structures (en argumenten in DCG's) zijn handig om de explosie van grammatica regels te voorkomen.
+\begin{ex}  Een voorbeeld uit \cite{NLPCourse}:
   \label{ex:explosion}
   \begin{quote}
     \texttt{s ---> np\_{singular}, vp\_{singular}.} \\
@@ -275,6 +299,8 @@ Wanneer DCG's als declaratieve definitie van een grammatica worden gezien en de 
     \texttt{vp\_{singular} ---> transitive\_verb\_{singular}, np.} \\
     \texttt{vp\_{plural} ---> intransitive\_verb\_{plural}.} \\
     \texttt{vp\_{plural} ---> transitive\_verb\_{plural}, np.} \\
+    \texttt{n\_singular ---> [tree].} \\
+    ...
   \end{quote}
 \end{ex} 
 Hierbij staat de \texttt{n} voor zelfstandig naamwoord (noun) en \texttt{det} voor lidwoord (determiner). Deze grammatica can veel korter gemaakt worden door gebruik te maken van feature structures:
@@ -285,14 +311,16 @@ Hierbij staat de \texttt{n} voor zelfstandig naamwoord (noun) en \texttt{det} vo
     \texttt{np(FS) ---> det, n(FS).} \\
     \texttt{vp(FS) ---> intransitive\_verb(FS).} \\
     \texttt{vp(FS) ---> transitive\_verb(FS), np(\_).} \\
+    \texttt{n(singular) ---> [tree].} \\
+    ...
   \end{quote}
 \end{ex} 
 
-Door gebruik te maken van feature structures is de grammatica simpeler en leesbaarder. Bovendien hoeft het concept dat een zin bestaat uit een noun phrase gevolgd door een verb phrase maar één keer te worden uitgedrukt. De featurestructures zorgen voor de overeenkomst in getal tussen onderwerp en werkwoord.
+Door gebruik te maken van deze feature structures is de grammatica simpeler en leesbaarder. Bovendien hoeft het concept dat een zin bestaat uit een \texttt{np} gevolgd door een \texttt{vp} maar één keer te worden uitgedrukt. De feature structures zorgen voor de overeenkomst in getal tussen onderwerp en werkwoord.
 
 \paragraph{DRS} Naast feature structures maken ACE en PENG ook gebruik van Discourse Representation Structures. Deze structuren kunnen vertaald worden naar eerste-orde-logica. Ze zijn een onderdeel van Discourse Representation Theory. Dit is een taalkundig framework om de semantiek van natuurlijke taal te begrijpen. Eén van de sterke punten van DRS-structuren is het oplossen van coreferenties. \cite{Fuchs2008drs} bevat meer informatie over hoe DRS-structuren gebruikt worden binnen ACE.
 
-\paragraph{Conclusie} DCG's is een uitbreiding op contextvrije grammatica's uit de wereld van logisch programmeren. Feature structures en Discourse Representation Structures zijn concepten uit de linguïstiek. Ze worden gebruikt om de natuurlijke taal en haar semantiek te modelleren. Zo helpen feature structures om een explosie van het aantal grammatica regels te voorkomen. Discourse Representation Structures worden dan weer vooral gebruikt om de coreferentie-analyse te vergemakkelijken. Beiden concepten passen mooi binnen ACE en PENG omdat deze talen ook ontstaan zijn in het vakgebied van computationele linguïstiek.
+\paragraph{Conclusie} DCG's zijn een uitbreiding op contextvrije grammatica's uit de wereld van logisch programmeren. Feature structures en Discourse Representation Structures zijn concepten uit de linguïstiek. Ze worden gebruikt om de natuurlijke taal en haar semantiek te modelleren. Zo helpen feature structures om een explosie van het aantal grammatica regels te voorkomen. Discourse Representation Structures worden dan weer vooral gebruikt om de coreferentie-analyse te vergemakkelijken. Beiden concepten passen mooi binnen ACE en PENG omdat deze talen ook ontstaan zijn in het vakgebied van computationele linguïstiek.
 
 % TODO: Beschrijven wat wij juist anders willen doen dan wat al gedaan is. Bijvoorbeeld anaforische referenties
 
