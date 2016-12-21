@@ -6,23 +6,11 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{amsthm}
+\usepackage{amsmath}
 \usepackage{qtree}
 \usepackage{footnote}
-
 \theoremstyle{definition}
 \newtheorem{ex}{Voorbeeld}[section]
-
-% \newcounter{examplecounter}
-% \newenvironment{ex2}
-%   {
-%     \begin{verse}
-%       \refstepcounter{examplecounter}
-%       (vb\arabic{examplecounter})
-%       \quad
-%   }
-%   {
-%     \end{verse}
-%   }
 
 \title{Natural Language processing for Knowledge Representation} \author{Jens
   Claes}
@@ -45,7 +33,9 @@
 % Problem statement
 % Planning (brief)
 
-\section{Probleemstelling}
+% TODO nalezen
+
+\section{Inleiding}
 \paragraph{} Vele bedrijfsprocessen worden geregeld door specificaties. Deze worden vaak geschreven in een natuurlijke taal, door een domein expert. Vervolgens worden deze specificaties vertaald naar uitvoerbare programma's. Bij deze vertaling sluipen er fouten in. Bovendien zijn er vaak meerdere programma's die elk opnieuw de specificatie moeten implementeren. Zo ontstaan er niet alleen inconsistenties met de specificatie, maar ook tussen de verschillende programma's onderling. Ten slotte is het moeilijk om de specificatie achteraf nog aan te passen omdat alle programma's dan aangepast moeten worden.
 
 \paragraph{} Het antwoord van de academische wereld op deze problemen, is het \textit{Knowledge Base}-paradigma. In dit paradigma staat een kennisbank centraal. Deze kennisbank bevat de kennis over de wereld (i.e. de specificatie). Deze kennisbanken kunnen gebruikt worden in \textit{Knowledge Base Systems (KBS)}. Deze systemen bevatten een kennisbank en programma's die de kennisbank als invoer nemen en hier verschillende inferenties op doen. Om de kennis voor te stellen, kan men gebruik maken van een formele taal (zoals eerste-orde-logica). Zo'n talen hebben een eenduidige semantiek. Er is dus maar één mogelijke manier waarop de zin geïnterpreteerd kan worden. Dit in tegenstelling tot natuurlijke taal waar zelfs simpele zinnen al snel meerdere betekenissen kunnen hebben. In dit paradigma moet de specificatie in natuurlijke taal dus vertaald worden naar een vorm waar het KBS-systeem mee overweg kan: de formele specificatie. Deze specificatie wordt slechts eenmaal geschreven en vervolgens wordt ze gebruikt in alle programma's. Zo is het niet meer mogelijk dat de programma's onderling inconsistent zijn. Ze gebruiken namelijk allemaal dezelfde formele specificatie. Daardoor is ook het aanpassen van de specificatie makkelijker. Enkel de formele specificatie moet aangepast worden, de programma's blijven hetzelfde.
@@ -68,11 +58,13 @@ Het grote voordeel van een formele natuurlijke taal is dat natuurlijke taal al g
   \caption{Gebruik van natuurlijke taal in vereistenanalyse in 1999 (van figuur 5 in \cite{Luisa2004})}
 \end{figure}
 
-\section{Literatuurstudie}
-% TODO: Voeg kennisrepresentatie toe!
+\section{Achtergrond}
+TODO
+
+\section{Eerder werk}
 In het verleden zijn er al meerdere CNL's gemaakt. Sommige zijn ontwerpen om de leesbaarheid van de specificaties te verhogen en hebben geen formele semantiek. Kuhn heeft een classificatieschema ontwerpen voor al deze CNL's \cite{Kuhn2014} genaamd PENS: Precision (hoe ambigu/formeel is de taal), Expressivity (welke problemen kunnen we uitdrukken), Naturalness (hoe vlot leest de taal), Simplicity (hoe simpel is de taal). In dezelfde paper lijst Kuhn ook een heleboel CNL's op met hun geschiedenis en nut alsook hun classificatie volgens het PENS-schema.
 
-Meer in het algemeen is het omvormen van teksten in natuurlijke taal tot formele modellen al gebeurd in verschillende domeinen: vereistenanalyse, regelgebaseerde paradigma's maar ook binnen het domein van de computationele linguïstiek. Deze sectie geeft een kort overzicht van wat er al gebeurd is in deze domeinen. Voor een completer overzicht van CNL's, verwijzen we naar \cite{Kuhn2014}.
+Meer in het algemeen is het omvormen van teksten in natuurlijke taal tot formele modellen al gebeurd in verschillende domeinen: in vereistenanalyse, in het paradigma van business rules, binnen de computationele linguïstiek en ten slotte in het domein van kennisrepresentatie. Deze sectie geeft een kort overzicht van wat er al gebeurd is in al deze domeinen. Voor een completer overzicht van CNL's, verwijzen we naar Kuhn \cite{Kuhn2014}.
 
 \subsection{Vereistenanalyse}
 \paragraph{Circe} De tool Circe \cite{Ambriola1997} wordt gebruikt in vereistenanalyse. De gebruiker moet een vocabularium, een set van substitutieregels en een specificatie in natuurlijke aanleveren. De tool probeert dan steeds de beste regel te vinden om zo de tekst geleidelijk aan te transformeren naar een formeel model. Het grote voordeel van de methode is dat er regelsets bestaan voor meerdere soorten modellen: data flow modellen, entity-relationship modellen, ...
@@ -86,7 +78,7 @@ Circe is geen CNL. Zinnen die niet matchen met een substitutieregel worden ook n
 \subsection{Business rules}
 Ook binnen het paradigma van business rules spelen zowel natuurlijke talen als formele talen een grote rol. SBVR Structured English (SBVR-SE) \cite{Levy2013} en RuleSpeak \cite{Ross2009a} zijn 2 CNL's die proberen om ambiguïteit in de natuurlijke taal te verminderen. Deze talen focussen echter vooral op het menselijke aspect. Het doel van deze talen is om ambiguïteit uit de specificatie te halen en niet zozeer om automatisch natuurlijke taal om te zetten naar een formele voorstelling. RuleCNL \cite{Njonko2014} heeft wel dit doel.
 
-RuleCNL splitst de specificatie op in twee delen: een vocabularium en de regels zelf. Het vocabularium bestaat uit substantieven en werkwoorden alsook hoe deze in verhouding staan tot elkaar. Bijvoorbeeld \example{Auto heeft wiel} geeft aan dat er een relatie kan bestaan tussen een auto en een wiel. Voor de regels zelf bestaat er een contextvrije grammatica waaraan de zinnen moeten voldoen.
+RuleCNL splitst de specificatie op in twee delen: een vocabularium en de regels zelf. Het vocabularium bestaat uit substantieven en werkwoorden alsook hoe deze in verhouding staan tot elkaar. Bijvoorbeeld \example{Auto heeft wiel} geeft aan dat er een relatie kan bestaan tussen een auto en een wiel. Het vocabularium in RuleCNL is dus getypeerd. Voor de regels zelf bestaat er een contextvrije grammatica waaraan de zinnen moeten voldoen.
 
 Om de gebruikers te helpen bij het schrijven van de zinnen in RuleCNL, is er een plugin voor de Eclipse IDE die automatisch zinnen kan aanvullen en de structuur van bestaande zinnen aangeeft door het kleuren ervan. Bovendien is er een visuele representatie van het domein om de gebruiker te helpen bij het schrijven van het vocabularium.
 
@@ -138,7 +130,6 @@ ACE maakt hiervoor gebruik van Discourse Representation Structures (DRS). Dit is
   \footnotetext{Deze DRS-structuur werd lichtjes aangepast aan de output van APE (http://attempto.ifi.uzh.ch/ape/)}
 \end{table}
 \end{savenotes}
-
 
 \paragraph{} Origineel was ACE bedoeld voor het opstellen van specificaties voor software. Ondertussen kent de taal al meerdere toepassingen, in verschillende domeinen. Er zijn ook meerdere tools die overweg kunnen met ACE als input.
 
@@ -249,8 +240,6 @@ Een laatste opmerking bij deze grammatica is de asymmetrische vorm voor factoren
 \paragraph{} DCG's zonder prolog code, zijn zeer declaratief. Men kan ze namelijk ook puur als definitie van een grammatica beschouwen. Zo kan men een chart parser schrijven die gebruik maken van deze definities van de grammatica. Chart parsers zijn interessant voor CNL's omdat ze onthouden welke partiële en volledige constituenten ze al gevonden hebben \cite{Kuhn2008}. Daardoor is er geen nood aan backtracking wat de parser sneller maakt. Men moet immers niet telkens opnieuw bewijzen dat \example{een man} een naamwoordgroep is. Bovendien kan men uit de partiële constituent afleiden welke woordcategorieën kunnen volgen op een partiële zin. Ten slotte kan men bij het toevoegen van een woord aan een partiële zin, de resultaten van de vorige parse blijven gebruiken, wat een extra performantiewinst geeft t.o.v. de gratis DCG parser bij incrementele parses. Het is daarom dat chart parsers gebruikt worden in de suggestietools van CNL's. Tijdens het schrijven van de zinnen, kan men namelijk heel snel voorspellen welke woordcategorieën kunnen volgen, wat de gebruiker kan helpen bij het schrijven van grammaticaal correcte zinnen.
 PENG gebruikt zo'n chart parsers in ECOLE \cite{Schwitter2003}. ACE heeft in navolging van PENG ook AceWiki \cite{Kuhn2008} gemaakt, een subset van ACE voor semantische wiki's. AceWiki bevat ook een suggestietool. Kuhn et al. \cite{Kuhn2008} leggen in detail uit hoe zo'n chart parser gemaakt kan worden voor een CNL en vergelijken de performantie van deze parsers met de gratis parser.
 
-
-% TODO: herschrijf
 \paragraph{Feature structures} Naast DCG's wordt er in ACE en PENG ook gebruikt gemaakt van feature structures \cite{Shieber2003}. Een feature structure \cite{NLPCourse} is een datatype gerelateerd aan een woordgroep. Het is een soort van hashmap met als keys de (grammaticale) features en als values de waarden voor die feature. Een feature is een eigenschap van een woordgroep. Zo is er de feature \texttt{categorie} die aangeeft welke syntactische rol een woordgroep speelt in een rol (bv. \texttt{np}, \texttt{vp}, ...). Andere features geven bijvoorbeeld de naamval aan van een naamwoordgroep. Grammatica's die gebruik maken van feature structures, gebruiken unificatie voor het samenvoegen van meerdere structuren. Niet alle features moeten namelijk een waarde toegekend krijgen. Zo kan een eigennaam voorkomen als onderwerp en als lijdend voorwerp (en heeft dus geen waarde voor de feature \texttt{naamval}). Terwijl \example{ik} enkel als onderwerp kan voorkomen (en dus wel een waarde heeft voor die feature). Bovendien kan men door unificatie controleren of het onderwerp en werkwoord hetzelfde getal hebben. Blackburn en Striegnitz \cite{NLPCourse} geven de volgende grammaticale regel als voorbeeld:
 
 \[
@@ -322,25 +311,41 @@ Door gebruik te maken van deze feature structures is de grammatica simpeler en l
 
 \paragraph{Conclusie} DCG's zijn een uitbreiding op contextvrije grammatica's uit de wereld van logisch programmeren. Feature structures en Discourse Representation Structures zijn concepten uit de linguïstiek. Ze worden gebruikt om de natuurlijke taal en haar semantiek te modelleren. Zo helpen feature structures om een explosie van het aantal grammatica regels te voorkomen. Discourse Representation Structures worden dan weer vooral gebruikt om de coreferentie-analyse te vergemakkelijken. Beiden concepten passen mooi binnen ACE en PENG omdat deze talen ook ontstaan zijn in het vakgebied van computationele linguïstiek.
 
-% TODO: Beschrijven wat wij juist anders willen doen dan wat al gedaan is. Bijvoorbeeld anaforische referenties
+\subsection{Kennisrepresentatie}
+In het domein van kennisrepresentatie hebben Baral et al. \cite{Baral2008} natuurlijke taal reeds vertaald naar Answer Set Programs (ASP). Ze maken hiervoor gebruik van Combinatorische Categorische Grammatica (CCG) en lambda-calcalus. Een CCG bestaat uit een aantal basiscategorieën zoals \texttt{S} en \texttt{NP} en afgeleide categorieën. Zo wordt een intransitief werkwoord voorgesteld als een \texttt{S$\backslash$NP}. Verder bevat een CCG een aantal regels die bepalen wat de categorie is van een woordgroep. Zo is er een regel die zegt dat $\alpha\beta$ van categorie \texttt{B} is als $\alpha$ categorie \texttt{A} heeft en $\beta$ categorie \texttt{B$\backslash$A}. Dankzij deze regel kunnen we afleiden dat als we een intransitief werkwoord langs links combineren met een substantief, we dan een zin krijgen. Op deze manier kunnen we een parse tree opstellen waarbij telkens 2 woord(groep)en gecombineerd worden totdat de zin categorie \texttt{S} krijgt.
 
+Naast een categorie heeft elk woord ook een betekenis uitgedrukt in een uitbreiding op de $\lambda$-calcalus. In deze uitbreiding kunnen ook ASP-formules voorkomen. De betekenis van een woordgroep is de combinatie van de betekenis van de woorden volgens de CCG grammatica. We verduidelijken met een voorbeeld (grotendeels overgenomen uit \cite{Baral2008}). We beschouwen het lexicon zoals weergegeven in tabel \ref{table:CCG} voor de zin \example{Birds fly}. Hierin stelt de \texttt{@} de applicatie voor uit de lambda-calcalus. De combinatie van de woorden \textit{birds} en \textit{fly}, is van de categorie \texttt{S} zoals hierboven reeds uitgelegd. De overeenkomstige lamda-expressies moeten nu op een gelijkaardige manier gecombineerd worden: $\lambda_{birds\ fly}=\lambda_{fly}@\lambda_{birds}$.
 
-% TODO: evaluation CNL
-% TODO: computer linguistic vs computer science!!!
+\begin{table}
+  \centering
+  \begin{tabular}{|l|l|l|}
+    \hline
+    Woord & Categorie & $\lambda$-ASP-expressie \\
+    \hline
+    \hline
+    Birds & NP & $\lambda x.bird(x)$ \\
+    Fly & S$\backslash$NP & $\lambda x.fly(X) \leftarrow x@X$ \\
+    \hline
+  \end{tabular}
+  \caption{Een lexicon voor de woorden birds en fly in een CCG grammatica (uit \cite{Baral2008})}
+  \label{table:CCG}
+\end{table}
 
-% \subsection{Interessante papers} */
-% \subsubsection{Done} */
-% \begin{enumerate} */
-%   \item ACE\cite{Fuchs2008} (\cite{Fuchs}, Master Thesis\cite{Dellis2010}) */
-%   \item PENG\cite{Schwitter2002, Schwitter2004b, Schwitter2003, Schwitter2006}, (PENG Light\cite{Schwitter2008, White2009}), PENG D\cite{Schwitter2004}, ook van Schwitter:\cite{Schwitter2005}  */
-%   \item Writing support for CNL's\cite{Kuhn2008}  */
-%   \item Overzicht + classificatie\cite{Kuhn2014} */
-%   \item RuleSpeak\cite{Ross2009a, Ross2013, Ross2013a, Ross2009}
-%   \item RuleCNL\cite{Njonko2014}
-%   \item SBVR\cite{Spreeuwenberg2010, Levy2013}
-% \end{enumerate} */
+\begin{equation}
+  \begin{align*}
+  \lambda_{birds\ fly} &= \lambda_{fly}@\lambda_{birds} \\
+          &= (\lambda x.fly(X) \leftarrow x@X)@(\lambda x.bird(x)) \\
+          &= fly(X) \leftarrow (\lambda x.bird(x))@X \\
+          &= fly(X) \leftarrow bird(X)
+  \label{eq:lambda}
+  \end{align*}
+\end{equation}
 
-% \subsubsection{Todo}
+Elk woord heeft dus een betekenis die men kan zien als een ASP-expressie met gaten erin die opgevuld worden door de combinatie met andere woorden. De manier van combineren van de $\lambda$-expressies hangt af van de categorieën van de woorden. Het nadeel aan deze aanpak is dat elk woord (minstens) één betekenis moeten hebben in het formaat van een $\lambda$-ASP-expressie. Constantini et al.\ \cite{Costantini2010} lossen dit probleem deels op door gebruik te maken van $\lambda$-ASP-expressie-templates. Sommige woorden hebben nog steeds een eigen $\lambda$-ASP-expressie, voor de andere kan er één afgeleid worden uit een $\lambda$-ASP-expressie-template. Zo is $\lambda x. <noun>(x)$ de template voor substantieven. Het gedeelte $<noun>$ moet vervagen worden door een specifieke instantie. Het woord \textit{birds} heeft zo nog steeds dezelfde betekenis.
+
+\paragraph{}Zo'n templates werken echter niet voor alle woorden. Daarom hebben Baral et al. \cite{Baral2012} een methode bedacht om van de betekenis van een zin en de betekenis van een aantal woorden, de betekenis van andere woorden af te leiden. Ze doen dit niet langer met $\lambda$-ASP-expressies maar vervangen ASP door eerste-orde-logica: $\lambda$-FOL-expressies. De grammatica en manier van combineren blijft echter hetzelfde. Deze techniek gebruiken Baral et al. \cite{Baral2012a} om automatisch een grammatica en semantiek te leren voor logische puzzels op basis van andere logische puzzels en hun vertaling in een ASP programma. Hiervoor gebruiken ze één ASP-ontologie die toepasbaar is voor vele logische puzzels. Ze bewerken hierbij de natuurlijke taal van de logische puzzels een beetje om anaforische referenties te verwijderen. De auteurs benadrukken dat dit geen CNL is omdat de grammatica op voorhand niet gedefinieerd is maar geleerd wordt uit de gegeven logische puzzels. Ze maken hiervoor gebruik van een probabilistische CCG. Tot 83\% van de puzzels kunnen ze correct oplossen. De andere puzzels falen o.a.\ omdat bepaalde zinsconstructies niet voorkwamen in de trainingsdata. Belangrijk om op te merken is dat vele woorden (zoals \textit{about}, \textit{on}, \textit{the}) geen betekenis krijgen omdat ze in de logische puzzel geen rol spelen. Er is dus een vorm van overfitting.
+
+% \subsubsection{andere papers}
 % \begin{enumerate}
 %   \item Evaluation CNL\cite{Kuhn2010}
 %   \item ------------------------------------------------------------
@@ -350,7 +355,12 @@ Door gebruik te maken van deze feature structures is de grammatica simpeler en l
 %   \item CELT\cite{Pease2010, Dellis2010}
 % \end{enumerate}
 
+\section{Probleemstelling}
+TODO
+% TODO: Beschrijven wat wij juist anders willen doen dan wat al gedaan is. Bijvoorbeeld anaforische referenties, getypeerd vocabularium
+
 \section{Planning}
+%TODO herschrijven
 Momenteel kan ik al zinnen vertalen naar eerste-orde-logica. Hier zitten wel nog een aantal kleine foutjes in.
 Gedurende de blok- en examenperiode plan ik geen thesiswerk in. In februari wil ik het vocabularium formaliseren en gebruiken bij het parsen van zinnen voor de theorie. Ik wil het vocabularium dan ook uit natuurlijke taal kunnen afleiden. In maart wil ik verdere uitbreidingen van de taal bekijken die de formele expressiviteit verhogen (definities, aritmetiek, aggregaten, ...). In april wil ik al beginnen schrijven aan de tekst. Verder wil ik dan een groter probleem uitdrukken in de nieuwe natuurlijke taal om te testen hoe expressief ze is op formeel vlak en hoe leesbaar de specificatie is voor reële problemen. In mei plan ik enkel nog te schrijven aan mijn thesis.
 
@@ -360,6 +370,3 @@ Gedurende de blok- en examenperiode plan ik geen thesiswerk in. In februari wil 
 \bibliography{tekst}
 
 \end{document}
-
-
-% LocalWords: KBS Systems Knowledge programma's
