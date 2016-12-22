@@ -27,9 +27,6 @@
 
 \maketitle
 
-% TODO nalezen
-% TODO spelling emacs gebruiken
-
 \section{Inleiding}
 \paragraph{} Vele bedrijfsprocessen worden geregeld door specificaties. Deze worden vaak geschreven in een natuurlijke taal, door een domein expert. Vervolgens worden deze specificaties vertaald naar uitvoerbare programma's. Bij deze vertaling kunnen er fouten insluipen. Bovendien zijn er vaak meerdere programma's die elk opnieuw de specificatie moeten implementeren. Zo ontstaan er niet alleen inconsistenties met de specificatie, maar ook tussen de verschillende programma's onderling. Ten slotte is het moeilijk om de specificatie achteraf nog aan te passen omdat alle programma's dan aangepast moeten worden.
 
@@ -161,7 +158,7 @@ Binnen het paradigma van business rules spelen zowel natuurlijke talen als forme
 
 RuleCNL splitst de specificatie op in twee delen: een vocabularium en de regels zelf. Het vocabularium bestaat uit substantieven en werkwoorden alsook hoe deze in verhouding staan tot elkaar. Bijvoorbeeld \example{Auto heeft wiel} geeft aan dat er een relatie kan bestaan tussen een auto en een wiel. Het vocabularium in RuleCNL is dus getypeerd. Voor de regels zelf bestaat er een contextvrije grammatica waaraan de zinnen moeten voldoen.
 
-Om de gebruikers te helpen bij het schrijven van de zinnen in RuleCNL, is er een plugin voor de Eclipse IDE die automatisch zinnen kan aanvullen en de structuur van bestaande zinnen aangeeft door het kleuren ervan. Bovendien is er een visuele representatie van het domein om de gebruiker te helpen bij het schrijven van het vocabularium.
+Om de gebruikers te helpen bij het schrijven van de zinnen in RuleCNL, is er een plug-in voor de Eclipse IDE die automatisch zinnen kan aanvullen en de structuur van bestaande zinnen aangeeft door het kleuren ervan. Bovendien is er een visuele representatie van het domein om de gebruiker te helpen bij het schrijven van het vocabularium.
 
 \subsection{Computationele linguïstiek} Er zijn reeds 2 belangrijke CNL's opgesteld die vertaald kunnen worden naar formele modellen: Attempto Controlled English (ACE) en Processable English (PENG). Beide talen lijken op elkaar en hebben gelijkaardige tools om mee te werken. Ze komen ook allebei uit de computationele linguïstiek en zijn ingebakken in taalkundige frameworks die gemaakt zijn om de semantiek van natuurlijke taal in het algemeen te vatten. In de papers over ACE en PENG wordt er niet zoveel gesproken over deze taalkundige aspecten omdat een achtergrond in de (computationele) linguïstiek verondersteld wordt.
 
@@ -174,7 +171,7 @@ Bijvoorbeeld de zin \example{Everybody is not present.} heeft 2 betekenissen in 
 
 \paragraph{}ACE is een general purpose CNL: Het bevat een ingebouwd vocabularium. De gebruiker moet dus zelf geen vocabularium opstellen en kan direct beginnen met het schrijven van de specificatie. Het nadeel aan deze aanpak is dat ACE dus ook geen domeinkennis kan gebruiken voor het analyseren van de zinnen. Sommige constructies moeten daarom met een koppelteken geschreven worden. Zo wordt er in \cite{ACEConstructionRules} het voorbeeld gegeven van \example{A student is interested-in a course} en \example{A student is interested in a classroom}.
 
-Op die manier probeert ACE sommige ambiguïteiten op te lossen. Een gelijkaardige truk wordt bijvoorbeeld ook gebruikt om de voorrang van \example{en} en \example{of} op te lossen. Standaard heeft \example{en} voorrang. Maar als de \example{en} voorafgegaan wordt door een komma, dan heeft \example{of} voorrang. \cite{ACEConstructionRules} geeft het voorbeeld \example{A client \{enters a red card or enters a blue card\}, and enters a code.}
+Op die manier probeert ACE sommige ambiguïteiten op te lossen. Een gelijkaardige truc wordt bijvoorbeeld ook gebruikt om de voorrang van \example{en} en \example{of} op te lossen. Standaard heeft \example{en} voorrang. Maar als de \example{en} voorafgegaan wordt door een komma, dan heeft \example{of} voorrang. \cite{ACEConstructionRules} geeft het voorbeeld \example{A client \{enters a red card or enters a blue card\}, and enters a code.}
 
 In andere gevallen kiest ACE gewoon hoe de zin geïnterpreteerd moet worden op basis van een set van interpretatieregels. Zo slaat de \example{manually} in \example{A customer who {enters a card manually} types a code.} \cite{ACEConstructionRules} op \example{enters} en niet op \example{types} omdat een bijwoord bij voorkeur achter het werkwoord staat. (De parafrasering is in dit geval wel makkelijk te begrijpen maar vrij lang: \example{There is a customer X1. The customer X1 types a code. The customer X1 enters a card manually.}).
 
@@ -186,7 +183,7 @@ Zo is er de Attempto Parsing Engine APE die ACE zinnen omzet naar Discourse Repr
 
 \paragraph{} Verder is er ook de Attempto Reasoner RACE. Deze tool kan controleren of een specificatie consistent is. Indien niet, zal de tool zeggen welke zinnen met elkaar in conflict zijn. Op die manier weet de gebruiker dat er een fout is en waar deze zich ongeveer bevindt. De tool kan ook vragen in natuurlijke taal beantwoorden. RACE antwoordt niet alleen op de vraag maar geeft ook de zinnen die nodig zijn om te bewijzen dat het gegeven antwoord juist is. Ten slotte kan RACE bewijzen of een bepaalde zin het logische gevolg is van de specificatie. Op die manier kan de gebruiker testen of de specificatie correct is.
 
-APE en RACE zijn de twee belangrijkste tools. Er zijn er echter nog veel meer. Zo is er de ACE View Protégé plug-in. Dit is een plugin die de vertaling tussen Web Ontology Language (OWL) en ACE doet binnen de Protégé-omgeving (een editor voor het maken van ontologiën). Op die manier ziet de gebruiker enkel ACE zinnen en hoeft dus de formele OWL taal niet te kennen om met bestaande modellen om te gaan of om nieuwe modellen te maken. Ten slotte is er ook nog AceRules. Hiermee kan de gebruiker de zinnen die geïmpliceerd worden door de specificatie te weten komen.
+APE en RACE zijn de twee belangrijkste tools. Er zijn er echter nog veel meer. Zo is er de ACE View Protégé plug-in. Dit is een plug-in die de vertaling tussen Web Ontology Language (OWL) en ACE doet binnen de Protégé-omgeving (een editor voor het maken van ontologiën). Op die manier ziet de gebruiker enkel ACE zinnen en hoeft dus de formele OWL taal niet te kennen om met bestaande modellen om te gaan of om nieuwe modellen te maken. Ten slotte is er ook nog AceRules. Hiermee kan de gebruiker de zinnen die geïmpliceerd worden door de specificatie te weten komen.
 
 Over het algemeen is ACE een zeer uitgebreide taal. Veel Engelse zinnen zijn ook geldige ACE zinnen, echter niet allemaal. Hierdoor is het moeilijk om de taal te leren. Het is immers niet super duidelijk wat toegestaan is en wat niet. Volgens Fuchs et al.\ \cite{Fuchs2008} heeft een gebruiker 2 dagen nodig om de taal te leren.
 
@@ -278,7 +275,7 @@ Hierbij staat de \texttt{n} voor zelfstandig naamwoord (van het Engelse \texttt{
 
 Door gebruik te maken van deze feature structures is de grammatica simpeler en leesbaarder. Bovendien hoeft het concept dat een zin bestaat uit een \texttt{np} gevolgd door een \texttt{vp} maar één keer te worden uitgedrukt. De feature structures zorgen voor de congruentie in getal van het onderwerp met het werkwoord.
 
-\paragraph{DRS} Naast feature structures maken ACE en PENG ook gebruik van Discourse Representation Structures. Deze structuren kunnen vertaald worden naar eerste-orde-logica. Ze zijn een onderdeel van Discourse Representation Theory. Dit is een taalkundig framework om de semantiek van natuurlijke taal te vatten. Eén van de sterke punten van DRS-structuren is het oplossen van coreferenties. \cite{Fuchs2008drs} bevat meer informatie over hoe DRS-structuren gebruikt worden binnen ACE.
+\paragraph{DRS} Naast feature structures maken ACE en PENG ook gebruik van Discourse Representation Structures. Deze structuren kunnen vertaald worden naar eerste-orde-logica. Ze zijn een onderdeel van Discourse Representation Theory. Dit is een taalkundig framework om de semantiek van natuurlijke taal te vatten. Één van de sterke punten van DRS-structuren is het oplossen van coreferenties. \cite{Fuchs2008drs} bevat meer informatie over hoe DRS-structuren gebruikt worden binnen ACE.
 
 Bos \cite{Bos2011} stelt dat DRS-structuren zowel de rol van semantische inhoud als die van tekstuele context spelen. M.a.w.\ met behulp van deze structuren kan men achterhalen wat de semantiek van een tekst is maar tegelijk bieden ze ook een context aan die helpt bij de coreferentie-analyse. Zo wordt tijdens het parsen de semantiek van een zin opgebouwd en tegelijk de coreferenties opgelost.
 
@@ -321,9 +318,9 @@ Concreet bevat een DRS-structuur een lijst van \textit{discourse referents} (woo
 
 \subsection{Kennisrepresentatie}
 \label{sec:ASP}
-In het domein van kennisrepresentatie hebben Baral et al.\ \cite{Baral2008} natuurlijke taal reeds vertaald naar Answer Set Programs (ASP). Ze maken hiervoor gebruik van Combinatorische Categorische Grammatica (CCG) en lambda-calcalus. Een CCG bestaat uit een aantal basiscategorieën zoals \texttt{S} en \texttt{NP} en afgeleide categorieën zoals \texttt{S/NP} en \texttt{(S/NP)$\backslash$NP} \cite{Baral2008}. Zo wordt een onovergankelijk werkwoord voorgesteld als een \texttt{S$\backslash$NP}. Verder bevat een CCG een aantal regels die bepalen wat de categorie is van een woordgroep. Zo is er een regel die zegt dat $\alpha\beta$ van categorie \texttt{B} is als $\alpha$ categorie \texttt{A} heeft en $\beta$ categorie \texttt{B$\backslash$A} \cite{Baral2008}. Dankzij deze regel kunnen we afleiden dat als we een onovergankelijk werkwoord langs links combineren met een substantief, we dan een zin krijgen. Op deze manier kunnen we een parse tree opstellen waarbij we telkens 2 woordgroepen combineren totdat de zin uiteindelijk categorie \texttt{S} krijgt.
+In het domein van kennisrepresentatie hebben Baral et al.\ \cite{Baral2008} natuurlijke taal reeds vertaald naar Answer Set Programs (ASP). Ze maken hiervoor gebruik van Combinatorische Categorische Grammatica (CCG) en $\lambda$-calcalus. Een CCG bestaat uit een aantal basiscategorieën zoals \texttt{S} en \texttt{NP} en afgeleide categorieën zoals \texttt{S/NP} en \texttt{(S/NP)$\backslash$NP} \cite{Baral2008}. Zo wordt een onovergankelijk werkwoord voorgesteld als een \texttt{S$\backslash$NP}. Verder bevat een CCG een aantal regels die bepalen wat de categorie is van een woordgroep. Zo is er een regel die zegt dat $\alpha\beta$ van categorie \texttt{B} is als $\alpha$ categorie \texttt{A} heeft en $\beta$ categorie \texttt{B$\backslash$A} \cite{Baral2008}. Dankzij deze regel kunnen we afleiden dat als we een onovergankelijk werkwoord langs links combineren met een substantief, we dan een zin krijgen. Op deze manier kunnen we een parse tree opstellen waarbij we telkens 2 woordgroepen combineren totdat de zin uiteindelijk categorie \texttt{S} krijgt.
 
-Naast een categorie heeft elk woord ook een betekenis uitgedrukt in een uitbreiding op de $\lambda$-calcalus. In deze uitbreiding kunnen ook ASP-formules voorkomen. De betekenis van een woordgroep is de combinatie van de betekenis van de woorden. Hierbij gebruiken we de CCG parse tree om de volgorde te bepalen. We verduidelijken met een voorbeeld (grotendeels overgenomen uit Baral et al.\ \cite{Baral2008}). We beschouwen het lexicon zoals weergegeven in tabel \ref{table:CCG} voor de zin \example{Birds fly}. Hierin stelt de \texttt{@} de applicatie voor uit de lambda-calcalus. De combinatie van de woorden \textit{birds} en \textit{fly}, is van de categorie \texttt{S} zoals hierboven reeds uitgelegd. De overeenkomstige lamda-expressies moeten nu op een gelijkaardige manier gecombineerd worden: $\lambda_{birds\ fly}=\lambda_{fly}@\lambda_{birds}$.
+Naast een categorie heeft elk woord ook een betekenis uitgedrukt in een uitbreiding op de $\lambda$-calcalus. In deze uitbreiding kunnen ook ASP-expressies voorkomen. De betekenis van een woordgroep is de combinatie van de betekenis van de woorden. Hierbij gebruiken we de CCG parse tree om de volgorde te bepalen. We verduidelijken met een voorbeeld (grotendeels overgenomen uit Baral et al.\ \cite{Baral2008}). We beschouwen het lexicon zoals weergegeven in tabel \ref{table:CCG} voor de zin \example{Birds fly}. Hierin stelt de \texttt{@} de applicatie voor uit de lambda-calcalus. De combinatie van de woorden \textit{birds} en \textit{fly}, is van de categorie \texttt{S} zoals hierboven reeds uitgelegd. De overeenkomstige lamda-expressies moeten nu op een gelijkaardige manier gecombineerd worden: $\lambda_{birds\ fly}=\lambda_{fly}@\lambda_{birds}$.
 
 \begin{table}
   \centering
@@ -387,3 +384,18 @@ In mei plan ik enkel nog te schrijven aan mijn thesis.
 \bibliography{tekst}
 
 \end{document}
+
+%  LocalWords:  programma's Knowledge KBS eerste-orde-logica Zo'n KBS-systeem
+%  LocalWords:  Base-paradigma CNL's gasttaal constructieregels CNL parser DCG
+%  LocalWords:  vereistenanalyse Definite Clause Grammars DCG's grammatica's
+%  LocalWords:  prolog startsymbool gelijkaardigheid naamwoordgroepen parsers
+%  LocalWords:  subexpressie prologcode declaratief Chart backtracking parses
+%  LocalWords:  woordcategorieën suggestietool naamwoordgroep performantiewinst
+%  LocalWords:  classificatieschema kennisrepresentatie computationele rules
+%  LocalWords:  substitutieregel entity-relationship substitutieregels taggen
+%  LocalWords:  regelsets Circe regelset RuleCNL RuleSpeak SBVR-SE frameworks
+%  LocalWords:  parafraseertool PENG coreferentie-analyse coreferenties komma's
+%  LocalWords:  framework invoertekst DRS-structuren domeinspecifieke wiki's
+%  LocalWords:  interpretatieregel beslisbaar structures DCG-regel CCG calcalus
+%  LocalWords:  DRS-structuur lambda-calcalus basiscategorieën lamda-expressies
+%  LocalWords:  ASP-expressie ASP-expressies
