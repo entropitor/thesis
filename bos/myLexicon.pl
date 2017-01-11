@@ -1,30 +1,30 @@
 /*************************************************************************
 
-    File: englishLexicon.pl
-    Copyright (C) 2004,2006 Patrick Blackburn & Johan Bos
+     File: englishLexicon.pl
+     Copyright (C) 2004,2006 Patrick Blackburn & Johan Bos
 
-    This file is part of BB2, version 2.0 (November 2006).
+     This file is part of BB2, version 2.0 (November 2006).
 
-    BB2 is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+     BB2 is free software; you can redistribute it and/or modify
+     it under the terms of the GNU General Public License as published by
+     the Free Software Foundation; either version 2 of the License, or
+     (at your option) any later version.
 
-    BB2 is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+     BB2 is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with BB2; if not, write to the Free Software Foundation, Inc., 
-    59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+     You should have received a copy of the GNU General Public License
+     along with BB2; if not, write to the Free Software Foundation, Inc.,
+     59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 *************************************************************************/
 
 :- module(myLexicon, [lexEntry/2]).
 
 /*========================================================================
-   Determiners
+    Determiners
 ========================================================================*/
 
 lexEntry(det,[syntax:[every],mood:decl,num:sg,type:uni]).
@@ -52,7 +52,7 @@ lexEntry(det,[syntax:[the],mood:decl,num:pl,type:def]).
 
 
 /*========================================================================
-   Nouns
+    Nouns
 ========================================================================*/
 
 lexEntry(noun,[symbol:animal,num:sg,syntax:[animal]]).
@@ -136,7 +136,7 @@ lexEntry(noun,[symbol:woman,num:pl,syntax:[women]]).
 
 
 /*========================================================================
-   Proper Names
+    Proper Names
 ========================================================================*/
 
 lexEntry(pn,[symbol:butch,syntax:[butch]]).
@@ -159,7 +159,7 @@ lexEntry(pn,[symbol:yolanda,syntax:[yolanda]]).
 
 
 /*========================================================================
-   Quantified Noun Phrases
+    Quantified Noun Phrases
 ========================================================================*/
 
 lexEntry(qnp,[symbol:person,syntax:[who],mood:int,type:wh]).
@@ -167,7 +167,7 @@ lexEntry(qnp,[symbol:thing,syntax:[what],mood:int,type:wh]).
 
 
 /*========================================================================
-   Intransitive Verbs
+    Intransitive Verbs
 ========================================================================*/
 
 lexEntry(iv,[symbol:collapse,syntax:[collapse],inf:inf,num:sg]).
@@ -208,7 +208,7 @@ lexEntry(iv,[symbol:walk,syntax:[walk],inf:fin,num:pl]).
 
 
 /*========================================================================
-   Transitive Verbs
+    Transitive Verbs
 ========================================================================*/
 
 lexEntry(tv,[symbol:clean,syntax:[clean],inf:inf,num:sg]).
@@ -270,7 +270,7 @@ lexEntry(tv,[symbol:shoot,syntax:[shoot],inf:fin,num:pl]).
 
 
 /*========================================================================
-   Copula
+    Copula
 ========================================================================*/
 
 lexEntry(cop,[pol:pos,syntax:[is],inf:fin,num:sg]).
@@ -280,7 +280,7 @@ lexEntry(cop,[pol:neg,syntax:[are,not],inf:fin,num:pl]).
 
 
 /*========================================================================
-   Prepositions
+    Prepositions
 ========================================================================*/
 
 lexEntry(prep,[symbol:about,syntax:[about]]).
@@ -290,7 +290,7 @@ lexEntry(prep,[symbol:with,syntax:[with]]).
 
 
 /*========================================================================
-   Adjectives
+    Adjectives
 ========================================================================*/
 
 lexEntry(adj,[symbol:big,syntax:[big]]).
@@ -307,7 +307,7 @@ lexEntry(adj,[symbol:tall,syntax:[tall]]).
 
 
 /*========================================================================
-   Adverbs
+    Adverbs
 ========================================================================*/
 
 lexEntry(adv,[symbol:quick,syntax:[quickly]]).
@@ -315,7 +315,7 @@ lexEntry(adv,[symbol:slow,syntax:[slowly]]).
 
 
 /*========================================================================
-   Relative Pronouns
+    Relative Pronouns
 ========================================================================*/
 
 lexEntry(relpro,[syntax:[who]]).
@@ -324,7 +324,7 @@ lexEntry(relpro,[syntax:[that]]).
 
 
 /*========================================================================
-   Coordinations
+    Coordinations
 ========================================================================*/
 
 lexEntry(coord,[syntax:[and],type:conj]).
@@ -332,7 +332,7 @@ lexEntry(coord,[syntax:[or],type:disj]).
 
 
 /*========================================================================
-   Auxiliary Verbs
+    Auxiliary Verbs
 ========================================================================*/
 
 lexEntry(av,[syntax:[does],inf:fin,num:sg,pol:pos]).
@@ -346,7 +346,7 @@ lexEntry(av,[syntax:[did,not],inf:fin,num:pl,pol:neg]).
 
 
 /*========================================================================
-   Pronouns (third person)
+    Pronouns (third person)
 ========================================================================*/
 
 lexEntry(pro,[symbol:male,  ref:no, syntax:[he]]).

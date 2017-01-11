@@ -11,4 +11,4 @@ insert_final_newline = true
 # Tab indentation (no size specified)
 [*.{pl}]
 indent_style = space
-indent_size = 3
+indent_size = 4
