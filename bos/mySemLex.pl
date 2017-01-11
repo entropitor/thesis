@@ -1,7 +1,7 @@
 /*************************************************************************
 
      File: semLexLambdaDRT.pl
-     Copyright (C) 2004,2006 Patrick Blackburn & Johan Bos
+     Copyright (C) 2004, 2006 Patrick Blackburn & Johan Bos
 
      This file is part of BB2, version 2.0 (November 2006).
 
@@ -23,70 +23,70 @@
 
 :- module(mySemLex, [semLex/2]).
 
-semLex(det,M):-
+semLex(det, M):-
     M = [type:uni,
          num:sg,
-         sem:lam(U,lam(V,drs([],[imp(merge(drs([X],[]),app(U,X)),app(V,X))])))].
+         sem:lam(U, lam(V, drs([], [imp(merge(drs([X], []), app(U, X)), app(V, X))])))].
 
-semLex(det,M):-
+semLex(det, M):-
     M = [type:indef,
 	       num:sg,
-         sem:lam(U,lam(V,merge(merge(drs([X],[]),app(U,X)),app(V,X))))].
+         sem:lam(U, lam(V, merge(merge(drs([X], []), app(U, X)), app(V, X))))].
 
-semLex(det,M):-
+semLex(det, M):-
     M = [type:neg,
 	       num:sg,
-         sem:lam(U,lam(V,drs([],[not(merge(merge(drs([X],[]),app(U,X)),app(V,X)))])))].
+         sem:lam(U, lam(V, drs([], [not(merge(merge(drs([X], []), app(U, X)), app(V, X)))])))].
 
-semLex(pn,M):-
+semLex(pn, M):-
     M = [symbol:Sym,
-         sem:lam(P,merge(drs([X],[pred(Sym,X)]),app(P,X)))].
+         sem:lam(P, merge(drs([X], [pred(Sym, X)]), app(P, X)))].
 
-semLex(noun,M):-
+semLex(noun, M):-
     M = [symbol:Sym,
-         sem:lam(X,drs([],[pred(Sym,X)]))].
+         sem:lam(X, drs([], [pred(Sym, X)]))].
 
-semLex(iv,M):-
+semLex(iv, M):-
     M = [symbol:Sym,
-         sem:lam(N,lam(P,app(N,lam(X,merge(drs([E],[pred(Sym,E),rel(agent,E,X)]),app(P,E))))))].
+         sem:lam(N, lam(P, app(N, lam(X, merge(drs([E], [pred(Sym, E), rel(agent, E, X)]), app(P, E))))))].
 
-semLex(tv,M):-
-    M = [symbol:Sym,_,
-         sem:lam(N1,lam(N2,lam(P,app(N2,lam(X,app(N1,lam(Y,merge(drs([E],[pred(Sym,E),rel(agent,E,X),rel(patient,E,Y)]),app(P,E)))))))))].
+semLex(tv, M):-
+    M = [symbol:Sym, _,
+         sem:lam(N1, lam(N2, lam(P, app(N2, lam(X, app(N1, lam(Y, merge(drs([E], [pred(Sym, E), rel(agent, E, X), rel(patient, E, Y)]), app(P, E)))))))))].
 
-semLex(cop,M):-
+semLex(cop, M):-
     M = [pol:pos,
-         sem:lam(K,lam(Y,app(K,lam(X,drs([],[eq(Y,X)])))))];
+         sem:lam(K, lam(Y, app(K, lam(X, drs([], [eq(Y, X)])))))];
     M = [pol:neg,
-         sem:lam(K,lam(Y,drs([],[not(app(K,lam(X,drs([],[eq(Y,X)]))))])))].
+         sem:lam(K, lam(Y, drs([], [not(app(K, lam(X, drs([], [eq(Y, X)]))))])))].
 
-semLex(relpro,M):-
-    M = [sem:lam(P,lam(Q,lam(X,merge(app(app(P,lam(R,app(R,X))),lam(E,drs([],[pred(event,E)]))),app(Q,X)))))].
+semLex(relpro, M):-
+    M = [sem:lam(P, lam(Q, lam(X, merge(app(app(P, lam(R, app(R, X))), lam(E, drs([], [pred(event, E)]))), app(Q, X)))))].
 
-semLex(prep,M):-
+semLex(prep, M):-
     M = [symbol:Sym,
          type:n,
-         sem:lam(K,lam(P,lam(Y,merge(app(K,lam(X,drs([],[rel(Sym,Y,X)]))),app(P,Y)))))];
+         sem:lam(K, lam(P, lam(Y, merge(app(K, lam(X, drs([], [rel(Sym, Y, X)]))), app(P, Y)))))];
     M = [symbol:Sym,
          type:vp,
-         sem:lam(K,lam(V,lam(N,lam(E,app(app(V,N),lam(X,merge(app(K,lam(Y,drs([],[rel(Sym,X,Y)]))),app(E,X))))))))].
+         sem:lam(K, lam(V, lam(N, lam(E, app(app(V, N), lam(X, merge(app(K, lam(Y, drs([], [rel(Sym, X, Y)]))), app(E, X))))))))].
 
-semLex(adj,M):-
+semLex(adj, M):-
     M = [symbol:Sym,
-         sem:lam(P,lam(X,merge(drs([],[pred(Sym,X)]),app(P,X))))].
+         sem:lam(P, lam(X, merge(drs([], [pred(Sym, X)]), app(P, X))))].
 
-semLex(adv,M):-
+semLex(adv, M):-
     M = [symbol:Sym,
-         sem:lam(V,lam(N,lam(E,app(app(V,N),lam(X,merge(drs([],[pred(Sym,X)]),app(E,X)))))))].
+         sem:lam(V, lam(N, lam(E, app(app(V, N), lam(X, merge(drs([], [pred(Sym, X)]), app(E, X)))))))].
 
-semLex(av,M):-
+semLex(av, M):-
     M = [pol:neg,
-         sem:lam(P,lam(X,lam(E,drs([],[not(app(app(P,X),E))]))))];
+         sem:lam(P, lam(X, lam(E, drs([], [not(app(app(P, X), E))]))))];
     M = [pol:pos,
-         sem:lam(P,lam(X,lam(E,app(app(P,X),E))))].
+         sem:lam(P, lam(X, lam(E, app(app(P, X), E))))].
 
-semLex(coord,M):-
+semLex(coord, M):-
     M = [type:conj,
-         sem:lam(X,lam(Y,lam(P,merge(app(X,P),app(Y,P)))))];
+         sem:lam(X, lam(Y, lam(P, merge(app(X, P), app(Y, P)))))];
     M = [type:disj,
-         sem:lam(X,lam(Y,lam(P,drs([],[or(app(X,P),app(Y,P))]))))].
+         sem:lam(X, lam(Y, lam(P, drs([], [or(app(X, P), app(Y, P))]))))].

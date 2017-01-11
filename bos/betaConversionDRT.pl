@@ -1,7 +1,7 @@
 /*************************************************************************
 
      File: betaConversionDRT.pl
-     Copyright (C) 2004,2006 Patrick Blackburn & Johan Bos
+     Copyright (C) 2004, 2006 Patrick Blackburn & Johan Bos
 
      This file is part of BB2, version 2.0 (November 2006).
 
@@ -21,58 +21,58 @@
 
 *************************************************************************/
 
-:- module(betaConversionDRT,[betaConvert/2]).
+:- module(betaConversionDRT, [betaConvert/2]).
 
-:- use_module(comsemPredicates,[compose/3,substitute/4]).
+:- use_module(comsemPredicates, [compose/3, substitute/4]).
 
-:- use_module(alphaConversionDRT,[alphaConvertDRS/2]).
+:- use_module(alphaConversionDRT, [alphaConvertDRS/2]).
 
 
 /*========================================================================
     Beta-Conversion (introducing stack)
 ========================================================================*/
 
-betaConvert(X,Y):-
-    betaConvert(X,Y,[]).
+betaConvert(X, Y):-
+    betaConvert(X, Y, []).
 
 
 /*========================================================================
     Beta-Conversion (core stuff)
 ========================================================================*/
 
-betaConvert(X,Y,[]):-
+betaConvert(X, Y, []):-
     var(X),
     Y=X.
 
-betaConvert(Expression,Result,Stack):-
+betaConvert(Expression, Result, Stack):-
     nonvar(Expression),
-    Expression = app(Functor,Argument),
+    Expression = app(Functor, Argument),
     nonvar(Functor),
-    alphaConvertDRS(Functor,Converted),
-    betaConvert(Converted,Result,[Argument|Stack]).
+    alphaConvertDRS(Functor, Converted),
+    betaConvert(Converted, Result, [Argument|Stack]).
 
-betaConvert(Expression,Result,[X|Stack]):-
+betaConvert(Expression, Result, [X|Stack]):-
     nonvar(Expression),
-    Expression = lam(X,Formula),
-    betaConvert(Formula,Result,Stack).
+    Expression = lam(X, Formula),
+    betaConvert(Formula, Result, Stack).
 
-betaConvert(Formula,Result,[]):-
+betaConvert(Formula, Result, []):-
     nonvar(Formula),
-    \+ (Formula = app(X,_), nonvar(X)),
-    compose(Formula,Functor,Formulas),
-    betaConvertList(Formulas,ResultFormulas),
-    compose(Result,Functor,ResultFormulas).
+    \+ (Formula = app(X, _), nonvar(X)),
+    compose(Formula, Functor, Formulas),
+    betaConvertList(Formulas, ResultFormulas),
+    compose(Result, Functor, ResultFormulas).
 
 
 /*========================================================================
     Beta-Convert a list
 ========================================================================*/
 
-betaConvertList([],[]).
+betaConvertList([], []).
 
-betaConvertList([Formula|Others],[Result|ResultOthers]):-
-    betaConvert(Formula,Result),
-    betaConvertList(Others,ResultOthers).
+betaConvertList([Formula|Others], [Result|ResultOthers]):-
+    betaConvert(Formula, Result),
+    betaConvertList(Others, ResultOthers).
 
 
 /*========================================================================
@@ -80,12 +80,12 @@ betaConvertList([Formula|Others],[Result|ResultOthers]):-
 ========================================================================*/
 
 info:-
-    format('~n> ------------------------------------------------------------------- <',[]),
-    format('~n> betaConversion.pl, by Patrick Blackburn and Johan Bos               <',[]),
-    format('~n>                                                                     <',[]),
-    format('~n> ?- betaConvert(F,C).         - beta-convert a formula               <',[]),
-    format('~n> ------------------------------------------------------------------- <',[]),
-    format('~n~n',[]).
+    format('~n> ------------------------------------------------------------------- <', []),
+    format('~n> betaConversion.pl, by Patrick Blackburn and Johan Bos               <', []),
+    format('~n>                                                                     <', []),
+    format('~n> ?- betaConvert(F, C).         - beta-convert a formula               <', []),
+    format('~n> ------------------------------------------------------------------- <', []),
+    format('~n~n', []).
 
 
 /*========================================================================

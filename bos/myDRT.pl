@@ -1,7 +1,7 @@
 /*************************************************************************
 
      File: lambdaDRT.pl
-     Copyright (C) 2004,2006 Patrick Blackburn & Johan Bos
+     Copyright (C) 2004, 2006 Patrick Blackburn & Johan Bos
 
      This file is part of BB2, version 2.0 (November 2006).
 
@@ -31,17 +31,17 @@
                   infix/0,
                   prefix/0]).
 
-:- use_module(readLine,[readLine/1,
+:- use_module(readLine, [readLine/1,
                         readFromString/2]).
 
-:- use_module(comsemPredicates,[prefix/0,
-                                infix/0,
-                                printRepresentations/1]).
+:- use_module(comsemPredicates, [prefix/0,
+                                 infix/0,
+                                 printRepresentations/1]).
 
-:- use_module(betaConversionDRT,[betaConvert/2]).
-:- use_module(mergeDRT,[mergeDrs/2]).
+:- use_module(betaConversionDRT, [betaConvert/2]).
+:- use_module(mergeDRT, [mergeDrs/2]).
 
-:- use_module(lambdaTestSuite,[discourse/2]).
+:- use_module(lambdaTestSuite, [discourse/2]).
 
 :- use_module(myGrammar, [t/3]).
 
@@ -59,22 +59,22 @@ test(String) :-
      test(String, _).
 test(String, DRSs) :-
      readFromString(String, Discourse),
-     lambdaDRT(Discourse,drs([],[]),DRSs),
+     lambdaDRT(Discourse, drs([], []), DRSs),
      printRepresentations(DRSs).
 
 lambdaDRT:-
     readLine(Discourse),
-    lambdaDRT(Discourse,drs([],[]),DRSs),
+    lambdaDRT(Discourse, drs([], []), DRSs),
     printRepresentations(DRSs).
 
-lambdaDRT(Discourse,Sems):-
-    lambdaDRT(Discourse,drs([],[]),Sems).
+lambdaDRT(Discourse, Sems):-
+    lambdaDRT(Discourse, drs([], []), Sems).
 
-lambdaDRT(Discourse,Old,Sems):-
+lambdaDRT(Discourse, Old, Sems):-
      findall(Sem, (
-                     t([sem:Drs],Discourse,[]),
+                     t([sem:Drs], Discourse, []),
                      betaConvert(Drs, Converted),
-                     mergeDrs(merge(Old,Converted),Sem)
+                     mergeDrs(merge(Old, Converted), Sem)
                   ), Sems),
     \+ Sems=[].
 
@@ -85,9 +85,9 @@ lambdaDRT(Discourse,Old,Sems):-
 
 lambdaDRTTestSuite:-
     nl, write('>>>>> LAMBDA-DRT ON TEST SUITE <<<<< '), nl,
-    discourse(Discourse,Readings),
-    format('~nDiscourse: ~p (~p readings)',[Discourse,Readings]),
-    lambdaDRT(Discourse,drs([],[]),DRSs),
+    discourse(Discourse, Readings),
+    format('~nDiscourse: ~p (~p readings)', [Discourse, Readings]),
+    lambdaDRT(Discourse, drs([], []), DRSs),
     printRepresentations(DRSs),
     fail.
 
@@ -99,15 +99,15 @@ lambdaDRTTestSuite.
 ========================================================================*/
 
 info:-
-    format('~n> ------------------------------------------------------------------ <',[]),
-    format('~n> lambdaDRT.pl, by Patrick Blackburn and Johan Bos                   <',[]),
-    format('~n>                                                                    <',[]),
-    format('~n> ?- loop.                   - parse a typed-in sentence (looped)    <',[]),
-    format('~n> ?- lambdaDRT.              - parse a typed-in sentence             <',[]),
-    format('~n> ?- lambdaDRT(S,DRSs).      - parse a sentence and return DRSs      <',[]),
-    format('~n> ?- lambdaDRTTestSuite.     - run the test suite                    <',[]),
-    format('~n> ------------------------------------------------------------------ <',[]),
-    format('~n~n',[]).
+    format('~n> ------------------------------------------------------------------ <', []),
+    format('~n> lambdaDRT.pl, by Patrick Blackburn and Johan Bos                   <', []),
+    format('~n>                                                                    <', []),
+    format('~n> ?- loop.                   - parse a typed-in sentence (looped)    <', []),
+    format('~n> ?- lambdaDRT.              - parse a typed-in sentence             <', []),
+    format('~n> ?- lambdaDRT(S, DRSs).      - parse a sentence and return DRSs      <', []),
+    format('~n> ?- lambdaDRTTestSuite.     - run the test suite                    <', []),
+    format('~n> ------------------------------------------------------------------ <', []),
+    format('~n~n', []).
 
 
 /*========================================================================
