@@ -21,33 +21,29 @@
 
 *************************************************************************/
 
-:- module(myDRT, [   loop/0,
-                     lambdaDRT/0,
-                     lambdaDRT/2,
-                     lambdaDRT/3,
-                     lambdaDRTTestSuite/0,
-                     infix/0,
-                     prefix/0]).
+:- module(myDRT, [loop/0,
+                  test/1,
+                  test/2,
+                  lambdaDRT/0,
+                  lambdaDRT/2,
+                  lambdaDRT/3,
+                  lambdaDRTTestSuite/0,
+                  infix/0,
+                  prefix/0]).
 
-:- use_module(readLine,[readLine/1]).
+:- use_module(readLine,[readLine/1,
+                        readFromString/2]).
 
 :- use_module(comsemPredicates,[prefix/0,
                                 infix/0,
                                 printRepresentations/1]).
 
 :- use_module(betaConversionDRT,[betaConvert/2]).
-
 :- use_module(mergeDRT,[mergeDrs/2]).
 
 :- use_module(lambdaTestSuite,[discourse/2]).
 
-:- [myGrammar].
-
-:- [myLexicon].
-
-:- [mySemLex].
-
-:- [mySemCombinationRules].
+:- use_module(myGrammar, [t/3]).
 
 :- infix.
 
@@ -59,6 +55,13 @@ loop :-
    lambdaDRT,
    loop.
 
+test(String) :-
+    test(String, _).
+test(String, DRSs) :-
+    readFromString(String, Discourse),
+    lambdaDRT(Discourse,drs([],[]),DRSs),
+    printRepresentations(DRSs).
+
 lambdaDRT:-
    readLine(Discourse),
    lambdaDRT(Discourse,drs([],[]),DRSs),
@@ -68,7 +71,11 @@ lambdaDRT(Discourse,Sems):-
    lambdaDRT(Discourse,drs([],[]),Sems).
 
 lambdaDRT(Discourse,Old,Sems):-
-   findall(Sem,(t([sem:Drs],Discourse,[]),mergeDrs(merge(Old,Drs),Sem)),Sems),
+    findall(Sem, (
+                t([sem:Drs],Discourse,[]),
+                betaConvert(Drs, Converted),
+                mergeDrs(merge(Old,Converted),Sem)
+            ), Sems),
    \+ Sems=[].
 
 
@@ -82,7 +89,7 @@ lambdaDRTTestSuite:-
    format('~nDiscourse: ~p (~p readings)',[Discourse,Readings]),
    lambdaDRT(Discourse,drs([],[]),DRSs),
    printRepresentations(DRSs),
-   fail.     
+   fail.
 
 lambdaDRTTestSuite.
 

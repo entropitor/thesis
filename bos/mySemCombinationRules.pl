@@ -21,18 +21,15 @@
 
 *************************************************************************/
 
+:- module(mySemCombinationRules, [combine/2]).
+
 /*========================================================================
    Semantic Rules
 ========================================================================*/
 
-combine(t:Drs,[s:Sem]):- 
-   betaConvert(app(Sem,lam(E,drs([],[pred(event,E)]))),Drs).
-
-combine(t:Drs,[s:S,t:T]):- 
-   betaConvert(merge(app(S,lam(E,drs([],[pred(event,E)]))),T),Drs).
-
-combine(t:Converted,[q:Sem]):- 
-   betaConvert(Sem,Converted).
+combine(t:app(Sem,lam(E,drs([],[pred(event,E)])),[s:Sem]).
+combine(t:merge(app(S,lam(E,drs([],[pred(event,E)]))),T),[s:S,t:T]).
+combine(t:Sem,[q:Sem]).
 
 combine(s:app(B,A),[np:A,vp:B]).
 combine(s:lam(E,app(A,app(B,E))),[s:A,s:B]).

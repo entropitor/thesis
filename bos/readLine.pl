@@ -21,7 +21,8 @@
 
 *************************************************************************/
 
-:- module(readLine,[readLine/1]).
+:- module(readLine,[readLine/1,
+                    readFromString/2]).
 
 
 /*========================================================================
@@ -30,8 +31,28 @@
 
 readLine(WordList):-
    nl, write('> '),
-   readWords(Words),
-   checkWords(Words,WordList).
+   readLineHelper(WordList).
+
+/*========================================================================
+   Read from a given string and convert into list
+========================================================================*/
+
+readFromString(String, WordList) :-
+    new_memory_file(Handle),
+    open_memory_file(Handle, write, Stream),
+    format(Stream, '~s\n', [String]),
+    close(Stream),
+    open_memory_file(Handle, read, ReadStream, [free_on_close(true)]),
+    set_input(ReadStream),
+    readLineHelper(WordList),
+    close(ReadStream).
+
+/*========================================================================
+   The real reading
+========================================================================*/
+readLineHelper(WordList) :-
+    readWords(Words),
+    checkWords(Words, WordList).
 
 
 /*========================================================================
