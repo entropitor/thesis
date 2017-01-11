@@ -32,7 +32,7 @@
     Beta-Conversion (introducing stack)
 ========================================================================*/
 
-betaConvert(X, Y):-
+betaConvert(X, Y) :-
     betaConvert(X, Y, []).
 
 
@@ -40,23 +40,23 @@ betaConvert(X, Y):-
     Beta-Conversion (core stuff)
 ========================================================================*/
 
-betaConvert(X, Y, []):-
+betaConvert(X, Y, []) :-
     var(X),
     Y=X.
 
-betaConvert(Expression, Result, Stack):-
+betaConvert(Expression, Result, Stack) :-
     nonvar(Expression),
     Expression = app(Functor, Argument),
     nonvar(Functor),
     alphaConvertDRS(Functor, Converted),
     betaConvert(Converted, Result, [Argument|Stack]).
 
-betaConvert(Expression, Result, [X|Stack]):-
+betaConvert(Expression, Result, [X|Stack]) :-
     nonvar(Expression),
     Expression = lam(X, Formula),
     betaConvert(Formula, Result, Stack).
 
-betaConvert(Formula, Result, []):-
+betaConvert(Formula, Result, []) :-
     nonvar(Formula),
     \+ (Formula = app(X, _), nonvar(X)),
     compose(Formula, Functor, Formulas),
@@ -70,7 +70,7 @@ betaConvert(Formula, Result, []):-
 
 betaConvertList([], []).
 
-betaConvertList([Formula|Others], [Result|ResultOthers]):-
+betaConvertList([Formula|Others], [Result|ResultOthers]) :-
     betaConvert(Formula, Result),
     betaConvertList(Others, ResultOthers).
 
@@ -79,7 +79,7 @@ betaConvertList([Formula|Others], [Result|ResultOthers]):-
     Info
 ========================================================================*/
 
-info:-
+info :-
     format('~n> ------------------------------------------------------------------- <', []),
     format('~n> betaConversion.pl, by Patrick Blackburn and Johan Bos               <', []),
     format('~n>                                                                     <', []),

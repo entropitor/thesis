@@ -30,7 +30,7 @@
     Alpha Conversion (introducing substitutions)
 ========================================================================*/
 
-alphaConvertDRS(B1, B2):-
+alphaConvertDRS(B1, B2) :-
     alphaConvertDRS(B1, []-_, B2).
 
 
@@ -38,11 +38,11 @@ alphaConvertDRS(B1, B2):-
     Alpha Conversion (term)
 ========================================================================*/
 
-alphaConvertTerm(X, Vars, New):-
+alphaConvertTerm(X, Vars, New) :-
     var(X),
     alphaConvertVar(X, Vars, New).
 
-alphaConvertTerm(X, _Vars, New):-
+alphaConvertTerm(X, _Vars, New) :-
     atom(X),
     New = X.
 
@@ -51,7 +51,7 @@ alphaConvertTerm(X, _Vars, New):-
     Alpha Conversion (variables)
 ========================================================================*/
 
-alphaConvertVar(X, Vars, New):-
+alphaConvertVar(X, Vars, New) :-
     var(X),
     (
         memberList(sub(Z, Y), Vars),
@@ -67,43 +67,43 @@ alphaConvertVar(X, Vars, New):-
     Alpha Conversion (DRSs)
 ========================================================================*/
 
-alphaConvertDRS(X1, Vars-Vars, X2):-
+alphaConvertDRS(X1, Vars-Vars, X2) :-
     var(X1),
     alphaConvertVar(X1, Vars, X2).
 
-alphaConvertDRS(Exp, Vars-Vars, lam(Y, B2)):-
+alphaConvertDRS(Exp, Vars-Vars, lam(Y, B2)) :-
     nonvar(Exp),
     Exp=lam(X, B1),
     alphaConvertDRS(B1, [sub(X, Y)|Vars]-_, B2).
 
-alphaConvertDRS(Exp, Vars-Vars, drs([], [])):-
+alphaConvertDRS(Exp, Vars-Vars, drs([], [])) :-
     nonvar(Exp),
     Exp=drs([], []).
 
-alphaConvertDRS(Exp, Vars1-Vars2, drs([], [C2|Conds2])):-
+alphaConvertDRS(Exp, Vars1-Vars2, drs([], [C2|Conds2])) :-
     nonvar(Exp),
     Exp=drs([], [C1|Conds1]),
     alphaConvertCondition(C1, Vars1, C2),
     alphaConvertDRS(drs([], Conds1), Vars1-Vars2, drs([], Conds2)).
 
-alphaConvertDRS(Exp, Vars1-Vars2, drs([New|L2], C2)):-
+alphaConvertDRS(Exp, Vars1-Vars2, drs([New|L2], C2)) :-
     nonvar(Exp),
     Exp=drs([Ref|L1], C1),
     alphaConvertDRS(drs(L1, C1), [sub(Ref, New)|Vars1]-Vars2, drs(L2, C2)).
 
-alphaConvertDRS(Exp, Vars1-Vars3, alfa(Type, B3, B4)):-
+alphaConvertDRS(Exp, Vars1-Vars3, alfa(Type, B3, B4)) :-
     nonvar(Exp),
     Exp=alfa(Type, B1, B2),
     alphaConvertDRS(B1, Vars1-Vars2, B3),
     alphaConvertDRS(B2, Vars2-Vars3, B4).
 
-alphaConvertDRS(Exp, Vars1-Vars3, merge(B3, B4)):-
+alphaConvertDRS(Exp, Vars1-Vars3, merge(B3, B4)) :-
     nonvar(Exp),
     Exp=merge(B1, B2),
     alphaConvertDRS(B1, Vars1-Vars2, B3),
     alphaConvertDRS(B2, Vars2-Vars3, B4).
 
-alphaConvertDRS(Exp, Vars-Vars, app(E3, E4)):-
+alphaConvertDRS(Exp, Vars-Vars, app(E3, E4)) :-
     nonvar(Exp),
     Exp=app(E1, E2),
     alphaConvertDRS(E1, Vars-_, E3),
@@ -114,27 +114,27 @@ alphaConvertDRS(Exp, Vars-Vars, app(E3, E4)):-
     Alpha Conversion (DRS-Conditions)
 ========================================================================*/
 
-alphaConvertCondition(not(B1), Vars, not(B2)):-
+alphaConvertCondition(not(B1), Vars, not(B2)) :-
     alphaConvertDRS(B1, Vars-_, B2).
 
-alphaConvertCondition(imp(B1, B2), Vars, imp(B3, B4)):-
+alphaConvertCondition(imp(B1, B2), Vars, imp(B3, B4)) :-
      alphaConvertDRS(B1, Vars-Vars1, B3),
      alphaConvertDRS(B2, Vars1-_, B4).
 
-alphaConvertCondition(or(B1, B2), Vars, or(B3, B4)):-
+alphaConvertCondition(or(B1, B2), Vars, or(B3, B4)) :-
      alphaConvertDRS(B1, Vars-_, B3),
      alphaConvertDRS(B2, Vars-_, B4).
 
-%alphaConvertCondition(Cond1:F, Vars, Cond2:F):-
+%alphaConvertCondition(Cond1:F, Vars, Cond2:F) :-
 %     alphaConvertCondition(Cond1, Vars, Cond2).
 
-alphaConvertCondition(pred(Sym, X1), Vars, pred(Sym, X2)):-
+alphaConvertCondition(pred(Sym, X1), Vars, pred(Sym, X2)) :-
     alphaConvertTerm(X1, Vars, X2).
 
-alphaConvertCondition(rel(Sym, X1, Y1), Vars, rel(Sym, X2, Y2)):-
+alphaConvertCondition(rel(Sym, X1, Y1), Vars, rel(Sym, X2, Y2)) :-
     alphaConvertTerm(X1, Vars, X2),
     alphaConvertTerm(Y1, Vars, Y2).
 
-alphaConvertCondition(eq(X1, Y1), Vars, eq(X2, Y2)):-
+alphaConvertCondition(eq(X1, Y1), Vars, eq(X2, Y2)) :-
     alphaConvertTerm(X1, Vars, X2),
     alphaConvertTerm(Y1, Vars, Y2).

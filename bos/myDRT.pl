@@ -62,15 +62,15 @@ test(String, DRSs) :-
      lambdaDRT(Discourse, drs([], []), DRSs),
      printRepresentations(DRSs).
 
-lambdaDRT:-
+lambdaDRT :-
     readLine(Discourse),
     lambdaDRT(Discourse, drs([], []), DRSs),
     printRepresentations(DRSs).
 
-lambdaDRT(Discourse, Sems):-
+lambdaDRT(Discourse, Sems) :-
     lambdaDRT(Discourse, drs([], []), Sems).
 
-lambdaDRT(Discourse, Old, Sems):-
+lambdaDRT(Discourse, Old, Sems) :-
      findall(Sem, (
                      t([sem:Drs], Discourse, []),
                      betaConvert(Drs, Converted),
@@ -83,7 +83,7 @@ lambdaDRT(Discourse, Old, Sems):-
     Test Suite Predicates
 ========================================================================*/
 
-lambdaDRTTestSuite:-
+lambdaDRTTestSuite :-
     nl, write('>>>>> LAMBDA-DRT ON TEST SUITE <<<<< '), nl,
     discourse(Discourse, Readings),
     format('~nDiscourse: ~p (~p readings)', [Discourse, Readings]),
@@ -98,7 +98,7 @@ lambdaDRTTestSuite.
     Info
 ========================================================================*/
 
-info:-
+info :-
     format('~n> ------------------------------------------------------------------ <', []),
     format('~n> lambdaDRT.pl, by Patrick Blackburn and Johan Bos                   <', []),
     format('~n>                                                                    <', []),

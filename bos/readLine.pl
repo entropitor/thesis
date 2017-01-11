@@ -29,7 +29,7 @@
     Output prompt, read from standard input and convert into list
 ========================================================================*/
 
-readLine(WordList):-
+readLine(WordList) :-
     nl, write('> '),
     readLineHelper(WordList).
 
@@ -59,7 +59,7 @@ readLineHelper(WordList) :-
     Read in a sequence of characters, until a return is registered
 ========================================================================*/
 
-readWords([Word|Rest]):-
+readWords([Word|Rest]) :-
     get0(Char),
     readWord(Char, Chars, State),
     name(Word, Chars),
@@ -67,7 +67,7 @@ readWords([Word|Rest]):-
 
 readRest([], ended).
 
-readRest(Rest, notended):-
+readRest(Rest, notended) :-
     readWords(Rest).
 
 
@@ -78,13 +78,16 @@ readRest(Rest, notended):-
     Blanks and full stops split words, a return ends a line.
 ========================================================================*/
 
-readWord(32, [], notended):-!.      %%% blank
+readWord(32, [], notended) :-
+    !.      %%% blank
 
-readWord(46, [], notended):-!.      %%% full stop
+readWord(46, [], notended) :-
+    !.      %%% full stop
 
-readWord(10, [], ended):-!.          %%% return
+readWord(10, [], ended) :-
+    !.          %%% return
 
-readWord(Code, [Code|Rest], State):-
+readWord(Code, [Code|Rest], State) :-
     get0(Char),
     readWord(Char, Rest, State).
 
@@ -93,13 +96,14 @@ readWord(Code, [Code|Rest], State):-
     Check if all words are unquoted atoms, if not convert them into atoms.
 ========================================================================*/
 
-checkWords([], []):- !.
+checkWords([], []) :-
+    !.
 
-checkWords([''|Rest1], Rest2):-
+checkWords([''|Rest1], Rest2) :-
     !,
     checkWords(Rest1, Rest2).
 
-checkWords([Atom|Rest1], [Atom2|Rest2]):-
+checkWords([Atom|Rest1], [Atom2|Rest2]) :-
     name(Atom, Word1),
     convertWord(Word1, Word2),
     name(Atom2, Word2),
@@ -111,20 +115,21 @@ checkWords([Atom|Rest1], [Atom2|Rest2]):-
     non-alphabetic characters.
 ========================================================================*/
 
-convertWord([], []):- !.
+convertWord([], []) :-
+    !.
 
-convertWord([Capital|Rest1], [Small|Rest2]):-
+convertWord([Capital|Rest1], [Small|Rest2]) :-
     Capital > 64, Capital < 91, !,
     Small is Capital + 32,
     convertWord(Rest1, Rest2).
 
-convertWord([Number|Rest1], [Number|Rest2]):-
+convertWord([Number|Rest1], [Number|Rest2]) :-
     Number > 47, Number < 58, !,
     convertWord(Rest1, Rest2).
 
-convertWord([Weird|Rest1], Rest2):-
+convertWord([Weird|Rest1], Rest2) :-
     (Weird < 97; Weird > 122), !,
     convertWord(Rest1, Rest2).
 
-convertWord([Char|Rest1], [Char|Rest2]):-
+convertWord([Char|Rest1], [Char|Rest2]) :-
     convertWord(Rest1, Rest2).
