@@ -66,6 +66,10 @@ printDrsLines([Line|Rest]):-
       Format DRSs
 ========================================================================*/
 
+% 32 = space
+% 124 = | bar
+% 45 = - dash
+% 95 = _ underscore
 formatDrs(drs(Dom, Cond), [[32|Top], Refs2, [124|Line]|CondLines2], Length):-
     formatConds(Cond, []-CondLines1, 0-CondLength),
     formatRefs(Dom, Refs),
@@ -114,6 +118,7 @@ makeConstant(X, Code):-
     atomic(X),
     name(X, Code).
 
+% 120 = x
 makeConstant(X, [120|Codes]):-
     nonvar(X),
     X =.. ['$VAR', Number],
@@ -170,6 +175,9 @@ formatConds([or(Drs1, Drs2)|Rest], L1-L2, N0-N4):-!,
     Length is N1 + N2 + 8,
     (Length > N3, !, N4 = Length; N4 = N3).
 
+% 124 |
+% 32 space
+% 95 underscore
 formatConds([not(Drs)|Rest], L1-L2, N0-N3):-!,
     formatConds(Rest, L1-Lines, N0-N1),
     formatDrs(Drs, [A, B, C, D|Lines1], N2),
