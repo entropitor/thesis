@@ -25,7 +25,7 @@
       Module Declaration
 ========================================================================*/
 
-:- module(printDrs, [printDrs/1]).
+:- module(printDrs, [printDrs/1, printDrs2/1]).
 
 :- use_module(comsemPredicates, [appendLists/3]).
 
@@ -36,18 +36,18 @@
 
 :- dynamic counter/1.
 
-counter(0).
-
-
 /*========================================================================
       Print Predicates
 ========================================================================*/
 
 printDrs(Drs) :-
-    retract(counter(_)),
+    retractall(counter(_)),
     assert(counter(1)),
     \+ \+ (formatDrs(Drs, Lines, _),
            printDrsLines(Lines)).
+
+printDrs2(Drs) :-
+    \+ \+ (numbervars(Drs, 1, _), formatDrs(Drs, Lines, _), printDrsLines(Lines)).
 
 
 /*========================================================================
@@ -67,8 +67,8 @@ printDrsLines([Line|Rest]) :-
 ========================================================================*/
 
 formatDrs(drs(Dom, Cond), [[9484|Top], Refs2, [9500|Line]|CondLines2], Length) :-
-    formatConds(Cond, []-CondLines1, 0-CondLength),
     formatRefs(Dom, Refs),
+    formatConds(Cond, []-CondLines1, 0-CondLength),
     length([_, _|Refs], RefLength),
     (RefLength > CondLength, !, Length = RefLength ; Length = CondLength),
     closeConds(CondLines1, CondLines2, Length),
@@ -114,6 +114,7 @@ makeConstant(X, Code) :-
     atomic(X),
     name(X, Code).
 
+% code 120 = 'x'
 makeConstant(X, [120|Codes]) :-
     nonvar(X),
     X =.. ['$VAR', Number],
@@ -177,11 +178,11 @@ formatConds([not(Drs)|Rest], L1-L2, N0-N3) :-
     !,
     formatConds(Rest, L1-Lines, N0-N1),
     formatDrs(Drs, [A, B, C, D|Lines1], N2),
-    combLinesConds2([], Lines1, Lines2, 5, ''),
-    appendLists([[9474, 32, 32, 32, 32, 32|A],
-                 [9474, 32, 32, 32, 32, 32|B],
-                 [9474, 32, 9472, 9472, 32, 32|C],
-                 [9474, 32, 32, 32, 9474, 32|D]|Lines2], Lines, L2),
+    combLinesConds2([], Lines1, Lines2, 4, ''),
+    appendLists([[9474, 32, 32,   32,   32|A],
+                 [9474, 32, 32,   32,   32|B],
+                 [9474, 32, 9472, 9488, 32|C],
+                 [9474, 32, 32,   32,   32|D]|Lines2], Lines, L2),
     Length is N2 + 8,
     (Length > N1, !, N3 = Length; N3 = N1).
 
@@ -195,19 +196,15 @@ formatConds([eq(A, B)|Rest], In-[[9474, 32|Line]|Out], N0-N2) :-
     (Length > N1, !, N2 is Length; N2 = N1).
 
 formatConds([Basic|Rest], In-[[9474, 32|Line]|Out], N0-N2) :-
-    Basic=pred(_, _),
+    %% (
+    %%     Basic=pred(_, _)
+    %% ;
+    %%     Basic=rel(_, _, _)
+    %% ),
     formatConds(Rest, In-Out, N0-N1),
     formatBasic(Basic, Line),
     length([_, _, _|Line], Length),
     (Length > N1, !, N2 is Length; N2 = N1).
-
-formatConds([Basic|Rest], In-[[9474, 32|Line]|Out], N0-N2) :-
-    Basic=rel(_, _, _),
-    formatConds(Rest, In-Out, N0-N1),
-    formatBasic(Basic, Line),
-    length([_, _, _|Line], Length),
-    (Length > N1, !, N2 is Length; N2 = N1).
-
 
 /*========================================================================
       Formatting Basic Conditions
@@ -286,8 +283,8 @@ combLinesDrs([], [A2|Rest2], [A3|Rest], N1, N2) :-
     combLinesDrs([], Rest2, Rest, N1, N2).
 
 combLinesDrs([A1|Rest1], [], [Closed|Rest], N1, N2) :-
-    combLinesDrs(Rest1, [], Rest, N1, N2),
-    closeLine([32|A1], Closed, N2, []).
+    closeLine([32|A1], Closed, N2, []),
+    combLinesDrs(Rest1, [], Rest, N1, N2).
 
 combLinesDrs([A1|Rest1], [A2|Rest2], [A3|Rest], N1, N2) :-
     appendLists([32|A1], [32|A2], A0),
