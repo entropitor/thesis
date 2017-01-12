@@ -125,8 +125,8 @@ alphaConvertCondition(or(B1, B2), Vars, or(B3, B4)) :-
      alphaConvertDRS(B1, Vars-_, B3),
      alphaConvertDRS(B2, Vars-_, B4).
 
-%alphaConvertCondition(Cond1:F, Vars, Cond2:F) :-
-%     alphaConvertCondition(Cond1, Vars, Cond2).
+alphaConvertCondition(Cond1:F, Vars, Cond2:F) :-
+    alphaConvertCondition(Cond1, Vars, Cond2).
 
 alphaConvertCondition(pred(Sym, X1), Vars, pred(Sym, X2)) :-
     alphaConvertTerm(X1, Vars, X2).
