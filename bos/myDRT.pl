@@ -40,6 +40,9 @@
 
 :- use_module(betaConversionDRT, [betaConvert/2]).
 :- use_module(mergeDRT, [mergeDrs/2]).
+simplify(X, Y) :-
+    betaConvert(X, X1),
+    mergeDrs(X1, Y).
 
 :- use_module(lambdaTestSuite, [discourse/2]).
 
@@ -73,8 +76,7 @@ lambdaDRT(Discourse, Sems) :-
 lambdaDRT(Discourse, Old, Sems) :-
      findall(Sem, (
                      t([sem:Drs], Discourse, []),
-                     betaConvert(Drs, Converted),
-                     mergeDrs(merge(Old, Converted), Sem)
+                     simplify(merge(Old, Drs), Sem)
                   ), Sems),
     \+ Sems=[].
 
