@@ -22,6 +22,8 @@
 *************************************************************************/
 
 :- module(myDRT, [loop/0,
+                  test/0,
+                  testp/1,
                   test/1,
                   test/2,
                   lambdaDRT/0,
@@ -48,6 +50,8 @@ simplify(X, Y) :-
 
 :- use_module(myGrammar, [t/3]).
 
+:- use_module(problems, [problem/2]).
+
 :- infix.
 
 /*========================================================================
@@ -58,12 +62,32 @@ loop :-
     lambdaDRT,
     loop.
 
+test :-
+    testp(zebra).
+    %% testp(zebra),
+    %% testp(extra).
+
+testp(Problem) :-
+    problem(Problem, Sentences),
+    maplist(testSentence, Sentences, NbDRSes),
+    findall(1, member(1, NbDRSes), L),
+    length(L, NbCorrect),
+    length(Sentences, NbSentences),
+    nl, print(NbDRSes),
+    format('~nNumber of sentences with 1 meaning: ~p/~p', [NbCorrect, NbSentences]),
+    NbCorrect == NbSentences.
+
+testSentence(Sentence, NbDRS) :-
+    format('~nSentence: ~p', [Sentence]),
+    test(Sentence, DRSs),
+    length(DRSs, NbDRS).
+
 test(String) :-
-     test(String, _).
+    test(String, _).
 test(String, DRSs) :-
-     readFromString(String, Discourse),
-     lambdaDRT(Discourse, drs([], []), DRSs),
-     printRepresentations(DRSs).
+    readFromString(String, Discourse),
+    lambdaDRT(Discourse, drs([], []), DRSs),
+    printRepresentations(DRSs).
 
 lambdaDRT :-
     readLine(Discourse),
@@ -81,11 +105,13 @@ lambdaDRT(Discourse, Old, Sems) :-
                          !
                      ;
                          nl, write('failed conversion: '),
-                         writeln(Drs),
+                         numbervars(Drs, 0, _),
+                         print(Drs),
                          fail
                      )
                   ), Sems),
-    \+ Sems=[].
+     %\+ Sems=[].
+     true.
 
 
 /*========================================================================
