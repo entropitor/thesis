@@ -28,6 +28,8 @@ semLex(det, M) :-
          num:sg,
          sem:lam(U, lam(V, drs([], [imp(merge(drs([X], []), app(U, X)), app(V, X))])))].
 
+%TODO: If the NP is qualified further, does indef really translate to existential?
+% E.g. "An animal that dies is not a building" => Every animal that dies is not a building
 semLex(det, M) :-
     M = [type:indef,
 	       num:sg,
@@ -48,44 +50,44 @@ semLex(noun, M) :-
 
 semLex(iv, M) :-
     M = [symbol:Sym,
-         sem:lam(N, lam(P, app(N, lam(X, merge(drs([E], [pred(Sym, E), rel(agent, E, X)]), app(P, E))))))].
+         sem:lam(N, app(N, lam(X, drs([], [pred(Sym, X)]))))].
 
 semLex(tv, M) :-
     M = [symbol:Sym, _,
-         sem:lam(N1, lam(N2, lam(P, app(N2, lam(X, app(N1, lam(Y, merge(drs([E], [pred(Sym, E), rel(agent, E, X), rel(patient, E, Y)]), app(P, E)))))))))].
+         sem:lam(N1, lam(N2, app(N2, lam(X, app(N1, lam(Y, drs([], [rel(Sym, X, Y)])))))))].
 
 semLex(cop, M) :-
     M = [pol:pos,
-         sem:lam(N1, lam(N2, lam(_P, app(N2, lam(X, app(N1, lam(Y, drs([], [eq(Y, X)]))))))))];
+         sem:lam(N1, lam(N2, app(N2, lam(X, app(N1, lam(Y, drs([], [eq(Y, X)])))))))];
     M = [pol:neg,
-         sem:lam(N1, lam(N2, lam(_P, app(N2, lam(X, drs([], [not(app(N1, lam(Y, drs([], [eq(Y, X)]))))]))))))].
-         %% sem:lam(K, lam(Y, drs([], [not(app(K, lam(X, drs([], [eq(Y, X)]))))])))].
+         sem:lam(N1, lam(N2, app(N2, lam(X, drs([], [not(app(N1, lam(Y, drs([], [eq(Y, X)]))))])))))].
 
 semLex(relpro, M) :-
-    M = [sem:lam(P, lam(Q, lam(X, merge(app(app(P, lam(R, app(R, X))), lam(E, drs([], [pred(event, E)]))), app(Q, X)))))].
+    M = [sem:lam(P, lam(Q, lam(X, merge(app(P, lam(R, app(R, X))), app(Q, X)))))].
 
 semLex(prep, M) :-
     M = [symbol:Sym,
          type:n,
-         sem:lam(K, lam(P, lam(Y, merge(app(K, lam(X, drs([], [rel(Sym, Y, X)]))), app(P, Y)))))];
-    M = [symbol:Sym,
-         type:vp,
-         sem:lam(K, lam(V, lam(N, lam(E, app(app(V, N), lam(X, merge(app(K, lam(Y, drs([], [rel(Sym, X, Y)]))), app(E, X))))))))].
+         sem:lam(K, lam(P, lam(Y, merge(app(K, lam(X, drs([], [rel(Sym, Y, X)]))), app(P, Y)))))].
+    %% M = [symbol:Sym,
+    %%      type:vp,
+    %%      sem:lam(K, lam(V, lam(N, lam(E, app(app(V, N), lam(X, merge(app(K, lam(Y, drs([], [rel(Sym, X, Y)]))), app(E, X))))))))].
 
 semLex(adj, M) :-
     M = [symbol:Sym,
          sem:lam(P, lam(X, merge(drs([], [pred(Sym, X)]), app(P, X))))].
 
-semLex(adv, M) :-
-    M = [symbol:Sym,
-         sem:lam(V, lam(N, lam(E, app(app(V, N), lam(X, merge(drs([], [pred(Sym, X)]), app(E, X)))))))].
+%% semLex(adv, M) :-
+%%     M = [symbol:Sym,
+%%          sem:lam(V, lam(N, lam(E, app(app(V, N), lam(X, merge(drs([], [pred(Sym, X)]), app(E, X)))))))].
 
 semLex(av, M) :-
     M = [pol:neg,
-         sem:lam(P, lam(X, lam(E, drs([], [not(app(app(P, X), E))]))))];
+         sem:lam(P, lam(X, drs([], [not(app(P, X))])))];
     M = [pol:pos,
-         sem:lam(P, lam(X, lam(E, app(app(P, X), E))))].
+         sem:lam(P, lam(X, app(P, X)))].
 
+% TODO: Mia and Vincent do love a building. Distributive vs collective reading -> Different building or the same!!!
 semLex(coord, M) :-
     M = [type:conj,
          sem:lam(X, lam(Y, lam(P, merge(app(X, P), app(Y, P)))))];

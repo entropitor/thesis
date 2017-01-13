@@ -80,7 +80,9 @@ lambdaDRT(Discourse, Old, Sems) :-
                          simplify(merge(Old, Drs), Sem),
                          !
                      ;
-                         nl, write('failed conversion: '), writeln(Drs)
+                         nl, write('failed conversion: '),
+                         writeln(Drs),
+                         fail
                      )
                   ), Sems),
     \+ Sems=[].
