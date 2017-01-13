@@ -53,7 +53,12 @@ semLex(iv, M) :-
          sem:lam(N, app(N, lam(X, drs([], [pred(Sym, X)]))))].
 
 semLex(tv, M) :-
-    M = [symbol:Sym, _,
+    M = [symbol:Sym,
+         _,
+         sem:lam(N1, lam(N2, app(N2, lam(X, app(N1, lam(Y, drs([], [rel(Sym, X, Y)])))))))].
+
+semLex(ivpp, M) :-
+    M = [symbol:Sym,
          sem:lam(N1, lam(N2, app(N2, lam(X, app(N1, lam(Y, drs([], [rel(Sym, X, Y)])))))))].
 
 semLex(cop, M) :-

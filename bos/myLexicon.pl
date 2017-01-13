@@ -28,7 +28,7 @@
 ========================================================================*/
 :- discontiguous myLexicon:lexEntry/2.
 
-lexEntry(det, [syntax:[the], mood:decl, num:sg, type:indef]).
+lexEntry(det, [syntax:[the], mood:decl, num:sg, type:uni]).
 
 lexEntry(noun, [symbol:person, num:sg, syntax:[person]]).
 lexEntry(noun, [symbol:color, num:sg, syntax:[color]]).
@@ -81,13 +81,15 @@ lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:fin, num:pl]) :-
     tv(Syntax, Symbol).
 tv([keep], keep).
 tv([drink], drink).
-%TODO fix live in to iv+pp instead of tv
-tv([live, in], live_in).
 tv([smoke], smoke).
 
 lexEntry(tv, [symbol:is_next_to, syntax:[be, next, to], inf:inf, num:sg]).
 lexEntry(tv, [symbol:is_next_to, syntax:[is, next, to], inf:fin, num:sg]).
 lexEntry(tv, [symbol:is_next_to, syntax:[are, next, to], inf:fin, num:pl]).
+
+lexEntry(ivpp, [symbol:live_in, syntax:[live], pp:[in], inf:inf, num:sg]).
+lexEntry(ivpp, [symbol:live_in, syntax:[lives], pp:[in], inf:fin, num:sg]).
+lexEntry(ivpp, [symbol:live_in, syntax:[live], pp:[in], inf:fin, num:pl]).
 
 /*========================================================================
     Determiners

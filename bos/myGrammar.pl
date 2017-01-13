@@ -241,24 +241,33 @@ vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP])-->
 %    adv([sem:ADV]),
 %    { combine(vp:VP, [iv:IV, adv:ADV]) }.
 
-% TODO: add iv+pp verb class
-%vp([coord:no, inf:inf, num:num, gap:[], sem:vp])-->
-%    iv([inf:inf, num:num, sem:iv]),
-%    pp([type:vp, sem:adv]),
-%    { combine(vp:vp, [iv:iv, adv:adv]) }.
+%vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP])-->
+%    iv([inf:Inf, num:Num, sem:IV]),
+%    pp([type:vp, sem:Adv]),
+%    { combine(vp:VP, [iv:IV, adv:Adv]) }.
 
 vp([coord:no, inf:I, num:Num, gap:G, sem:VP])-->
   tv([inf:I, num:Num, ref:Ref, sem:TV]),
   np([coord:_, num:_, gap:G, ref:Ref, sem:NP]),
   { combine(vp:VP, [tv:TV, np:NP]) }.
 
+vp([coord:no, inf:I, num:Num, gap:G, sem:VP])-->
+    ivpp([inf:I, num:Num, pp:PP, sem:IVPP]),
+    PP,
+    np([coord:_, num:_, gap:G, ref:_, sem:NP]),
+    { combine(vp:VP, [tv:IVPP, np:NP]) }.
+
+inv_ivpp_vp([inf:I, num:Num, pp:PP, sem:VP])-->
+    np([coord:_, num:_, gap:_, ref:_, sem:NP]),
+    ivpp([inf:I, num:Num, pp:PP, sem:IVPP]),
+    { combine(vp:VP, [tv:IVPP, np:NP]) }.
 
 /*========================================================================
     Prepositional Phrases
 ========================================================================*/
 
 pp([type:Type, sem:PP])-->
-    prep([type:Type, sem:Prep]),
+    prep([type:Type, syntax:_, sem:Prep]),
     np([coord:_, num:_, gap:[], ref:no, sem:NP]),
     { combine(pp:PP, [prep:Prep, np:NP]) }.
 
@@ -272,6 +281,11 @@ rc([num:Num, sem:RC])-->
     vp([coord:_, inf:fin, num:Num, gap:[], sem:VP]),
     { combine(rc:RC, [relpro:RP, vp:VP]) }.
 
+rc([num:Num, sem:RC])-->
+    prep([type:n, syntax:PP, sem:_]),
+    relpro([sem:RP]),
+    inv_ivpp_vp([inf:fin, num:Num, pp:PP, sem:VP]),
+    { combine(rc:RC, [relpro:RP, vp:VP]) }.
 
 /*========================================================================
     Lexical Rules
@@ -281,6 +295,11 @@ iv([inf:Inf, num:Num, sem:Sem])-->
     { lexEntry(iv, [symbol:Sym, syntax:Word, inf:Inf, num:Num]) },
     Word,
     { semLex(iv, [symbol:Sym, sem:Sem]) }.
+
+ivpp([inf:Inf, num:Num, pp:PP, sem:Sem])-->
+    { lexEntry(ivpp, [symbol:Sym, syntax:Word, pp:PP, inf:Inf, num:Num]) },
+    Word,
+    { semLex(ivpp, [symbol:Sym, sem:Sem]) }.
 
 tv([inf:Inf, num:Num, ref:Ref, sem:Sem])-->
     { lexEntry(tv, [symbol:Sym, syntax:Word, inf:Inf, num:Num]) },
@@ -312,7 +331,7 @@ relpro([sem:Sem])-->
     Word,
     { semLex(relpro, [sem:Sem]) }.
 
-prep([type:Type, sem:Sem])-->
+prep([type:Type, syntax:Word, sem:Sem])-->
     { lexEntry(prep, [symbol:Sym, syntax:Word]) },
     Word,
     { semLex(prep, [symbol:Sym, type:Type, sem:Sem]) }.
