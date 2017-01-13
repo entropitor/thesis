@@ -52,6 +52,12 @@ s([coord:no, sem:Sem])-->
     vp([coord:_, inf:fin, num:Num, gap:[], sem:VP]),
     { combine(s:Sem, [np:NP, vp:VP]) }.
 
+s([coord:no, sem:Sem])-->
+    [there, is],
+    det([mood:decl, type:indef, num:sg, sem:Det]),
+    n([coord:_, num:sg, sem:N]),
+    { combine(s:Sem, [det:Det, n:N]) }.
+
 s([coord:yes, sem:Sem])-->
     s([coord:ant, sem:S1]),
     s([coord:con, sem:S2]),

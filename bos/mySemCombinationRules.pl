@@ -32,6 +32,7 @@ combine(t:merge(S, T), [s:S, t:T]).
 combine(t:Sem, [q:Sem]).
 
 combine(s:app(B, A), [np:A, vp:B]).
+combine(s:app(app(A, B), lam(_, drs([], []))), [det:A, n:B]).
 combine(s:app(A, B), [s:A, s:B]).
 combine(s:lam(B, drs([], [imp(S, B)])), [if:S]).
 combine(s:lam(B, drs([], [or(S, B)])), [either:S]).
