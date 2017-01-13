@@ -70,9 +70,12 @@ test :-
 testp(Problem) :-
     problem(Problem, Sentences),
     maplist(testSentence, Sentences, NbDRSes),
-    nl,
-    print(NbDRSes),
-    maplist(==(1), NbDRSes).
+    findall(1, member(1, NbDRSes), L),
+    length(L, NbCorrect),
+    length(Sentences, NbSentences),
+    nl, print(NbDRSes),
+    format('~nNumber of sentences with 1 meaning: ~p/~p', [NbCorrect, NbSentences]),
+    NbCorrect == NbSentences.
 
 testSentence(Sentence, NbDRS) :-
     format('~nSentence: ~p', [Sentence]),
@@ -102,7 +105,8 @@ lambdaDRT(Discourse, Old, Sems) :-
                          !
                      ;
                          nl, write('failed conversion: '),
-                         writeln(Drs),
+                         numbervars(Drs, 0, _),
+                         print(Drs),
                          fail
                      )
                   ), Sems),

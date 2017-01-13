@@ -24,6 +24,86 @@
 :- module(myLexicon, [lexEntry/2]).
 
 /*========================================================================
+    Zebra-Puzzle
+========================================================================*/
+:- discontiguous myLexicon:lexEntry/2.
+
+lexEntry(det, [syntax:[the], mood:decl, num:sg, type:indef]).
+
+lexEntry(noun, [symbol:person, num:sg, syntax:[person]]).
+lexEntry(noun, [symbol:color, num:sg, syntax:[color]]).
+lexEntry(noun, [symbol:house, num:sg, syntax:[house]]).
+lexEntry(noun, [symbol:position, num:sg, syntax:[position]]).
+lexEntry(noun, [symbol:animal, num:sg, syntax:[animal]]).
+
+lexEntry(noun, [symbol:englishman, num:sg, syntax:[englishman]]).
+lexEntry(noun, [symbol:spaniard, num:sg, syntax:[spaniard]]).
+lexEntry(noun, [symbol:ukrainian, num:sg, syntax:[ukrainian]]).
+lexEntry(noun, [symbol:japanese, num:sg, syntax:[japanese]]).
+lexEntry(noun, [symbol:norwegian, num:sg, syntax:[norwegian]]).
+
+lexEntry(noun, [symbol:dog, num:sg, syntax:[dog]]).
+lexEntry(noun, [symbol:zebra, num:sg, syntax:[zebra]]).
+lexEntry(noun, [symbol:snail, num:sg, syntax:[snail]]).
+lexEntry(noun, [symbol:fox, num:sg, syntax:[fox]]).
+lexEntry(noun, [symbol:horse, num:sg, syntax:[horse]]).
+
+lexEntry(pn, [symbol:chesterfields, syntax:[chesterfields]]).
+lexEntry(pn, [symbol:kools, syntax:[kools]]).
+lexEntry(pn, [symbol:parliaments, syntax:[parliaments]]).
+lexEntry(pn, [symbol:old_gold, syntax:[old, gold]]).
+lexEntry(pn, [symbol:lucky_strike, syntax:[lucky, strike]]).
+
+lexEntry(pn, [symbol:coffee, syntax:[coffee]]).
+lexEntry(pn, [symbol:tea, syntax:[tea]]).
+lexEntry(pn, [symbol:milk, syntax:[milk]]).
+lexEntry(pn, [symbol:water, syntax:[water]]).
+lexEntry(pn, [symbol:orange_juice, syntax:[orange, juice]]).
+
+lexEntry(adj, [symbol:red, syntax:[red]]).
+lexEntry(adj, [symbol:green, syntax:[green]]).
+lexEntry(adj, [symbol:ivory, syntax:[ivory]]).
+lexEntry(adj, [symbol:yellow, syntax:[yellow]]).
+lexEntry(adj, [symbol:blue, syntax:[blue]]).
+
+lexEntry(adj, [symbol:first, syntax:[first]]).
+lexEntry(adj, [symbol:second, syntax:[second]]).
+lexEntry(adj, [symbol:third, syntax:[third]]).
+lexEntry(adj, [symbol:fourth, syntax:[fourth]]).
+lexEntry(adj, [symbol:fifth, syntax:[fifth]]).
+
+lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:inf, num:sg]) :-
+    tv(Syntax, Symbol).
+lexEntry(tv, [symbol:Symbol, syntax:[Hs|T], inf:fin, num:sg]) :-
+    tv([H|T], Symbol),
+    atom_concat(H, s, Hs).
+lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:fin, num:pl]) :-
+    tv(Syntax, Symbol).
+tv([keep], keep).
+tv([drink], drink).
+%TODO fix live in to iv+pp instead of tv
+tv([live, in], live_in).
+tv([smoke], smoke).
+
+lexEntry(tv, [symbol:is_next_to, syntax:[be, next, to], inf:inf, num:sg]).
+lexEntry(tv, [symbol:is_next_to, syntax:[is, next, to], inf:fin, num:sg]).
+lexEntry(tv, [symbol:is_next_to, syntax:[are, next, to], inf:fin, num:pl]).
+
+%% lexEntry(iv, [symbol:collapse, syntax:[collapse], inf:inf, num:sg]).
+%% lexEntry(iv, [symbol:collapse, syntax:[collapses], inf:fin, num:sg]).
+%% lexEntry(iv, [symbol:collapse, syntax:[collapse], inf:fin, num:pl]).
+
+%% lexEntry(tv, [symbol:discard, syntax:[discard], inf:inf, num:sg]).
+%% lexEntry(tv, [symbol:discard, syntax:[discards], inf:fin, num:sg]).
+%% lexEntry(tv, [symbol:discard, syntax:[discard], inf:fin, num:pl]).
+
+%% lexEntry(prep, [symbol:about, syntax:[about]]).
+
+%% property_list::[position, color].
+%% property_value_list::position-[first, second, third, fourth, fifth].
+
+%% verb_list::[lives, be, keeps, kept, drinks, smokes, [is, next, to]].
+/*========================================================================
     Determiners
 ========================================================================*/
 
