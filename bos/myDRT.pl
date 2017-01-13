@@ -76,7 +76,12 @@ lambdaDRT(Discourse, Sems) :-
 lambdaDRT(Discourse, Old, Sems) :-
      findall(Sem, (
                      t([sem:Drs], Discourse, []),
-                     simplify(merge(Old, Drs), Sem)
+                     (
+                         simplify(merge(Old, Drs), Sem),
+                         !
+                     ;
+                         nl, write('failed conversion: '), writeln(Drs)
+                     )
                   ), Sems),
     \+ Sems=[].
 

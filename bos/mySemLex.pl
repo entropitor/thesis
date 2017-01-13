@@ -40,7 +40,7 @@ semLex(det, M) :-
 
 semLex(pn, M) :-
     M = [symbol:Sym,
-         sem:lam(P, merge(drs([X], [pred(Sym, X)]), app(P, X)))].
+         sem:lam(P, merge(drs([], []), app(P, Sym)))].
 
 semLex(noun, M) :-
     M = [symbol:Sym,
