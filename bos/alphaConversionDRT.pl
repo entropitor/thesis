@@ -71,6 +71,11 @@ alphaConvertDRS(X1, Vars-Vars, X2) :-
     var(X1),
     alphaConvertVar(X1, Vars, X2).
 
+alphaConvertDRS(X1, Vars-Vars, X2) :-
+    nonvar(X1),
+    atom(X1),
+    X2 = X1.
+
 alphaConvertDRS(Exp, Vars-Vars, lam(Y, B2)) :-
     nonvar(Exp),
     Exp=lam(X, B1),
