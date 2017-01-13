@@ -89,20 +89,6 @@ lexEntry(tv, [symbol:is_next_to, syntax:[be, next, to], inf:inf, num:sg]).
 lexEntry(tv, [symbol:is_next_to, syntax:[is, next, to], inf:fin, num:sg]).
 lexEntry(tv, [symbol:is_next_to, syntax:[are, next, to], inf:fin, num:pl]).
 
-%% lexEntry(iv, [symbol:collapse, syntax:[collapse], inf:inf, num:sg]).
-%% lexEntry(iv, [symbol:collapse, syntax:[collapses], inf:fin, num:sg]).
-%% lexEntry(iv, [symbol:collapse, syntax:[collapse], inf:fin, num:pl]).
-
-%% lexEntry(tv, [symbol:discard, syntax:[discard], inf:inf, num:sg]).
-%% lexEntry(tv, [symbol:discard, syntax:[discards], inf:fin, num:sg]).
-%% lexEntry(tv, [symbol:discard, syntax:[discard], inf:fin, num:pl]).
-
-%% lexEntry(prep, [symbol:about, syntax:[about]]).
-
-%% property_list::[position, color].
-%% property_value_list::position-[first, second, third, fourth, fifth].
-
-%% verb_list::[lives, be, keeps, kept, drinks, smokes, [is, next, to]].
 /*========================================================================
     Determiners
 ========================================================================*/
