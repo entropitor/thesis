@@ -22,6 +22,8 @@
 *************************************************************************/
 
 :- module(myDRT, [loop/0,
+                  test/0,
+                  testp/1,
                   test/1,
                   test/2,
                   lambdaDRT/0,
@@ -48,6 +50,8 @@ simplify(X, Y) :-
 
 :- use_module(myGrammar, [t/3]).
 
+:- use_module(problems, [problem/2]).
+
 :- infix.
 
 /*========================================================================
@@ -58,12 +62,29 @@ loop :-
     lambdaDRT,
     loop.
 
+test :-
+    testp(zebra).
+    %% testp(zebra),
+    %% testp(extra).
+
+testp(Problem) :-
+    problem(Problem, Sentences),
+    maplist(testSentence, Sentences, NbDRSes),
+    nl,
+    print(NbDRSes),
+    maplist(==(1), NbDRSes).
+
+testSentence(Sentence, NbDRS) :-
+    format('~nSentence: ~p', [Sentence]),
+    test(Sentence, DRSs),
+    length(DRSs, NbDRS).
+
 test(String) :-
-     test(String, _).
+    test(String, _).
 test(String, DRSs) :-
-     readFromString(String, Discourse),
-     lambdaDRT(Discourse, drs([], []), DRSs),
-     printRepresentations(DRSs).
+    readFromString(String, Discourse),
+    lambdaDRT(Discourse, drs([], []), DRSs),
+    printRepresentations(DRSs).
 
 lambdaDRT :-
     readLine(Discourse),
@@ -85,7 +106,8 @@ lambdaDRT(Discourse, Old, Sems) :-
                          fail
                      )
                   ), Sems),
-    \+ Sems=[].
+     %\+ Sems=[].
+     true.
 
 
 /*========================================================================
