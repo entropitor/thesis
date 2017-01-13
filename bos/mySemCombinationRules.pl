@@ -27,14 +27,14 @@
     Semantic Rules
 ========================================================================*/
 
-combine(t:app(Sem, lam(E, drs([], [pred(event, E)]))), [s:Sem]).
-combine(t:merge(app(S, lam(E, drs([], [pred(event, E)]))), T), [s:S, t:T]).
+combine(t:Sem, [s:Sem]).
+combine(t:merge(S, T), [s:S, t:T]).
 combine(t:Sem, [q:Sem]).
 
 combine(s:app(B, A), [np:A, vp:B]).
-combine(s:lam(E, app(A, app(B, E))), [s:A, s:B]).
-combine(s:lam(B, drs([], [imp(app(S, lam(E, drs([], [pred(event, E)]))), B)])), [if:S]).
-combine(s:lam(B, drs([], [or(app(S, lam(E, drs([], [pred(event, E)]))), B)])), [either:S]).
+combine(s:app(A, B), [s:A, s:B]).
+combine(s:lam(B, drs([], [imp(S, B)])), [if:S]).
+combine(s:lam(B, drs([], [or(S, B)])), [either:S]).
 combine(s:S, [then:S]).
 combine(s:S, [or:S]).
 combine(s:drs([], [not(S)]), [not:S]).
