@@ -58,9 +58,17 @@ semLex(tv, M) :-
 
 semLex(cop, M) :-
     M = [pol:pos,
+         type:np,
          sem:lam(N1, lam(N2, app(N2, lam(X, app(N1, lam(Y, drs([], [eq(Y, X)])))))))];
     M = [pol:neg,
-         sem:lam(N1, lam(N2, app(N2, lam(X, drs([], [not(app(N1, lam(Y, drs([], [eq(Y, X)]))))])))))].
+         type:np,
+         sem:lam(N1, lam(N2, app(N2, lam(X, drs([], [not(app(N1, lam(Y, drs([], [eq(Y, X)]))))])))))];
+    M = [pol:pos,
+         type:adj,
+         sem:lam(Adj, lam(N, app(N, lam(X, app(app(Adj, lam(_, drs([], []))), X)))))];
+    M = [pol:neg,
+         type:adj,
+         sem:lam(Adj, lam(N, app(N, lam(X, drs([], [not(app(app(Adj, lam(_, drs([], []))), X))])))))].
 
 semLex(relpro, M) :-
     M = [sem:lam(P, lam(Q, lam(X, merge(app(P, lam(R, app(R, X))), app(Q, X)))))].

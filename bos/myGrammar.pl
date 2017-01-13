@@ -217,9 +217,14 @@ vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP])-->
     { combine(vp:VP, [av:Mod, vp:V2]) }.
 
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP])-->
-    cop([inf:Inf, num:Num, sem:Cop]),
+    cop([type:np, inf:Inf, num:Num, sem:Cop]),
     np([coord:_, num:_, gap:[], ref:_, sem:NP]),
     { combine(vp:VP, [cop:Cop, np:NP]) }.
+
+vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP])-->
+    cop([type:adj, inf:Inf, num:Num, sem:Cop]),
+    adj([sem:Adj]),
+    { combine(vp:VP, [cop:Cop, adj:Adj]) }.
 
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP])-->
     iv([inf:Inf, num:Num, sem:IV]),
@@ -276,10 +281,10 @@ tv([inf:Inf, num:Num, ref:Ref, sem:Sem])-->
     Word,
     { semLex(tv, [symbol:Sym, ref:Ref, sem:Sem]) }.
 
-cop([inf:Inf, num:Num, sem:Sem])-->
+cop([type:Type, inf:Inf, num:Num, sem:Sem])-->
     { lexEntry(cop, [pol:Pol, syntax:Word, inf:Inf, num:Num]) },
     Word,
-    { semLex(cop, [pol:Pol, sem:Sem]) }.
+    { semLex(cop, [pol:Pol, type:Type, sem:Sem]) }.
 
 det([mood:M, type:Type, num:Num, sem:Det])-->
     { lexEntry(det, [syntax:Word, mood:M, num:Num, type:Type]) },
