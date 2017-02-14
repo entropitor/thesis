@@ -22,6 +22,9 @@
   Claes}
 
 \newcommand{\example}[1]{\textit{``#1''}}
+\newcommand{\fstructure}[1]{\left [\begin{tabular}{lr}#1\end{tabular}\right]}
+\newcommand{\feature}[2]{#1 & #2 \\}
+\newcommand{\fvariable}[1]{\framebox{#1}}
 
 \begin{document}
 
@@ -211,25 +214,19 @@ Schwitter \cite{Schwitter2006} vermeldt drie klassieke manieren van voorstellen 
 \paragraph{Feature structures} Naast DCG's wordt er in ACE en PENG ook gebruikt gemaakt van feature structures \cite{Shieber2003, NLPCourse}. Een feature structure is een datatype gerelateerd aan een woordgroep. Het is een soort van hashmap met als keys de (grammaticale) features en als values de waarden voor die feature. Een (grammaticale) feature is een eigenschap van een woordgroep. Zo is er de feature \texttt{categorie} die aangeeft welke syntactische rol een woordgroep speelt in een zin (bv. \texttt{np}, \texttt{vp}, ...). Andere features geven bijvoorbeeld de naamval aan van een naamwoordgroep. Grammatica's die gebruik maken van feature structures, gebruiken unificatie voor het samenvoegen van meerdere structuren. Niet alle features moeten namelijk een waarde toegekend krijgen. Zo kan een eigennaam voorkomen als onderwerp en als lijdend voorwerp (en heeft dus geen waarde voor de feature \texttt{naamval}). Terwijl \example{ik} enkel als onderwerp kan voorkomen (en dus wel een waarde heeft voor die feature). Bovendien kan men door unificatie controleren of het onderwerp en werkwoord hetzelfde getal hebben. Blackburn en Striegnitz \cite{NLPCourse} geven de volgende grammaticale regel als voorbeeld:
 
 \[
-  \left [
-    \begin{tabular}{lr}
-      CAT & s
-    \end{tabular}
-  \right ]
+  \fstructure{
+    \feature{CAT}{s}
+  }
   \rightarrow
-  \left [
-    \begin{tabular}{lr}
-      CAT & np \\
-      NAAMVAL & nom \\
-      NUM & \framebox{1}
-    \end{tabular}
-  \right ]
-  \left [
-    \begin{tabular}{lr}
-      CAT & vp \\
-      NUM & \framebox{1}
-    \end{tabular}
-  \right ]
+  \fstructure{
+    \feature{CAT}{np}
+    \feature{NAAMVAL}{nom}
+    \feature{NUM}{\fvariable{1}}
+  }
+  \fstructure{
+    \feature{CAT}{vp}
+    \feature{NUM}{\fvariable{1}}
+  }
 \]
 
 Deze regel zegt dat een zin bestaat uit een \texttt{np} gevolgd door een \texttt{vp}. De \texttt{np} moet de naamval \texttt{nom} hebben. Bovendien moet het getal van de \texttt{np} en de \texttt{vp} unificeren (de \framebox{1} kan men zien als een variabele).
