@@ -26,6 +26,7 @@
               compose/3,
               concatStrings/2,
               executeCommand/1,
+              fol/0,
               infix/0,
               makeDir/1,
               memberList/2,
@@ -44,6 +45,8 @@
               variablesInTerm/2]).
 
 :- use_module(printDrs, [printDrs/1]).
+:- use_module(drs2fol, [drs2fol/2]).
+:- use_module(printFol, [printFol/1]).
 
 
 /*========================================================================
@@ -403,6 +406,7 @@ bbmode(prefix).
 
 infix :- retractall(bbmode(_)), assert(bbmode(infix)).
 prefix :- retractall(bbmode(_)), assert(bbmode(prefix)).
+fol :- retractall(bbmode(_)), assert(bbmode(fol)).
 
 
 /*========================================================================
@@ -410,6 +414,9 @@ prefix :- retractall(bbmode(_)), assert(bbmode(prefix)).
 ========================================================================*/
 
 user:portray(E) :- bbmode(prefix), !, write_term(E, [numbervars(true)]).
+user:portray(E) :- bbmode(fol), drs2fol(E, FolExpression), !, printFol(FolExpression).
+user:portray(E) :- bbmode(fol), printFol(E).
+
 user:portray(not(F)) :- write('~ '), print(F).
 user:portray(and(F1, F2)) :- write('('), print(F1), write(' & '), print(F2), write(')').
 user:portray(imp(F1, F2)) :- write('('), print(F1), write(' > '), print(F2), write(')').
