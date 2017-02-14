@@ -25,7 +25,7 @@ problem(zebra, [
             "The Norwegian lives in the first house",
             "A house A is next to a house B if the absolute value of the difference between the position of house A and the position of house B is equal to 1",
             "The house in which the person who smokes Chesterfields lives, is next to the house in which the person who keeps the fox lives",
-            "The house in which the person who smokes Kools lives, is next to the house in which the person who keeps a horse lives",
+            "The house in which the person who smokes Kools lives, is next to the house in which the person who keeps the horse lives",
             "The person who smokes Lucky Strike, drinks Orange Juice",
             "The Japanese smokes Parliaments",
             "The Norwegian lives in a house that is next to the blue house",

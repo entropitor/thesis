@@ -30,66 +30,112 @@
 
 lexEntry(det, [syntax:[the], mood:decl, num:sg, type:uni]).
 
-lexEntry(noun, [symbol:person, num:sg, syntax:[person]]).
-lexEntry(noun, [symbol:color, num:sg, syntax:[color]]).
-lexEntry(noun, [symbol:house, num:sg, syntax:[house]]).
-lexEntry(noun, [symbol:position, num:sg, syntax:[position]]).
-lexEntry(noun, [symbol:animal, num:sg, syntax:[animal]]).
 
-lexEntry(noun, [symbol:englishman, num:sg, syntax:[englishman]]).
-lexEntry(noun, [symbol:spaniard, num:sg, syntax:[spaniard]]).
-lexEntry(noun, [symbol:ukrainian, num:sg, syntax:[ukrainian]]).
-lexEntry(noun, [symbol:japanese, num:sg, syntax:[japanese]]).
-lexEntry(noun, [symbol:norwegian, num:sg, syntax:[norwegian]]).
+concept(person, constructed:[[the, englishman], [the, spaniard], [the, ukrainian], [the, japanese], [the, norwegian]]).
+concept(house, nominal).
+concept(color, constructed:[[red], [green], [ivory], [yellow], [blue]]).
+concept(animal, constructed:[[the, dog], [the, zebra], [the, snail], [the, fox], [the, horse]]).
+concept(drink, constructed:[[coffee], [tea], [milk], [water], [orange, juice]]).
+concept(cigarette, constructed:[[chesterfields], [kools], [parliaments], [old, gold], [lucky, strike]]).
 
-lexEntry(noun, [symbol:dog, num:sg, syntax:[dog]]).
-lexEntry(noun, [symbol:zebra, num:sg, syntax:[zebra]]).
-lexEntry(noun, [symbol:snail, num:sg, syntax:[snail]]).
-lexEntry(noun, [symbol:fox, num:sg, syntax:[fox]]).
-lexEntry(noun, [symbol:horse, num:sg, syntax:[horse]]).
+property(house, position, int).
+property(house, color, color).
 
-lexEntry(pn, [symbol:chesterfields, syntax:[chesterfields]]).
-lexEntry(pn, [symbol:kools, syntax:[kools]]).
-lexEntry(pn, [symbol:parliaments, syntax:[parliaments]]).
-lexEntry(pn, [symbol:old_gold, syntax:[old, gold]]).
-lexEntry(pn, [symbol:lucky_strike, syntax:[lucky, strike]]).
+relation(house, house, [is, next], [to]).
+relation(person, house, [lives], [in]).
+relation(person, animal, [keeps], []).
+relation(person, drink, [drinks], []).
+relation(person, cigarette, [smokes], []).
 
-lexEntry(pn, [symbol:coffee, syntax:[coffee]]).
-lexEntry(pn, [symbol:tea, syntax:[tea]]).
-lexEntry(pn, [symbol:milk, syntax:[milk]]).
-lexEntry(pn, [symbol:water, syntax:[water]]).
-lexEntry(pn, [symbol:orange_juice, syntax:[orange, juice]]).
+lexEntry(noun, [symbol:Symbol, num:sg, syntax:[Symbol]]) :-
+    concept(Symbol, _).
+lexEntry(pn, [symbol:Symbol, syntax:Syntax]) :-
+    concept(_, constructed:Elements),
+    member(Syntax, Elements),
+    % TODO check that it isn't an adjective?
+    syntax_symbol(Syntax, Symbol).
+lexEntry(adj, [symbol:Symbol, syntax:Syntax]) :-
+    concept(Concept, constructed:Elements),
+    property(_, _, Concept),
+    member(Syntax, Elements),
+    syntax_symbol(Syntax, Symbol).
+lexEntry(adj, [symbol:Symbol, syntax:Syntax]) :-
+    member(Syntax, [[first], [second], [third], [fourth], [fifth], [sixth]]),
+    property(_, _, int),
+    syntax_symbol(Syntax, Symbol).
+% TODO: need other wordforms?
+lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:fin, num:sg]) :-
+    relation(_, _, Syntax, []),
+    syntax_symbol(Syntax, Symbol).
+lexEntry(ivpp, [symbol:Symbol, syntax:Syntax, pp:PP, inf:fin, num:sg]) :-
+    relation(_, _, Syntax, PP),
+    PP \= [],
+    append(Syntax, PP, WordForm),
+    syntax_symbol(WordForm, Symbol).
 
-lexEntry(adj, [symbol:red, syntax:[red]]).
-lexEntry(adj, [symbol:green, syntax:[green]]).
-lexEntry(adj, [symbol:ivory, syntax:[ivory]]).
-lexEntry(adj, [symbol:yellow, syntax:[yellow]]).
-lexEntry(adj, [symbol:blue, syntax:[blue]]).
+syntax_symbol(Syntax, Symbol) :-
+    atomic_list_concat(Syntax, '_', Symbol).
 
-lexEntry(adj, [symbol:first, syntax:[first]]).
-lexEntry(adj, [symbol:second, syntax:[second]]).
-lexEntry(adj, [symbol:third, syntax:[third]]).
-lexEntry(adj, [symbol:fourth, syntax:[fourth]]).
-lexEntry(adj, [symbol:fifth, syntax:[fifth]]).
+%% lexEntry(noun, [symbol:person, num:sg, syntax:[person]]).
+%% lexEntry(noun, [symbol:house, num:sg, syntax:[house]]).
+%% lexEntry(noun, [symbol:animal, num:sg, syntax:[animal]]).
+%% %% lexEntry(noun, [symbol:color, num:sg, syntax:[color]]).
+%% %% lexEntry(noun, [symbol:position, num:sg, syntax:[position]]).
 
-lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:inf, num:sg]) :-
-    tv(Syntax, Symbol).
-lexEntry(tv, [symbol:Symbol, syntax:[Hs|T], inf:fin, num:sg]) :-
-    tv([H|T], Symbol),
-    atom_concat(H, s, Hs).
-lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:fin, num:pl]) :-
-    tv(Syntax, Symbol).
-tv([keep], keep).
-tv([drink], drink).
-tv([smoke], smoke).
+%% lexEntry(noun, [symbol:englishman, num:sg, syntax:[englishman]]).
+%% lexEntry(noun, [symbol:spaniard, num:sg, syntax:[spaniard]]).
+%% lexEntry(noun, [symbol:ukrainian, num:sg, syntax:[ukrainian]]).
+%% lexEntry(noun, [symbol:japanese, num:sg, syntax:[japanese]]).
+%% lexEntry(noun, [symbol:norwegian, num:sg, syntax:[norwegian]]).
 
-lexEntry(tv, [symbol:is_next_to, syntax:[be, next, to], inf:inf, num:sg]).
-lexEntry(tv, [symbol:is_next_to, syntax:[is, next, to], inf:fin, num:sg]).
-lexEntry(tv, [symbol:is_next_to, syntax:[are, next, to], inf:fin, num:pl]).
+%% lexEntry(noun, [symbol:dog, num:sg, syntax:[dog]]).
+%% lexEntry(noun, [symbol:zebra, num:sg, syntax:[zebra]]).
+%% lexEntry(noun, [symbol:snail, num:sg, syntax:[snail]]).
+%% lexEntry(noun, [symbol:fox, num:sg, syntax:[fox]]).
+%% lexEntry(noun, [symbol:horse, num:sg, syntax:[horse]]).
 
-lexEntry(ivpp, [symbol:live_in, syntax:[live], pp:[in], inf:inf, num:sg]).
-lexEntry(ivpp, [symbol:live_in, syntax:[lives], pp:[in], inf:fin, num:sg]).
-lexEntry(ivpp, [symbol:live_in, syntax:[live], pp:[in], inf:fin, num:pl]).
+%% lexEntry(pn, [symbol:chesterfields, syntax:[chesterfields]]).
+%% lexEntry(pn, [symbol:kools, syntax:[kools]]).
+%% lexEntry(pn, [symbol:parliaments, syntax:[parliaments]]).
+%% lexEntry(pn, [symbol:old_gold, syntax:[old, gold]]).
+%% lexEntry(pn, [symbol:lucky_strike, syntax:[lucky, strike]]).
+
+%% lexEntry(pn, [symbol:coffee, syntax:[coffee]]).
+%% lexEntry(pn, [symbol:tea, syntax:[tea]]).
+%% lexEntry(pn, [symbol:milk, syntax:[milk]]).
+%% lexEntry(pn, [symbol:water, syntax:[water]]).
+%% lexEntry(pn, [symbol:orange_juice, syntax:[orange, juice]]).
+
+%% lexEntry(adj, [symbol:red, syntax:[red]]).
+%% lexEntry(adj, [symbol:green, syntax:[green]]).
+%% lexEntry(adj, [symbol:ivory, syntax:[ivory]]).
+%% lexEntry(adj, [symbol:yellow, syntax:[yellow]]).
+%% lexEntry(adj, [symbol:blue, syntax:[blue]]).
+
+%% lexEntry(adj, [symbol:first, syntax:[first]]).
+%% lexEntry(adj, [symbol:second, syntax:[second]]).
+%% lexEntry(adj, [symbol:third, syntax:[third]]).
+%% lexEntry(adj, [symbol:fourth, syntax:[fourth]]).
+%% lexEntry(adj, [symbol:fifth, syntax:[fifth]]).
+
+%% lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:inf, num:sg]) :-
+%%     tv(Syntax, Symbol).
+%% lexEntry(tv, [symbol:Symbol, syntax:[Hs|T], inf:fin, num:sg]) :-
+%%     tv([H|T], Symbol),
+%%     atom_concat(H, s, Hs).
+%% lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:fin, num:pl]) :-
+%%     tv(Syntax, Symbol).
+%% tv([keep], keep).
+%% tv([drink], drink).
+%% tv([smoke], smoke).
+
+%% lexEntry(tv, [symbol:is_next_to, syntax:[be, next, to], inf:inf, num:sg]).
+%% lexEntry(tv, [symbol:is_next_to, syntax:[is, next, to], inf:fin, num:sg]).
+%% lexEntry(tv, [symbol:is_next_to, syntax:[are, next, to], inf:fin, num:pl]).
+
+%% lexEntry(ivpp, [symbol:live_in, syntax:[live], pp:[in], inf:inf, num:sg]).
+%% lexEntry(ivpp, [symbol:live_in, syntax:[lives], pp:[in], inf:fin, num:sg]).
+%% lexEntry(ivpp, [symbol:live_in, syntax:[live], pp:[in], inf:fin, num:pl]).
 
 /*========================================================================
     Determiners
