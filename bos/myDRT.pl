@@ -63,20 +63,36 @@ loop :-
     loop.
 
 test :-
-    testp(thieves).
-    %% testp(translators).
-    %% testp(zebra),
-    %% testp(extra).
+    testAll([
+                 zebra,
+                 thieves,
+                 translators,
+                 swimming_suits
+             ]).
+
+% Test the list of problems
+% fails if any one of the problems fails
+testAll(Problems) :-
+    maplist(testp, Problems, Results),
+    format('~n~n~nResults (Number of sentences with 1 meaning):~n#############################################~n'),
+    maplist(format('Problem ~p: ~p/~p~n'), Results),
+    \+ (
+        member([_, X, Y], Results),
+        X \= Y
+    ).
 
 testp(Problem) :-
+    testp(Problem, [_, NbCorrect, NbSentences]),
+    NbCorrect == NbSentences.
+testp(Problem, [Problem, NbCorrect, NbSentences]) :-
     problem(Problem, Sentences),
+    format('~n###############################~n###   ~p~n###############################~n', [Problem]),
     maplist(testSentence, Sentences, NbDRSes),
     findall(1, member(1, NbDRSes), L),
     length(L, NbCorrect),
     length(Sentences, NbSentences),
     nl, print(NbDRSes),
-    format('~nNumber of sentences with 1 meaning: ~p/~p', [NbCorrect, NbSentences]),
-    NbCorrect == NbSentences.
+    format('~nNumber of sentences with 1 meaning: ~p/~p', [NbCorrect, NbSentences]).
 
 testSentence(Sentence, NbDRS) :-
     format('~nSentence: ~p', [Sentence]),

@@ -26,8 +26,9 @@
 :- discontiguous myLexicon:lexEntry/2.
 lexEntry(det, [syntax:[the], mood:decl, num:sg, type:uni]).
 
-lexEntry(noun, [symbol:Symbol, num:sg, syntax:[Symbol]]) :-
-    concept(Symbol, _).
+lexEntry(noun, [symbol:Symbol, num:sg, syntax:Syntax]) :-
+    concept(Symbol, _),
+    symbol_syntax(Symbol, Syntax).
 lexEntry(pn, [symbol:Symbol, syntax:Syntax]) :-
     concept(_, constructed:Elements),
     member(Syntax, Elements),
@@ -57,6 +58,9 @@ lexEntry(iv, [symbol:Symbol, syntax:Syntax, inf:fin, num:sg]) :-
 
 syntax_symbol(Syntax, Symbol) :-
     atomic_list_concat(Syntax, '_', Symbol).
+symbol_syntax(Symbol, Syntax) :-
+    split_string(Symbol, '_', '', L),
+    maplist(atom_chars, Syntax, L).
 
 :- discontiguous myLexicon:concept/2.
 :- discontiguous myLexicon:property/3.
@@ -170,6 +174,26 @@ property(translator, [native, language], native_language).
 relation(thief, role, [plays], []).
 relation(thief, role, [knows], []).
 relation(thief, [attends, to, the, meeting]).
+
+/*========================================================================
+    Puzzle: Swimming Suits
+========================================================================*/
+
+concept(contestant, nominal).
+concept(first_name, constructed:[[rachel], [melony], [amelia], [julia], [sarah]]).
+concept(last_name, constructed:[[travers], [james], [west], [couch], [sanford]]).
+concept(bathing_suit, nominal).
+concept(nb_pieces, constructed:[['1-piece'], ['2-piece']]).
+concept(color, constructed:[[red], [white], [yellow], [blue], [black]]).
+concept(place, inherits:int).
+
+property(contestant, [first, name], first_name).
+property(contestant, [last, name], last_name).
+property(contestant, [position], place).
+property(bathing_suit, [type, of], nb_pieces).
+property(bathing_suit, [color], color).
+
+relation(contestant, bathing_suit, [wears], []).
 
 /*========================================================================
     Determiners
