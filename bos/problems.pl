@@ -45,6 +45,17 @@ problem(translators, [
             "Russian and Englishman have no common languages except their native languages."
         ]).
 
+problem(thieves, [
+            "The hacker and the overlooker both do not attend to the meeting.",
+            "Bob does not know the accessory after the fact",
+            "Charley knows the driver",
+            "Damian knows only one of the thieves",
+            "Ernest knows three of the thieves",
+            "Albert knows only two of the thieves",
+            "the hacker is the only one which knows only one other",
+            "the overlooker knows three other thieves."
+        ]).
+
 problem(extra, [
             "There is a blue house or every person who smokes Lucky Strike, drinks Orange Juice",
             "There is a blue house in which the Norwegian lives or every person who smokes Lucky Strike drinks Orange Juice",

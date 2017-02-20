@@ -51,12 +51,16 @@ lexEntry(ivpp, [symbol:Symbol, syntax:Syntax, pp:PP, inf:fin, num:sg]) :-
     PP \= [],
     append(Syntax, PP, WordForm),
     syntax_symbol(WordForm, Symbol).
+lexEntry(iv, [symbol:Symbol, syntax:Syntax, inf:fin, num:sg]) :-
+    relation(_, Syntax),
+    syntax_symbol(Syntax, Symbol).
 
 syntax_symbol(Syntax, Symbol) :-
     atomic_list_concat(Syntax, '_', Symbol).
 
 :- discontiguous myLexicon:concept/2.
 :- discontiguous myLexicon:property/3.
+:- discontiguous myLexicon:relation/2.
 :- discontiguous myLexicon:relation/4.
 /*========================================================================
     Puzzle: Zebra
@@ -153,6 +157,19 @@ concept(native_language, constructed:[[spanish], [english], [french], [german], 
 property(translator, [native, language], native_language).
 
 relation(translator, language, [speaks], []).
+
+/*========================================================================
+    Puzzle: Thieves
+========================================================================*/
+
+concept(thief, constructed:[[albert], [bob], [charley], [damian], [ernest]]).
+concept(role, constructed:[[the, hacker], [the, overlooker], [the, driver], [the, driller], [the, accessory, after, the, fact]]).
+
+property(translator, [native, language], native_language).
+
+relation(thief, role, [plays], []).
+relation(thief, role, [knows], []).
+relation(thief, [attends, to, the, meeting]).
 
 /*========================================================================
     Determiners
