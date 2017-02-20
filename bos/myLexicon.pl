@@ -23,29 +23,8 @@
 
 :- module(myLexicon, [lexEntry/2]).
 
-/*========================================================================
-    Zebra-Puzzle
-========================================================================*/
 :- discontiguous myLexicon:lexEntry/2.
-
 lexEntry(det, [syntax:[the], mood:decl, num:sg, type:uni]).
-
-
-concept(person, constructed:[[the, englishman], [the, spaniard], [the, ukrainian], [the, japanese], [the, norwegian]]).
-concept(house, nominal).
-concept(color, constructed:[[red], [green], [ivory], [yellow], [blue]]).
-concept(animal, constructed:[[the, dog], [the, zebra], [the, snail], [the, fox], [the, horse]]).
-concept(drink, constructed:[[coffee], [tea], [milk], [water], [orange, juice]]).
-concept(cigarette, constructed:[[chesterfields], [kools], [parliaments], [old, gold], [lucky, strike]]).
-
-property(house, position, int).
-property(house, color, color).
-
-relation(house, house, [is, next], [to]).
-relation(person, house, [lives], [in]).
-relation(person, animal, [keeps], []).
-relation(person, drink, [drinks], []).
-relation(person, cigarette, [smokes], []).
 
 lexEntry(noun, [symbol:Symbol, num:sg, syntax:[Symbol]]) :-
     concept(Symbol, _).
@@ -75,6 +54,31 @@ lexEntry(ivpp, [symbol:Symbol, syntax:Syntax, pp:PP, inf:fin, num:sg]) :-
 
 syntax_symbol(Syntax, Symbol) :-
     atomic_list_concat(Syntax, '_', Symbol).
+
+:- discontiguous myLexicon:concept/2.
+:- discontiguous myLexicon:property/3.
+:- discontiguous myLexicon:relation/4.
+/*========================================================================
+    Puzzle: Zebra
+========================================================================*/
+
+concept(person, constructed:[[the, englishman], [the, spaniard], [the, ukrainian], [the, japanese], [the, norwegian]]).
+concept(house, nominal).
+concept(color, constructed:[[red], [green], [ivory], [yellow], [blue]]).
+concept(animal, constructed:[[the, dog], [the, zebra], [the, snail], [the, fox], [the, horse]]).
+concept(drink, constructed:[[coffee], [tea], [milk], [water], [orange, juice]]).
+concept(cigarette, constructed:[[chesterfields], [kools], [parliaments], [old, gold], [lucky, strike]]).
+
+property(house, [position], int).
+property(house, [color], color).
+
+relation(house, house, [is, next], [to]).
+relation(person, house, [lives], [in]).
+relation(person, animal, [keeps], []).
+relation(person, drink, [drinks], []).
+relation(person, cigarette, [smokes], []).
+
+%% lexEntry(det, [syntax:[the], mood:decl, num:sg, type:uni]).
 
 %% lexEntry(noun, [symbol:person, num:sg, syntax:[person]]).
 %% lexEntry(noun, [symbol:house, num:sg, syntax:[house]]).
@@ -136,6 +140,19 @@ syntax_symbol(Syntax, Symbol) :-
 %% lexEntry(ivpp, [symbol:live_in, syntax:[live], pp:[in], inf:inf, num:sg]).
 %% lexEntry(ivpp, [symbol:live_in, syntax:[lives], pp:[in], inf:fin, num:sg]).
 %% lexEntry(ivpp, [symbol:live_in, syntax:[live], pp:[in], inf:fin, num:pl]).
+
+
+/*========================================================================
+    Puzzle: Translators
+========================================================================*/
+
+concept(translator, constructed:[[the, spaniard], [the, englishman], [the, frenchman], [the, german], [the, russian]]).
+concept(language, constructed:[[spanish], [english], [french], [german], [russian]]).
+concept(native_language, constructed:[[spanish], [english], [french], [german], [russian]]). % inherits language!
+
+property(translator, [native, language], native_language).
+
+relation(translator, language, [speaks], []).
 
 /*========================================================================
     Determiners

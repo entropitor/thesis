@@ -63,7 +63,7 @@ loop :-
     loop.
 
 test :-
-    testp(zebra).
+    testp(translators).
     %% testp(zebra),
     %% testp(extra).
 

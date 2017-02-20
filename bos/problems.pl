@@ -32,6 +32,19 @@ problem(zebra, [
             "Every animal is kept by exactly 1 Person"
       ]).
 
+problem(translators, [
+            "The Englishman speaks German.",
+            "The Spaniard speaks French.",
+            "The German does not speak Spanish.",
+            "The Frenchman does not speak German.",
+            "Spaniard and Englishman both speak German.",
+            "Englishman and Frenchman both speak two languages.",
+            "Four translators speak Russian.",
+            "Exactly two translators speak French.",
+            "Only one translator who speaks Spanish, speaks Russian.",
+            "Russian and Englishman have no common languages except their native languages."
+        ]).
+
 problem(extra, [
             "There is a blue house or every person who smokes Lucky Strike, drinks Orange Juice",
             "There is a blue house in which the Norwegian lives or every person who smokes Lucky Strike drinks Orange Juice",
