@@ -221,7 +221,7 @@ formatBasic(rel(Functor, Arg1, Arg2), Line) :-
     makeConstant(Arg1, A1),
     makeConstant(Arg2, A2),
     appendLists(F, [40|A1], T1),
-    appendLists(T1, [44|A2], T2),
+    appendLists(T1, [44, 32|A2], T2),
     appendLists(T2, [41], Line).
 
 
