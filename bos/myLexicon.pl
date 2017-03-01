@@ -32,21 +32,25 @@ addType(Symbol, Type) :-
   b_getval(types, Types),
   b_setval(types, [type(Symbol, Type) | Types]).
 
-lexEntry(iv, [symbol:dance, syntax:[dance], inf:inf, num:sg, vType:person]).
-lexEntry(iv, [symbol:dance, syntax:[dances], inf:fin, num:sg, vType:Type]) :-
-    addType(dance, Type).
-lexEntry(iv, [symbol:dance, syntax:[dance], inf:fin, num:pl, vType:Type]) :-
-    addType(dance, Type).
-lexEntry(pn, [symbol:english_wizard, syntax:[the, englishman], vType:Type]) :-
-    addType(english_wizard, Type).
+%% lexEntry(iv, [symbol:dance, syntax:[dance], inf:inf, num:sg, vType:person]).
+%% lexEntry(iv, [symbol:dance, syntax:[dances], inf:fin, num:sg, vType:Type]) :-
+%%     addType(dance, Type).
+%% lexEntry(iv, [symbol:dance, syntax:[dance], inf:fin, num:pl, vType:Type]) :-
+%%     addType(dance, Type).
+%% lexEntry(pn, [symbol:english_wizard, syntax:[the, englishman], vType:Type]) :-
+%%     addType(english_wizard, Type).
 
+/*========================================================================
+    Puzzle: general predicates
+========================================================================*/
 lexEntry(det, [syntax:[the], mood:decl, num:sg, type:uni]).
 
 lexEntry(noun, [symbol:Symbol, num:sg, syntax:Syntax, vType:Symbol]) :-
     concept(Symbol, _),
     symbol_syntax(Symbol, Syntax).
 lexEntry(pn, [symbol:Symbol, syntax:Syntax, vType:Type]) :-
-    concept(Type, constructed:Elements),
+    concept(_Type, constructed:Elements),
+    addType(Symbol, Type),
     member(Syntax, Elements),
     % TODO check that it isn't an adjective?
     syntax_symbol(Syntax, Symbol).
@@ -62,6 +66,7 @@ lexEntry(adj, [symbol:Symbol, syntax:Syntax, vType:Type]) :-
 % TODO: need other wordforms?
 lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:fin, num:sg, vType:pred(SubjType, ObjType)]) :-
     relation(SubjType, ObjType, Syntax, []),
+    %addType(Symbol, pred(SubjType, ObjType)),
     syntax_symbol(Syntax, Symbol).
 lexEntry(ivpp, [symbol:Symbol, syntax:Syntax, pp:PP, inf:fin, num:sg, vType:pred(SubjType, ObjType)]) :-
     relation(SubjType, ObjType, Syntax, PP),
