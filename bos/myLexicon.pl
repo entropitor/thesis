@@ -26,34 +26,34 @@
 :- discontiguous myLexicon:lexEntry/2.
 lexEntry(det, [syntax:[the], mood:decl, num:sg, type:uni]).
 
-lexEntry(noun, [symbol:Symbol, num:sg, syntax:Syntax]) :-
+lexEntry(noun, [symbol:Symbol, num:sg, syntax:Syntax, vType:Symbol]) :-
     concept(Symbol, _),
     symbol_syntax(Symbol, Syntax).
-lexEntry(pn, [symbol:Symbol, syntax:Syntax]) :-
-    concept(_, constructed:Elements),
+lexEntry(pn, [symbol:Symbol, syntax:Syntax, vType:Type]) :-
+    concept(Type, constructed:Elements),
     member(Syntax, Elements),
     % TODO check that it isn't an adjective?
     syntax_symbol(Syntax, Symbol).
-lexEntry(adj, [symbol:Symbol, syntax:Syntax]) :-
+lexEntry(adj, [symbol:Symbol, syntax:Syntax, vType:Type]) :-
     concept(Concept, constructed:Elements),
-    property(_, _, Concept),
+    property(Type, _, Concept),
     member(Syntax, Elements),
     syntax_symbol(Syntax, Symbol).
-lexEntry(adj, [symbol:Symbol, syntax:Syntax]) :-
+lexEntry(adj, [symbol:Symbol, syntax:Syntax, vType:Type]) :-
     member(Syntax, [[first], [second], [third], [fourth], [fifth], [sixth]]),
-    property(_, _, int),
+    property(Type, _, int),
     syntax_symbol(Syntax, Symbol).
 % TODO: need other wordforms?
-lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:fin, num:sg]) :-
-    relation(_, _, Syntax, []),
+lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:fin, num:sg, vType:pred(SubjType, ObjType)]) :-
+    relation(SubjType, ObjType, Syntax, []),
     syntax_symbol(Syntax, Symbol).
-lexEntry(ivpp, [symbol:Symbol, syntax:Syntax, pp:PP, inf:fin, num:sg]) :-
-    relation(_, _, Syntax, PP),
+lexEntry(ivpp, [symbol:Symbol, syntax:Syntax, pp:PP, inf:fin, num:sg, vType:pred(SubjType, ObjType)]) :-
+    relation(SubjType, ObjType, Syntax, PP),
     PP \= [],
     append(Syntax, PP, WordForm),
     syntax_symbol(WordForm, Symbol).
-lexEntry(iv, [symbol:Symbol, syntax:Syntax, inf:fin, num:sg]) :-
-    relation(_, Syntax),
+lexEntry(iv, [symbol:Symbol, syntax:Syntax, inf:fin, num:sg, vType:Type]) :-
+    relation(Type, Syntax),
     syntax_symbol(Syntax, Symbol).
 
 syntax_symbol(Syntax, Symbol) :-
