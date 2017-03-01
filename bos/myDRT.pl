@@ -64,10 +64,10 @@ loop :-
 
 test :-
     testAll([
-                 zebra,
-                 thieves,
-                 translators,
-                 swimming_suits
+                 zebra
+                 %% thieves,
+                 %% translators,
+                 %% swimming_suits
              ]).
 
 % Test the list of problems
