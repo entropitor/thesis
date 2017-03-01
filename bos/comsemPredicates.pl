@@ -305,8 +305,8 @@ printRepresentations(Readings, Types) :-
 printRep([], [], _) :- nl.
 printRep([Reading|OtherReadings], [Types|OtherTypes], M) :-
     N is M + 1, nl, write(N), tab(1),
-    \+ \+ (numbervars(Types, 0, _), format('~nTypes: ~p', [Types])),
     \+ \+ (numbervars(Reading, 0, _), print(Reading)),
+    \+ \+ (numbervars(Types, 0, _), format('~nTypes: ~p', [Types])),
     printRep(OtherReadings, OtherTypes, N).
 
 

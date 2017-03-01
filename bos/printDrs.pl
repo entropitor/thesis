@@ -54,7 +54,7 @@ printDrs2(Drs) :-
       Print DRS Lines
 ========================================================================*/
 
-printDrsLines([]) :- nl.
+printDrsLines([]).
 
 printDrsLines([Line|Rest]) :-
     name(L, Line),
