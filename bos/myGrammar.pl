@@ -312,10 +312,10 @@ cop([type:Type, inf:Inf, num:Num, sem:Sem])-->
     Word,
     { semLex(cop, [pol:Pol, type:Type, sem:Sem]) }.
 
-det([mood:M, type:Type, num:Num, sem:Det, vType:_VType])-->
+det([mood:M, type:Type, num:Num, sem:Det, vType:VType])-->
     { lexEntry(det, [syntax:Word, mood:M, num:Num, type:Type]) },
     Word,
-    { semLex(det, [type:Type, num:Num, sem:Det]) }.
+    { semLex(det, [type:Type, num:Num, sem:Det, vType:VType]) }.
 
 pn([sem:Sem, vType:Type])-->
     { lexEntry(pn, [symbol:Sym, syntax:Word, vType:Type]) },

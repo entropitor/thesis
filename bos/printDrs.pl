@@ -133,6 +133,13 @@ makeConstant(X, [120|Number]) :-
     M is N+1,
     assert(counter(M)).
 
+makeConstant(X, Code) :-
+    nonvar(X),
+    X = var(Var, Type),
+    makeConstant(Var, CodesVar),
+    name(Type, CodesType),
+    appendLists(CodesVar, [58 | CodesType], Code).
+
 
 /*========================================================================
       Format a Line

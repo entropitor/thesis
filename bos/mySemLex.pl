@@ -26,19 +26,22 @@
 semLex(det, M) :-
     M = [type:uni,
          num:sg,
-         sem:lam(U, lam(V, drs([], [imp(merge(drs([X], []), app(U, X)), app(V, X))])))].
+         sem:lam(U, lam(V, drs([], [imp(merge(drs([var(X, Type)], []), app(U, X)), app(V, X))]))),
+         vType:Type].
 
 %TODO: If the NP is qualified further, does indef really translate to existential?
 % E.g. "An animal that dies is not a building" => Every animal that dies is not a building
 semLex(det, M) :-
     M = [type:indef,
 	       num:sg,
-         sem:lam(U, lam(V, merge(merge(drs([X], []), app(U, X)), app(V, X))))].
+         sem:lam(U, lam(V, merge(merge(drs([var(X, Type)], []), app(U, X)), app(V, X)))),
+         vType:Type].
 
 semLex(det, M) :-
     M = [type:neg,
 	       num:sg,
-         sem:lam(U, lam(V, drs([], [not(merge(merge(drs([X], []), app(U, X)), app(V, X)))])))].
+         sem:lam(U, lam(V, drs([], [not(merge(merge(drs([var(X, Type)], []), app(U, X)), app(V, X)))]))),
+         vType:Type].
 
 semLex(pn, M) :-
     M = [symbol:Sym,
