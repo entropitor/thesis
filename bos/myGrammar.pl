@@ -257,7 +257,7 @@ vp([coord:no, inf:I, num:Num, gap:G, sem:VP])-->
     np([coord:_, num:_, gap:G, ref:_, sem:NP]),
     { combine(vp:VP, [tv:IVPP, np:NP]) }.
 
-inv_ivpp_vp([inf:I, num:Num, pp:PP, sem:VP])-->
+vp([coord:no, inf:I, num:Num, gap:[pp:PP], sem:VP])-->
     np([coord:_, num:_, gap:_, ref:_, sem:NP]),
     ivpp([inf:I, num:Num, pp:PP, sem:IVPP]),
     { combine(vp:VP, [tv:IVPP, np:NP]) }.
@@ -284,7 +284,7 @@ rc([num:Num, sem:RC])-->
 rc([num:Num, sem:RC])-->
     prep([type:n, syntax:PP, sem:_]),
     relpro([sem:RP]),
-    inv_ivpp_vp([inf:fin, num:Num, pp:PP, sem:VP]),
+    vp([coord:_, inf:fin, num:Num, gap:[pp:PP], sem:VP]),
     { combine(rc:RC, [relpro:RP, vp:VP]) }.
 
 /*========================================================================
