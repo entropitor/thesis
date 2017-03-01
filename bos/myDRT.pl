@@ -26,10 +26,8 @@
                   testp/1,
                   test/1,
                   test/2,
-                  lambdaDRT/0,
-                  lambdaDRT/2,
-                  lambdaDRT/3,
-                  lambdaDRTTestSuite/0,
+                  %% lambdaDRT/0,
+                  lambdaDRT/4,
                   infix/0,
                   prefix/0]).
 
@@ -38,7 +36,7 @@
 
 :- use_module(comsemPredicates, [prefix/0,
                                  infix/0,
-                                 printRepresentations/1]).
+                                 printRepresentations/2]).
 
 :- use_module(betaConversionDRT, [betaConvert/2]).
 :- use_module(mergeDRT, [mergeDrs/2]).
@@ -51,8 +49,6 @@ simplify(X, Y) :-
 :- use_module(myGrammar, [t/3]).
 
 :- use_module(problems, [problem/2]).
-
-:- infix.
 
 /*========================================================================
     Driver Predicates
@@ -103,67 +99,28 @@ test(String) :-
     test(String, _).
 test(String, DRSs) :-
     readFromString(String, Discourse),
-    lambdaDRT(Discourse, drs([], []), DRSs),
-    printRepresentations(DRSs).
+    lambdaDRT(Discourse, drs([], []), DRSs, Types),
+    printRepresentations(DRSs, Types).
 
-lambdaDRT :-
-    readLine(Discourse),
-    lambdaDRT(Discourse, drs([], []), DRSs),
-    printRepresentations(DRSs).
+%% lambdaDRT :-
+%%     readLine(Discourse),
+%%     lambdaDRT(Discourse, drs([], []), DRSs, Types),
+%%     format('Types: ~p~n', Types),
+%%     printRepresentations(DRSs).
 
-lambdaDRT(Discourse, Sems) :-
-    lambdaDRT(Discourse, drs([], []), Sems).
-
-lambdaDRT(Discourse, Old, Sems) :-
-     findall(Sem, (
+lambdaDRT(Discourse, Old, Sems, Types) :-
+     b_setval(types, []),
+     findall(Sem-Types, (
                      t([sem:Drs], Discourse, []),
                      (
-                         simplify(merge(Old, Drs), Sem),
-                         !
+                         simplify(merge(Old, Drs), Sem)
+                     ->
+                         b_getval(types, Types)
                      ;
                          nl, write('failed conversion: '),
                          numbervars(Drs, 0, _),
                          print(Drs),
                          fail
                      )
-                  ), Sems),
-     %\+ Sems=[].
-     true.
-
-
-/*========================================================================
-    Test Suite Predicates
-========================================================================*/
-
-lambdaDRTTestSuite :-
-    nl, write('>>>>> LAMBDA-DRT ON TEST SUITE <<<<< '), nl,
-    discourse(Discourse, Readings),
-    format('~nDiscourse: ~p (~p readings)', [Discourse, Readings]),
-    lambdaDRT(Discourse, drs([], []), DRSs),
-    printRepresentations(DRSs),
-    fail.
-
-lambdaDRTTestSuite.
-
-
-/*========================================================================
-    Info
-========================================================================*/
-
-info :-
-    format('~n> ------------------------------------------------------------------ <', []),
-    format('~n> lambdaDRT.pl, by Patrick Blackburn and Johan Bos                   <', []),
-    format('~n>                                                                    <', []),
-    format('~n> ?- loop.                   - parse a typed-in sentence (looped)    <', []),
-    format('~n> ?- lambdaDRT.              - parse a typed-in sentence             <', []),
-    format('~n> ?- lambdaDRT(S, DRSs).      - parse a sentence and return DRSs      <', []),
-    format('~n> ?- lambdaDRTTestSuite.     - run the test suite                    <', []),
-    format('~n> ------------------------------------------------------------------ <', []),
-    format('~n~n', []).
-
-
-/*========================================================================
-    Display info at start
-========================================================================*/
-
-:- info.
+                  ), Sols),
+     pairs_keys_values(Sols, Sems, Types).

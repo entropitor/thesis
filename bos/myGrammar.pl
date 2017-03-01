@@ -33,13 +33,13 @@
 ========================================================================*/
 
 t([sem:T])-->
-    s([coord:C, sem:S]),
     { memberList(C, [yes, no]) },
+    s([coord:C, sem:S]),
     { combine(t:T, [s:S]) }.
 
 t([sem:T])-->
-    s([coord:C, sem:S1]),
     { memberList(C, [yes, no]) },
+    s([coord:C, sem:S1]),
     t([sem:S2]),
     { combine(t:T, [s:S1, t:S2]) }.
 
@@ -312,7 +312,7 @@ cop([type:Type, inf:Inf, num:Num, sem:Sem])-->
     Word,
     { semLex(cop, [pol:Pol, type:Type, sem:Sem]) }.
 
-det([mood:M, type:Type, num:Num, sem:Det, vType:VType])-->
+det([mood:M, type:Type, num:Num, sem:Det, vType:_VType])-->
     { lexEntry(det, [syntax:Word, mood:M, num:Num, type:Type]) },
     Word,
     { semLex(det, [type:Type, num:Num, sem:Det]) }.

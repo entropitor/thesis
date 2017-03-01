@@ -32,7 +32,7 @@
               memberList/2,
               newFunctionCounter/1,
               prefix/0,
-              printRepresentations/1,
+              printRepresentations/2,
               proveOnce/1,
               removeFirst/3,
               removeDuplicates/2,
@@ -299,14 +299,15 @@ newFunctionCounter(N) :-
     Printing a set of representations
 ========================================================================*/
 
-printRepresentations(Readings) :-
-    printRep(Readings, 0).
+printRepresentations(Readings, Types) :-
+    printRep(Readings, Types, 0).
 
-printRep([], _) :- nl.
-printRep([Reading|OtherReadings], M) :-
+printRep([], [], _) :- nl.
+printRep([Reading|OtherReadings], [Types|OtherTypes], M) :-
     N is M + 1, nl, write(N), tab(1),
+    \+ \+ (numbervars(Types, 0, _), format('~nTypes: ~p', [Types])),
     \+ \+ (numbervars(Reading, 0, _), print(Reading)),
-    printRep(OtherReadings, N).
+    printRep(OtherReadings, OtherTypes, N).
 
 
 /*========================================================================
@@ -402,7 +403,7 @@ load_shell.
 
 :- dynamic bbmode/1.
 
-bbmode(prefix).
+bbmode(infix).
 
 infix :- retractall(bbmode(_)), assert(bbmode(infix)).
 prefix :- retractall(bbmode(_)), assert(bbmode(prefix)).

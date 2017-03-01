@@ -20,10 +20,26 @@
      59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 *************************************************************************/
-
 :- module(myLexicon, [lexEntry/2]).
 
 :- discontiguous myLexicon:lexEntry/2.
+
+addType(_, _) :-
+  \+ nb_current(types, _),
+  nb_setval(types, []),
+  fail.
+addType(Symbol, Type) :-
+  b_getval(types, Types),
+  b_setval(types, [type(Symbol, Type) | Types]).
+
+lexEntry(iv, [symbol:dance, syntax:[dance], inf:inf, num:sg, vType:person]).
+lexEntry(iv, [symbol:dance, syntax:[dances], inf:fin, num:sg, vType:Type]) :-
+    addType(dance, Type).
+lexEntry(iv, [symbol:dance, syntax:[dance], inf:fin, num:pl, vType:Type]) :-
+    addType(dance, Type).
+lexEntry(pn, [symbol:english_wizard, syntax:[the, englishman], vType:Type]) :-
+    addType(english_wizard, Type).
+
 lexEntry(det, [syntax:[the], mood:decl, num:sg, type:uni]).
 
 lexEntry(noun, [symbol:Symbol, num:sg, syntax:Syntax, vType:Symbol]) :-
@@ -154,46 +170,46 @@ relation(person, cigarette, [smokes], []).
     Puzzle: Translators
 ========================================================================*/
 
-concept(translator, constructed:[[the, spaniard], [the, englishman], [the, frenchman], [the, german], [the, russian]]).
-concept(language, constructed:[[spanish], [english], [french], [german], [russian]]).
-concept(native_language, constructed:[[spanish], [english], [french], [german], [russian]]). % inherits language!
+%% concept(translator, constructed:[[the, spaniard], [the, englishman], [the, frenchman], [the, german], [the, russian]]).
+%% concept(language, constructed:[[spanish], [english], [french], [german], [russian]]).
+%% concept(native_language, constructed:[[spanish], [english], [french], [german], [russian]]). % inherits language!
 
-property(translator, [native, language], native_language).
+%% property(translator, [native, language], native_language).
 
-relation(translator, language, [speaks], []).
+%% relation(translator, language, [speaks], []).
 
 /*========================================================================
     Puzzle: Thieves
 ========================================================================*/
 
-concept(thief, constructed:[[albert], [bob], [charley], [damian], [ernest]]).
-concept(role, constructed:[[the, hacker], [the, overlooker], [the, driver], [the, driller], [the, accessory, after, the, fact]]).
+%% concept(thief, constructed:[[albert], [bob], [charley], [damian], [ernest]]).
+%% concept(role, constructed:[[the, hacker], [the, overlooker], [the, driver], [the, driller], [the, accessory, after, the, fact]]).
 
-property(translator, [native, language], native_language).
+%% property(translator, [native, language], native_language).
 
-relation(thief, role, [plays], []).
-relation(thief, role, [knows], []).
-relation(thief, [attends, to, the, meeting]).
+%% relation(thief, role, [plays], []).
+%% relation(thief, role, [knows], []).
+%% relation(thief, [attends, to, the, meeting]).
 
 /*========================================================================
     Puzzle: Swimming Suits
 ========================================================================*/
 
-concept(contestant, nominal).
-concept(first_name, constructed:[[rachel], [melony], [amelia], [julia], [sarah]]).
-concept(last_name, constructed:[[travers], [james], [west], [couch], [sanford]]).
-concept(bathing_suit, nominal).
-concept(nb_pieces, constructed:[['1-piece'], ['2-piece']]).
-concept(color, constructed:[[red], [white], [yellow], [blue], [black]]).
-concept(place, inherits:int).
+%% concept(contestant, nominal).
+%% concept(first_name, constructed:[[rachel], [melony], [amelia], [julia], [sarah]]).
+%% concept(last_name, constructed:[[travers], [james], [west], [couch], [sanford]]).
+%% concept(bathing_suit, nominal).
+%% concept(nb_pieces, constructed:[['1-piece'], ['2-piece']]).
+%% concept(color, constructed:[[red], [white], [yellow], [blue], [black]]).
+%% concept(place, inherits:int).
 
-property(contestant, [first, name], first_name).
-property(contestant, [last, name], last_name).
-property(contestant, [position], place).
-property(bathing_suit, [type, of], nb_pieces).
-property(bathing_suit, [color], color).
+%% property(contestant, [first, name], first_name).
+%% property(contestant, [last, name], last_name).
+%% property(contestant, [position], place).
+%% property(bathing_suit, [type, of], nb_pieces).
+%% property(bathing_suit, [color], color).
 
-relation(contestant, bathing_suit, [wears], []).
+%% relation(contestant, bathing_suit, [wears], []).
 
 /*========================================================================
     Determiners
