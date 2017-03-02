@@ -257,11 +257,10 @@ vp([coord:no, inf:I, num:Num, gap:G, sem:VP, vType:TypeSubj])-->
     np([coord:_, num:_, gap:G, ref:_, sem:NP, vType:TypeObj]),
     { combine(vp:VP, [tv:IVPP, np:NP]) }.
 
-% TODO: reverse subj and object in semantics!!! now pred(name, obj, subj) instead of pred(name, subj, obj)
 vp([coord:no, inf:I, num:Num, gap:[pp:PP], sem:VP, vType:TypeObj])-->
     np([coord:_, num:_, gap:_, ref:_, sem:NP, vType:TypeSubj]),
     ivpp([inf:I, num:Num, pp:PP, sem:IVPP, vType:pred(TypeSubj, TypeObj)]),
-    { combine(vp:VP, [tv:IVPP, np:NP]) }.
+    { combine(vp:VP, [tv:IVPP, npSubj:NP]) }.
 
 /*========================================================================
     Prepositional Phrases
