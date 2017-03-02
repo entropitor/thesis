@@ -35,7 +35,7 @@ addType(Symbol, Type) :-
 /*========================================================================
     Puzzle: general predicates
 ========================================================================*/
-lexEntry(det, [syntax:[the], mood:decl, num:sg, type:uni]).
+lexEntry(det, [syntax:[the], mood:decl, num:sg, type:indef]).
 
 lexEntry(noun, [symbol:Symbol, num:sg, syntax:Syntax, vType:Type]) :-
     concept(Symbol, _),
@@ -71,7 +71,7 @@ lexEntry(ivpp, [symbol:Symbol, syntax:Syntax, pp:PP, inf:fin, num:sg, vType:pred
     addType(Symbol, pred(SubjType, ObjType)),
     append(Syntax, PP, WordForm),
     syntax_symbol(WordForm, Symbol).
-lexEntry(prep, [symbol:Symbol, syntax:PP]) :-
+lexEntry(prep, [symbol:Symbol, syntax:PP, vType:null]) :-
     relation(_, _, _, PP),
     PP \= [],
     syntax_symbol(PP, Symbol).
@@ -80,6 +80,15 @@ lexEntry(iv, [symbol:Symbol, syntax:Syntax, inf:fin, num:sg, vType:Type]) :-
     addType(Symbol, Type),
     syntax_symbol(Syntax, Symbol).
 
+lexEntry(prep, [symbol:Symbol, syntax:PP, vType:fun(SubjType, ObjType)]) :-
+    actor(_, _, SyntaxNoun, PP, _),
+    append(SyntaxNoun, PP, Syntax),
+    addType(Symbol, fun(SubjType, ObjType)),
+    syntax_symbol(Syntax, Symbol).
+lexEntry(noun, [symbol:Symbol, num:sg, syntax:Syntax, vType:Type]) :-
+    actor(_, _, Syntax, _, _),
+    addType(Symbol, Type),
+    syntax_symbol(Syntax, Symbol).
 
 syntax_symbol(Syntax, Symbol) :-
     atomic_list_concat(Syntax, '_', Symbol).
@@ -110,6 +119,8 @@ relation(person, house, [lives], [in]).
 relation(person, animal, [keeps], []).
 relation(person, drink, [drinks], []).
 relation(person, cigarette, [smokes], []).
+
+actor(person, cigarette, [smoker], [of], [smokes]).
 
 /*========================================================================
     Determiners

@@ -267,7 +267,7 @@ vp([coord:no, inf:I, num:Num, gap:[pp:PP], sem:VP, vType:TypeObj])-->
 ========================================================================*/
 
 pp([type:Type, sem:PP, vType:SubjType])-->
-    prep([type:Type, syntax:_, sem:Prep, vType:pred(SubjType, ObjType)]),
+    prep([type:Type, syntax:_, sem:Prep, vType:fun(SubjType, ObjType)]),
     np([coord:_, num:_, gap:[], ref:no, sem:NP, vType:ObjType]),
     { combine(pp:PP, [prep:Prep, np:NP]) }.
 
@@ -282,7 +282,7 @@ rc([num:Num, sem:RC, vType:Type])-->
     { combine(rc:RC, [relpro:RP, vp:VP]) }.
 
 rc([num:Num, sem:RC, vType:Type])-->
-    prep([type:n, syntax:PP, sem:_]),
+    prep([type:n, syntax:PP, sem:_, vType:_]),
     relpro([sem:RP]),
     vp([coord:_, inf:fin, num:Num, gap:[pp:PP], sem:VP, vType:Type]),
     { combine(rc:RC, [relpro:RP, vp:VP]) }.
@@ -331,8 +331,8 @@ relpro([sem:Sem])-->
     Word,
     { semLex(relpro, [sem:Sem]) }.
 
-prep([type:Type, syntax:Word, sem:Sem])-->
-    { lexEntry(prep, [symbol:Sym, syntax:Word]) },
+prep([type:Type, syntax:Word, sem:Sem, vType:VType])-->
+    { lexEntry(prep, [symbol:Sym, syntax:Word, vType:VType]) },
     Word,
     { semLex(prep, [symbol:Sym, type:Type, sem:Sem]) }.
 
