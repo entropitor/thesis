@@ -26,7 +26,7 @@
 semLex(det, M) :-
     M = [type:uni,
          num:sg,
-         sem:lam(U, lam(V, drs([], [imp(merge(drs([var(X, Type)], []), app(U, X)), app(V, X))]))),
+         sem:lam(U, lam(V, drs([], [imp(merge(drs([variable(X, Type, decl)], []), app(U, X)), app(V, X))]))),
          vType:Type].
 
 %TODO: If the NP is qualified further, does indef really translate to existential?
@@ -34,13 +34,13 @@ semLex(det, M) :-
 semLex(det, M) :-
     M = [type:indef,
 	       num:sg,
-         sem:lam(U, lam(V, merge(merge(drs([var(X, Type)], []), app(U, X)), app(V, X)))),
+         sem:lam(U, lam(V, merge(merge(drs([variable(X, Type, decl)], []), app(U, X)), app(V, X)))),
          vType:Type].
 
 semLex(det, M) :-
     M = [type:neg,
 	       num:sg,
-         sem:lam(U, lam(V, drs([], [not(merge(merge(drs([var(X, Type)], []), app(U, X)), app(V, X)))]))),
+         sem:lam(U, lam(V, drs([], [not(merge(merge(drs([variable(X, Type, decl)], []), app(U, X)), app(V, X)))]))),
          vType:Type].
 
 semLex(pn, M) :-
@@ -98,6 +98,7 @@ semLex(adj, M) :-
 %%          sem:lam(V, lam(N, lam(E, app(app(V, N), lam(X, merge(drs([], [pred(Sym, X)]), app(E, X)))))))].
 
 semLex(av, M) :-
+    %TODO: neg doesn't work correctly!
     M = [pol:neg,
          sem:lam(P, lam(X, drs([], [not(app(P, X))])))];
     M = [pol:pos,
@@ -109,3 +110,9 @@ semLex(coord, M) :-
          sem:lam(X, lam(Y, lam(P, merge(app(X, P), app(Y, P)))))];
     M = [type:disj,
          sem:lam(X, lam(Y, lam(P, drs([], [or(app(X, P), app(Y, P))]))))].
+
+semLex(qnp,M) :-
+    M = [type:wh,
+         symbol:_Sym,
+         sem:lam(Q, merge(drs([variable(X, _Type, int)], []), app(Q,X)))].
+

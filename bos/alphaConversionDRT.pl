@@ -96,9 +96,9 @@ alphaConvertDRS(Exp, Vars1-Vars2, drs([NewRef|L2], C2)) :-
     Exp=drs([Ref|L1], C1),
     (
         nonvar(Ref),
-        Ref = var(Var, Type)
+        Ref = variable(Var, Type, Mood)
     ->
-        NewRef = var(NewVar, Type)
+        NewRef = variable(NewVar, Type, Mood)
     ;
         Ref = Var,
         NewRef = NewVar

@@ -30,7 +30,9 @@ problem(zebra, [
             "The smoker of Lucky Strike, drinks Orange Juice",
             "The Japanese smokes Parliaments",
             "The Norwegian lives in a house that is next to the blue house",
-            "Every animal is kept by exactly 1 Person"
+            "Every animal is kept by exactly 1 Person",
+            "Who drinks water",
+            "Who keeps the zebra"
       ]).
 
 problem(translators, [

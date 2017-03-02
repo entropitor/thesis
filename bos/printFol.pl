@@ -73,8 +73,13 @@ printParantheses(_, _, Goal) :-
 
 printVar(Var) :-
     nonvar(Var),
-    Var = var(X, Type),
+    Var = variable(X, Type, decl),
     !,
-    format('~p [~p]', [X, Type]).
+    format('~p [~@]', [X, printVar(Type)]).
+printVar(Var) :-
+    nonvar(Var),
+    Var = variable(X, Type, int),
+    !,
+    format('??~p [~@]??', [X, printVar(Type)]).
 printVar(Var) :-
     write(Var).

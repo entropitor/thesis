@@ -135,7 +135,15 @@ makeConstant(X, [120|Number]) :-
 
 makeConstant(X, Code) :-
     nonvar(X),
-    X = var(Var, Type),
+    X = variable(Var, Type, int),
+    makeConstant(Var, CodesVar),
+    makeType(Type, CodesType),
+    appendLists([63 | CodesVar], [58 | CodesType], Codes),
+    append(Codes, [63], Code).
+
+makeConstant(X, Code) :-
+    nonvar(X),
+    X = variable(Var, Type, decl),
     makeConstant(Var, CodesVar),
     makeType(Type, CodesType),
     appendLists(CodesVar, [58 | CodesType], Code).

@@ -33,15 +33,15 @@
 ========================================================================*/
 
 t([sem:T])-->
-    { memberList(C, [yes, no]) },
+    { memberList(C, [yes, no, question]) },
     s([coord:C, sem:S]),
     { combine(t:T, [s:S]) }.
 
-t([sem:T])-->
-    { memberList(C, [yes, no]) },
-    s([coord:C, sem:S1]),
-    t([sem:S2]),
-    { combine(t:T, [s:S1, t:S2]) }.
+%% t([sem:T])-->
+%%     { memberList(C, [yes, no, question]) },
+%%     s([coord:C, sem:S1]),
+%%     t([sem:S2]),
+%%     { combine(t:T, [s:S1, t:S2]) }.
 
 /*========================================================================
     Sentences
@@ -103,15 +103,18 @@ s([coord:or, sem:Sem])-->
 %    vp([coord:_, inf:inf, num:Num, gap:G, sem:VP]),
 %    { combine(sinv:S, [av:Sem, np:NP, vp:VP]) }.
 
+s([coord:question, sem:Sem])-->
+    q([sem:Q]),
+    { combine(s:Sem, [question:Q]) }.
 
 /*========================================================================
     Questions
 ========================================================================*/
 
-%q([sem:Sem])-->
-%    whnp([num:Num, sem:NP]),
-%    vp([coord:_, inf:fin, num:Num, gap:[], sem:VP]),
-%    { combine(q:Sem, [whnp:NP, vp:VP]) }.
+q([sem:Sem])-->
+   whnp([num:Num, sem:NP, vType:Type]),
+   vp([coord:_, inf:fin, num:Num, gap:[], sem:VP, vType:Type]),
+   { combine(q:Sem, [whnp:NP, vp:VP]) }.
 
 %q([sem:Sem])-->
 %    whnp([num:_, sem:NP]),
@@ -159,9 +162,9 @@ np([coord:no, num:sg, gap:[], ref:no, sem:NP, vType:Type])-->
     WH Noun Phrases
 ========================================================================*/
 
-%whnp([num:sg, sem:NP])-->
-%    qnp([mood:int, sem:QNP]),
-%    { combine(whnp:NP, [qnp:QNP]) }.
+whnp([num:sg, sem:NP, vType:Type])-->
+   qnp([mood:int, sem:QNP, vType:Type]),
+   { combine(whnp:NP, [qnp:QNP]) }.
 
 %whnp([num:sg, sem:NP])-->
 %    det([mood:int, type:_, num:_, sem:Det]),
@@ -356,10 +359,10 @@ coord([type:Type, sem:Sem])-->
     Word,
     { semLex(coord, [type:Type, sem:Sem]) }.
 
-%qnp([mood:M, sem:NP])-->
-%    { lexEntry(qnp, [symbol:Symbol, syntax:Word, mood:M, type:Type]) },
-%    Word,
-%    { semLex(qnp, [type:Type, symbol:Symbol, sem:NP]) }.
+qnp([mood:M, sem:NP, vType:_VType])-->
+    { lexEntry(qnp, [symbol:Symbol, syntax:Word, mood:M, type:Type]) },
+    Word,
+    { semLex(qnp, [type:Type, symbol:Symbol, sem:NP]) }.
 
 noun([num:Num, sem:Sem, vType:Type])-->
     { lexEntry(noun, [symbol:Sym, num:Num, syntax:Word, vType:Type]) },

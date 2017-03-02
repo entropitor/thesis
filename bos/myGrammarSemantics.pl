@@ -39,10 +39,11 @@ combine(s:lam(B, drs([], [or(S, B)])), [either:S]).
 combine(s:S, [then:S]).
 combine(s:S, [or:S]).
 combine(s:drs([], [not(S)]), [not:S]).
+combine(s:S, [question:S]).
 
 combine(sinv:app(B, app(A, C)), [av:A, np:B, vp:C]).
 
-combine(q:app(A, B), [whnp:A, vp:B]).
+combine(q:app(B, A), [whnp:A, vp:B]).
 combine(q:A, [sinv:A]).
 
 combine(np:app(app(B, A), C), [np:A, coord:B, np:C]).
