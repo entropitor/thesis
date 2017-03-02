@@ -64,6 +64,11 @@ lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:fin, num:sg, vType:pred(SubjType
     relation(_SubjType, _ObjType, Syntax, []),
     addType(Symbol, pred(SubjType, ObjType)),
     syntax_symbol(Syntax, Symbol).
+lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:inf, num:sg, vType:pred(SubjType, ObjType)]) :-
+    % relationInf(SubjType, ObjType, Syntax, []),
+    relationInf(_SubjType, _ObjType, Syntax, []),
+    addType(Symbol, pred(SubjType, ObjType)),
+    syntax_symbol(Syntax, Symbol).
 lexEntry(ivpp, [symbol:Symbol, syntax:Syntax, pp:PP, inf:fin, num:sg, vType:pred(SubjType, ObjType)]) :-
     %% relation(SubjType, ObjType, Syntax, PP),
     relation(_SubjType, _ObjType, Syntax, PP),
@@ -119,6 +124,8 @@ relation(person, house, [lives], [in]).
 relation(person, animal, [keeps], []).
 relation(person, drink, [drinks], []).
 relation(person, cigarette, [smokes], []).
+
+relationInf(person, drink, [drink], []).
 
 actor(person, cigarette, [smoker], [of], [smokes]).
 

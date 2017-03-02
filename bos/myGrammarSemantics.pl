@@ -41,7 +41,7 @@ combine(s:S, [or:S]).
 combine(s:drs([], [not(S)]), [not:S]).
 combine(s:S, [question:S]).
 
-combine(sinv:app(B, app(A, C)), [av:A, np:B, vp:C]).
+combine(sinv:app(app(A, C), B), [av:A, np:B, vp:C]).
 
 combine(q:app(B, A), [whnp:A, vp:B]).
 combine(q:A, [sinv:A]).

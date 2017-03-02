@@ -92,41 +92,41 @@ s([coord:or, sem:Sem])-->
     s([coord:no, sem:S]),
     { combine(s:Sem, [or:S]) }.
 
+s([coord:question, sem:Sem])-->
+    q([sem:Q]),
+    { combine(s:Sem, [question:Q]) }.
+
 %s([coord:C, sem:Sem])-->
 %    [it, is, not, the, case, that],
 %    s([coord:C, sem:S]),
 %    { combine(s:Sem, [not:S]) }.
 
-%sinv([gap:G, sem:S])-->
-%    av([inf:fin, num:Num, sem:Sem]),
-%    np([coord:_, num:Num, gap:[], ref:no, sem:NP]),
-%    vp([coord:_, inf:inf, num:Num, gap:G, sem:VP]),
-%    { combine(sinv:S, [av:Sem, np:NP, vp:VP]) }.
-
-s([coord:question, sem:Sem])-->
-    q([sem:Q]),
-    { combine(s:Sem, [question:Q]) }.
+sinv([gap:G, sem:S])-->
+    av([inf:fin, num:Num, sem:Sem]),
+    np([coord:_, num:Num, gap:[], ref:no, sem:NP, vType:SubjType]),
+    vp([coord:_, inf:inf, num:Num, gap:G, sem:VP, vType:SubjType]),
+    { combine(sinv:S, [av:Sem, np:NP, vp:VP]) }.
 
 /*========================================================================
     Questions
 ========================================================================*/
 
 q([sem:Sem])-->
-   whnp([num:Num, sem:NP, vType:Type]),
-   vp([coord:_, inf:fin, num:Num, gap:[], sem:VP, vType:Type]),
-   { combine(q:Sem, [whnp:NP, vp:VP]) }.
+    whnp([num:Num, sem:NP, vType:Type]),
+    vp([coord:_, inf:fin, num:Num, gap:[], sem:VP, vType:Type]),
+    { combine(q:Sem, [whnp:NP, vp:VP]) }.
 
-%q([sem:Sem])-->
-%    whnp([num:_, sem:NP]),
-%    sinv([gap:[np:NP], sem:S]),
-%    { combine(q:Sem, [sinv:S]) }.
+q([sem:Sem])-->
+    whnp([num:_, sem:NP, vType:Type]),
+    sinv([gap:[np:NP-Type], sem:S]),
+    { combine(q:Sem, [sinv:S]) }.
 
 
 /*========================================================================
     Noun Phrases
 ========================================================================*/
 
-%np([coord:no, num:sg, gap:[np:NP], ref:no, sem:NP])--> [].
+np([coord:no, num:sg, gap:[np:NP-Type], ref:no, sem:NP, vType:Type])--> [].
 
 np([coord:yes, num:pl, gap:[], ref:Ref, sem:NP, vType:Type])-->
     np([coord:no, num:sg, gap:[], ref:Ref, sem:NP1, vType:Type]),
