@@ -21,12 +21,10 @@
 
 *************************************************************************/
 
-:- module(myDRT, [loop/0,
-                  test/0,
-                  testp/1,
+:- module(myDRT, [test/0,
+                  testAll/1,
                   test/1,
-                  test/2,
-                  %% lambdaDRT/0,
+                  test/3,
                   lambdaDRT/4,
                   infix/0,
                   prefix/0]).
@@ -44,7 +42,7 @@ simplify(X, Y) :-
     betaConvert(X, X1),
     mergeDrs(X1, Y).
 
-:- use_module(lambdaTestSuite, [discourse/2]).
+:- use_module(combineTypes, [combineTypes/2]).
 
 :- use_module(myGrammar, [t/3]).
 
@@ -53,10 +51,6 @@ simplify(X, Y) :-
 /*========================================================================
     Driver Predicates
 ========================================================================*/
-
-loop :-
-    lambdaDRT,
-    loop.
 
 test :-
     testAll([
@@ -69,44 +63,59 @@ test :-
 % Test the list of problems
 % fails if any one of the problems fails
 testAll(Problems) :-
-    maplist(testp, Problems, Results),
+    maplist(testp, Problems, Resultss, Typess),
     format('~n~n~nResults (Number of sentences with 1 meaning):~n#############################################~n'),
-    maplist(format('Problem ~p: ~p/~p~n'), Results),
+    maplist(printResults, Resultss, Typess),
     \+ (
-        member([_, X, Y], Results),
+        member([_, X, Y], Resultss),
         X \= Y
     ).
 
-testp(Problem) :-
-    testp(Problem, [_, NbCorrect, NbSentences]),
-    NbCorrect == NbSentences.
-testp(Problem, [Problem, NbCorrect, NbSentences]) :-
+printResults(Results, Types) :-
+    format('Problem ~p: ~p/~p~n', Results),
+    combineTypes(Types, CombinedTypes),
+    findall(Bag, (
+                group_by(Var, X, (
+                             maplist(term_variables, CombinedTypes, Vars),
+                             pairs_keys_values(Pairs, CombinedTypes, Vars),
+                             numbervars(CombinedTypes, 0, End),
+                             between(0, End, VarNb),
+                             Var =.. ['$VAR', VarNb],
+                             member(X-XVars, Pairs),
+                             member(Var, XVars)
+                         ), Bag)
+            ), Bags),
+    findall(X, (
+                member(X, CombinedTypes),
+                term_variables(X, [])
+            ), KnownTypes),
+    writeln(KnownTypes),
+    maplist(writeln, Bags),
+    nl.
+
+
+testp(Problem, [Problem, NbCorrect, NbSentences], FlattenTypes) :-
     problem(Problem, Sentences),
     format('~n###############################~n###   ~p~n###############################~n', [Problem]),
-    maplist(testSentence, Sentences, NbDRSes),
+    maplist(testSentence, Sentences, NbDRSes, Types),
+    flatten(Types, FlattenTypes),
     findall(1, member(1, NbDRSes), L),
     length(L, NbCorrect),
     length(Sentences, NbSentences),
     nl, print(NbDRSes),
     format('~nNumber of sentences with 1 meaning: ~p/~p', [NbCorrect, NbSentences]).
 
-testSentence(Sentence, NbDRS) :-
+testSentence(Sentence, NbDRS, Types) :-
     format('~nSentence: ~p', [Sentence]),
-    test(Sentence, DRSs),
+    test(Sentence, DRSs, Types),
     length(DRSs, NbDRS).
 
 test(String) :-
-    test(String, _).
-test(String, DRSs) :-
+    test(String, _, _).
+test(String, DRSs, Types) :-
     readFromString(String, Discourse),
     lambdaDRT(Discourse, drs([], []), DRSs, Types),
     printRepresentations(DRSs, Types).
-
-%% lambdaDRT :-
-%%     readLine(Discourse),
-%%     lambdaDRT(Discourse, drs([], []), DRSs, Types),
-%%     format('Types: ~p~n', Types),
-%%     printRepresentations(DRSs).
 
 lambdaDRT(Discourse, Old, Sems, Types) :-
      b_setval(types, []),

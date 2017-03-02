@@ -56,25 +56,31 @@ lexEntry(pn, [symbol:Symbol, syntax:Syntax, vType:Type]) :-
     syntax_symbol(Syntax, Symbol).
 lexEntry(adj, [symbol:Symbol, syntax:Syntax, vType:Type]) :-
     concept(Concept, constructed:Elements),
-    property(Type, _, Concept),
+    property(_Type, _, Concept),
+    addType(Symbol, Type),
     member(Syntax, Elements),
     syntax_symbol(Syntax, Symbol).
 lexEntry(adj, [symbol:Symbol, syntax:Syntax, vType:Type]) :-
     member(Syntax, [[first], [second], [third], [fourth], [fifth], [sixth]]),
-    property(Type, _, int),
+    property(_Type, _, int),
+    addType(Symbol, Type),
     syntax_symbol(Syntax, Symbol).
 % TODO: need other wordforms?
 lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:fin, num:sg, vType:pred(SubjType, ObjType)]) :-
-    relation(SubjType, ObjType, Syntax, []),
-    %addType(Symbol, pred(SubjType, ObjType)),
+    % relation(SubjType, ObjType, Syntax, []),
+    relation(_SubjType, _ObjType, Syntax, []),
+    addType(Symbol, pred(SubjType, ObjType)),
     syntax_symbol(Syntax, Symbol).
 lexEntry(ivpp, [symbol:Symbol, syntax:Syntax, pp:PP, inf:fin, num:sg, vType:pred(SubjType, ObjType)]) :-
-    relation(SubjType, ObjType, Syntax, PP),
+    %% relation(SubjType, ObjType, Syntax, PP),
+    relation(_SubjType, _ObjType, Syntax, PP),
+    addType(Symbol, pred(SubjType, ObjType)),
     PP \= [],
     append(Syntax, PP, WordForm),
     syntax_symbol(WordForm, Symbol).
 lexEntry(iv, [symbol:Symbol, syntax:Syntax, inf:fin, num:sg, vType:Type]) :-
-    relation(Type, Syntax),
+    relation(_Type, Syntax),
+    addType(Symbol, Type),
     syntax_symbol(Syntax, Symbol).
 
 syntax_symbol(Syntax, Symbol) :-
