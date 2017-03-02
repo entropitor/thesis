@@ -53,10 +53,10 @@ lexEntry(adj, [symbol:Symbol, syntax:Syntax, vType:Type]) :-
     addType(Symbol, Type),
     member(Syntax, Elements),
     syntax_symbol(Syntax, Symbol).
-lexEntry(adj, [symbol:Symbol, syntax:Syntax, vType:Type]) :-
+lexEntry(adj, [symbol:Symbol, syntax:Syntax, vType:adj(Type)]) :-
     member(Syntax, [[first], [second], [third], [fourth], [fifth], [sixth]]),
     property(_Type, _, int),
-    addType(Symbol, Type),
+    addType(Symbol, adj(Type)),
     syntax_symbol(Syntax, Symbol).
 % TODO: need other wordforms?
 lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:fin, num:sg, vType:pred(SubjType, ObjType)]) :-
