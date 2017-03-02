@@ -1,6 +1,6 @@
 /*************************************************************************
 
-     File: englishLexicon.pl
+     File: englishMyLexicon.pl
      Copyright (C) 2004, 2006 Patrick Blackburn & Johan Bos
 
      This file is part of BB2, version 2.0 (November 2006).

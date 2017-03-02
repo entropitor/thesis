@@ -25,8 +25,8 @@
 
 :- use_module(comsemPredicates, [memberList/2]).
 :- use_module(myLexicon, [lexEntry/2]).
-:- use_module(mySemLex, [semLex/2]).
-:- use_module(mySemCombinationRules, [combine/2]).
+:- use_module(myLexiconSemantics, [semLex/2]).
+:- use_module(myGrammarSemantics, [combine/2]).
 
 /*========================================================================
     Texts

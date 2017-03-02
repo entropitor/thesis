@@ -21,7 +21,7 @@
 
 *************************************************************************/
 
-:- module(mySemLex, [semLex/2]).
+:- module(myLexiconSemantics, [semLex/2]).
 
 semLex(det, M) :-
     M = [type:uni,

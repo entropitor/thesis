@@ -21,13 +21,13 @@
 
 *************************************************************************/
 
-:- module(myDRT, [test/0,
-                  testAll/1,
-                  test/1,
-                  test/3,
-                  lambdaDRT/4,
-                  infix/0,
-                  prefix/0]).
+:- module(main, [test/0,
+                 testAll/1,
+                 test/1,
+                 test/3,
+                 lambdaDRT/4,
+                 infix/0,
+                 prefix/0]).
 
 :- use_module(readLine, [readLine/1,
                         readFromString/2]).
