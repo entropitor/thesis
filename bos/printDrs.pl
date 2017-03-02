@@ -137,9 +137,15 @@ makeConstant(X, Code) :-
     nonvar(X),
     X = var(Var, Type),
     makeConstant(Var, CodesVar),
-    name(Type, CodesType),
+    makeType(Type, CodesType),
     appendLists(CodesVar, [58 | CodesType], Code).
 
+makeType(Type, Code) :-
+    atomic(Type),
+    !,
+    name(Type, Code).
+makeType(Type, Code) :-
+    makeConstant(Type, Code).
 
 /*========================================================================
       Format a Line

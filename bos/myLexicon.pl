@@ -45,8 +45,9 @@ addType(Symbol, Type) :-
 ========================================================================*/
 lexEntry(det, [syntax:[the], mood:decl, num:sg, type:uni]).
 
-lexEntry(noun, [symbol:Symbol, num:sg, syntax:Syntax, vType:Symbol]) :-
+lexEntry(noun, [symbol:Symbol, num:sg, syntax:Syntax, vType:Type]) :-
     concept(Symbol, _),
+    addType(Symbol, Type),
     symbol_syntax(Symbol, Syntax).
 lexEntry(pn, [symbol:Symbol, syntax:Syntax, vType:Type]) :-
     concept(_Type, constructed:Elements),
