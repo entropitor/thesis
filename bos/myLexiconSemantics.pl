@@ -98,9 +98,8 @@ semLex(adj, M) :-
 %%          sem:lam(V, lam(N, lam(E, app(app(V, N), lam(X, merge(drs([], [pred(Sym, X)]), app(E, X)))))))].
 
 semLex(av, M) :-
-    %TODO: neg doesn't work correctly!
     M = [pol:neg,
-         sem:lam(P, lam(X, drs([], [not(app(P, X))])))];
+         sem:lam(P, lam(N, app(N, lam(X, drs([], [not(app(P, lam(Y, app(Y, X))))])))))];
     M = [pol:pos,
          sem:lam(P, lam(X, app(P, X)))].
 
