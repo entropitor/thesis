@@ -21,7 +21,7 @@
 
 *************************************************************************/
 
-:- module(mySemCombinationRules, [combine/2]).
+:- module(myGrammarSemantics, [combine/2]).
 
 /*========================================================================
     Semantic Rules
@@ -39,10 +39,11 @@ combine(s:lam(B, drs([], [or(S, B)])), [either:S]).
 combine(s:S, [then:S]).
 combine(s:S, [or:S]).
 combine(s:drs([], [not(S)]), [not:S]).
+combine(s:S, [question:S]).
 
-combine(sinv:app(B, app(A, C)), [av:A, np:B, vp:C]).
+combine(sinv:app(app(A, C), B), [av:A, np:B, vp:C]).
 
-combine(q:app(A, B), [whnp:A, vp:B]).
+combine(q:app(B, A), [whnp:A, vp:B]).
 combine(q:A, [sinv:A]).
 
 combine(np:app(app(B, A), C), [np:A, coord:B, np:C]).
@@ -69,6 +70,7 @@ combine(vp:app(A, B), [cop:A, adj:B]).
 combine(vp:A, [iv:A]).
 combine(vp:app(PP, A), [iv:A, adv:PP]).
 combine(vp:app(A, B), [tv:A, np:B]).
+combine(vp:lam(Obj, app(app(A, Obj), B)), [tv:A, npSubj:B]).
 
 combine(pp:app(A, B), [prep:A, np:B]).
 

@@ -54,7 +54,7 @@ printDrs2(Drs) :-
       Print DRS Lines
 ========================================================================*/
 
-printDrsLines([]) :- nl.
+printDrsLines([]).
 
 printDrsLines([Line|Rest]) :-
     name(L, Line),
@@ -133,6 +133,27 @@ makeConstant(X, [120|Number]) :-
     M is N+1,
     assert(counter(M)).
 
+makeConstant(X, Code) :-
+    nonvar(X),
+    X = variable(Var, Type, int),
+    makeConstant(Var, CodesVar),
+    makeType(Type, CodesType),
+    appendLists([63 | CodesVar], [58 | CodesType], Codes),
+    append(Codes, [63], Code).
+
+makeConstant(X, Code) :-
+    nonvar(X),
+    X = variable(Var, Type, decl),
+    makeConstant(Var, CodesVar),
+    makeType(Type, CodesType),
+    appendLists(CodesVar, [58 | CodesType], Code).
+
+makeType(Type, Code) :-
+    atomic(Type),
+    !,
+    name(Type, Code).
+makeType(Type, Code) :-
+    makeConstant(Type, Code).
 
 /*========================================================================
       Format a Line

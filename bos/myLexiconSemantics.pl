@@ -21,24 +21,27 @@
 
 *************************************************************************/
 
-:- module(mySemLex, [semLex/2]).
+:- module(myLexiconSemantics, [semLex/2]).
 
 semLex(det, M) :-
     M = [type:uni,
          num:sg,
-         sem:lam(U, lam(V, drs([], [imp(merge(drs([X], []), app(U, X)), app(V, X))])))].
+         sem:lam(U, lam(V, drs([], [imp(merge(drs([variable(X, Type, decl)], []), app(U, X)), app(V, X))]))),
+         vType:Type].
 
 %TODO: If the NP is qualified further, does indef really translate to existential?
 % E.g. "An animal that dies is not a building" => Every animal that dies is not a building
 semLex(det, M) :-
     M = [type:indef,
 	       num:sg,
-         sem:lam(U, lam(V, merge(merge(drs([X], []), app(U, X)), app(V, X))))].
+         sem:lam(U, lam(V, merge(merge(drs([variable(X, Type, decl)], []), app(U, X)), app(V, X)))),
+         vType:Type].
 
 semLex(det, M) :-
     M = [type:neg,
 	       num:sg,
-         sem:lam(U, lam(V, drs([], [not(merge(merge(drs([X], []), app(U, X)), app(V, X)))])))].
+         sem:lam(U, lam(V, drs([], [not(merge(merge(drs([variable(X, Type, decl)], []), app(U, X)), app(V, X)))]))),
+         vType:Type].
 
 semLex(pn, M) :-
     M = [symbol:Sym,
@@ -96,7 +99,7 @@ semLex(adj, M) :-
 
 semLex(av, M) :-
     M = [pol:neg,
-         sem:lam(P, lam(X, drs([], [not(app(P, X))])))];
+         sem:lam(P, lam(N, app(N, lam(X, drs([], [not(app(P, lam(Y, app(Y, X))))])))))];
     M = [pol:pos,
          sem:lam(P, lam(X, app(P, X)))].
 
@@ -106,3 +109,9 @@ semLex(coord, M) :-
          sem:lam(X, lam(Y, lam(P, merge(app(X, P), app(Y, P)))))];
     M = [type:disj,
          sem:lam(X, lam(Y, lam(P, drs([], [or(app(X, P), app(Y, P))]))))].
+
+semLex(qnp,M) :-
+    M = [type:wh,
+         symbol:_Sym,
+         sem:lam(Q, merge(drs([variable(X, _Type, int)], []), app(Q,X)))].
+

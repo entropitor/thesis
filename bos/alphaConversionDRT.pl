@@ -91,10 +91,19 @@ alphaConvertDRS(Exp, Vars1-Vars2, drs([], [C2|Conds2])) :-
     alphaConvertCondition(C1, Vars1, C2),
     alphaConvertDRS(drs([], Conds1), Vars1-Vars2, drs([], Conds2)).
 
-alphaConvertDRS(Exp, Vars1-Vars2, drs([New|L2], C2)) :-
+alphaConvertDRS(Exp, Vars1-Vars2, drs([NewRef|L2], C2)) :-
     nonvar(Exp),
     Exp=drs([Ref|L1], C1),
-    alphaConvertDRS(drs(L1, C1), [sub(Ref, New)|Vars1]-Vars2, drs(L2, C2)).
+    (
+        nonvar(Ref),
+        Ref = variable(Var, Type, Mood)
+    ->
+        NewRef = variable(NewVar, Type, Mood)
+    ;
+        Ref = Var,
+        NewRef = NewVar
+    ),
+    alphaConvertDRS(drs(L1, C1), [sub(Var, NewVar)|Vars1]-Vars2, drs(L2, C2)).
 
 alphaConvertDRS(Exp, Vars1-Vars3, alfa(Type, B3, B4)) :-
     nonvar(Exp),

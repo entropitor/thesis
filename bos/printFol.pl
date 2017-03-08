@@ -54,7 +54,7 @@ printBinaryConnector(Order, NewOrder, F1, F2, Connector) :-
                      )).
 printQuantifier(Order, NewOrder, X, F2, Quantifier) :-
     write(Quantifier),
-    write(X),
+    printVar(X),
     write(':'),
     tab(1),
     printParantheses(Order, NewOrder, (
@@ -69,3 +69,17 @@ printParantheses(Order, NewOrder, Goal) :-
     write(')').
 printParantheses(_, _, Goal) :-
     call(Goal).
+
+
+printVar(Var) :-
+    nonvar(Var),
+    Var = variable(X, Type, decl),
+    !,
+    format('~p [~@]', [X, printVar(Type)]).
+printVar(Var) :-
+    nonvar(Var),
+    Var = variable(X, Type, int),
+    !,
+    format('??~p [~@]??', [X, printVar(Type)]).
+printVar(Var) :-
+    write(Var).
