@@ -48,6 +48,7 @@ combine(q:A, [sinv:A]).
 
 combine(np:app(app(B, A), C), [np:A, coord:B, np:C]).
 combine(np:app(A, B), [det:A, n:B]).
+combine(np:app(A, B), [number:A, n:B]).
 combine(np:A, [pn:A]).
 combine(np:A, [qnp:A]).
 
@@ -57,6 +58,7 @@ combine(whnp:A, [qnp:A]).
 combine(n:app(app(B, A), C), [n:A, coord:B, n:C]).
 combine(n:app(A, B), [adj:A, n:B]).
 combine(n:A, [noun:A]).
+combine(n:A, [cn:A]).
 combine(n:app(B, A), [noun:A, nmod:B]).
 
 combine(nmod:A, [pp:A]).

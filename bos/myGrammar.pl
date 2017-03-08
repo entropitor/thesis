@@ -145,6 +145,11 @@ np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
     n([coord:_, num:Num, sem:N, vType:Type]),
     { combine(np:NP, [det:Det, n:N]) }.
 
+np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:countable(Type)])-->
+    number([sem:Number, vType:Type]),
+    n([coord:_, num:Num, sem:N, vType:countable(Type)]),
+    { combine(np:NP, [number:Number, n:N]) }.
+
 np([coord:no, num:sg, gap:[], ref:no, sem:NP, vType:Type])-->
     pn([sem:PN, vType:Type]),
     { combine(np:NP, [pn:PN]) }.
@@ -191,6 +196,10 @@ n([coord:no, num:Num, sem:N, vType:Type])-->
     noun([num:Num, sem:Noun, vType:Type]),
     { combine(n:N, [noun:Noun]) }.
 
+%% n([coord:no, num:_, sem:N, vType:Type])-->
+%%     cn([sem:CN, vType:Type]),
+%%     { combine(n:N, [cn:CN]) }.
+
 n([coord:no, num:Num, sem:Sem, vType:Type])-->
     noun([num:Num, sem:N, vType:Type]),
     nmod([num:Num, sem:PP, vType:Type]),
@@ -208,7 +217,6 @@ nmod([num:Num, sem:N, vType:Type])-->
 %%     pp([type:n, sem:PP, vType:Type]),
 %%     nmod([num:Num, sem:NMod, vType:Type]),
 %%     { combine(nmod:Sem, [pp:PP, nmod:NMod]) }.
-
 
 /*========================================================================
     Verb Phrases
@@ -318,6 +326,15 @@ det([mood:M, type:Type, num:Num, sem:Det, vType:VType])-->
     { lexEntry(det, [syntax:Word, mood:M, num:Num, type:Type]) },
     Word,
     { semLex(det, [type:Type, num:Num, sem:Det, vType:VType]) }.
+
+%% cn([sem:Sem, vType:Type])-->
+%%     { lexEntry(cn, [symbol:Sym, syntax:Word, vType:Type]) },
+%%     Word,
+%%     { semLex(cn, [symbol:Sym, sem:Sem, vType:Type]) }.
+
+number([sem:Sem, vType:Type], [Number|T], T) :-
+    integer(Number),
+    semLex(number, [number:Number, sem:Sem, vType:Type]).
 
 pn([sem:Sem, vType:Type])-->
     { lexEntry(pn, [symbol:Sym, syntax:Word, vType:Type]) },

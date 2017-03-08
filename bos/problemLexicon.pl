@@ -72,3 +72,19 @@ property(species, [population, size], population).
 relation(species, year, [is, recognized, as, endangered], [in], [is, recognized, as, endangered]).
 relation(species, year, [is, listed], [in], [is, listed]).
 relation(species, population, [has, a, population, size], [of], [have, a, population, size]).
+
+
+/*========================================================================
+    Puzzle: p2
+========================================================================*/
+concept(contestant, constructed:[[bill], [collin], [ira], [oscar], [pedro]]).
+concept(darts, constructed:[[the, black, darts], [the, orange, darts], [the, red, darts], [the, white, darts], [the, yellow, darts]]).
+concept(city, constructed:[[mount, union], [gillbertville], [lohrville], [worthington], [yorktown]]).
+concept(score, countable:[points]).
+
+
+relation(contestant, darts, [threw], [], [throw]).
+relation(contestant, score, [scored], [], [score]).
+
+actor(contestant, city, [blabla], [from], [from]).
+

@@ -43,7 +43,7 @@ alphaConvertTerm(X, Vars, New) :-
     alphaConvertVar(X, Vars, New).
 
 alphaConvertTerm(X, _Vars, New) :-
-    atom(X),
+    atomic(X),
     New = X.
 
 

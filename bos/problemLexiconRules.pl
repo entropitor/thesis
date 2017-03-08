@@ -70,6 +70,11 @@ lexEntry(noun, [symbol:Symbol, num:sg, syntax:Syntax, vType:Type]) :-
     addType(Symbol, Type),
     syntax_symbol(Syntax, Symbol).
 
+lexEntry(noun, [symbol:Symbol, num:_, syntax:Syntax, vType:Type]) :-
+    concept(_Type, countable:Syntax),
+    addType(Symbol, Type),
+    syntax_symbol(Syntax, Symbol).
+
 syntax_symbol(Syntax, Symbol) :-
     atomic_list_concat(Syntax, '_', Symbol).
 symbol_syntax(Symbol, Syntax) :-
