@@ -10,8 +10,16 @@ problem(vakantiedagen, [
             "Each employee has a number of vacation days equal to 22 plus the sum of the extra days he receives"
         ]).
 
-
-%?- parse_tree("If the age of an employee is less than 18 or greather than 60 then he receives 5 extra days", s).
+problem(p1, [
+            "The perens pig lives in Slovakia and is recognized as endangered in 2009",
+            "The eldar elk has a population size of 210",
+            "The byengo bat doesn't live in Ghana",
+            "The animal that lives in Slovakia is listed sometime before the animal from Russia",
+            "Of the species with a population size of 490 and the eldar elk, one lives in Poland and the other is recognized as endangered in 2009",
+            "Neither the nibner newt nor the byengo bat has a population size of 525",
+            "The species that lives in Ghana was listed 2 years after the nibner newt",
+            "The animal that lives in Russia doesn't have a population size of 315"
+        ]).
 
 problem(zebra, [
             "The Englishman lives in the red house",

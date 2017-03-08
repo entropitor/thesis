@@ -22,113 +22,6 @@
 *************************************************************************/
 :- module(myLexicon, [lexEntry/2]).
 
-:- discontiguous myLexicon:lexEntry/2.
-
-addType(_, _) :-
-  \+ nb_current(types, _),
-  nb_setval(types, []),
-  fail.
-addType(Symbol, Type) :-
-  b_getval(types, Types),
-  b_setval(types, [type(Symbol, Type) | Types]).
-
-/*========================================================================
-    Puzzle: general predicates
-========================================================================*/
-lexEntry(det, [syntax:[the], mood:decl, num:sg, type:indef]).
-
-lexEntry(noun, [symbol:Symbol, num:sg, syntax:Syntax, vType:Type]) :-
-    concept(Symbol, _),
-    addType(Symbol, Type),
-    symbol_syntax(Symbol, Syntax).
-lexEntry(pn, [symbol:Symbol, syntax:Syntax, vType:Type]) :-
-    concept(_Type, constructed:Elements),
-    addType(Symbol, Type),
-    member(Syntax, Elements),
-    % TODO check that it isn't an adjective?
-    syntax_symbol(Syntax, Symbol).
-lexEntry(adj, [symbol:Symbol, syntax:Syntax, vType:Type]) :-
-    concept(Concept, constructed:Elements),
-    property(_Type, _, Concept),
-    addType(Symbol, Type),
-    member(Syntax, Elements),
-    syntax_symbol(Syntax, Symbol).
-lexEntry(adj, [symbol:Symbol, syntax:Syntax, vType:adj(Type)]) :-
-    member(Syntax, [[first], [second], [third], [fourth], [fifth], [sixth]]),
-    property(_Type, _, int),
-    addType(Symbol, adj(Type)),
-    syntax_symbol(Syntax, Symbol).
-% TODO: need other wordforms?
-lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:fin, num:sg, vType:pred(SubjType, ObjType)]) :-
-    % relation(SubjType, ObjType, Syntax, []),
-    relation(_SubjType, _ObjType, Syntax, []),
-    addType(Symbol, pred(SubjType, ObjType)),
-    syntax_symbol(Syntax, Symbol).
-lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:inf, num:sg, vType:pred(SubjType, ObjType)]) :-
-    % relationInf(SubjType, ObjType, Syntax, []),
-    relationInf(_SubjType, _ObjType, Syntax, []),
-    addType(Symbol, pred(SubjType, ObjType)),
-    syntax_symbol(Syntax, Symbol).
-lexEntry(ivpp, [symbol:Symbol, syntax:Syntax, pp:PP, inf:fin, num:sg, vType:pred(SubjType, ObjType)]) :-
-    %% relation(SubjType, ObjType, Syntax, PP),
-    relation(_SubjType, _ObjType, Syntax, PP),
-    PP \= [],
-    addType(Symbol, pred(SubjType, ObjType)),
-    append(Syntax, PP, WordForm),
-    syntax_symbol(WordForm, Symbol).
-lexEntry(prep, [symbol:Symbol, syntax:PP, vType:null]) :-
-    relation(_, _, _, PP),
-    PP \= [],
-    syntax_symbol(PP, Symbol).
-lexEntry(iv, [symbol:Symbol, syntax:Syntax, inf:fin, num:sg, vType:Type]) :-
-    relation(_Type, Syntax),
-    addType(Symbol, Type),
-    syntax_symbol(Syntax, Symbol).
-
-lexEntry(prep, [symbol:Symbol, syntax:PP, vType:fun(SubjType, ObjType)]) :-
-    actor(_, _, SyntaxNoun, PP, _),
-    append(SyntaxNoun, PP, Syntax),
-    addType(Symbol, fun(SubjType, ObjType)),
-    syntax_symbol(Syntax, Symbol).
-lexEntry(noun, [symbol:Symbol, num:sg, syntax:Syntax, vType:Type]) :-
-    actor(_, _, Syntax, _, _),
-    addType(Symbol, Type),
-    syntax_symbol(Syntax, Symbol).
-
-syntax_symbol(Syntax, Symbol) :-
-    atomic_list_concat(Syntax, '_', Symbol).
-symbol_syntax(Symbol, Syntax) :-
-    split_string(Symbol, '_', '', L),
-    maplist(atom_chars, Syntax, L).
-
-:- discontiguous myLexicon:concept/2.
-:- discontiguous myLexicon:property/3.
-:- discontiguous myLexicon:relation/2.
-:- discontiguous myLexicon:relation/4.
-/*========================================================================
-    Puzzle: Zebra
-========================================================================*/
-
-concept(person, constructed:[[the, englishman], [the, spaniard], [the, ukrainian], [the, japanese], [the, norwegian]]).
-concept(house, nominal).
-concept(color, constructed:[[red], [green], [ivory], [yellow], [blue]]).
-concept(animal, constructed:[[the, dog], [the, zebra], [the, snail], [the, fox], [the, horse]]).
-concept(drink, constructed:[[coffee], [tea], [milk], [water], [orange, juice]]).
-concept(cigarette, constructed:[[chesterfields], [kools], [parliaments], [old, gold], [lucky, strike]]).
-
-property(house, [position], int).
-property(house, [color], color).
-
-relation(house, house, [is, next], [to]).
-relation(person, house, [lives], [in]).
-relation(person, animal, [keeps], []).
-relation(person, drink, [drinks], []).
-relation(person, cigarette, [smokes], []).
-
-relationInf(person, drink, [drink], []).
-
-actor(person, cigarette, [smoker], [of], [smokes]).
-
 /*========================================================================
     Determiners
 ========================================================================*/
@@ -181,6 +74,8 @@ lexEntry(coord, [syntax:[or], type:disj]).
 ========================================================================*/
 lexEntry(av, [syntax:[does], inf:fin, num:sg, pol:pos]).
 lexEntry(av, [syntax:[does, not], inf:fin, num:sg, pol:neg]).
+lexEntry(av, [syntax:[doesnt], inf:fin, num:sg, pol:neg]).
+
 lexEntry(av, [syntax:[do], inf:fin, num:pl, pol:pos]).
 lexEntry(av, [syntax:[do, not], inf:fin, num:pl, pol:neg]).
 lexEntry(av, [syntax:[did], inf:fin, num:sg, pol:pos]).

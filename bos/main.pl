@@ -42,7 +42,7 @@ simplify(X, Y) :-
     betaConvert(X, X1),
     mergeDrs(X1, Y).
 
-:- use_module(combineTypes, [combineTypes/2]).
+:- use_module(types, [combineTypes/2]).
 
 :- use_module(myGrammar, [t/3]).
 
@@ -54,7 +54,8 @@ simplify(X, Y) :-
 
 test :-
     testAll([
-                 zebra
+                   zebra,
+                   p1
                  %% thieves,
                  %% translators,
                  %% swimming_suits
