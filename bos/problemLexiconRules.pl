@@ -13,9 +13,9 @@ lexEntry(noun, [symbol:Symbol, num:sg, syntax:Syntax, vType:Type]) :-
     concept(Symbol, _),
     addType(Symbol, Type),
     symbol_syntax(Symbol, Syntax).
-lexEntry(pn, [symbol:Symbol, syntax:Syntax, vType:Type]) :-
+lexEntry(pn, [symbol:Symbol, syntax:Syntax, vType:qualified(Type)]) :-
     concept(_Type, constructed:Elements),
-    addType(Symbol, Type),
+    addType(Symbol, qualified(Type)),
     member(Syntax, Elements),
     % TODO check that it isn't an adjective?
     syntax_symbol(Syntax, Symbol).
@@ -70,6 +70,7 @@ lexEntry(noun, [symbol:Symbol, num:sg, syntax:Syntax, vType:Type]) :-
     addType(Symbol, Type),
     syntax_symbol(Syntax, Symbol).
 
+%TODO: fix plural vs singular
 lexEntry(noun, [symbol:Symbol, num:_, syntax:Syntax, vType:Type]) :-
     concept(_Type, countable:Syntax),
     addType(Symbol, Type),

@@ -51,6 +51,7 @@ combine(np:app(A, B), [det:A, n:B]).
 combine(np:app(A, B), [number:A, n:B]).
 combine(np:A, [pn:A]).
 combine(np:A, [qnp:A]).
+combine(np:app(app(B, A), C), [np: A, comp:B, np:C]).
 
 combine(whnp:app(A, B), [det:A, n:B]).
 combine(whnp:A, [qnp:A]).

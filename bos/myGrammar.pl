@@ -145,10 +145,17 @@ np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
     n([coord:_, num:Num, sem:N, vType:Type]),
     { combine(np:NP, [det:Det, n:N]) }.
 
+%TODO: fix plural vs singular
 np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:countable(Type)])-->
     number([sem:Number, vType:Type]),
     n([coord:_, num:Num, sem:N, vType:countable(Type)]),
     { combine(np:NP, [number:Number, n:N]) }.
+
+np([coord:yes, num:Num, gap:[], ref:no, sem:NP, vType:countable(Type)])-->
+    np([coord:no, num:Num, gap:[], ref:no, sem:NP1, vType:countable(Type)]),
+    comp([sem:Comp, vType:Type]),
+    np([coord:no, num:_, gap:[], ref:no, sem:NP2, vType:countable(Type)]),
+    { combine(np:NP, [np:NP1, comp:Comp, np:NP2]) }.
 
 np([coord:no, num:sg, gap:[], ref:no, sem:NP, vType:Type])-->
     pn([sem:PN, vType:Type]),
@@ -385,3 +392,9 @@ noun([num:Num, sem:Sem, vType:Type])-->
     { lexEntry(noun, [symbol:Sym, num:Num, syntax:Word, vType:Type]) },
     Word,
     { semLex(noun, [symbol:Sym, sem:Sem]) }.
+
+comp([sem:Sem, vType:VType])-->
+    { lexEntry(comp, [type:Type, syntax:Word]) },
+    Word,
+    { semLex(comp, [type:Type, sem:Sem, vType:VType]) }.
+

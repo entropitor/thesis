@@ -36,6 +36,8 @@ problem(p2, [
 
 problem(p2counts, [
             "Ira scored 5 points",
+            "Ira scored 5 points lower than 41 points",
+            "Ira scored 5 points lower than the score that Pedro scored",
             "Ira scored 5 points lower than Pedro",
             "Ira scored lower than the person who threw the orange darts"
         ]).

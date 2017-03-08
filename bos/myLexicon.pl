@@ -140,3 +140,15 @@ lexEntry(qnp, [symbol:question_thing, syntax:[what], mood:int, type:wh]).
 %% lexEntry(pro, [symbol:female, ref:no, syntax:[her]]).
 %% lexEntry(pro, [symbol:neuter, ref:no, syntax:[it]]).
 %% lexEntry(pro, [symbol:neuter, ref:yes, syntax:[itself]]).
+
+
+/*========================================================================
+    Comparison operators
+========================================================================*/
+lexEntry(comp, [type:lower, syntax:[lower, than]]).
+lexEntry(comp, [type:lower, syntax:[below]]).
+lexEntry(comp, [type:lower, syntax:[before]]).
+
+lexEntry(comp, [type:higher, syntax:[higher, than]]).
+lexEntry(comp, [type:higher, syntax:[above]]).
+lexEntry(comp, [type:higher, syntax:[after]]).

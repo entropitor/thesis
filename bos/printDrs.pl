@@ -148,6 +148,15 @@ makeConstant(X, Code) :-
     makeType(Type, CodesType),
     appendLists(CodesVar, [58 | CodesType], Code).
 
+makeConstant(X, Code) :-
+    nonvar(X),
+    X =.. [Functor, Arg1, Arg2],
+    name(Functor, CodeFunctor),
+    makeConstant(Arg1, Code1),
+    makeConstant(Arg2, Code2),
+    appendLists(Code1, CodeFunctor, Temp),
+    appendLists(Temp, Code2, Code).
+
 makeType(Type, Code) :-
     atomic(Type),
     !,

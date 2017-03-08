@@ -125,3 +125,11 @@ semLex(qnp,M) :-
          symbol:_Sym,
          sem:lam(Q, merge(drs([variable(X, _Type, int)], []), app(Q,X)))].
 
+
+semLex(comp, M) :-
+    M = [type:lower,
+         sem:lam(N1, lam(N2, lam(V, app(N1, lam(Y, app(N2, lam(Z, merge(drs([variable(X, Type, decl)], [eq(X, Z-Y)]), app(V, X))))))))),
+         vType:Type];
+    M = [type:higher,
+         sem:lam(N1, lam(N2, lam(V, app(N1, lam(Y, app(N2, lam(Z, merge(drs([variable(X, Type, decl)], [eq(X, Z+Y)]), app(V, X))))))))),
+         vType:Type].
