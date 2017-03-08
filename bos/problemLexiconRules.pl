@@ -32,18 +32,18 @@ lexEntry(adj, [symbol:Symbol, syntax:Syntax, vType:adj(Type)]) :-
     syntax_symbol(Syntax, Symbol).
 % TODO: need other wordforms?
 lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:fin, num:sg, vType:pred(SubjType, ObjType)]) :-
-    relation(_SubjType, _ObjType, Syntax, [], _SyntaxInf),
+    relation(_SubjType, _ObjType, Syntax, [], SyntaxInf),
     addType(Symbol, pred(SubjType, ObjType)),
-    syntax_symbol(Syntax, Symbol).
+    syntax_symbol(SyntaxInf, Symbol).
 lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:inf, num:sg, vType:pred(SubjType, ObjType)]) :-
     relation(_SubjType, _ObjType, _, [], Syntax),
     addType(Symbol, pred(SubjType, ObjType)),
     syntax_symbol(Syntax, Symbol).
 lexEntry(ivpp, [symbol:Symbol, syntax:Syntax, pp:PP, inf:fin, num:sg, vType:pred(SubjType, ObjType)]) :-
-    relation(_SubjType, _ObjType, Syntax, PP, _),
+    relation(_SubjType, _ObjType, Syntax, PP, SyntaxInf),
     PP \= [],
     addType(Symbol, pred(SubjType, ObjType)),
-    append(Syntax, PP, WordForm),
+    append(SyntaxInf, PP, WordForm),
     syntax_symbol(WordForm, Symbol).
 lexEntry(ivpp, [symbol:Symbol, syntax:Syntax, pp:PP, inf:inf, num:sg, vType:pred(SubjType, ObjType)]) :-
     relation(_SubjType, _ObjType, _, PP, Syntax),
