@@ -183,7 +183,7 @@ n([coord:yes, num:Num, sem:N, vType:Type])-->
     { combine(n:N, [n:N1, coord:C, n:N2]) }.
 
 n([coord:C, num:Num, sem:Sem, vType:Type])-->
-    adj([sem:A, vType:Type]),
+    adj([sem:A, vType:adj(Type)]),
     n([coord:C, num:Num, sem:N, vType:Type]),
     { combine(n:Sem, [adj:A, n:N]) }.
 
