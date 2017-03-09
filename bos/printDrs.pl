@@ -161,6 +161,12 @@ makeType(Type, Code) :-
     atomic(Type),
     !,
     name(Type, Code).
+makeType(Type, [105, 110, 116, 40 | Code]) :-
+    nonvar(Type),
+    Type = countable(X),
+    !,
+    makeType(X, Code1),
+    appendLists(Code1, [41], Code).
 makeType(Type, Code) :-
     makeConstant(Type, Code).
 
