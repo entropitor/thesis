@@ -73,6 +73,7 @@ combine(vp:app(A, B), [cop:A, adj:B]).
 combine(vp:A, [iv:A]).
 combine(vp:app(PP, A), [iv:A, adv:PP]).
 combine(vp:app(A, B), [tv:A, np:B]).
+combine(vp:lam(N1, app(app(B, N1), A)), [np:A, tv:B]).
 combine(vp:lam(Obj, app(app(A, Obj), B)), [tv:A, npSubj:B]).
 
 combine(pp:app(A, B), [prep:A, np:B]).

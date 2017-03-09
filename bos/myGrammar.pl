@@ -264,6 +264,11 @@ vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
 %    pp([type:vp, sem:Adv]),
 %    { combine(vp:VP, [iv:IV, adv:Adv]) }.
 
+vp([coord:no, inf:I, num:Num, gap:[], sem:VP, vType:TypeObj])-->
+    np([coord:_, num:_, gap:[], ref:Ref, sem:NP, vType:TypeSubj]),
+    tv([inf:I, num:Num, ref:Ref, sem:TV, vType:pred(TypeSubj, TypeObj)]),
+    { combine(vp:VP, [np:NP, tv:TV]) }.
+
 vp([coord:no, inf:I, num:Num, gap:G, sem:VP, vType:TypeSubj])-->
   tv([inf:I, num:Num, ref:Ref, sem:TV, vType:pred(TypeSubj, TypeObj)]),
   np([coord:_, num:_, gap:G, ref:Ref, sem:NP, vType:TypeObj]),
