@@ -80,7 +80,7 @@ relation(species, population, [has, a, population, size], [of], [have, a, popula
 concept(contestant, constructed:[[bill], [collin], [ira], [oscar], [pedro]]).
 concept(darts, constructed:[[the, black, darts], [the, orange, darts], [the, red, darts], [the, white, darts], [the, yellow, darts]]).
 concept(city, constructed:[[mount, union], [gillbertville], [lohrville], [worthington], [yorktown]]).
-concept(score, countable:[points]).
+concept(total, countable:[points]).
 
 
 relation(contestant, darts, [threw], [], [throw]).

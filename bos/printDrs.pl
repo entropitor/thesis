@@ -167,6 +167,12 @@ makeType(Type, [105, 110, 116, 40 | Code]) :-
     !,
     makeType(X, Code1),
     appendLists(Code1, [41], Code).
+makeType(Type, [113, 117, 97, 108, 40 | Code]) :-
+    nonvar(Type),
+    Type = qualified(X),
+    !,
+    makeType(X, Code1),
+    appendLists(Code1, [41], Code).
 makeType(Type, Code) :-
     makeConstant(Type, Code).
 

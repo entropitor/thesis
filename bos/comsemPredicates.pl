@@ -47,6 +47,7 @@
 :- use_module(printDrs, [printDrs/1]).
 :- use_module(drs2fol, [drs2fol/2]).
 :- use_module(printFol, [printFol/1]).
+:- use_module(types, [combineTypes/2]).
 
 
 /*========================================================================
@@ -307,6 +308,7 @@ printRep([Reading|OtherReadings], [Types|OtherTypes], M) :-
     N is M + 1, nl, write(N), tab(1),
     \+ \+ (numbervars(Reading, 0, _), print(Reading)),
     \+ \+ (numbervars(Types, 0, _), format('~nTypes: ~p', [Types])),
+    \+ \+ (combineTypes(Types, CombTypes), numbervars(CombTypes, 0, _), format('~nCombTypes: ~p', [CombTypes])),
     printRep(OtherReadings, OtherTypes, N).
 
 
