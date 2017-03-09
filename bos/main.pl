@@ -125,7 +125,8 @@ lambdaDRT(Discourse, Old, Sems, Types) :-
                      (
                          simplify(merge(Old, Drs), Sem)
                      ->
-                         b_getval(types, Types)
+                         b_getval(types, Types1),
+                         combineTypes(Types1, Types)
                      ;
                          nl, write('failed conversion: '),
                          numbervars(Drs, 0, _),

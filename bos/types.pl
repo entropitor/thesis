@@ -48,7 +48,9 @@ checkUnkownVars([type(Var, Type) | Rest], [type(Var, Type) | Out], true) :-
 checkMatchingVar(type(_, Type), []) :-
     format("~nError finding predicate for type: ~p", [Type]),
     fail.
-checkMatchingVar(type(Var, Type), [type(Var, Type) | _]).
+checkMatchingVar(type(Var, Type), [type(Var, Type2) | _]) :-
+    nonvar(Type2),
+    Type = Type2.
 checkMatchingVar(Type, [_ | Rest]) :-
     checkMatchingVar(Type, Rest).
 
