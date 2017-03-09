@@ -24,7 +24,7 @@ matchType(_, Type1, Type2) :-
     Type1 = Type2,
     !.
 matchType(Var, Type1, Type2) :-
-    format("~nError matchingType for ~p: ~p doesn't match with ~p~n", [Var, Type1, Type2]),
+    format("~nWarning matchingType for ~p: ~p doesn't match with ~p~n", [Var, Type1, Type2]),
     fail.
 
 addType(_, _) :-
