@@ -157,6 +157,13 @@ np([coord:yes, num:Num, gap:[], ref:no, sem:NP, vType:countable(Type)])-->
     np([coord:no, num:_, gap:[], ref:no, sem:NP2, vType:countable(Type)]),
     { combine(np:NP, [np:NP1, comp:Comp, np:NP2]) }.
 
+np([coord:yes, num:Num, gap:[], ref:no, sem:NP, vType:countable(Type)])-->
+    np([coord:no, num:Num, gap:[], ref:no, sem:NP1, vType:countable(Type)]),
+    comp([sem:Comp, vType:countable(Type)]),
+    np([coord:no, num:_, gap:[], ref:no, sem:NP2, vType:Type2]),
+    { var(Type2) ; Type2 \= countable(Type) },
+    { combine(np:NP, [np:NP1, comp:Comp, np:NP2, vTypeReal:countable(Type), vTypeOther:Type2]) }.
+
 np([coord:no, num:sg, gap:[], ref:no, sem:NP, vType:Type])-->
     pn([sem:PN, vType:Type]),
     { combine(np:NP, [pn:PN]) }.
@@ -270,9 +277,9 @@ vp([coord:no, inf:I, num:Num, gap:[], sem:VP, vType:TypeObj])-->
     { combine(vp:VP, [np:NP, tv:TV]) }.
 
 vp([coord:no, inf:I, num:Num, gap:G, sem:VP, vType:TypeSubj])-->
-  tv([inf:I, num:Num, ref:Ref, sem:TV, vType:pred(TypeSubj, TypeObj)]),
-  np([coord:_, num:_, gap:G, ref:Ref, sem:NP, vType:TypeObj]),
-  { combine(vp:VP, [tv:TV, np:NP]) }.
+    tv([inf:I, num:Num, ref:Ref, sem:TV, vType:pred(TypeSubj, TypeObj)]),
+    np([coord:_, num:_, gap:G, ref:Ref, sem:NP, vType:TypeObj]),
+    { combine(vp:VP, [tv:TV, np:NP]) }.
 
 vp([coord:no, inf:I, num:Num, gap:G, sem:VP, vType:TypeSubj])-->
     ivpp([inf:I, num:Num, pp:PP, sem:IVPP, vType:pred(TypeSubj, TypeObj)]),

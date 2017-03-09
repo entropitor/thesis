@@ -26,12 +26,12 @@ problem(p1, [
 problem(p2, [
             "Of the contestant who scored 41 points and the person who threw the white darts, one was from Worthington and the other was Ira",
             "Bill is from Mount union",
-            "Ira scored 21 points higher than the player who threw the orange darts",
+            "Ira scored 21 points higher than the contestant who threw the orange darts",
             "The contestant from Mount union threw the black darts",
-            "Pedro didn't fisnish with 55 points",
-            "The player who threw the red darts was either Colin or the person who scored 48 points",
-            "Of the contestant who scored 41 points and the person who threw the orange darts, one was from Gillbertville and the other was from Worthington",
-            "Ira finished 7 points lower than the player from Lohrville"
+            "Pedro didn't score 55 points",
+            "The contestant who threw the red darts was either Colin or the contestant who scored 48 points",
+            "Of the contestant who scored 41 points and the contestant who threw the orange darts, one was from Gillbertville and the other was from Worthington",
+            "Ira scored 7 points lower than the contestant from Lohrville"
         ]).
 
 problem(p2counts, [

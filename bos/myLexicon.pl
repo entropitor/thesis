@@ -78,10 +78,15 @@ lexEntry(av, [syntax:[doesnt], inf:fin, num:sg, pol:neg]).
 
 lexEntry(av, [syntax:[do], inf:fin, num:pl, pol:pos]).
 lexEntry(av, [syntax:[do, not], inf:fin, num:pl, pol:neg]).
+lexEntry(av, [syntax:[dont], inf:fin, num:pl, pol:neg]).
+
 lexEntry(av, [syntax:[did], inf:fin, num:sg, pol:pos]).
 lexEntry(av, [syntax:[did, not], inf:fin, num:sg, pol:neg]).
+lexEntry(av, [syntax:[didnt], inf:fin, num:sg, pol:neg]).
+
 lexEntry(av, [syntax:[did], inf:fin, num:pl, pol:pos]).
 lexEntry(av, [syntax:[did, not], inf:fin, num:pl, pol:neg]).
+lexEntry(av, [syntax:[didnt], inf:fin, num:pl, pol:neg]).
 
 /*========================================================================
     Nouns

@@ -306,9 +306,10 @@ printRepresentations(Readings, Types) :-
 printRep([], [], _) :- nl.
 printRep([Reading|OtherReadings], [Types|OtherTypes], M) :-
     N is M + 1, nl, write(N), tab(1),
+    %% \+ (combineTypes(Types, _), numbervars(Reading, 0, _), print(Reading), fail),
     \+ \+ (numbervars(Reading, 0, _), print(Reading)),
     \+ \+ (numbervars(Types, 0, _), format('~nTypes: ~p', [Types])),
-    \+ \+ (combineTypes(Types, CombTypes), numbervars(CombTypes, 0, _), format('~nCombTypes: ~p', [CombTypes])),
+    \+ (combineTypes(Types, CombTypes), numbervars(CombTypes, 0, _), format('~nCombTypes: ~p', [CombTypes]), fail),
     printRep(OtherReadings, OtherTypes, N).
 
 
