@@ -26,6 +26,7 @@
     Determiners
 ========================================================================*/
 
+lexEntry(det, [syntax:[the], mood:decl, num:sg, type:indef]).
 lexEntry(det, [syntax:[every], mood:decl, num:sg, type:uni]).
 lexEntry(det, [syntax:[a], mood:decl, num:sg, type:indef]).
 lexEntry(det, [syntax:[an], mood:decl, num:sg, type:indef]).

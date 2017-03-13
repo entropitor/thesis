@@ -7,8 +7,6 @@
 lexEntry(X, Y) :-
     defaultLexicon(X, Y).
 
-lexEntry(det, [syntax:[the], mood:decl, num:sg, type:indef]).
-
 lexEntry(noun, [symbol:Symbol, num:sg, syntax:Syntax, vType:Type]) :-
     concept(Symbol, _),
     addType(Symbol, Type),
