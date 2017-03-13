@@ -101,6 +101,17 @@ s([coord:question, sem:Sem])-->
 %    s([coord:C, sem:S]),
 %    { combine(s:Sem, [not:S]) }.
 
+s([coord:no, sem:Sem])-->
+    [of],
+    np([coord:no, num:sg, gap:[], ref:no, sem:NP1, vType:SubjType]),
+    [and],
+    np([coord:no, num:sg, gap:[], ref:no, sem:NP2, vType:SubjType]),
+    [one],
+    vp([coord:no, inf:fin, num:sg, gap:[], sem:VP1, vType:SubjType]),
+    [and, the, other],
+    vp([coord:no, inf:fin, num:sg, gap:[], sem:VP2, vType:SubjType]),
+    { combine(s:Sem, [np1:NP1, np2:NP2, vp1:VP1, vp2:VP2])}.
+
 sinv([gap:G, sem:S])-->
     av([inf:fin, num:Num, sem:Sem]),
     np([coord:_, num:Num, gap:[], ref:no, sem:NP, vType:SubjType]),

@@ -44,6 +44,13 @@ problem(p2counts, [
             "Ira scored lower than the person who threw the orange darts"
         ]).
 
+problem(alldifferent, [
+            "Of Ira and Colin, one lives in the red house and the other lives in the blue house",
+            "Of the contestant who scored 41 points and the person who threw the white darts, one was from Worthington and the other was Ira",
+            "The contestant who threw the red darts was either Colin or the contestant who scored 48 points",
+            "Of the contestant who scored 41 points and the contestant who threw the orange darts, one was from Gillbertville and the other was from Worthington"
+        ]).
+
 problem(zebra, [
             "The Englishman lives in the red house",
             "The Spaniard keeps the dog",
