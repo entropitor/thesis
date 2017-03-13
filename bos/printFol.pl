@@ -18,7 +18,7 @@ printFol(Order, eq(X, Y)) :-
                          write(' = '),
                          print(Y)
                      )).
-printFol(Order, eq(X, Y)) :-
+printFol(Order, eq(X)) :-
     printParantheses(Order, 2, (
                          print(X)
                      )).

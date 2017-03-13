@@ -112,9 +112,9 @@ testp(Problem, [Problem, NbCorrect, NbSentences], FlattenTypes) :-
 filterResults(Results, NewResults) :-
     findall(PossibleResult, (
                 maplist(memberIfMultiple, PossibleResult, Results),
-                pairs_keys_values(PossibleResult, DRSs, Types),
+                pairs_keys_values(PossibleResult, _DRSs, Types),
                 flatten(Types, FlattenTypes),
-                combineTypes(FlattenTypes, NewTypes)
+                combineTypes(FlattenTypes, _NewTypes)
                 %% maplist(print, DRSs),
                 %% nl,
                 %% print(NewTypes)
