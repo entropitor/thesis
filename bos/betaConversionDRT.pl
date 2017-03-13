@@ -63,7 +63,6 @@ betaConvert(Formula, Result, []) :-
     betaConvertList(Formulas, ResultFormulas),
     compose(Result, Functor, ResultFormulas).
 
-
 /*========================================================================
     Beta-Convert a list
 ========================================================================*/
@@ -74,22 +73,3 @@ betaConvertList([Formula|Others], [Result|ResultOthers]) :-
     betaConvert(Formula, Result),
     betaConvertList(Others, ResultOthers).
 
-
-/*========================================================================
-    Info
-========================================================================*/
-
-info :-
-    format('~n> ------------------------------------------------------------------- <', []),
-    format('~n> betaConversion.pl, by Patrick Blackburn and Johan Bos               <', []),
-    format('~n>                                                                     <', []),
-    format('~n> ?- betaConvert(F, C).         - beta-convert a formula               <', []),
-    format('~n> ------------------------------------------------------------------- <', []),
-    format('~n~n', []).
-
-
-/*========================================================================
-    Display info at start
-========================================================================*/
-
-:- info.

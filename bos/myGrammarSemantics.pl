@@ -23,6 +23,7 @@
 
 :- module(myGrammarSemantics, [combine/2]).
 
+:- use_module(types, [addType/2]).
 /*========================================================================
     Semantic Rules
 ========================================================================*/
@@ -48,8 +49,12 @@ combine(q:A, [sinv:A]).
 
 combine(np:app(app(B, A), C), [np:A, coord:B, np:C]).
 combine(np:app(A, B), [det:A, n:B]).
+combine(np:app(A, B), [number:A, n:B]).
 combine(np:A, [pn:A]).
 combine(np:A, [qnp:A]).
+combine(np:app(app(B, A), C), [np: A, comp:B, np:C]).
+combine(np:app(app(B, A), lam(P, app(C, lam(Y, merge(drs([variable(Z, Type, decl)], [rel(X, Y, Z)]), app(P, Z)))))), [np: A, comp:B, np:C, vTypeReal:Type, vTypeOther:OtherType]) :- addType(X, pred(OtherType, Type)).
+combine(np:lam(N, merge(drs([variable(X, Type, decl)], [eq(X > 0)]), app(N, X))), [npGap:Type]).
 
 combine(whnp:app(A, B), [det:A, n:B]).
 combine(whnp:A, [qnp:A]).
@@ -57,6 +62,7 @@ combine(whnp:A, [qnp:A]).
 combine(n:app(app(B, A), C), [n:A, coord:B, n:C]).
 combine(n:app(A, B), [adj:A, n:B]).
 combine(n:A, [noun:A]).
+combine(n:A, [cn:A]).
 combine(n:app(B, A), [noun:A, nmod:B]).
 
 combine(nmod:A, [pp:A]).
@@ -70,6 +76,7 @@ combine(vp:app(A, B), [cop:A, adj:B]).
 combine(vp:A, [iv:A]).
 combine(vp:app(PP, A), [iv:A, adv:PP]).
 combine(vp:app(A, B), [tv:A, np:B]).
+combine(vp:lam(N1, app(app(B, N1), A)), [np:A, tv:B]).
 combine(vp:lam(Obj, app(app(A, Obj), B)), [tv:A, npSubj:B]).
 
 combine(pp:app(A, B), [prep:A, np:B]).

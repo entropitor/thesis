@@ -38,20 +38,25 @@ alphaConvertDRS(B1, B2) :-
     Alpha Conversion (term)
 ========================================================================*/
 
-alphaConvertTerm(X, Vars, New) :-
+alphaConvertTerm(Vars, X, New) :-
     var(X),
-    alphaConvertVar(X, Vars, New).
+    alphaConvertVar(Vars, X, New).
 
-alphaConvertTerm(X, _Vars, New) :-
-    atom(X),
+alphaConvertTerm(_Vars, X, New) :-
+    atomic(X),
     New = X.
 
+alphaConvertTerm(Vars, X, New) :-
+    nonvar(X),
+    X =.. [Functor | Args],
+    maplist(alphaConvertTerm(Vars), Args, NewArgs),
+    New =.. [Functor | NewArgs].
 
 /*========================================================================
     Alpha Conversion (variables)
 ========================================================================*/
 
-alphaConvertVar(X, Vars, New) :-
+alphaConvertVar(Vars, X, New) :-
     var(X),
     (
         memberList(sub(Z, Y), Vars),
@@ -69,7 +74,7 @@ alphaConvertVar(X, Vars, New) :-
 
 alphaConvertDRS(X1, Vars-Vars, X2) :-
     var(X1),
-    alphaConvertVar(X1, Vars, X2).
+    alphaConvertVar(Vars, X1, X2).
 
 alphaConvertDRS(X1, Vars-Vars, X2) :-
     nonvar(X1),
@@ -143,12 +148,15 @@ alphaConvertCondition(Cond1:F, Vars, Cond2:F) :-
     alphaConvertCondition(Cond1, Vars, Cond2).
 
 alphaConvertCondition(pred(Sym, X1), Vars, pred(Sym, X2)) :-
-    alphaConvertTerm(X1, Vars, X2).
+    alphaConvertTerm(Vars, X1, X2).
 
 alphaConvertCondition(rel(Sym, X1, Y1), Vars, rel(Sym, X2, Y2)) :-
-    alphaConvertTerm(X1, Vars, X2),
-    alphaConvertTerm(Y1, Vars, Y2).
+    alphaConvertTerm(Vars, X1, X2),
+    alphaConvertTerm(Vars, Y1, Y2).
 
 alphaConvertCondition(eq(X1, Y1), Vars, eq(X2, Y2)) :-
-    alphaConvertTerm(X1, Vars, X2),
-    alphaConvertTerm(Y1, Vars, Y2).
+    alphaConvertTerm(Vars, X1, X2),
+    alphaConvertTerm(Vars, Y1, Y2).
+
+alphaConvertCondition(eq(X1), Vars, eq(X2)) :-
+    alphaConvertTerm(Vars, X1, X2).

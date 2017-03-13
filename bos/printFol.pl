@@ -18,6 +18,10 @@ printFol(Order, eq(X, Y)) :-
                          write(' = '),
                          print(Y)
                      )).
+printFol(Order, eq(X, Y)) :-
+    printParantheses(Order, 2, (
+                         print(X)
+                     )).
 printFol(_, pred(Name, Arg)) :-
     X =.. [Name, Arg],
     write(X).

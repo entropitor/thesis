@@ -10,6 +10,7 @@ problem(vakantiedagen, [
             "Each employee has a number of vacation days equal to 22 plus the sum of the extra days he receives"
         ]).
 
+% ADAPTED!!!
 problem(p1, [
             "The perens pig lives in Slovakia and is recognized as endangered in 2009",
             "The eldar elk has a population size of 210",
@@ -19,6 +20,28 @@ problem(p1, [
             "Neither the nibner newt nor the byengo bat has a population size of 525",
             "The species that lives in Ghana was listed 2 years after the nibner newt",
             "The animal that lives in Russia doesn't have a population size of 315"
+        ]).
+
+% ADAPTED!!!
+problem(p2, [
+            "Of the contestant who scored 41 points and the person who threw the white darts, one was from Worthington and the other was Ira",
+            "Bill is from Mount union",
+            "Ira scored 21 points higher than the contestant who threw the orange darts",
+            "The contestant from Mount union threw the black darts",
+            "Pedro didn't score 55 points",
+            "The contestant who threw the red darts was either Colin or the contestant who scored 48 points",
+            "Of the contestant who scored 41 points and the contestant who threw the orange darts, one was from Gillbertville and the other was from Worthington",
+            "Ira scored 7 points lower than the contestant from Lohrville"
+        ]).
+
+problem(p2counts, [
+            "Ira threw the black darts",
+            "Ira scored 5 points",
+            "Ira scored 5 points lower than 41 points",
+            "Ira scored 5 points lower than the total that Pedro scored",
+            "Ira scored 5 points lower than Pedro",
+            "Ira scored 5 points lower than the person who threw the orange darts",
+            "Ira scored lower than the person who threw the orange darts"
         ]).
 
 problem(zebra, [

@@ -98,17 +98,37 @@ printResults(Results, Types) :-
 testp(Problem, [Problem, NbCorrect, NbSentences], FlattenTypes) :-
     problem(Problem, Sentences),
     format('~n###############################~n###   ~p~n###############################~n', [Problem]),
-    maplist(testSentence, Sentences, NbDRSes, Types),
+    maplist(testSentence, Sentences, NbDRSes, Results),
+    filterResults(Results, NewResults),
+    length(NewResults, NbResults),
+    maplist(pairs_keys_values, NewResults, _, Types),
     flatten(Types, FlattenTypes),
     findall(1, member(1, NbDRSes), L),
     length(L, NbCorrect),
     length(Sentences, NbSentences),
     nl, print(NbDRSes),
-    format('~nNumber of sentences with 1 meaning: ~p/~p', [NbCorrect, NbSentences]).
+    format('~nNumber of sentences with 1 meaning: ~p/~p~nNumber of possible meanings in total: ~p', [NbCorrect, NbSentences, NbResults]).
 
-testSentence(Sentence, NbDRS, Types) :-
+filterResults(Results, NewResults) :-
+    findall(PossibleResult, (
+                maplist(memberIfMultiple, PossibleResult, Results),
+                pairs_keys_values(PossibleResult, DRSs, Types),
+                flatten(Types, FlattenTypes),
+                combineTypes(FlattenTypes, NewTypes)
+                %% maplist(print, DRSs),
+                %% nl,
+                %% print(NewTypes)
+            ), NewResults).
+
+memberIfMultiple(fail-[], []).
+memberIfMultiple(H, [H|_]).
+memberIfMultiple(X, [_|T]) :-
+    member(X, T).
+
+testSentence(Sentence, NbDRS, Results) :-
     format('~nSentence: ~p', [Sentence]),
     test(Sentence, DRSs, Types),
+    pairs_keys_values(Results, DRSs, Types),
     length(DRSs, NbDRS).
 
 test(String) :-
@@ -125,7 +145,8 @@ lambdaDRT(Discourse, Old, Sems, Types) :-
                      (
                          simplify(merge(Old, Drs), Sem)
                      ->
-                         b_getval(types, Types)
+                         b_getval(types, Types1),
+                         combineTypes(Types1, Types)
                      ;
                          nl, write('failed conversion: '),
                          numbervars(Drs, 0, _),

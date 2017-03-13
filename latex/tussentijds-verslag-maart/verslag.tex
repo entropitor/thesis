@@ -1,0 +1,61 @@
+%% Indien je niet vertrouwd ben met Latex:
+%%  Maak een .pdf als volgt:
+%%  - Vul alles in 
+%%  - Doe: pdflatex verslag.tex (dit produceert de .pdf)
+
+\documentclass[12pt]{report}
+%\usepackage{a4wide}
+\usepackage[utf8]{inputenc}
+
+\setlength{\parindent}{0cm}
+
+\begin{document}
+\pagestyle{myheadings}
+\markright{Tussentijds verslag Maart -  Student: Jens Claes}
+{\bf Titel eindwerk:} {\em Natural Language processing for Knowledge Representation}
+
+\vspace{0.5cm}
+{\bf Promotor(s):} Marc Denecker
+
+
+\vspace{0.5cm}
+{\bf Begeleider(s):} Laurent Janssens, Bart Bogaerts
+
+\vspace{1cm}
+{\bf Korte situering en Doelstelling: } In dit eindwerk wordt onderzocht of we een formele taal kunnen ontwerpen die toegankelijk is voor domein experts (die geen kennis hebben van formele talen) maar toch nog rijk genoeg is voor praktische problemen en bruikbaar is binnen het Knowledge Base Systems paradigma. We ontwikkelen deze formele taal specifiek voor het oplossen van logigrammen. Dit zijn puzzels gekenmerkt door een aantal concepten (zoals nationaliteit, dier, kleur, ...) en een bijectie tussen deze concepten (bijvoorbeeld ``De griek heeft een kat als huisdier''). Het is de bedoeling dat de puzzelaar deze bijecties achterhaalt met behulp van de gegeven hints. Door deductie toe te passen, blijft er exact 1 mogelijkheid over voor elke relatie. Dit is de oplossing van de puzzel.
+
+\vspace{1cm}
+{\bf Belangrijkste bestudeerde literatuur:}
+\begin{itemize}
+  \item Blackburn, Patrick, and Johan Bos. "Representation and inference for natural language." A First Course in Computational Semantics 2 (1999).
+  \item Blackburn, Patrick, and Johan Bos. "Working with discourse representation theory: An advanced course in computational semantics." Draft book (1999).
+  \item Norbert E. Fuchs, Kaarel Kaljurand, and Tobias Kuhn. Attempto con- trolled english for knowledge representation. Lecture Notes in Computer Science (including subseries Lecture Notes in Artificial Intelligence and Lec- ture Notes in Bioinformatics), 5224 LNCS:104–124, 2008.
+  \item Rolf Schwitter, Anna Ljungberg, and David Hood. ECOLE–A Look-ahead Editor for a Controlled Language. Eamt-Claw03, pages 141–150, 2003.
+  %\item S. Flake, W. Müller, and J. Ruf, “Structured English for Model Checking Specification,” Methoden und Beschreibungssprachen zur Model. und Verif. von Schaltungen und Syst., no. February, pp. 99–108, 2002.
+  \item Chitta Baral, Juraj Dzifcak, and Tran Cao Son. Using Answer Set Program- ming and Lambda Calculus to Characterize Natural Language Sentences with Normatives and Exceptions. Proceedings of the 23rd AAAI Conference on Artificial Intelligence (AAAI-08), pages 818-823, 2008.
+\end{itemize}
+
+\vspace{1cm}
+{\bf Geleverd werk (inclusief tijdsrapportering):}
+Ik heb reeds 281 uur in mijn thesis gestoken. Hierin heb ik het framework van Blackburn en Bos uitgebreid met nieuwe grammaticale structuren om te kunnen werken met zinnen die een aritmetische uitdrukking bevatten. Verder heb ik ook types geïntroduceerd waarmee gecontroleerd kan worden of een zin correct is en reeds één voorbeeld geïmplementeerd waarbij types gebruikt kunnen worden om een ellipsis van woorden correct te analyseren.
+
+\vspace{1cm}
+{\bf Belangrijkste resultaten:}
+Ik heb het systeem van Blackburn en Bos kunnen uitbreiden met enkele extra grammaticale structuren. De makkelijkste hints kon het systeem van Blackburn en Bos zelf al aan. Door uitbreiding van de grammatica en de semantiek van die grammatica kan het systeem nu ook overweg met hints met aritmetiek erin. De hints die uitdrukken dat 2 entiteiten verschillend zijn, werken echter nog niet.
+Verder is er al een basissysteem van types en reeds 1 voorbeeld van inferentie met behulp van die types om meer af te leiden welke formele vertaling de juiste is. Dit kan nog uitgebreid worden.
+
+\vspace{1cm}
+{\bf Belangrijkste moeilijkheden:}
+De moeilijkheid ligt vooral in het ontdekken van de taalkundige structuren die achter de hints van de logigrammen liggen en om deze om te mappen op een equivalente formulering in de logica, zodanig dat de zinnen zoveel mogelijk overgenomen kunnen worden uit de puzzels zoals men die online en in puzzelboekjes kan vinden.
+
+\vspace{1cm}
+{\bf Gepland werk:} 
+De bedoeling is om de soorten hints die de tool ondersteunt uit te breiden. Vervolgens te bekijken in welke vorm het vocabularium best aangeleverd wordt. Ten slotte om een heleboel nieuwe, ongeziene puzzles in het systeem in te geven om te zien hoe deze presteert.
+
+\vspace{1cm}
+{\bf Als ik verder werk zoals ik tot nu toe deed, dan denk ik 17/20 te verdienen op het einde.}
+
+{\bf Ik plan mijn eindwerk af te geven in juni}
+
+
+\end{document}

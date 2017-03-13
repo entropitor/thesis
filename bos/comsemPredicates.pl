@@ -47,6 +47,7 @@
 :- use_module(printDrs, [printDrs/1]).
 :- use_module(drs2fol, [drs2fol/2]).
 :- use_module(printFol, [printFol/1]).
+:- use_module(types, [combineTypes/2]).
 
 
 /*========================================================================
@@ -305,8 +306,10 @@ printRepresentations(Readings, Types) :-
 printRep([], [], _) :- nl.
 printRep([Reading|OtherReadings], [Types|OtherTypes], M) :-
     N is M + 1, nl, write(N), tab(1),
+    %% \+ (combineTypes(Types, _), numbervars(Reading, 0, _), print(Reading), fail),
     \+ \+ (numbervars(Reading, 0, _), print(Reading)),
     \+ \+ (numbervars(Types, 0, _), format('~nTypes: ~p', [Types])),
+    \+ (combineTypes(Types, CombTypes), numbervars(CombTypes, 0, _), format('~nCombTypes: ~p', [CombTypes]), fail),
     printRep(OtherReadings, OtherTypes, N).
 
 
@@ -428,6 +431,7 @@ user:portray(some(X, F)) :- write('some '), write(X), tab(1), print(F).
 user:portray(all(X, F)) :- write('all '), write(X), tab(1), print(F).
 user:portray(lam(X, F)) :- write('lam '), write(X), tab(1), print(F).
 user:portray(eq(X, Y)) :- print(X), write(' = '), print(Y).
+user:portray(eq(X)) :- print(X).
 user:portray(que(X, R, B)) :- write('?'), print(X), write('['), print(R), write(', '), print(B), write(']').
 user:portray(drs(D, C)) :- printDrs(drs(D, C)).
 user:portray(merge(B, C)) :- printDrs(merge(B, C)).

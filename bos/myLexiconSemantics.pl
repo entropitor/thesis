@@ -43,9 +43,19 @@ semLex(det, M) :-
          sem:lam(U, lam(V, drs([], [not(merge(merge(drs([variable(X, Type, decl)], []), app(U, X)), app(V, X)))]))),
          vType:Type].
 
+semLex(number, M) :-
+    M = [number:Num,
+         sem:lam(U, lam(V, merge(merge(drs([variable(X, Type, decl)], [eq(X, Num)]), app(U, X)), app(V, X)))),
+         vType:Type].
+
 semLex(pn, M) :-
     M = [symbol:Sym,
          sem:lam(P, merge(drs([], []), app(P, Sym)))].
+
+semLex(cn, M) :-
+    M = [symbol:Sym,
+         sem:lam(X, drs([], [pred(Sym, X)])),
+         vType:_].
 
 semLex(noun, M) :-
     M = [symbol:Sym,
@@ -115,3 +125,11 @@ semLex(qnp,M) :-
          symbol:_Sym,
          sem:lam(Q, merge(drs([variable(X, _Type, int)], []), app(Q,X)))].
 
+
+semLex(comp, M) :-
+    M = [type:lower,
+         sem:lam(N1, lam(N2, lam(V, app(N1, lam(Y, app(N2, lam(Z, merge(drs([variable(X, Type, decl)], [eq(X, Z-Y)]), app(V, X))))))))),
+         vType:Type];
+    M = [type:higher,
+         sem:lam(N1, lam(N2, lam(V, app(N1, lam(Y, app(N2, lam(Z, merge(drs([variable(X, Type, decl)], [eq(X, Z+Y)]), app(V, X))))))))),
+         vType:Type].

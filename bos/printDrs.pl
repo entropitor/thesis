@@ -148,10 +148,31 @@ makeConstant(X, Code) :-
     makeType(Type, CodesType),
     appendLists(CodesVar, [58 | CodesType], Code).
 
+makeConstant(X, Code) :-
+    nonvar(X),
+    X =.. [Functor, Arg1, Arg2],
+    name(Functor, CodeFunctor),
+    makeConstant(Arg1, Code1),
+    makeConstant(Arg2, Code2),
+    appendLists(Code1, [32 | CodeFunctor], Temp),
+    appendLists(Temp, [32 | Code2], Code).
+
 makeType(Type, Code) :-
     atomic(Type),
     !,
     name(Type, Code).
+makeType(Type, [105, 110, 116, 40 | Code]) :-
+    nonvar(Type),
+    Type = countable(X),
+    !,
+    makeType(X, Code1),
+    appendLists(Code1, [41], Code).
+makeType(Type, [113, 117, 97, 108, 40 | Code]) :-
+    nonvar(Type),
+    Type = qualified(X),
+    !,
+    makeType(X, Code1),
+    appendLists(Code1, [41], Code).
 makeType(Type, Code) :-
     makeConstant(Type, Code).
 
@@ -213,6 +234,13 @@ formatConds([eq(A, B)|Rest], In-[[9474, 32|Line]|Out], N0-N2) :-
     makeConstant(A, L1),
     makeConstant(B, L2),
     appendLists(L1, [32, 61, 32|L2], Line),
+    length([_, _, _|Line], Length),
+    (Length > N1, !, N2 is Length; N2 = N1).
+
+formatConds([eq(A)|Rest], In-[[9474, 32|Line]|Out], N0-N2) :-
+    !,
+    formatConds(Rest, In-Out, N0-N1),
+    makeConstant(A, Line),
     length([_, _, _|Line], Length),
     (Length > N1, !, N2 is Length; N2 = N1).
 

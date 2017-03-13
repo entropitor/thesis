@@ -78,10 +78,15 @@ lexEntry(av, [syntax:[doesnt], inf:fin, num:sg, pol:neg]).
 
 lexEntry(av, [syntax:[do], inf:fin, num:pl, pol:pos]).
 lexEntry(av, [syntax:[do, not], inf:fin, num:pl, pol:neg]).
+lexEntry(av, [syntax:[dont], inf:fin, num:pl, pol:neg]).
+
 lexEntry(av, [syntax:[did], inf:fin, num:sg, pol:pos]).
 lexEntry(av, [syntax:[did, not], inf:fin, num:sg, pol:neg]).
+lexEntry(av, [syntax:[didnt], inf:fin, num:sg, pol:neg]).
+
 lexEntry(av, [syntax:[did], inf:fin, num:pl, pol:pos]).
 lexEntry(av, [syntax:[did, not], inf:fin, num:pl, pol:neg]).
+lexEntry(av, [syntax:[didnt], inf:fin, num:pl, pol:neg]).
 
 /*========================================================================
     Nouns
@@ -140,3 +145,15 @@ lexEntry(qnp, [symbol:question_thing, syntax:[what], mood:int, type:wh]).
 %% lexEntry(pro, [symbol:female, ref:no, syntax:[her]]).
 %% lexEntry(pro, [symbol:neuter, ref:no, syntax:[it]]).
 %% lexEntry(pro, [symbol:neuter, ref:yes, syntax:[itself]]).
+
+
+/*========================================================================
+    Comparison operators
+========================================================================*/
+lexEntry(comp, [type:lower, syntax:[lower, than]]).
+lexEntry(comp, [type:lower, syntax:[below]]).
+lexEntry(comp, [type:lower, syntax:[before]]).
+
+lexEntry(comp, [type:higher, syntax:[higher, than]]).
+lexEntry(comp, [type:higher, syntax:[above]]).
+lexEntry(comp, [type:higher, syntax:[after]]).

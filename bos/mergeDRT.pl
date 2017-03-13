@@ -65,4 +65,7 @@ mergeDrs([rel(Sym, X, Y)|C1], [rel(Sym, X, Y)|C2]) :-
 mergeDrs([eq(X, Y)|C1], [eq(X, Y)|C2]) :-
     mergeDrs(C1, C2).
 
+mergeDrs([eq(X)|C1], [eq(X)|C2]) :-
+    mergeDrs(C1, C2).
+
 mergeDrs([], []).
