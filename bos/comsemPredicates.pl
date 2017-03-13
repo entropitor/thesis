@@ -431,6 +431,7 @@ user:portray(some(X, F)) :- write('some '), write(X), tab(1), print(F).
 user:portray(all(X, F)) :- write('all '), write(X), tab(1), print(F).
 user:portray(lam(X, F)) :- write('lam '), write(X), tab(1), print(F).
 user:portray(eq(X, Y)) :- print(X), write(' = '), print(Y).
+user:portray(eq(X)) :- print(X).
 user:portray(que(X, R, B)) :- write('?'), print(X), write('['), print(R), write(', '), print(B), write(']').
 user:portray(drs(D, C)) :- printDrs(drs(D, C)).
 user:portray(merge(B, C)) :- printDrs(merge(B, C)).

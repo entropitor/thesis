@@ -59,6 +59,8 @@ cond2fol(imp(drs([X|Referents], Conds), Drs2), all(X, Formula)) :-
 
 cond2fol(eq(X, Y), eq(X, Y)).
 
+cond2fol(eq(X), eq(X)).
+
 cond2fol(pred(Sym, X), pred(Sym, X)).
 
 cond2fol(rel(Sym, X, Y), rel(Sym, X, Y)).

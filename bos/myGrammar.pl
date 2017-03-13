@@ -145,6 +145,9 @@ np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
     n([coord:_, num:Num, sem:N, vType:Type]),
     { combine(np:NP, [det:Det, n:N]) }.
 
+np([coord:no, num:_Num, gap:[], ref:no, sem:NP, vType:countable(Type)])-->
+    { combine(np:NP, [npGap:countable(Type)])}.
+
 %TODO: fix plural vs singular
 np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:countable(Type)])-->
     number([sem:Number, vType:countable(Type)]),

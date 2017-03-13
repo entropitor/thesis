@@ -154,8 +154,8 @@ makeConstant(X, Code) :-
     name(Functor, CodeFunctor),
     makeConstant(Arg1, Code1),
     makeConstant(Arg2, Code2),
-    appendLists(Code1, CodeFunctor, Temp),
-    appendLists(Temp, Code2, Code).
+    appendLists(Code1, [32 | CodeFunctor], Temp),
+    appendLists(Temp, [32 | Code2], Code).
 
 makeType(Type, Code) :-
     atomic(Type),
@@ -234,6 +234,13 @@ formatConds([eq(A, B)|Rest], In-[[9474, 32|Line]|Out], N0-N2) :-
     makeConstant(A, L1),
     makeConstant(B, L2),
     appendLists(L1, [32, 61, 32|L2], Line),
+    length([_, _, _|Line], Length),
+    (Length > N1, !, N2 is Length; N2 = N1).
+
+formatConds([eq(A)|Rest], In-[[9474, 32|Line]|Out], N0-N2) :-
+    !,
+    formatConds(Rest, In-Out, N0-N1),
+    makeConstant(A, Line),
     length([_, _, _|Line], Length),
     (Length > N1, !, N2 is Length; N2 = N1).
 
