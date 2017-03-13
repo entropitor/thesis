@@ -139,17 +139,30 @@ q([sem:Sem])-->
 
 np([coord:no, num:sg, gap:[np:NP-Type], ref:no, sem:NP, vType:Type])--> [].
 
-np([coord:yes, num:pl, gap:[], ref:Ref, sem:NP, vType:Type])-->
+np([coord:conj, num:pl, gap:[], ref:Ref, sem:NP, vType:Type])-->
+    np([coord:no, num:sg, gap:[], ref:Ref, sem:NP1, vType:Type]),
+    noCoord([type:conj, sem:C]),
+    np([coord:conj, num:_, gap:[], ref:Ref, sem:NP2, vType:Type]),
+    { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
+np([coord:conj, num:pl, gap:[], ref:Ref, sem:NP, vType:Type])-->
     np([coord:no, num:sg, gap:[], ref:Ref, sem:NP1, vType:Type]),
     coord([type:conj, sem:C]),
-    np([coord:_, num:_, gap:[], ref:Ref, sem:NP2, vType:Type]),
+    np([coord:Coord, num:_, gap:[], ref:Ref, sem:NP2, vType:Type]),
+    { member(Coord, [conj, no]) },
     { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
 
-np([coord:yes, num:sg, gap:[], ref:Ref, sem:NP, vType:Type])-->
+np([coord:disj, num:sg, gap:[], ref:Ref, sem:NP, vType:Type])-->
+    coordPrefix([type:disj]),
+    np([coord:no, num:sg, gap:[], ref:Ref, sem:NP1, vType:Type]),
+    noCoord([type:disj, sem:C]),
+    np([coord:disj, num:sg, gap:[], ref:Ref, sem:NP2, vType:Type]),
+    { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
+np([coord:disj, num:sg, gap:[], ref:Ref, sem:NP, vType:Type])-->
     coordPrefix([type:disj]),
     np([coord:no, num:sg, gap:[], ref:Ref, sem:NP1, vType:Type]),
     coord([type:disj, sem:C]),
-    np([coord:_, num:sg, gap:[], ref:Ref, sem:NP2, vType:Type]),
+    np([coord:Coord, num:sg, gap:[], ref:Ref, sem:NP2, vType:Type]),
+    { member(Coord, [disj, no]) },
     { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
 
 np([coord:yes, num:sg, gap:[], ref:Ref, sem:NP, vType:Type])-->
@@ -164,7 +177,8 @@ np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
     n([coord:_, num:Num, sem:N, vType:Type]),
     { combine(np:NP, [det:Det, n:N]) }.
 
-np([coord:no, num:_Num, gap:[], ref:no, sem:NP, vType:countable(Type)])-->
+np([coord:no, num:_Num, gap:[], ref:no, sem:NP, vType:VType])-->
+    { nonvar(VType), VType = countable(Type) },
     { combine(np:NP, [npGap:countable(Type)])}.
 
 %TODO: fix plural vs singular
@@ -434,6 +448,8 @@ coordPrefix([type:Type])-->
 coord([type:Type, sem:Sem])-->
     { lexEntry(coord, [syntax:Word, type:Type]) },
     Word,
+    { semLex(coord, [type:Type, sem:Sem]) }.
+noCoord([type:Type, sem:Sem])-->
     { semLex(coord, [type:Type, sem:Sem]) }.
 
 qnp([mood:M, sem:NP, vType:_VType])-->

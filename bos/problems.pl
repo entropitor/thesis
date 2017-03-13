@@ -45,10 +45,10 @@ problem(p2counts, [
         ]).
 
 problem(alldifferent, [
-            "Of Ira and Colin, one lives in the red house and the other lives in the blue house",
-            "Of the contestant who scored 41 points and the person who threw the white darts, one was from Worthington and the other was Ira",
-            "The contestant who threw the red darts was either Colin or the contestant who scored 48 points",
-            "Of the contestant who scored 41 points and the contestant who threw the orange darts, one was from Gillbertville and the other was from Worthington"
+            "Ira, colin and bill are all different contestants",
+            "Ira, colin, bill and the contestant who threw the orange darts are 4 different contestants",
+            "The five contestants are the contestant who threw the orange darts; Ira; and the three contestants from Mount union, yorktown and lohrville"
+            %% "The contestant who scored 41 points, the contestant who threw the orange darts and Ira are three different contestants"
         ]).
 
 problem(zebra, [
