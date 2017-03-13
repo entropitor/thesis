@@ -152,6 +152,13 @@ np([coord:yes, num:sg, gap:[], ref:Ref, sem:NP, vType:Type])-->
     np([coord:_, num:sg, gap:[], ref:Ref, sem:NP2, vType:Type]),
     { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
 
+np([coord:yes, num:sg, gap:[], ref:Ref, sem:NP, vType:Type])-->
+    coordPrefix([type:neg]),
+    np([coord:no, num:sg, gap:[], ref:Ref, sem:NP1, vType:Type]),
+    coord([type:neg, sem:C]),
+    np([coord:_, num:sg, gap:[], ref:Ref, sem:NP2, vType:Type]),
+    { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
+
 np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
     det([mood:decl, type:_, num:Num, sem:Det, vType:Type]),
     n([coord:_, num:Num, sem:N, vType:Type]),
@@ -165,6 +172,10 @@ np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:countable(Type)])-->
     number([sem:Number, vType:countable(Type)]),
     n([coord:_, num:Num, sem:N, vType:countable(Type)]),
     { combine(np:NP, [number:Number, n:N]) }.
+
+np([coord:no, num:_Num, gap:[], ref:no, sem:NP, vType:countable(Type)])-->
+    number([sem:Number, vType:countable(Type)]),
+    { combine(np:NP, [number:Number]) }.
 
 np([coord:yes, num:Num, gap:[], ref:no, sem:NP, vType:countable(Type)])-->
     np([coord:no, num:Num, gap:[], ref:no, sem:NP1, vType:countable(Type)]),

@@ -77,8 +77,10 @@ lexEntry(relpro, [syntax:[that]]).
 ========================================================================*/
 lexEntry(coord, [syntax:[and], type:conj]).
 lexEntry(coord, [syntax:[or], type:disj]).
+lexEntry(coord, [syntax:[nor], type:neg]).
 
 lexEntry(coordPrefix, [syntax:[either], type:disj]).
+lexEntry(coordPrefix, [syntax:[neither], type:neg]).
 
 /*========================================================================
     Auxiliary Verbs
