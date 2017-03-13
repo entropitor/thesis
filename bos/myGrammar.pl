@@ -146,6 +146,7 @@ np([coord:yes, num:pl, gap:[], ref:Ref, sem:NP, vType:Type])-->
     { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
 
 np([coord:yes, num:sg, gap:[], ref:Ref, sem:NP, vType:Type])-->
+    coordPrefix([type:disj]),
     np([coord:no, num:sg, gap:[], ref:Ref, sem:NP1, vType:Type]),
     coord([type:disj, sem:C]),
     np([coord:_, num:sg, gap:[], ref:Ref, sem:NP2, vType:Type]),
@@ -302,7 +303,7 @@ vp([coord:no, inf:I, num:Num, gap:G, sem:VP, vType:TypeSubj])-->
 
 vp([coord:no, inf:I, num:Num, gap:G, sem:VP, vType:TypeSubj])-->
     ivpp([inf:I, num:Num, pp:PP, sem:IVPP, vType:pred(TypeSubj, TypeObj)]),
-    PP,
+    optional(PP),
     np([coord:_, num:_, gap:G, ref:_, sem:NP, vType:TypeObj]),
     { combine(vp:VP, [tv:IVPP, np:NP]) }.
 
@@ -310,6 +311,11 @@ vp([coord:no, inf:I, num:Num, gap:[pp:PP], sem:VP, vType:TypeObj])-->
     np([coord:_, num:_, gap:_, ref:_, sem:NP, vType:TypeSubj]),
     ivpp([inf:I, num:Num, pp:PP, sem:IVPP, vType:pred(TypeSubj, TypeObj)]),
     { combine(vp:VP, [tv:IVPP, npSubj:NP]) }.
+
+optional(X)-->
+    X.
+optional(_)-->
+    [].
 
 /*========================================================================
     Prepositional Phrases
@@ -408,6 +414,11 @@ av([inf:Inf, num:Num, sem:Sem])-->
     { lexEntry(av, [syntax:Word, inf:Inf, num:Num, pol:Pol]) },
     Word,
     { semLex(av, [pol:Pol, sem:Sem]) }.
+
+coordPrefix([type:_]) --> [].
+coordPrefix([type:Type])-->
+    { lexEntry(coordPrefix, [syntax:Word, type:Type]) },
+    Word.
 
 coord([type:Type, sem:Sem])-->
     { lexEntry(coord, [syntax:Word, type:Type]) },

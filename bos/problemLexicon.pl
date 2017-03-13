@@ -65,6 +65,7 @@ concept(species, constructed:[[the, perens, pig], [the, byengo, bat], [the, nibn
 concept(population, constructed:[[210], [280], [315], [490], [525]]).
 concept(country, constructed:[[ghana], [honduras], [poland], [russia], [slovakia]]).
 concept(year, constructed:[[2006], [2007], [2008], [2009], [2010]]).
+concept(year, countable:[years]).
 
 property(species, [population, size], population).
 
