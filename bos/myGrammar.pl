@@ -261,15 +261,20 @@ vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
     vp([coord:_, inf:inf, num:_, gap:[], sem:V2, vType:Type]),
     { combine(vp:VP, [av:Mod, vp:V2]) }.
 
-%% vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
-%%     cop([type:np, inf:Inf, num:Num, sem:Cop]),
-%%     np([coord:_, num:_, gap:[], ref:_, sem:NP, vType:Type]),
-%%     { combine(vp:VP, [cop:Cop, np:NP]) }.
+vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
+    cop([type:np, inf:Inf, num:Num, sem:Cop]),
+    np([coord:_, num:_, gap:[], ref:_, sem:NP, vType:Type]),
+    { combine(vp:VP, [cop:Cop, np:NP]) }.
 
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
     cop([type:adj, inf:Inf, num:Num, sem:Cop]),
     adj([sem:Adj, vType:adj(Type)]),
     { combine(vp:VP, [cop:Cop, adj:Adj]) }.
+
+vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
+    cop([type:adj, inf:Inf, num:Num, sem:Cop]),
+    pp([type:n, sem:PP, vType:Type]),
+    { combine(vp:VP, [cop:Cop, adj:PP]) }.
 
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
     iv([inf:Inf, num:Num, sem:IV, vType:Type]),

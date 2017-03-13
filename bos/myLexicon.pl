@@ -53,8 +53,17 @@ lexEntry(det, [syntax:[the], mood:decl, num:sg, type:def]).
 ========================================================================*/
 lexEntry(cop, [pol:pos, syntax:[is], inf:fin, num:sg]).
 lexEntry(cop, [pol:neg, syntax:[is, not], inf:fin, num:sg]).
+
+lexEntry(cop, [pol:pos, syntax:[was], inf:fin, num:sg]).
+lexEntry(cop, [pol:neg, syntax:[was, not], inf:fin, num:sg]).
+lexEntry(cop, [pol:neg, syntax:[wasnt], inf:fin, num:sg]).
+
 lexEntry(cop, [pol:pos, syntax:[are], inf:fin, num:pl]).
 lexEntry(cop, [pol:neg, syntax:[are, not], inf:fin, num:pl]).
+
+lexEntry(cop, [pol:pos, syntax:[were], inf:fin, num:pl]).
+lexEntry(cop, [pol:neg, syntax:[were, not], inf:fin, num:pl]).
+lexEntry(cop, [pol:neg, syntax:[werent], inf:fin, num:pl]).
 
 /*========================================================================
     Relative Pronouns

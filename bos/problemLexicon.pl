@@ -86,5 +86,5 @@ concept(total, countable:[points]).
 relation(contestant, darts, [threw], [], [throw]).
 relation(contestant, score, [scored], [], [score]).
 
-actor(contestant, city, [blabla], [from], [from]).
+actor(contestant, city, [the, contestant], [from], [from]).
 
