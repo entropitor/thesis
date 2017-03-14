@@ -75,6 +75,7 @@ combine(vp:app(app(B, A), C), [vp:A, coord:B, vp:C]).
 combine(vp:app(A, B), [av:A, vp:B]).
 combine(vp:app(A, B), [cop:A, np:B]).
 combine(vp:app(A, B), [cop:A, adj:B]).
+combine(vp:lam(N, app(N, lam(X, drs([], [eq(alldifferent(_, X))])))), [cop:_, alldifferent]).
 combine(vp:A, [iv:A]).
 combine(vp:app(PP, A), [iv:A, adv:PP]).
 combine(vp:app(A, B), [tv:A, np:B]).

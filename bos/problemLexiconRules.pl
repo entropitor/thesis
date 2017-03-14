@@ -4,6 +4,8 @@
 :- use_module(problemLexicon, [concept/2, property/3, relation/5, actor/5]).
 :- use_module(types, [addType/2]).
 
+lexEntry(noun, [symbol:contestant, num:pl, syntax:[contestants], vType:_]).
+
 lexEntry(X, Y) :-
     defaultLexicon(X, Y).
 

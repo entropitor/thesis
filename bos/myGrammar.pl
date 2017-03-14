@@ -303,6 +303,13 @@ vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
     { combine(vp:VP, [cop:Cop, adj:PP]) }.
 
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
+    cop([type:np, inf:Inf, num:Num, sem:Cop]),
+    numberOrAll,
+    [different],
+    n([coord:_, num:Num, sem:_N, vType:Type]),
+    { combine(vp:VP, [cop:Cop, alldifferent]) }.
+
+vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
     iv([inf:Inf, num:Num, sem:IV, vType:Type]),
     { combine(vp:VP, [iv:IV]) }.
 
@@ -341,6 +348,13 @@ optional(X)-->
     X.
 optional(_)-->
     [].
+
+numberOrAll-->
+    [all].
+numberOrAll-->
+    number([sem:_, vType:_]).
+debug(X, X) :-
+    writeln(X).
 
 /*========================================================================
     Prepositional Phrases
