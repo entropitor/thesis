@@ -62,9 +62,10 @@ actor(person, cigarette, [smoker], [of], [smokes]).
     Puzzle: p1
 ========================================================================*/
 concept(species, constructed:[[the, perens, pig], [the, byengo, bat], [the, nibner, newt], [the, eldar, elk], [the, osbele, oryx]]).
-concept(population, constructed:[[210], [280], [315], [490], [525]]).
+%% concept(population, constructed:[[210], [280], [315], [490], [525]]).
 concept(country, constructed:[[ghana], [honduras], [poland], [russia], [slovakia]]).
-concept(year, constructed:[[2006], [2007], [2008], [2009], [2010]]).
+%% concept(year, constructed:[[2006], [2007], [2008], [2009], [2010]]).
+concept(year, countable:[years]).
 
 property(species, [population, size], population).
 
@@ -77,7 +78,7 @@ relation(species, population, [has, a, population, size], [of], [have, a, popula
 /*========================================================================
     Puzzle: p2
 ========================================================================*/
-concept(contestant, constructed:[[bill], [collin], [ira], [oscar], [pedro]]).
+concept(contestant, constructed:[[bill], [colin], [ira], [oscar], [pedro]]).
 concept(darts, constructed:[[the, black, darts], [the, orange, darts], [the, red, darts], [the, white, darts], [the, yellow, darts]]).
 concept(city, constructed:[[mount, union], [gillbertville], [lohrville], [worthington], [yorktown]]).
 concept(total, countable:[points]).
@@ -86,5 +87,5 @@ concept(total, countable:[points]).
 relation(contestant, darts, [threw], [], [throw]).
 relation(contestant, score, [scored], [], [score]).
 
-actor(contestant, city, [blabla], [from], [from]).
+actor(contestant, city, [the, contestant], [from], [from]).
 

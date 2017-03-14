@@ -41,6 +41,7 @@ combine(s:S, [then:S]).
 combine(s:S, [or:S]).
 combine(s:drs([], [not(S)]), [not:S]).
 combine(s:S, [question:S]).
+combine(s:app(NP1, lam(X1, app(NP2, lam(X2, merge(drs([], [not(drs([], [eq(X1, X2)]))]),drs([], [or(merge(app(VP1, lam(N, app(N, X1))), app(VP2, lam(N, app(N, X2)))), merge(app(VP1, lam(N, app(N, X2))), app(VP2, lam(N, app(N, X1)))))])))))), [np1:NP1, np2:NP2, vp1:VP1, vp2:VP2]).
 
 combine(sinv:app(app(A, C), B), [av:A, np:B, vp:C]).
 
@@ -50,6 +51,7 @@ combine(q:A, [sinv:A]).
 combine(np:app(app(B, A), C), [np:A, coord:B, np:C]).
 combine(np:app(A, B), [det:A, n:B]).
 combine(np:app(A, B), [number:A, n:B]).
+combine(np:app(A, lam(_, drs([], []))), [number:A]).
 combine(np:A, [pn:A]).
 combine(np:A, [qnp:A]).
 combine(np:app(app(B, A), C), [np: A, comp:B, np:C]).
@@ -73,6 +75,7 @@ combine(vp:app(app(B, A), C), [vp:A, coord:B, vp:C]).
 combine(vp:app(A, B), [av:A, vp:B]).
 combine(vp:app(A, B), [cop:A, np:B]).
 combine(vp:app(A, B), [cop:A, adj:B]).
+combine(vp:lam(N, app(N, lam(X, drs([], [eq(alldifferent(_, X))])))), [cop:_, alldifferent]).
 combine(vp:A, [iv:A]).
 combine(vp:app(PP, A), [iv:A, adv:PP]).
 combine(vp:app(A, B), [tv:A, np:B]).

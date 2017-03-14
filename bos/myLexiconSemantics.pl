@@ -118,7 +118,9 @@ semLex(coord, M) :-
     M = [type:conj,
          sem:lam(X, lam(Y, lam(P, merge(app(X, P), app(Y, P)))))];
     M = [type:disj,
-         sem:lam(X, lam(Y, lam(P, drs([], [or(app(X, P), app(Y, P))]))))].
+         sem:lam(X, lam(Y, lam(P, drs([], [or(app(X, P), app(Y, P))]))))];
+    M = [type:neg,
+        sem:lam(X, lam(Y, lam(P, merge(drs([], [not(app(X, P))]), drs([], [not(app(Y, P))])))))].
 
 semLex(qnp,M) :-
     M = [type:wh,

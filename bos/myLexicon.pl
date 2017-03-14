@@ -26,6 +26,7 @@
     Determiners
 ========================================================================*/
 
+lexEntry(det, [syntax:[the], mood:decl, num:sg, type:indef]).
 lexEntry(det, [syntax:[every], mood:decl, num:sg, type:uni]).
 lexEntry(det, [syntax:[a], mood:decl, num:sg, type:indef]).
 lexEntry(det, [syntax:[an], mood:decl, num:sg, type:indef]).
@@ -53,8 +54,17 @@ lexEntry(det, [syntax:[the], mood:decl, num:sg, type:def]).
 ========================================================================*/
 lexEntry(cop, [pol:pos, syntax:[is], inf:fin, num:sg]).
 lexEntry(cop, [pol:neg, syntax:[is, not], inf:fin, num:sg]).
+
+lexEntry(cop, [pol:pos, syntax:[was], inf:fin, num:sg]).
+lexEntry(cop, [pol:neg, syntax:[was, not], inf:fin, num:sg]).
+lexEntry(cop, [pol:neg, syntax:[wasnt], inf:fin, num:sg]).
+
 lexEntry(cop, [pol:pos, syntax:[are], inf:fin, num:pl]).
 lexEntry(cop, [pol:neg, syntax:[are, not], inf:fin, num:pl]).
+
+lexEntry(cop, [pol:pos, syntax:[were], inf:fin, num:pl]).
+lexEntry(cop, [pol:neg, syntax:[were, not], inf:fin, num:pl]).
+lexEntry(cop, [pol:neg, syntax:[werent], inf:fin, num:pl]).
 
 /*========================================================================
     Relative Pronouns
@@ -68,6 +78,10 @@ lexEntry(relpro, [syntax:[that]]).
 ========================================================================*/
 lexEntry(coord, [syntax:[and], type:conj]).
 lexEntry(coord, [syntax:[or], type:disj]).
+lexEntry(coord, [syntax:[nor], type:neg]).
+
+lexEntry(coordPrefix, [syntax:[either], type:disj]).
+lexEntry(coordPrefix, [syntax:[neither], type:neg]).
 
 /*========================================================================
     Auxiliary Verbs
