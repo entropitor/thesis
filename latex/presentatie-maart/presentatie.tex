@@ -8,8 +8,7 @@
 \usepackage{qtree}
 \usepackage[utf8]{inputenc}
 
-\usetheme{Szeged}
-\usecolortheme{dolphin}
+\usetheme{Frankfurt}
 \usecolortheme{beaver}
 \setbeamertemplate{note page}{\pagecolor{yellow!25}\insertnote}
 %\setbeamertemplate{note page}{\pagecolor{white}\insertnote}
@@ -40,31 +39,6 @@
 \setbeameroption{hide notes} % Only slides
 %\setbeameroption{show notes on second screen=right} % Both
 
-\newcommand{\sentence}[3]{
-  \alt<.>{
-    #1 \\
-    \textcolor{Blue}{#2} \\
-    \textcolor{ForestGreen}{#3} \\
-  }{
-    #1 \\
-    #2 \\
-    #3 \\
-  }
-}
-\newcommand{\badsentence}[4]{
-  \alt<.>{
-    #1 \\
-    \textcolor{Blue}{#2} \\
-    \textcolor{Red}{#3} \\
-    \textcolor{ForestGreen}{#4} \\
-  }{
-    #1 \\
-    #2 \\
-    #3 \\
-    #4 \\
-  }
-}
-
 \newcommand{\attention}[1]{\textcolor{ForestGreen}{#1}}
 
 %\graphicspath{ {../images/} }
@@ -79,7 +53,7 @@
       \item Aantal voorbeelden per concept (Noor, Brit, kat, hond, ...)
       \item 1 bijectie tussen elk paar concepten
       \item Aantal hints/clues: constraints op die bijecties
-			\hitem Doel: achterhaal de bijecties
+			\hitem Doel: Zoek de waarde van de bijecties
 			
 			\seperation
 			
@@ -110,8 +84,9 @@
 	\begin{frame}{De basis}
 		\begin{itemize}
 			\hitem Boeken van Blackburn en Bos \cite{BlackburnBosBook1, BlackburnBosBook2} 
-      \item Een framework om alle betekenissen te vinden
-      \item Uit de computationele taalkunde
+      \item Een framework voor computationele semantiek
+      \item Vinden van betekenissen in taal
+      \item Taalkundig: alle betekenissen
 			
 			\seperation
       \item 4 onderdelen:
@@ -165,26 +140,6 @@
       \Tree[.s if [.s [.np [.det a ] [.n man ]] [.vp [.tv loves ] [.np [.pn mary ]]]] [.s [.np [.det every ] [.n woman ]] [.vp [.iv sleeps ]]]]
 	\end{frame}
 
-	\begin{frame}{Lexicale semantiek}
-		\begin{itemize}
-      \hitem PN(Symbol): $\lambda V.V[Symbol]$
-      \hitem Mary: $\lambda V.V[Mary]$
-
-      \seperation
-      \item iv(Symbol): $\lambda N.N[\lambda X.Symbol(X)]$
-      \item sleeps: $\lambda N.N[\lambda X.sleeps(X)]$
-
-      \seperation
-      \item tv(Symbol): $\lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.Symbol(X2,X1)]]$
-      \item loves: $\lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.loves(X2,X1)]]$
-
-      \seperation
-      \item universal det: $\lambda U.\lambda V.\forall x. U[x] \Rightarrow V[x]$
-      \hitem noun(Symbol): $\lambda X.Symbol(X)$
-      \item man: $\lambda X.man(X)$
-		\end{itemize}
-	\end{frame}
-
 	\begin{frame}{Grammaticale semantiek}
 		\begin{itemize}
       \hitem \texttt{np --> pn.}
@@ -200,6 +155,48 @@
       \seperation
       \item \texttt{np --> det, n.}
       \item $np^{sem} = det^{sem}[n^{sem}]$
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Lexicale semantiek}
+		\begin{itemize}
+      \hitem Proper Noun (PN)
+      \begin{itemize}
+        \item bv. John, Mary, ...
+        \hitem $PN^{signature} = NP^{signature} = (e \rightarrow t) \rightarrow t$
+        \hitem $\lambda V.V[Mary]$
+      \end{itemize}
+
+      \hitem Intransitive Verb (IV)
+      \begin{itemize}
+        \item bv. sleeps, ...
+        \hitem $IV^{signature} = VP^{signature} = NP^{signature} \rightarrow S^{signature} = ((e \rightarrow t) \rightarrow t) \rightarrow t$
+        \hitem $\lambda N.N[\lambda X.sleeps(X)]$
+      \end{itemize}
+
+      \hitem Transitive Verb (TV)
+      \begin{itemize}
+        \item bv. loves, ...
+          \hitem $TV^{signature} = NP^{signature} \rightarrow VP^{signature} = NP^{signature} \rightarrow NP^{signature} \rightarrow S^{signature} = ((e \rightarrow t) \rightarrow t) \rightarrow ((e \rightarrow t) \rightarrow t) \rightarrow t$
+        \hitem $\lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.loves(X2,X1)]]$
+      \end{itemize}
+		\end{itemize}
+	\end{frame}
+	\begin{frame}{Lexicale semantiek}
+		\begin{itemize}
+      \hitem Noun (N)
+      \begin{itemize}
+        \item bv. man, woman, ...
+        \hitem $N^{signature} = (e \rightarrow t)$
+        \hitem $\lambda X.man(X)$
+      \end{itemize}
+      \hitem Determiner (DET)
+      \begin{itemize}
+        \item bv. a, every, ...
+        \hitem $DET^{signature} = N^{signature} \rightarrow NP^{signature} = (e \rightarrow t) \rightarrow ((e \rightarrow t) \rightarrow t)$
+        \hitem universal determiner: $\lambda U.\lambda V.\forall x. U[x] \Rightarrow V[x]$
+        \hitem existential determiner: $\lambda U.\lambda V.\exists x. U[x] \land V[x]$
+      \end{itemize}
 		\end{itemize}
 	\end{frame}
 
@@ -277,13 +274,25 @@
         \hitem Lexicale semantiek: eerste-orde logica, discourse representation structures, event-based logic, ...
         \hitem Grammaticale semantiek: licht gekoppeld aan grammatica en lexicale semantiek
       \end{itemize}
-      \hitem Bijdrage tot nog toe:
-      \begin{itemize}
-        \item Uitbreiden grammatica
-        \item Uitbreiden semantiek (lexicon + grammatica)
-        \item Fixen bugs semantiek (koppelwerkwoorden, negatie)
-        \item Toevoegen types
-      \end{itemize}
+    \end{itemize}
+	\end{frame}
+
+	\begin{frame}{Bijdrage tot nog toe}
+    \begin{itemize}
+      \hitem Toevoegen van algemene regels
+        \begin{itemize}
+          \item Uitbreiden grammatica (aritmetiek, extra constructies koppelwerkwoorden, ...)
+          \item Uitbreiden semantiek (lexicon + grammatica)
+          \item Fixen bugs semantiek (koppelwerkwoorden, negatie)
+        \end{itemize}
+      \hitem Ondersteuning van specifieke zinsconstructies
+        \begin{itemize}
+          \item ``Of A and B, one ... and the other ...''
+          \item ``A was either B or C''
+          \item ``Neither A nor B ...''
+          \item ``A, B, C and D are all different teams''
+        \end{itemize}
+      \hitem Toevoegen types
     \end{itemize}
 	\end{frame}
 
