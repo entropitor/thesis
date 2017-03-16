@@ -1,10 +1,12 @@
 \documentclass[notes, dvipsnames]{beamer}
 
 \usepackage{default}
+\usepackage[dutch]{babel}
 \usepackage{pgfpages}
 \usepackage{pgf-pie}
 \usepackage{ifthen}
 \usepackage{qtree}
+\usepackage[utf8]{inputenc}
 
 \usetheme{Szeged}
 \usecolortheme{dolphin}
@@ -98,7 +100,8 @@
       \item Automatisch
 			
 			\seperation
-      \item Kunnen we vocabularium afleiden?
+      \item Is zo'n grammatica toepasbaar op nieuwe logigrammen?
+      \item Kunnen we het vocabularium afleiden?
       \item Kunnen we types introduceren? Wat zijn we hier mee?
 		\end{itemize}
 	\end{frame}
@@ -113,16 +116,16 @@
 			\seperation
       \item 4 onderdelen:
         \begin{itemize}
-          \item Grammatica
           \item Lexicon (vocabularium)
-          \item Semantiek grammatica
-          \item Semantiek lexicon
+          \item Grammatica
+          \item Lexicale semantiek
+          \item Grammaticale semantiek
         \end{itemize}
       \item Lambda-calcalus
 		\end{itemize}
 	\end{frame}
 
-  \subsection{4 onderdelen}
+  \subsection{}
 	\begin{frame}{Lexicon}
 		\begin{itemize}
       \hitem John sleeps
@@ -169,11 +172,16 @@
 
       \seperation
       \item iv(Symbol): $\lambda N.N[\lambda X.Symbol(X)]$
-      \hitem sleeps: $\lambda N.N[\lambda X.sleeps(X)]$
+      \item sleeps: $\lambda N.N[\lambda X.sleeps(X)]$
 
       \seperation
       \item tv(Symbol): $\lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.Symbol(X2,X1)]]$
-      \hitem loves: $\lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.loves(X2,X1)]]$
+      \item loves: $\lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.loves(X2,X1)]]$
+
+      \seperation
+      \item universal det: $\lambda U.\lambda V.\forall x. U[x] \Rightarrow V[x]$
+      \hitem noun(Symbol): $\lambda X.Symbol(X)$
+      \item man: $\lambda X.man(X)$
 		\end{itemize}
 	\end{frame}
 
@@ -195,20 +203,20 @@
 		\end{itemize}
 	\end{frame}
 
-  \subsection{Een voorbeeld}
-	\begin{frame}{Semantiek: een voorbeeld}
+  \subsection{}
+	\begin{frame}{Een voorbeeld}
     \begin{itemize}
       \hitem John sleeps
       \hitem \Tree[.s:vp^{sem}[np^{sem}] [.np:pn^{sem} [.pn:john^{sem} john ]] [.vp:iv^{sem} [.iv:sleeps^{sem} sleeps ]]]
     \end{itemize}
 	\end{frame}
-	\begin{frame}{Semantiek: een voorbeeld}
+	\begin{frame}{Een voorbeeld}
       \Tree[.s:vp^{sem}[np^{sem}] [.np:pn^{sem} [.pn:\attention{$\lambda P.P[John]$} john ]] [.vp:iv^{sem} [.iv:\attention{$\lambda N1.N1[\lambda X.sleeps(X)]$} sleeps ]]]
 	\end{frame}
-	\begin{frame}{Semantiek: een voorbeeld}
+	\begin{frame}{Een voorbeeld}
       \Tree[.s:vp^{sem}[np^{sem}] [.np:\attention{$\lambda P.P[John]$} [.pn:$\lambda P.P[John]$ john ]] [.vp:\attention{$\lambda N1.N1[\lambda X.sleeps(X)]$} [.iv:$\lambda N1.N1[\lambda X.sleeps(X)]$ sleeps ]]]
 	\end{frame}
-	\begin{frame}{Semantiek: een voorbeeld}
+	\begin{frame}{Een voorbeeld}
     \begin{itemize}
       \hitem \Tree[.s:\attention{$\{\lambda N1.N1[\lambda X.sleeps(X)]\}[\lambda P.P[John]]$} [.np:$\lambda P.P[John]$ [.pn:$\lambda P.P[John]$ john ]] [.vp:$\lambda N1.N1[\lambda X.sleeps(X)]$ [.iv:$\lambda N1.N1[\lambda X.sleeps(X)]$ sleeps ]]]
       \hitem $\{\lambda P.P[John]\}[\lambda X.sleeps(X)]$
@@ -217,32 +225,33 @@
     \end{itemize}
 	\end{frame}
 
-	\begin{frame}{Semantiek: een moeilijker voorbeeld}
+  \subsection{}
+	\begin{frame}{Een moeilijker voorbeeld}
     \begin{itemize}
       \hitem John loves Mary
       \hitem \Tree[.s:vp^{sem}[np^{sem}] [.np:pn^{sem} [.pn:john^{sem} john ]] [.vp:tv^{sem}[np^{sem}] [.tv:loves^{sem} loves ] [.np:pn^{sem} [.pn:mary^{sem} mary ]]]]
     \end{itemize}
 	\end{frame}
-	\begin{frame}{Semantiek: een moeilijker voorbeeld}
+	\begin{frame}{Een moeilijker voorbeeld}
     \begin{itemize}
       \hitem \Tree[.s:vp^{sem}[np^{sem}] [.np:pn^{sem} [.pn:\attention{$\lambda P.P[John]$} john ]] [.vp:tv^{sem}[np^{sem}] [.tv:\attention{$loves^{sem}$} loves ] [.np:pn^{sem} [.pn:\attention{$\lambda P.P[Mary]}$ mary ]]]]
       \item \attention{$loves^{sem} = \lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.loves(X2,X1)]]$}
     \end{itemize}
 	\end{frame}
-	\begin{frame}{Semantiek: een moeilijker voorbeeld}
+	\begin{frame}{Een moeilijker voorbeeld}
     \begin{itemize}
       \hitem \Tree[.s:vp^{sem}[np^{sem}] [.np:pn^{sem} [.pn:$\lambda P.P[John]$ john ]] [.vp:tv^{sem}[np^{sem}] [.tv:$loves^{sem}$ loves ] [.np:\attention{$\lambda P.P[Mary]$} [.pn:$\lambda P.P[Mary]$ mary ]]]]
       \item $loves^{sem} = \lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.loves(X2,X1)]]$
     \end{itemize}
 	\end{frame}
-	\begin{frame}{Semantiek: een moeilijker voorbeeld}
+	\begin{frame}{Een moeilijker voorbeeld}
     \begin{itemize}
       \hitem \Tree[.s:vp^{sem}[np^{sem}] [.np:\attention{$\lambda P.P[John]$} [.pn:$\lambda P.P[John]$ john ]] [.vp:\attention{$vp^{sem}$} [.tv:$loves^{sem}$ loves ] [.np:$\lambda P.P[Mary]$ [.pn:$\lambda P.P[Mary]$ mary ]]]]
       \item $loves^{sem} = \lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.loves(X2,X1)]]$
       \item \attention{$vp^{sem} = tv^{sem}[np^{sem}] = \{\lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.loves(X2,X1)]]\}[\lambda P.P[Mary]]$}
     \end{itemize}
 	\end{frame}
-	\begin{frame}{Semantiek: een moeilijker voorbeeld}
+	\begin{frame}{Een moeilijker voorbeeld}
     \begin{itemize}
       \hitem $vp^{sem} = \{\lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.loves(X2,X1)]]\}[\lambda P.P[Mary]]$
       \hitem $vp^{sem} = \lambda N2.N2[\lambda X2.\{\lambda P.P[Mary]\}[\lambda X1.loves(X2,X1)]]$
@@ -250,7 +259,7 @@
       \hitem $vp^{sem} = \lambda N2.N2[\lambda X2.loves(X2,Mary)]$
     \end{itemize}
 	\end{frame}
-	\begin{frame}{Semantiek: een moeilijker voorbeeld}
+	\begin{frame}{Een moeilijker voorbeeld}
     \begin{itemize}
       \hitem \Tree[.s:\attention{$s^{sem}$} [.np:$\lambda P.P[John]$ [.pn:$\lambda P.P[John]$ john ]] [.vp:vp^{sem} [.tv:$loves^{sem}$ loves ] [.np:$\lambda P.P[Mary]$ [.pn:$\lambda P.P[Mary]$ mary ]]]]
       \item $vp^{sem} = \lambda N2.N2[\lambda X2.loves(X2,Mary)]$
@@ -258,25 +267,59 @@
     \end{itemize}
 	\end{frame}
 
+  \subsection{}
+	\begin{frame}{Bespreking}
+    \begin{itemize}
+      \hitem 4 onderdelen staan los van elkaar
+      \begin{itemize}
+        \hitem Lexicon/Vocabularium: per probleem, taalkundige categorieën
+        \hitem Grammatica: contextvrij, categorial combinatorial grammar (Baral et al. \cite{Baral2008}), ...
+        \hitem Lexicale semantiek: eerste-orde logica, discourse representation structures, event-based logic, ...
+        \hitem Grammaticale semantiek: licht gekoppeld aan grammatica en lexicale semantiek
+      \end{itemize}
+      \hitem Bijdrage tot nog toe:
+      \begin{itemize}
+        \item Uitbreiden grammatica
+        \item Uitbreiden semantiek (lexicon + grammatica)
+        \item Fixen bugs semantiek (koppelwerkwoorden, negatie)
+        \item Toevoegen types
+      \end{itemize}
+    \end{itemize}
+	\end{frame}
+
+	\begin{frame}{Types}
+    \begin{itemize}
+      \hitem Via taalkundige ``features''
+      \item Bv. $NP[num]$ meervoud of enkelvoud
+      \hitem $NP[type]$: één van de concepten
+      \item $TV[type]$: bijectie tussen twee concepten
+      \hitem Type uniek per woord
+      \begin{itemize}
+        \item Automatische opdeling van entiteiten in concepten
+      \end{itemize}
+
+      \seperation
+      \item Ira scored 21 points higher than the contestant from Worthington
+      \hitem Ira scored 21 points higher than [the total that] the contestant from Worthington [scored]
+      \begin{itemize}
+          \item Injecteer functie om type-mismatch op te lossen
+      \end{itemize}
+    \end{itemize}
+	\end{frame}
+
   \section{Planning}
   \begin{frame}{Planning}
 			\begin{itemize}
-        \hitem Blok- en examenperiode: niets
-        \hitem Februari
+        \hitem Paasvakantie
           \begin{itemize}
-            \item Vocabularium formaliseren
-            \item Vocabularium gebruiken bij parsen theorie
-            \item Natuurlijke taal interface voor vocabularium
-          \end{itemize}
-        \hitem Maart
-          \begin{itemize}
-            \item Expressiviteit formele taal verhogen
-            \item Bv. Definities, aritmetiek, aggregaten, ...
+            \item Beginnen schrijven thesis
+            \item Combinatie van meerdere zinnen naar een IDP theory
           \end{itemize}
         \hitem April
           \begin{itemize}
             \item Schrijven thesis
-            \item Taal uittesten op grote probleem (expressiviteit, leesbaarheid, ...)
+            \item Generaliseren van de grammatica voor kleine verschillen in hints
+            \item Bekijken vorm vocabularium
           \end{itemize}
         \hitem Mei
           \begin{itemize}
