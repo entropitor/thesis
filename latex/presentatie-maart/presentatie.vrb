@@ -1,0 +1,17 @@
+\frametitle{Een voorbeeld: Lexicon}
+\begin{itemize}
+\hitem John loves Mary
+      \item A man loves Mary
+      \item If a man loves Mary, every woman sleeps
+      \hitem
+        \begin{quote}
+          \texttt{lexicalEntry(det, 'a').} \\
+          \texttt{lexicalEntry(det, 'every').} \\
+          \texttt{lexicalEntry(n, 'man').} \\
+          \texttt{lexicalEntry(n, 'woman').} \\
+          \texttt{lexicalEntry(pn, 'John').} \\
+          \texttt{lexicalEntry(pn, 'Mary').} \\
+          \texttt{lexicalEntry(iv, 'sleeps').} \\
+          \texttt{lexicalEntry(tv, 'loves').} \\
+        \end{quote}
+\end{itemize}

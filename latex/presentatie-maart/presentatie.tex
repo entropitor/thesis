@@ -1,0 +1,294 @@
+\documentclass[notes, dvipsnames]{beamer}
+
+\usepackage{default}
+\usepackage{pgfpages}
+\usepackage{pgf-pie}
+\usepackage{ifthen}
+\usepackage{qtree}
+
+\usetheme{Szeged}
+\usecolortheme{dolphin}
+\usecolortheme{beaver}
+\setbeamertemplate{note page}{\pagecolor{yellow!25}\insertnote}
+%\setbeamertemplate{note page}{\pagecolor{white}\insertnote}
+
+\title{Automatische vertaling van logigrammen naar logica}
+\subtitle{Tussentijdse presentatie}
+
+\author{Jens Claes}
+\date{27 maart 2017}
+
+\newcommand{\seperation}{
+	\vspace{1em}
+	\ppause
+}
+\newcommand{\sseperation}{
+	\vspace{1em}
+}
+\newcommand{\hitem}{
+	\ppause
+	\item
+}
+\newcommand{\ppause}{\onslide<+>}
+\newcommand{\nnote}[1]{\note<.>{#1}}
+\setbeamercovered{%
+	still covered={\opaqueness<1->{0}},
+	again covered={\opaqueness<1->{60}}
+}
+\setbeameroption{hide notes} % Only slides
+%\setbeameroption{show notes on second screen=right} % Both
+
+\newcommand{\sentence}[3]{
+  \alt<.>{
+    #1 \\
+    \textcolor{Blue}{#2} \\
+    \textcolor{ForestGreen}{#3} \\
+  }{
+    #1 \\
+    #2 \\
+    #3 \\
+  }
+}
+\newcommand{\badsentence}[4]{
+  \alt<.>{
+    #1 \\
+    \textcolor{Blue}{#2} \\
+    \textcolor{Red}{#3} \\
+    \textcolor{ForestGreen}{#4} \\
+  }{
+    #1 \\
+    #2 \\
+    #3 \\
+    #4 \\
+  }
+}
+
+\newcommand{\attention}[1]{\textcolor{ForestGreen}{#1}}
+
+%\graphicspath{ {../images/} }
+
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+\begin{document}
+	\frame{\titlepage}
+	\section{Probleem}
+	\begin{frame}{Logigrammen}
+		\begin{itemize}
+      \hitem Aantal concepten (nationaliteiten, dieren, kleuren, ...)
+      \item Aantal voorbeelden per concept (Noor, Brit, kat, hond, ...)
+      \item 1 bijectie tussen elk paar concepten
+      \item Aantal hints/clues: constraints op die bijecties
+			\hitem Doel: achterhaal de bijecties
+			
+			\seperation
+			
+			\item Hints in natuurlijke taal
+      \item Redelijke uniforme zinstructuur
+			
+			\seperation
+
+      \item Geschikt om automatisch om te zetten naar logica
+		\end{itemize}
+	\end{frame}
+	
+	\section{Doel}
+	\begin{frame}{Doel Thesis}
+		\begin{itemize}
+			\hitem Opstellen grammatica die de (meeste) hints omvat
+			\item Grammaticale zinnen mappen op een equivalent in logica
+      \item Automatisch
+			
+			\seperation
+      \item Kunnen we vocabularium afleiden?
+      \item Kunnen we types introduceren? Wat zijn we hier mee?
+		\end{itemize}
+	\end{frame}
+
+  \section{Resultaten}
+	\begin{frame}{De basis}
+		\begin{itemize}
+			\hitem Boeken van Blackburn en Bos \cite{BlackburnBosBook1, BlackburnBosBook2} 
+      \item Een framework om alle betekenissen te vinden
+      \item Uit de computationele taalkunde
+			
+			\seperation
+      \item 4 onderdelen:
+        \begin{itemize}
+          \item Grammatica
+          \item Lexicon (vocabularium)
+          \item Semantiek grammatica
+          \item Semantiek lexicon
+        \end{itemize}
+      \item Lambda-calcalus
+		\end{itemize}
+	\end{frame}
+
+  \subsection{4 onderdelen}
+	\begin{frame}{Lexicon}
+		\begin{itemize}
+      \hitem John sleeps
+			\item John loves Mary
+      \item A man loves Mary
+      \item If a man loves Mary, every woman sleeps
+      \hitem
+        \begin{quote}
+          \texttt{lexicalEntry(det, 'a').} \\
+          \texttt{lexicalEntry(det, 'every').} \\
+          \texttt{lexicalEntry(n, 'man').} \\
+          \texttt{lexicalEntry(n, 'woman').} \\
+          \texttt{lexicalEntry(pn, 'John').} \\
+          \texttt{lexicalEntry(pn, 'Mary').} \\
+          \texttt{lexicalEntry(iv, 'sleeps').} \\
+          \texttt{lexicalEntry(tv, 'loves').} \\
+        \end{quote}
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Grammatica}
+		\begin{itemize}
+      \hitem 
+        \begin{quote}
+          \texttt{s --> [if], s, s.} \\
+          \texttt{s --> np, vp.} \\
+          \texttt{np --> pn.} \\
+          \texttt{np --> det, n.} \\
+          \texttt{vp --> iv.} \\
+          \texttt{vp --> tv, np.} \\
+        \end{quote}
+      \hitem \Tree[.s [.np [.pn john ]] [.vp [.tv loves ] [.np [.pn mary ]]]]
+      \ppause \Tree[.s [.np [.det a ] [.n man ]] [.vp [.tv loves ] [.np [.pn mary ]]]]
+		\end{itemize}
+	\end{frame}
+	\begin{frame}{Grammatica}
+      \Tree[.s if [.s [.np [.det a ] [.n man ]] [.vp [.tv loves ] [.np [.pn mary ]]]] [.s [.np [.det every ] [.n woman ]] [.vp [.iv sleeps ]]]]
+	\end{frame}
+
+	\begin{frame}{Lexicale semantiek}
+		\begin{itemize}
+      \hitem PN(Symbol): $\lambda V.V[Symbol]$
+      \hitem Mary: $\lambda V.V[Mary]$
+
+      \seperation
+      \item iv(Symbol): $\lambda N.N[\lambda X.Symbol(X)]$
+      \hitem sleeps: $\lambda N.N[\lambda X.sleeps(X)]$
+
+      \seperation
+      \item tv(Symbol): $\lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.Symbol(X2,X1)]]$
+      \hitem loves: $\lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.loves(X2,X1)]]$
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Grammaticale semantiek}
+		\begin{itemize}
+      \hitem \texttt{np --> pn.}
+      \item $np^{sem} = pn^{sem}$
+
+      \hitem \texttt{vp --> iv.}
+      \item $vp^{sem} = iv^{sem}$
+
+      \seperation
+      \item \texttt{s --> np, vp.}
+      \item $s^{sem} = vp^{sem}[np^{sem}]$
+
+      \seperation
+      \item \texttt{np --> det, n.}
+      \item $np^{sem} = det^{sem}[n^{sem}]$
+		\end{itemize}
+	\end{frame}
+
+  \subsection{Een voorbeeld}
+	\begin{frame}{Semantiek: een voorbeeld}
+    \begin{itemize}
+      \hitem John sleeps
+      \hitem \Tree[.s:vp^{sem}[np^{sem}] [.np:pn^{sem} [.pn:john^{sem} john ]] [.vp:iv^{sem} [.iv:sleeps^{sem} sleeps ]]]
+    \end{itemize}
+	\end{frame}
+	\begin{frame}{Semantiek: een voorbeeld}
+      \Tree[.s:vp^{sem}[np^{sem}] [.np:pn^{sem} [.pn:\attention{$\lambda P.P[John]$} john ]] [.vp:iv^{sem} [.iv:\attention{$\lambda N1.N1[\lambda X.sleeps(X)]$} sleeps ]]]
+	\end{frame}
+	\begin{frame}{Semantiek: een voorbeeld}
+      \Tree[.s:vp^{sem}[np^{sem}] [.np:\attention{$\lambda P.P[John]$} [.pn:$\lambda P.P[John]$ john ]] [.vp:\attention{$\lambda N1.N1[\lambda X.sleeps(X)]$} [.iv:$\lambda N1.N1[\lambda X.sleeps(X)]$ sleeps ]]]
+	\end{frame}
+	\begin{frame}{Semantiek: een voorbeeld}
+    \begin{itemize}
+      \hitem \Tree[.s:\attention{$\{\lambda N1.N1[\lambda X.sleeps(X)]\}[\lambda P.P[John]]$} [.np:$\lambda P.P[John]$ [.pn:$\lambda P.P[John]$ john ]] [.vp:$\lambda N1.N1[\lambda X.sleeps(X)]$ [.iv:$\lambda N1.N1[\lambda X.sleeps(X)]$ sleeps ]]]
+      \hitem $\{\lambda P.P[John]\}[\lambda X.sleeps(X)]$
+      \hitem $\{\lambda X.sleeps(X)\}[John]$
+      \hitem $sleeps(John)$
+    \end{itemize}
+	\end{frame}
+
+	\begin{frame}{Semantiek: een moeilijker voorbeeld}
+    \begin{itemize}
+      \hitem John loves Mary
+      \hitem \Tree[.s:vp^{sem}[np^{sem}] [.np:pn^{sem} [.pn:john^{sem} john ]] [.vp:tv^{sem}[np^{sem}] [.tv:loves^{sem} loves ] [.np:pn^{sem} [.pn:mary^{sem} mary ]]]]
+    \end{itemize}
+	\end{frame}
+	\begin{frame}{Semantiek: een moeilijker voorbeeld}
+    \begin{itemize}
+      \hitem \Tree[.s:vp^{sem}[np^{sem}] [.np:pn^{sem} [.pn:\attention{$\lambda P.P[John]$} john ]] [.vp:tv^{sem}[np^{sem}] [.tv:\attention{$loves^{sem}$} loves ] [.np:pn^{sem} [.pn:\attention{$\lambda P.P[Mary]}$ mary ]]]]
+      \item \attention{$loves^{sem} = \lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.loves(X2,X1)]]$}
+    \end{itemize}
+	\end{frame}
+	\begin{frame}{Semantiek: een moeilijker voorbeeld}
+    \begin{itemize}
+      \hitem \Tree[.s:vp^{sem}[np^{sem}] [.np:pn^{sem} [.pn:$\lambda P.P[John]$ john ]] [.vp:tv^{sem}[np^{sem}] [.tv:$loves^{sem}$ loves ] [.np:\attention{$\lambda P.P[Mary]$} [.pn:$\lambda P.P[Mary]$ mary ]]]]
+      \item $loves^{sem} = \lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.loves(X2,X1)]]$
+    \end{itemize}
+	\end{frame}
+	\begin{frame}{Semantiek: een moeilijker voorbeeld}
+    \begin{itemize}
+      \hitem \Tree[.s:vp^{sem}[np^{sem}] [.np:\attention{$\lambda P.P[John]$} [.pn:$\lambda P.P[John]$ john ]] [.vp:\attention{$vp^{sem}$} [.tv:$loves^{sem}$ loves ] [.np:$\lambda P.P[Mary]$ [.pn:$\lambda P.P[Mary]$ mary ]]]]
+      \item $loves^{sem} = \lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.loves(X2,X1)]]$
+      \item \attention{$vp^{sem} = tv^{sem}[np^{sem}] = \{\lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.loves(X2,X1)]]\}[\lambda P.P[Mary]]$}
+    \end{itemize}
+	\end{frame}
+	\begin{frame}{Semantiek: een moeilijker voorbeeld}
+    \begin{itemize}
+      \hitem $vp^{sem} = \{\lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.loves(X2,X1)]]\}[\lambda P.P[Mary]]$
+      \hitem $vp^{sem} = \lambda N2.N2[\lambda X2.\{\lambda P.P[Mary]\}[\lambda X1.loves(X2,X1)]]$
+      \hitem $vp^{sem} = \lambda N2.N2[\lambda X2.\{\lambda X1.loves(X2,X1)\}[Mary]]$
+      \hitem $vp^{sem} = \lambda N2.N2[\lambda X2.loves(X2,Mary)]$
+    \end{itemize}
+	\end{frame}
+	\begin{frame}{Semantiek: een moeilijker voorbeeld}
+    \begin{itemize}
+      \hitem \Tree[.s:\attention{$s^{sem}$} [.np:$\lambda P.P[John]$ [.pn:$\lambda P.P[John]$ john ]] [.vp:vp^{sem} [.tv:$loves^{sem}$ loves ] [.np:$\lambda P.P[Mary]$ [.pn:$\lambda P.P[Mary]$ mary ]]]]
+      \item $vp^{sem} = \lambda N2.N2[\lambda X2.loves(X2,Mary)]$
+      \item \attention{$s^{sem} = vp^{sem}[np^{sem}] = loves(John, Mary)$}
+    \end{itemize}
+	\end{frame}
+
+  \section{Planning}
+  \begin{frame}{Planning}
+			\begin{itemize}
+        \hitem Blok- en examenperiode: niets
+        \hitem Februari
+          \begin{itemize}
+            \item Vocabularium formaliseren
+            \item Vocabularium gebruiken bij parsen theorie
+            \item Natuurlijke taal interface voor vocabularium
+          \end{itemize}
+        \hitem Maart
+          \begin{itemize}
+            \item Expressiviteit formele taal verhogen
+            \item Bv. Definities, aritmetiek, aggregaten, ...
+          \end{itemize}
+        \hitem April
+          \begin{itemize}
+            \item Schrijven thesis
+            \item Taal uittesten op grote probleem (expressiviteit, leesbaarheid, ...)
+          \end{itemize}
+        \hitem Mei
+          \begin{itemize}
+            \item Schrijven thesis
+          \end{itemize}
+			\end{itemize}
+  \end{frame}
+			
+	\section{Referenties}
+	\begin{frame}[allowframebreaks]{Referenties}
+		\bibliographystyle{plain}
+		\bibliography{presentatie}
+	\end{frame}
+	
+\end{document}

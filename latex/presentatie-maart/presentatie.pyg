@@ -1,0 +1,6 @@
+  lexicalEntry(n, 'man').
+  lexicalEntry(n, 'woman').
+  lexicalEntry(pn, 'John').
+  lexicalEntry(pn, 'Mary').
+  lexicalEntry(iv, 'sleeps').
+  lexicalEntry(tv, 'loves').
