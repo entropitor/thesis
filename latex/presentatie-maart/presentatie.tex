@@ -296,6 +296,15 @@
     \end{itemize}
 	\end{frame}
 
+	\begin{frame}{Of A and B, one ... and the other ...}
+    \begin{itemize}
+      \hitem \texttt{s --> [of], np, [and], np, [one], vp, [and, the, other], vp.}
+      \hitem $s^{sem} = np1^{sem}\Bigg[\lambda X1. np2^{sem}\bigg[\lambda X2. \\
+      (X1 \neq X2) \land \Big\{\big\{vp1^{sem}[\lambda N.N[X1]] \land vp2^{sem}[\lambda N.N[X2]]\big\} \lor \big\{vp2^{sem}[\lambda N.N[X1]] \land vp1^{sem}[\lambda N.N[X2]]\big\} \Big\}\bigg]\Bigg]$
+% combine(s:app(NP1, lam(X1, app(NP2, lam(X2, drs([], [or(merge(app(VP1, lam(N, app(N, X1))), app(VP2, lam(N, app(N, X2)))), merge(app(VP1, lam(N, app(N, X2))), app(VP2, lam(N, app(N, X1)))))]))))), [np1:NP1, np2:NP2, vp1:VP1, vp2:VP2]).
+    \end{itemize}
+	\end{frame}
+
 	\begin{frame}{Types}
     \begin{itemize}
       \hitem Via taalkundige ``features''
