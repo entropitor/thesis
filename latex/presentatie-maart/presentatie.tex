@@ -1,0 +1,355 @@
+\documentclass[notes, dvipsnames]{beamer}
+
+\usepackage{default}
+\usepackage[dutch]{babel}
+\usepackage{pgfpages}
+\usepackage{pgf-pie}
+\usepackage{ifthen}
+\usepackage{qtree}
+\usepackage[utf8]{inputenc}
+
+\usetheme{Frankfurt}
+\usecolortheme{beaver}
+\setbeamertemplate{note page}{\pagecolor{yellow!25}\insertnote}
+%\setbeamertemplate{note page}{\pagecolor{white}\insertnote}
+
+\title{Automatische vertaling van logigrammen naar logica}
+\subtitle{Tussentijdse presentatie}
+
+\author{Jens Claes}
+\date{27 maart 2017}
+
+\newcommand{\seperation}{
+	\vspace{1em}
+	\ppause
+}
+\newcommand{\sseperation}{
+	\vspace{1em}
+}
+\newcommand{\hitem}{
+	\ppause
+	\item
+}
+\newcommand{\ppause}{\onslide<+>}
+\newcommand{\nnote}[1]{\note<.>{#1}}
+\setbeamercovered{%
+	still covered={\opaqueness<1->{0}},
+	again covered={\opaqueness<1->{60}}
+}
+\setbeameroption{hide notes} % Only slides
+%\setbeameroption{show notes on second screen=right} % Both
+
+\newcommand{\attention}[1]{\textcolor{ForestGreen}{#1}}
+
+%\graphicspath{ {../images/} }
+
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+\begin{document}
+	\frame{\titlepage}
+	\section{Probleem}
+	\begin{frame}{Logigrammen}
+		\begin{itemize}
+      \hitem Aantal concepten (nationaliteiten, dieren, kleuren, ...)
+      \item Aantal voorbeelden per concept (Noor, Brit, kat, hond, ...)
+      \item 1 bijectie tussen elk paar concepten
+      \item Aantal hints/clues: constraints op die bijecties
+			\hitem Doel: Zoek de waarde van de bijecties
+			
+			\seperation
+			
+			\item Hints in natuurlijke taal
+      \item Redelijke uniforme zinstructuur
+			
+			\seperation
+
+      \item Geschikt om automatisch om te zetten naar logica
+		\end{itemize}
+	\end{frame}
+	
+	\section{Doel}
+	\begin{frame}{Doel Thesis}
+		\begin{itemize}
+			\hitem Opstellen grammatica die de (meeste) hints omvat
+			\item Grammaticale zinnen mappen op een equivalent in logica
+      \item Automatisch
+			
+			\seperation
+      \item Is zo'n grammatica toepasbaar op nieuwe logigrammen?
+      \item Kunnen we het vocabularium afleiden?
+      \item Kunnen we types introduceren? Wat zijn we hier mee?
+		\end{itemize}
+	\end{frame}
+
+  \section{Resultaten}
+	\begin{frame}{De basis}
+		\begin{itemize}
+			\hitem Boeken van Blackburn en Bos \cite{BlackburnBosBook1, BlackburnBosBook2} 
+      \item Een framework voor computationele semantiek
+      \item Vinden van betekenissen in taal
+      \item Taalkundig: alle betekenissen
+			
+			\seperation
+      \item 4 onderdelen:
+        \begin{itemize}
+          \item Lexicon (vocabularium)
+          \item Grammatica
+          \item Lexicale semantiek
+          \item Grammaticale semantiek
+        \end{itemize}
+      \item Lambda-calcalus
+		\end{itemize}
+	\end{frame}
+
+  \subsection{}
+	\begin{frame}{Lexicon}
+		\begin{itemize}
+      \hitem John sleeps
+			\item John loves Mary
+      \item A man loves Mary
+      \item If a man loves Mary, every woman sleeps
+      \hitem
+        \begin{quote}
+          \texttt{lexicalEntry(det, 'a').} \\
+          \texttt{lexicalEntry(det, 'every').} \\
+          \texttt{lexicalEntry(n, 'man').} \\
+          \texttt{lexicalEntry(n, 'woman').} \\
+          \texttt{lexicalEntry(pn, 'John').} \\
+          \texttt{lexicalEntry(pn, 'Mary').} \\
+          \texttt{lexicalEntry(iv, 'sleeps').} \\
+          \texttt{lexicalEntry(tv, 'loves').} \\
+        \end{quote}
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Grammatica}
+		\begin{itemize}
+      \hitem 
+        \begin{quote}
+          \texttt{s --> [if], s, s.} \\
+          \texttt{s --> np, vp.} \\
+          \texttt{np --> pn.} \\
+          \texttt{np --> det, n.} \\
+          \texttt{vp --> iv.} \\
+          \texttt{vp --> tv, np.} \\
+        \end{quote}
+      \hitem \Tree[.s [.np [.pn john ]] [.vp [.tv loves ] [.np [.pn mary ]]]]
+      \ppause \Tree[.s [.np [.det a ] [.n man ]] [.vp [.tv loves ] [.np [.pn mary ]]]]
+		\end{itemize}
+	\end{frame}
+	\begin{frame}{Grammatica}
+      \Tree[.s if [.s [.np [.det a ] [.n man ]] [.vp [.tv loves ] [.np [.pn mary ]]]] [.s [.np [.det every ] [.n woman ]] [.vp [.iv sleeps ]]]]
+	\end{frame}
+
+	\begin{frame}{Grammaticale semantiek}
+		\begin{itemize}
+      \hitem \texttt{np --> pn.}
+      \item $np^{sem} = pn^{sem}$
+
+      \hitem \texttt{vp --> iv.}
+      \item $vp^{sem} = iv^{sem}$
+
+      \seperation
+      \item \texttt{s --> np, vp.}
+      \item $s^{sem} = vp^{sem}[np^{sem}]$
+
+      \seperation
+      \item \texttt{np --> det, n.}
+      \item $np^{sem} = det^{sem}[n^{sem}]$
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Lexicale semantiek}
+		\begin{itemize}
+      \hitem Proper Noun (PN)
+      \begin{itemize}
+        \item bv. John, Mary, ...
+        \hitem $PN^{signature} = NP^{signature} = (e \rightarrow t) \rightarrow t$
+        \hitem $\lambda V.V[Mary]$
+      \end{itemize}
+
+      \hitem Intransitive Verb (IV)
+      \begin{itemize}
+        \item bv. sleeps, ...
+        \hitem $IV^{signature} = VP^{signature} = NP^{signature} \rightarrow S^{signature} = ((e \rightarrow t) \rightarrow t) \rightarrow t$
+        \hitem $\lambda N.N[\lambda X.sleeps(X)]$
+      \end{itemize}
+
+      \hitem Transitive Verb (TV)
+      \begin{itemize}
+        \item bv. loves, ...
+          \hitem $TV^{signature} = NP^{signature} \rightarrow VP^{signature} = NP^{signature} \rightarrow NP^{signature} \rightarrow S^{signature} = ((e \rightarrow t) \rightarrow t) \rightarrow ((e \rightarrow t) \rightarrow t) \rightarrow t$
+        \hitem $\lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.loves(X2,X1)]]$
+      \end{itemize}
+		\end{itemize}
+	\end{frame}
+	\begin{frame}{Lexicale semantiek}
+		\begin{itemize}
+      \hitem Noun (N)
+      \begin{itemize}
+        \item bv. man, woman, ...
+        \hitem $N^{signature} = (e \rightarrow t)$
+        \hitem $\lambda X.man(X)$
+      \end{itemize}
+      \hitem Determiner (DET)
+      \begin{itemize}
+        \item bv. a, every, ...
+        \hitem $DET^{signature} = N^{signature} \rightarrow NP^{signature} = (e \rightarrow t) \rightarrow ((e \rightarrow t) \rightarrow t)$
+        \hitem universal determiner: $\lambda U.\lambda V.\forall x. U[x] \Rightarrow V[x]$
+        \hitem existential determiner: $\lambda U.\lambda V.\exists x. U[x] \land V[x]$
+      \end{itemize}
+		\end{itemize}
+	\end{frame}
+
+  \subsection{}
+	\begin{frame}{Een voorbeeld}
+    \begin{itemize}
+      \hitem John sleeps
+      \hitem \Tree[.s:vp^{sem}[np^{sem}] [.np:pn^{sem} [.pn:john^{sem} john ]] [.vp:iv^{sem} [.iv:sleeps^{sem} sleeps ]]]
+    \end{itemize}
+	\end{frame}
+	\begin{frame}{Een voorbeeld}
+      \Tree[.s:vp^{sem}[np^{sem}] [.np:pn^{sem} [.pn:\attention{$\lambda P.P[John]$} john ]] [.vp:iv^{sem} [.iv:\attention{$\lambda N1.N1[\lambda X.sleeps(X)]$} sleeps ]]]
+	\end{frame}
+	\begin{frame}{Een voorbeeld}
+      \Tree[.s:vp^{sem}[np^{sem}] [.np:\attention{$\lambda P.P[John]$} [.pn:$\lambda P.P[John]$ john ]] [.vp:\attention{$\lambda N1.N1[\lambda X.sleeps(X)]$} [.iv:$\lambda N1.N1[\lambda X.sleeps(X)]$ sleeps ]]]
+	\end{frame}
+	\begin{frame}{Een voorbeeld}
+    \begin{itemize}
+      \hitem \Tree[.s:\attention{$\{\lambda N1.N1[\lambda X.sleeps(X)]\}[\lambda P.P[John]]$} [.np:$\lambda P.P[John]$ [.pn:$\lambda P.P[John]$ john ]] [.vp:$\lambda N1.N1[\lambda X.sleeps(X)]$ [.iv:$\lambda N1.N1[\lambda X.sleeps(X)]$ sleeps ]]]
+      \hitem $\{\lambda P.P[John]\}[\lambda X.sleeps(X)]$
+      \hitem $\{\lambda X.sleeps(X)\}[John]$
+      \hitem $sleeps(John)$
+    \end{itemize}
+	\end{frame}
+
+  \subsection{}
+	\begin{frame}{Een moeilijker voorbeeld}
+    \begin{itemize}
+      \hitem John loves Mary
+      \hitem \Tree[.s:vp^{sem}[np^{sem}] [.np:pn^{sem} [.pn:john^{sem} john ]] [.vp:tv^{sem}[np^{sem}] [.tv:loves^{sem} loves ] [.np:pn^{sem} [.pn:mary^{sem} mary ]]]]
+    \end{itemize}
+	\end{frame}
+	\begin{frame}{Een moeilijker voorbeeld}
+    \begin{itemize}
+      \hitem \Tree[.s:vp^{sem}[np^{sem}] [.np:pn^{sem} [.pn:\attention{$\lambda P.P[John]$} john ]] [.vp:tv^{sem}[np^{sem}] [.tv:\attention{$loves^{sem}$} loves ] [.np:pn^{sem} [.pn:\attention{$\lambda P.P[Mary]}$ mary ]]]]
+      \item \attention{$loves^{sem} = \lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.loves(X2,X1)]]$}
+    \end{itemize}
+	\end{frame}
+	\begin{frame}{Een moeilijker voorbeeld}
+    \begin{itemize}
+      \hitem \Tree[.s:vp^{sem}[np^{sem}] [.np:pn^{sem} [.pn:$\lambda P.P[John]$ john ]] [.vp:tv^{sem}[np^{sem}] [.tv:$loves^{sem}$ loves ] [.np:\attention{$\lambda P.P[Mary]$} [.pn:$\lambda P.P[Mary]$ mary ]]]]
+      \item $loves^{sem} = \lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.loves(X2,X1)]]$
+    \end{itemize}
+	\end{frame}
+	\begin{frame}{Een moeilijker voorbeeld}
+    \begin{itemize}
+      \hitem \Tree[.s:vp^{sem}[np^{sem}] [.np:\attention{$\lambda P.P[John]$} [.pn:$\lambda P.P[John]$ john ]] [.vp:\attention{$vp^{sem}$} [.tv:$loves^{sem}$ loves ] [.np:$\lambda P.P[Mary]$ [.pn:$\lambda P.P[Mary]$ mary ]]]]
+      \item $loves^{sem} = \lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.loves(X2,X1)]]$
+      \item \attention{$vp^{sem} = tv^{sem}[np^{sem}] = \{\lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.loves(X2,X1)]]\}[\lambda P.P[Mary]]$}
+    \end{itemize}
+	\end{frame}
+	\begin{frame}{Een moeilijker voorbeeld}
+    \begin{itemize}
+      \hitem $vp^{sem} = \{\lambda N1.\lambda N2.N2[\lambda X2.N1[\lambda X1.loves(X2,X1)]]\}[\lambda P.P[Mary]]$
+      \hitem $vp^{sem} = \lambda N2.N2[\lambda X2.\{\lambda P.P[Mary]\}[\lambda X1.loves(X2,X1)]]$
+      \hitem $vp^{sem} = \lambda N2.N2[\lambda X2.\{\lambda X1.loves(X2,X1)\}[Mary]]$
+      \hitem $vp^{sem} = \lambda N2.N2[\lambda X2.loves(X2,Mary)]$
+    \end{itemize}
+	\end{frame}
+	\begin{frame}{Een moeilijker voorbeeld}
+    \begin{itemize}
+      \hitem \Tree[.s:\attention{$s^{sem}$} [.np:$\lambda P.P[John]$ [.pn:$\lambda P.P[John]$ john ]] [.vp:vp^{sem} [.tv:$loves^{sem}$ loves ] [.np:$\lambda P.P[Mary]$ [.pn:$\lambda P.P[Mary]$ mary ]]]]
+      \item $vp^{sem} = \lambda N2.N2[\lambda X2.loves(X2,Mary)]$
+      \item \attention{$s^{sem} = vp^{sem}[np^{sem}] = loves(John, Mary)$}
+    \end{itemize}
+	\end{frame}
+
+  \subsection{}
+	\begin{frame}{Bespreking}
+    \begin{itemize}
+      \hitem 4 onderdelen staan los van elkaar
+      \begin{itemize}
+        \hitem Lexicon/Vocabularium: per probleem, taalkundige categorieën
+        \hitem Grammatica: contextvrij, categorial combinatorial grammar (Baral et al. \cite{Baral2008}), ...
+        \hitem Lexicale semantiek: eerste-orde logica, discourse representation structures, event-based logic, ...
+        \hitem Grammaticale semantiek: licht gekoppeld aan grammatica en lexicale semantiek
+      \end{itemize}
+    \end{itemize}
+	\end{frame}
+
+	\begin{frame}{Bijdrage tot nog toe}
+    \begin{itemize}
+      \hitem Toevoegen van algemene regels
+        \begin{itemize}
+          \item Uitbreiden grammatica (aritmetiek, extra constructies koppelwerkwoorden, ...)
+          \item Uitbreiden semantiek (lexicon + grammatica)
+          \item Fixen bugs semantiek (koppelwerkwoorden, negatie)
+        \end{itemize}
+      \hitem Ondersteuning van specifieke zinsconstructies
+        \begin{itemize}
+          \item ``Of A and B, one ... and the other ...''
+          \item ``A was either B or C''
+          \item ``Neither A nor B ...''
+          \item ``A, B, C and D are all different teams''
+        \end{itemize}
+      \hitem Toevoegen types
+    \end{itemize}
+	\end{frame}
+
+	\begin{frame}{Of A and B, one ... and the other ...}
+    \begin{itemize}
+      \hitem \texttt{s --> [of], np, [and], np, [one], vp, [and, the, other], vp.}
+      \hitem $s^{sem} = np1^{sem}\Bigg[\lambda X1. np2^{sem}\bigg[\lambda X2. \\
+      (X1 \neq X2) \land \Big\{\big\{vp1^{sem}[\lambda N.N[X1]] \land vp2^{sem}[\lambda N.N[X2]]\big\} \lor \big\{vp2^{sem}[\lambda N.N[X1]] \land vp1^{sem}[\lambda N.N[X2]]\big\} \Big\}\bigg]\Bigg]$
+% combine(s:app(NP1, lam(X1, app(NP2, lam(X2, drs([], [or(merge(app(VP1, lam(N, app(N, X1))), app(VP2, lam(N, app(N, X2)))), merge(app(VP1, lam(N, app(N, X2))), app(VP2, lam(N, app(N, X1)))))]))))), [np1:NP1, np2:NP2, vp1:VP1, vp2:VP2]).
+    \end{itemize}
+	\end{frame}
+
+	\begin{frame}{Types}
+    \begin{itemize}
+      \hitem Via taalkundige ``features''
+      \item Bv. $NP[num]$ meervoud of enkelvoud
+      \hitem $NP[type]$: één van de concepten
+      \item $TV[type]$: bijectie tussen twee concepten
+      \hitem Type uniek per woord
+      \begin{itemize}
+        \item Automatische opdeling van entiteiten in concepten
+      \end{itemize}
+
+      \seperation
+      \item Ira scored 21 points higher than the contestant from Worthington
+      \hitem Ira scored 21 points higher than [the total that] the contestant from Worthington [scored]
+      \begin{itemize}
+          \item Injecteer functie om type-mismatch op te lossen
+      \end{itemize}
+    \end{itemize}
+	\end{frame}
+
+  \section{Planning}
+  \begin{frame}{Planning}
+			\begin{itemize}
+        \hitem Paasvakantie
+          \begin{itemize}
+            \item Beginnen schrijven thesis
+            \item Combinatie van meerdere zinnen naar een IDP theory
+          \end{itemize}
+        \hitem April
+          \begin{itemize}
+            \item Schrijven thesis
+            \item Generaliseren van de grammatica voor kleine verschillen in hints
+            \item Bekijken vorm vocabularium
+          \end{itemize}
+        \hitem Mei
+          \begin{itemize}
+            \item Schrijven thesis
+          \end{itemize}
+			\end{itemize}
+  \end{frame}
+			
+	\section{Referenties}
+	\begin{frame}[allowframebreaks]{Referenties}
+		\bibliographystyle{plain}
+		\bibliography{presentatie}
+	\end{frame}
+	
+\end{document}
