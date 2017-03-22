@@ -51,6 +51,9 @@ simplify(X, Y) :-
 :- use_module(problems, [problem/2]).
 :- use_module(problemLexiconRules, [useLexicon/1]).
 
+:- use_module(drs2fol, [drs2fol/2]).
+:- use_module(printFol, [printFol/1]).
+
 /*========================================================================
     Driver Predicates
 ========================================================================*/
@@ -105,13 +108,26 @@ testp(Problem, [Problem, NbCorrect, NbSentences], FlattenTypes) :-
     maplist(testSentence, Sentences, NbDRSes, Results),
     filterResults(Results, NewResults),
     length(NewResults, NbResults),
-    maplist(pairs_keys_values, NewResults, _, Types),
+    maplist(pairs_keys_values, NewResults, NewDRSss, Types),
     flatten(Types, FlattenTypes),
     findall(1, member(1, NbDRSes), L),
     length(L, NbCorrect),
     length(Sentences, NbSentences),
     nl, print(NbDRSes),
-    format('~nNumber of sentences with 1 meaning: ~p/~p~nNumber of possible meanings in total: ~p', [NbCorrect, NbSentences, NbResults]).
+    format('~nNumber of sentences with 1 meaning: ~p/~p~nNumber of possible meanings in total: ~p', [NbCorrect, NbSentences, NbResults]),
+    nl,
+    maplist(toFol(Sentences), NewDRSss).
+
+toFol(Sentences, DRSs) :-
+    maplist(drs2fol, DRSs, FOLs),
+    pairs_keys_values(Pairs, Sentences, FOLs),
+    nl,
+    \+ \+ (numbervars(FOLs, 0, _), maplist(printSentence, Pairs)).
+
+printSentence(Sentence-FOL) :-
+    writeln(Sentence),
+    printFol(FOL).
+
 
 filterResults(Results, NewResults) :-
     findall(PossibleResult, (

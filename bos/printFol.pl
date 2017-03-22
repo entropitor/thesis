@@ -1,7 +1,8 @@
 :- module(printFol, [printFol/1]).
 
 printFol(X) :-
-    printFol(0, X).
+    printFol(0, X),
+    nl.
 
 printFol(_, que(X, R, B)) :-
     write('?'),
