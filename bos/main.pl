@@ -122,8 +122,9 @@ testp(Problem, [Problem, NbDRSes, NbResults], Solutions) :-
     %% maplist(toFol(Sentences), Types, NewDRSss),
     true.
 
-toSolution(Sentences, DRSs, Types, solution(Sentences, DRSs, FlatTypes)) :-
-    flatten(Types, FlatTypes).
+toSolution(Sentences, DRSs, Types, solution(Sentences, DRSs, CombinedTypes)) :-
+    flatten(Types, FlatTypes),
+    combineTypes(FlatTypes, CombinedTypes).
 
 toFol(Sentences, Types, DRSs) :-
     maplist(drs2fol, DRSs, FOLs),

@@ -9,7 +9,18 @@ combineTypes(In, Out) :-
     checkUnkownVars(In, Out1, Success),
     !,
     call(Success),
-    combineTypes2(Out1, Out).
+    toTypesAndAttributes(Out1, Types, Attributes),
+    list_to_set(Attributes, AttributeSet),
+    combineTypes2(Types, TypesOut),
+    append(TypesOut, AttributeSet, Out).
+
+toTypesAndAttributes([], [], []).
+toTypesAndAttributes([type(X, Y) | Rest], [type(X, Y) | Types], Attributes) :-
+    !,
+    toTypesAndAttributes(Rest, Types, Attributes).
+toTypesAndAttributes([attr(X, Y) | Rest], Types, [attr(X, Y) | Attributes]) :-
+    !,
+    toTypesAndAttributes(Rest, Types, Attributes).
 
 combineTypes2([], []) :-
     !.
