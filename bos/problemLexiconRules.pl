@@ -1,80 +1,113 @@
-:- module(problemLexiconRules, [lexEntry/2]).
+:- module(problemLexiconRules, [
+              lexEntry/2,
+              useLexicon/1
+          ]).
 
 :- use_module(myLexicon, [lexEntry/2 as defaultLexicon]).
-:- use_module(problemLexicon, [concept/2, property/3, relation/5, actor/5]).
+:- use_module(problemLexicon, [pLexicon/2, concept/2, property/3, relation/5, actor/5]).
 :- use_module(types, [addType/2]).
 
-lexEntry(noun, [symbol:contestant, num:pl, syntax:[contestants], vType:_]).
+:- dynamic pLexEntry/2.
+
+useLexicon(LexiconName) :-
+    pLexicon(LexiconName, Rules),
+    retractall(pLexEntry(_, _)),
+    maplist(addRule, Rules).
+
+addRule(noun(_Type, SyntaxSg, SyntaxPl)) :-
+    syntax_symbol(SyntaxSg, Symbol),
+    assertz(pLexEntry(noun, [symbol:Symbol, num:sg, syntax:SyntaxSg, vType:Type]) :- addType(noun-Symbol, Type)),
+    assertz(pLexEntry(noun, [symbol:Symbol, num:pl, syntax:SyntaxPl, vType:Type]) :- addType(noun-Symbol, Type)).
+addRule(pn(_VType, Syntax)) :-
+    syntax_symbol(Syntax, Symbol),
+    VType = qualified(_Type),
+    assertz(pLexEntry(pn, [symbol:Symbol, syntax:Syntax, vType:VType]) :- addType(pn-Symbol, VType)).
+addRule(ivpp(_Type, SyntaxSg, PP, SyntaxInf)) :-
+    Type = pred(SubjType, ObjType),
+    append(SyntaxSg, PP, WordForm),
+    syntax_symbol(WordForm, Symbol),
+    assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxSg, pp:PP, inf:fin, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)),
+    assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxInf, pp:PP, inf:inf, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)),
+    assertz(pLexEntry(prep, [symbol:Symbol, syntax:PP, vType:fun(SubjType, ObjType)])).
+addRule(tv(_Type, SyntaxSg, SyntaxInf)) :-
+    syntax_symbol(SyntaxSg, Symbol),
+    assertz(pLexEntry(tv, [symbol:Symbol, syntax:SyntaxSg, inf:fin, num:sg, vType:Type]) :- addType(tv-Symbol, Type)),
+    assertz(pLexEntry(tv, [symbol:Symbol, syntax:SyntaxInf, inf:inf, num:sg, vType:Type]) :- addType(tv-Symbol, Type)).
+addRule(prep(_Type, Syntax)) :-
+    syntax_symbol(Syntax, Symbol),
+    assertz(pLexEntry(prep, [symbol:Symbol, syntax:Syntax, vType:Type]) :- addType(prep-Symbol, Type)).
 
 lexEntry(X, Y) :-
     defaultLexicon(X, Y).
+lexEntry(X, Y) :-
+    pLexEntry(X, Y).
 
-lexEntry(noun, [symbol:Symbol, num:sg, syntax:Syntax, vType:Type]) :-
-    concept(Symbol, _),
-    addType(Symbol, Type),
-    symbol_syntax(Symbol, Syntax).
-lexEntry(pn, [symbol:Symbol, syntax:Syntax, vType:qualified(Type)]) :-
-    concept(_Type, constructed:Elements),
-    addType(Symbol, qualified(Type)),
-    member(Syntax, Elements),
-    % TODO check that it isn't an adjective?
-    syntax_symbol(Syntax, Symbol).
-lexEntry(adj, [symbol:Symbol, syntax:Syntax, vType:Type]) :-
-    concept(Concept, constructed:Elements),
-    property(_Type, _, Concept),
-    addType(Symbol, Type),
-    member(Syntax, Elements),
-    syntax_symbol(Syntax, Symbol).
-lexEntry(adj, [symbol:Symbol, syntax:Syntax, vType:adj(Type)]) :-
-    member(Syntax, [[first], [second], [third], [fourth], [fifth], [sixth]]),
-    property(_Type, _, int),
-    addType(Symbol, adj(Type)),
-    syntax_symbol(Syntax, Symbol).
+%% lexEntry(noun, [symbol:Symbol, num:sg, syntax:Syntax, vType:Type]) :-
+%%     concept(Symbol, _),
+%%     addType(Symbol, Type),
+%%     symbol_syntax(Symbol, Syntax).
+%% lexEntry(pn, [symbol:Symbol, syntax:Syntax, vType:qualified(Type)]) :-
+%%     concept(_Type, constructed:Elements),
+%%     addType(Symbol, qualified(Type)),
+%%     member(Syntax, Elements),
+%%     % TODO check that it isn't an adjective?
+%%     syntax_symbol(Syntax, Symbol).
+%% lexEntry(adj, [symbol:Symbol, syntax:Syntax, vType:Type]) :-
+%%     concept(Concept, constructed:Elements),
+%%     property(_Type, _, Concept),
+%%     addType(Symbol, Type),
+%%     member(Syntax, Elements),
+%%     syntax_symbol(Syntax, Symbol).
+%% lexEntry(adj, [symbol:Symbol, syntax:Syntax, vType:adj(Type)]) :-
+%%     member(Syntax, [[first], [second], [third], [fourth], [fifth], [sixth]]),
+%%     property(_Type, _, int),
+%%     addType(Symbol, adj(Type)),
+%%     syntax_symbol(Syntax, Symbol).
 % TODO: need other wordforms?
-lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:fin, num:sg, vType:pred(SubjType, ObjType)]) :-
-    relation(_SubjType, _ObjType, Syntax, [], SyntaxInf),
-    addType(Symbol, pred(SubjType, ObjType)),
-    syntax_symbol(SyntaxInf, Symbol).
-lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:inf, num:sg, vType:pred(SubjType, ObjType)]) :-
-    relation(_SubjType, _ObjType, _, [], Syntax),
-    addType(Symbol, pred(SubjType, ObjType)),
-    syntax_symbol(Syntax, Symbol).
-lexEntry(ivpp, [symbol:Symbol, syntax:Syntax, pp:PP, inf:fin, num:sg, vType:pred(SubjType, ObjType)]) :-
-    relation(_SubjType, _ObjType, Syntax, PP, SyntaxInf),
-    PP \= [],
-    addType(Symbol, pred(SubjType, ObjType)),
-    append(SyntaxInf, PP, WordForm),
-    syntax_symbol(WordForm, Symbol).
-lexEntry(ivpp, [symbol:Symbol, syntax:Syntax, pp:PP, inf:inf, num:sg, vType:pred(SubjType, ObjType)]) :-
-    relation(_SubjType, _ObjType, _, PP, Syntax),
-    PP \= [],
-    addType(Symbol, pred(SubjType, ObjType)),
-    append(Syntax, PP, WordForm),
-    syntax_symbol(WordForm, Symbol).
-lexEntry(prep, [symbol:Symbol, syntax:PP, vType:null]) :-
-    relation(_, _, _, PP, _),
-    PP \= [],
-    syntax_symbol(PP, Symbol).
-%% lexEntry(iv, [symbol:Symbol, syntax:Syntax, inf:fin, num:sg, vType:Type]) :-
-%%     relation(_Type, Syntax),
+%% lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:fin, num:sg, vType:pred(SubjType, ObjType)]) :-
+%%     relation(_SubjType, _ObjType, Syntax, [], SyntaxInf),
+%%     addType(Symbol, pred(SubjType, ObjType)),
+%%     syntax_symbol(SyntaxInf, Symbol).
+%% lexEntry(tv, [symbol:Symbol, syntax:Syntax, inf:inf, num:sg, vType:pred(SubjType, ObjType)]) :-
+%%     relation(_SubjType, _ObjType, _, [], Syntax),
+%%     addType(Symbol, pred(SubjType, ObjType)),
+%%     syntax_symbol(Syntax, Symbol).
+%% lexEntry(ivpp, [symbol:Symbol, syntax:Syntax, pp:PP, inf:fin, num:sg, vType:pred(SubjType, ObjType)]) :-
+%%     relation(_SubjType, _ObjType, Syntax, PP, SyntaxInf),
+%%     PP \= [],
+%%     addType(Symbol, pred(SubjType, ObjType)),
+%%     append(SyntaxInf, PP, WordForm),
+%%     syntax_symbol(WordForm, Symbol).
+%% lexEntry(ivpp, [symbol:Symbol, syntax:Syntax, pp:PP, inf:inf, num:sg, vType:pred(SubjType, ObjType)]) :-
+%%     relation(_SubjType, _ObjType, _, PP, Syntax),
+%%     PP \= [],
+%%     addType(Symbol, pred(SubjType, ObjType)),
+%%     append(Syntax, PP, WordForm),
+%%     syntax_symbol(WordForm, Symbol).
+%% lexEntry(prep, [symbol:Symbol, syntax:PP, vType:null]) :-
+%%     relation(_, _, _, PP, _),
+%%     PP \= [],
+%%     syntax_symbol(PP, Symbol).
+%% %% lexEntry(iv, [symbol:Symbol, syntax:Syntax, inf:fin, num:sg, vType:Type]) :-
+%% %%     relation(_Type, Syntax),
+%% %%     addType(Symbol, Type),
+%% %%     syntax_symbol(Syntax, Symbol).
+
+%% lexEntry(prep, [symbol:Symbol, syntax:PP, vType:fun(SubjType, ObjType)]) :-
+%%     actor(_, _, SyntaxNoun, PP, _),
+%%     append(SyntaxNoun, PP, Syntax),
+%%     addType(Symbol, fun(SubjType, ObjType)),
+%%     syntax_symbol(Syntax, Symbol).
+%% lexEntry(noun, [symbol:Symbol, num:sg, syntax:Syntax, vType:Type]) :-
+%%     actor(_, _, Syntax, _, _),
 %%     addType(Symbol, Type),
 %%     syntax_symbol(Syntax, Symbol).
 
-lexEntry(prep, [symbol:Symbol, syntax:PP, vType:fun(SubjType, ObjType)]) :-
-    actor(_, _, SyntaxNoun, PP, _),
-    append(SyntaxNoun, PP, Syntax),
-    addType(Symbol, fun(SubjType, ObjType)),
-    syntax_symbol(Syntax, Symbol).
-lexEntry(noun, [symbol:Symbol, num:sg, syntax:Syntax, vType:Type]) :-
-    actor(_, _, Syntax, _, _),
-    addType(Symbol, Type),
-    syntax_symbol(Syntax, Symbol).
-
-%TODO: fix plural vs singular
-lexEntry(noun, [symbol:Symbol, num:_, syntax:Syntax, vType:Type]) :-
-    concept(_Type, countable:Syntax),
-    addType(Symbol, Type),
-    syntax_symbol(Syntax, Symbol).
+%% %TODO: fix plural vs singular
+%% lexEntry(noun, [symbol:Symbol, num:_, syntax:Syntax, vType:Type]) :-
+%%     concept(_Type, countable:Syntax),
+%%     addType(Symbol, Type),
+%%     syntax_symbol(Syntax, Symbol).
 
 syntax_symbol(Syntax, Symbol) :-
     atomic_list_concat(Syntax, '_', Symbol).

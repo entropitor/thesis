@@ -37,12 +37,12 @@ addType(Symbol, Type) :-
 
 
 checkUnkownVars([], [], true).
-checkUnkownVars([type(Var, Type) | Rest], [type(Var, Type) | Out], Success) :-
+checkUnkownVars([type(WordSort-Var, Type) | Rest], [type(WordSort-Var, Type) | Out], Success) :-
     nonvar(Var),
     checkUnkownVars(Rest, Out, Success).
-checkUnkownVars([type(Var, Type) | Rest], [type(Var, Type) | Out], true) :-
+checkUnkownVars([type(WordSort-Var, Type) | Rest], [type(WordSort-Var, Type) | Out], true) :-
     var(Var),
-    checkMatchingVar(type(Var, Type), Rest),
+    checkMatchingVar(type(WordSort-Var, Type), Rest),
     checkUnkownVars(Rest, Out, _).
 
 checkMatchingVar(type(_, Type), []) :-

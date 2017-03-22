@@ -27,7 +27,9 @@
                  test/3,
                  lambdaDRT/4,
                  infix/0,
-                 prefix/0]).
+                 prefix/0,
+                 useLexicon/1
+                ]).
 
 :- use_module(readLine, [readLine/1,
                         readFromString/2]).
@@ -47,6 +49,7 @@ simplify(X, Y) :-
 :- use_module(myGrammar, [t/3]).
 
 :- use_module(problems, [problem/2]).
+:- use_module(problemLexiconRules, [useLexicon/1]).
 
 /*========================================================================
     Driver Predicates
@@ -96,6 +99,7 @@ printResults(Results, Types) :-
 
 
 testp(Problem, [Problem, NbCorrect, NbSentences], FlattenTypes) :-
+    useLexicon(Problem),
     problem(Problem, Sentences),
     format('~n###############################~n###   ~p~n###############################~n', [Problem]),
     maplist(testSentence, Sentences, NbDRSes, Results),

@@ -21,6 +21,7 @@
 
 *************************************************************************/
 :- module(problemLexicon, [
+              pLexicon/2,
               concept/2,
               property/3,
               relation/5,
@@ -36,56 +37,106 @@
 :- discontiguous problemLexicon:relation/5.
 :- discontiguous problemLexicon:actor/5.
 
-/*========================================================================
-    Puzzle: Zebra
-========================================================================*/
+%% /*========================================================================
+%%     Puzzle: Zebra
+%% ========================================================================*/
 
-concept(person, constructed:[[the, englishman], [the, spaniard], [the, ukrainian], [the, japanese], [the, norwegian]]).
-concept(house, nominal).
-concept(color, constructed:[[red], [green], [ivory], [yellow], [blue]]).
-concept(animal, constructed:[[the, dog], [the, zebra], [the, snail], [the, fox], [the, horse]]).
-concept(drink, constructed:[[coffee], [tea], [milk], [water], [orange, juice]]).
-concept(cigarette, constructed:[[chesterfields], [kools], [parliaments], [old, gold], [lucky, strike]]).
+%% concept(person, constructed:[[the, englishman], [the, spaniard], [the, ukrainian], [the, japanese], [the, norwegian]]).
+%% concept(house, nominal).
+%% concept(color, constructed:[[red], [green], [ivory], [yellow], [blue]]).
+%% concept(animal, constructed:[[the, dog], [the, zebra], [the, snail], [the, fox], [the, horse]]).
+%% concept(drink, constructed:[[coffee], [tea], [milk], [water], [orange, juice]]).
+%% concept(cigarette, constructed:[[chesterfields], [kools], [parliaments], [old, gold], [lucky, strike]]).
 
-property(house, [position], int).
-property(house, [color], color).
+%% property(house, [position], int).
+%% property(house, [color], color).
 
-relation(house, house, [is, next], [to], [is, next]).
-relation(person, house, [lives], [in], [live]).
-relation(person, animal, [keeps], [], [keep]).
-relation(person, drink, [drinks], [], [drink]).
-relation(person, cigarette, [smokes], [], [smoke]).
+%% relation(house, house, [is, next], [to], [is, next]).
+%% relation(person, house, [lives], [in], [live]).
+%% relation(person, animal, [keeps], [], [keep]).
+%% relation(person, drink, [drinks], [], [drink]).
+%% relation(person, cigarette, [smokes], [], [smoke]).
 
-actor(person, cigarette, [smoker], [of], [smokes]).
+%% actor(person, cigarette, [smoker], [of], [smokes]).
 
 /*========================================================================
     Puzzle: p1
 ========================================================================*/
-concept(species, constructed:[[the, perens, pig], [the, byengo, bat], [the, nibner, newt], [the, eldar, elk], [the, osbele, oryx]]).
-%% concept(population, constructed:[[210], [280], [315], [490], [525]]).
-concept(country, constructed:[[ghana], [honduras], [poland], [russia], [slovakia]]).
-%% concept(year, constructed:[[2006], [2007], [2008], [2009], [2010]]).
-concept(year, countable:[years]).
+pLexicon(p1, [
+            noun(species, [species], [species]),
+            noun(species, [animal], [animals]),
+            pn(species, [the, perens, pig]),
+            pn(species, [the, byengo, bat]),
+            pn(species, [the, nibner, newt]),
+            pn(species, [the, eldar, elk]),
+            pn(species, [the, osbele, oryx]),
+            noun(country, [country], [countries]),
+            pn(country, [ghana]),
+            pn(country, [honduras]),
+            pn(country, [poland]),
+            pn(country, [russia]),
+            pn(country, [slovakia]),
+            noun(year, [year], [years]),
+            ivpp(pred(species, country), [lives], [in], [live]),
+            ivpp(pred(species, year), [is, recognized, as, endangered], [in], [are, recognized, as, endangered]),
+            ivpp(pred(species, year), [is, listed], [in], [are, listed]),
+            ivpp(pred(species, population), [has, a, population, size], [of], [have, a, population, size]),
+            prep(fun(country, species), [from])
+        ]).
 
-property(species, [population, size], population).
+%% concept(species, constructed:[[the, perens, pig], [the, byengo, bat], [the, nibner, newt], [the, eldar, elk], [the, osbele, oryx]]).
+%% %% concept(population, constructed:[[210], [280], [315], [490], [525]]).
+%% concept(country, constructed:[[ghana], [honduras], [poland], [russia], [slovakia]]).
+%% %% concept(year, constructed:[[2006], [2007], [2008], [2009], [2010]]).
+%% concept(year, countable:[years]).
 
-%% relation(species, country, [lives], [in], [live]).
-relation(species, year, [is, recognized, as, endangered], [in], [is, recognized, as, endangered]).
-relation(species, year, [is, listed], [in], [is, listed]).
-relation(species, population, [has, a, population, size], [of], [have, a, population, size]).
+%% property(species, [population, size], population).
+
+%% %% relation(species, country, [lives], [in], [live]).
+%% relation(species, year, [is, recognized, as, endangered], [in], [is, recognized, as, endangered]).
+%% relation(species, year, [is, listed], [in], [is, listed]).
+%% relation(species, population, [has, a, population, size], [of], [have, a, population, size]).
 
 
 /*========================================================================
     Puzzle: p2
 ========================================================================*/
-concept(contestant, constructed:[[bill], [colin], [ira], [oscar], [pedro]]).
-concept(darts, constructed:[[the, black, darts], [the, orange, darts], [the, red, darts], [the, white, darts], [the, yellow, darts]]).
-concept(city, constructed:[[mount, union], [gillbertville], [lohrville], [worthington], [yorktown]]).
-concept(total, countable:[points]).
+pLexicon(p2, [
+            noun(contestant, [contestant], [contestants]),
+            noun(contestant, [person], [persons]),
+            pn(contestant, [bill]),
+            pn(contestant, [colin]),
+            pn(contestant, [ira]),
+            pn(contestant, [oscar]),
+            pn(contestant, [pedro]),
+            noun(darts, [dart], [darts]),
+            pn(darts, [the, black, darts]),
+            pn(darts, [the, orange, darts]),
+            pn(darts, [the, red, darts]),
+            pn(darts, [the, white, darts]),
+            pn(darts, [the, yellow, darts]),
+            noun(city, [city], [cities]),
+            pn(city, [mount, union]),
+            pn(city, [gillbertville]),
+            pn(city, [lohrville]),
+            pn(city, [worthington]),
+            pn(city, [yorktown]),
+            noun(score, [total], [totals]),
+            noun(score, [point], [points]),
+            tv(pred(contestant, darts), [threw], [throw]),
+            tv(pred(contestant, score), [scored], [score]),
+            prep(fun(city, contestant), [from])
+        ]).
 
 
-relation(contestant, darts, [threw], [], [throw]).
-relation(contestant, score, [scored], [], [score]).
+%% concept(contestant, constructed:[[bill], [colin], [ira], [oscar], [pedro]]).
+%% concept(darts, constructed:[[the, black, darts], [the, orange, darts], [the, red, darts], [the, white, darts], [the, yellow, darts]]).
+%% concept(city, constructed:[[mount, union], [gillbertville], [lohrville], [worthington], [yorktown]]).
+%% concept(total, countable:[points]).
 
-actor(contestant, city, [the, contestant], [from], [from]).
+
+%% relation(contestant, darts, [threw], [], [throw]).
+%% relation(contestant, score, [scored], [], [score]).
+
+%% actor(contestant, city, [the, contestant], [from], [from]).
 

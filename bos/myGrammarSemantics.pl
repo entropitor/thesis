@@ -55,7 +55,7 @@ combine(np:app(A, lam(_, drs([], []))), [number:A]).
 combine(np:A, [pn:A]).
 combine(np:A, [qnp:A]).
 combine(np:app(app(B, A), C), [np: A, comp:B, np:C]).
-combine(np:app(app(B, A), lam(P, app(C, lam(Y, merge(drs([variable(Z, Type, decl)], [rel(X, Y, Z)]), app(P, Z)))))), [np: A, comp:B, np:C, vTypeReal:Type, vTypeOther:OtherType]) :- addType(X, pred(OtherType, Type)).
+combine(np:app(app(B, A), lam(P, app(C, lam(Y, merge(drs([variable(Z, Type, decl)], [rel(X, Y, Z)]), app(P, Z)))))), [np: A, comp:B, np:C, vTypeReal:Type, vTypeOther:OtherType]) :- addType(_-X, pred(OtherType, Type)).
 combine(np:lam(N, merge(drs([variable(X, Type, decl)], [eq(X > 0)]), app(N, X))), [npGap:Type]).
 
 combine(whnp:app(A, B), [det:A, n:B]).
