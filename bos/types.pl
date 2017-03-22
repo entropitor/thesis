@@ -1,6 +1,7 @@
 :- module(types, [
               combineTypes/2,
-              addType/2
+              addType/2,
+              nameTypes/1
           ]).
 
 combineTypes(In, Out) :-
@@ -53,4 +54,17 @@ checkMatchingVar(type(Var, Type), [type(Var, Type2) | _]) :-
     Type = Type2.
 checkMatchingVar(Type, [_ | Rest]) :-
     checkMatchingVar(Type, Rest).
+
+nameTypes(Types) :-
+    maplist(nameType, Types).
+
+nameType(type(noun-Symbol, qualified(Type))) :-
+    var(Type),
+    !,
+    Symbol = Type.
+nameType(type(noun-Symbol, countable(Type))) :-
+    var(Type),
+    !,
+    Symbol = Type.
+nameType(_).
 

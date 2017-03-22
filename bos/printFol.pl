@@ -2,6 +2,7 @@
 
 printFol(X) :-
     printFol(0, X),
+    write('.'),
     nl.
 
 printFol(_, que(X, R, B)) :-
@@ -30,10 +31,16 @@ printFol(_, rel(Name, Arg1, Arg2)) :-
     X =.. [Name, Arg1, Arg2],
     write(X).
 
+printFol(Order, some(X, some(X2, F))) :-
+    !,
+    printFol(Order, some([X, X2], F)).
 printFol(Order, some(X, F)) :-
-    printQuantifier(Order, 0, X, F, '∃').
+    printQuantifier(Order, 0, [X], F, '∃').
+printFol(Order, all(X, all(X2, F))) :-
+    !,
+    printFol(Order, all([X, X2], F)).
 printFol(Order, all(X, F)) :-
-    printQuantifier(Order, 0, X, F, '∀').
+    printQuantifier(Order, 0, [X], F, '∀').
 
 printFol(Order, not(F)) :-
     printUnaryConnector(Order, 1, F, '~ ').
@@ -57,14 +64,23 @@ printBinaryConnector(Order, NewOrder, F1, F2, Connector) :-
                          write(Connector),
                          printFol(NewOrder, F2)
                      )).
-printQuantifier(Order, NewOrder, X, F2, Quantifier) :-
+printQuantifier(Order, NewOrder, Xs, F2, Quantifier) :-
     write(Quantifier),
-    printVar(X),
+    flatten(Xs, FlatXs),
+    printQuantifierVars(FlatXs),
     write(':'),
     tab(1),
     printParantheses(Order, NewOrder, (
                          printFol(NewOrder, F2)
                      )).
+
+printQuantifierVars([Var]) :-
+    !,
+    printVar(Var).
+printQuantifierVars([Var | Vars]) :-
+    printVar(Var),
+    write(' '),
+    printQuantifierVars(Vars).
 
 printParantheses(Order, NewOrder, Goal) :-
     Order < NewOrder,

@@ -44,7 +44,7 @@ simplify(X, Y) :-
     betaConvert(X, X1),
     mergeDrs(X1, Y).
 
-:- use_module(types, [combineTypes/2]).
+:- use_module(types, [combineTypes/2, nameTypes/1]).
 
 :- use_module(myGrammar, [t/3]).
 
@@ -116,13 +116,14 @@ testp(Problem, [Problem, NbCorrect, NbSentences], FlattenTypes) :-
     nl, print(NbDRSes),
     format('~nNumber of sentences with 1 meaning: ~p/~p~nNumber of possible meanings in total: ~p', [NbCorrect, NbSentences, NbResults]),
     nl,
-    maplist(toFol(Sentences), NewDRSss).
+    maplist(toFol(Sentences), Types, NewDRSss).
 
-toFol(Sentences, DRSs) :-
+toFol(Sentences, Types, DRSs) :-
     maplist(drs2fol, DRSs, FOLs),
     pairs_keys_values(Pairs, Sentences, FOLs),
     nl,
-    \+ \+ (numbervars(FOLs, 0, _), maplist(printSentence, Pairs)).
+    flatten(Types, FlattenedTypes),
+    \+ \+ (nameTypes(FlattenedTypes), numbervars(FOLs, 0, _), maplist(printSentence, Pairs)).
 
 printSentence(Sentence-FOL) :-
     writeln(Sentence),
