@@ -1,6 +1,7 @@
 :- module(types, [
               combineTypes/2,
               addType/2,
+              addTypeAttribute/2,
               nameTypes/1
           ]).
 
@@ -17,7 +18,7 @@ combineTypes2([type(Var, Type) | In], Out) :-
     !,
     matchType(Var, Type, Type2),
     combineTypes([type(Var, Type) | RestIn], Out).
-combineTypes2([type(Var, Type) | In], [type(Var, Type) | Out]) :-
+combineTypes2([T | In], [T | Out]) :-
     !,
     combineTypes(In, Out).
 
@@ -35,16 +36,23 @@ fail.
 addType(Symbol, Type) :-
     b_getval(types, Types),
     b_setval(types, [type(Symbol, Type) | Types]).
+addTypeAttribute(Type, Attribute) :-
+    b_getval(types, Types),
+    b_setval(types, [attr(Type, Attribute) | Types]).
 
 
 checkUnkownVars([], [], true).
 checkUnkownVars([type(WordSort-Var, Type) | Rest], [type(WordSort-Var, Type) | Out], Success) :-
     nonvar(Var),
+    !,
     checkUnkownVars(Rest, Out, Success).
 checkUnkownVars([type(WordSort-Var, Type) | Rest], [type(WordSort-Var, Type) | Out], true) :-
     var(Var),
+    !,
     checkMatchingVar(type(WordSort-Var, Type), Rest),
     checkUnkownVars(Rest, Out, _).
+checkUnkownVars([T | Rest], [T | Out], Success) :-
+    checkUnkownVars(Rest, Out, Success).
 
 checkMatchingVar(type(_, Type), []) :-
     format("~nError finding predicate for type: ~p", [Type]),
@@ -61,14 +69,6 @@ nameTypes(Types) :-
     nameUnnamedTypes(UnnamedTypes, 1).
 
 nameType(type(noun-Symbol, Type)) :-
-    var(Type),
-    !,
-    Symbol = Type.
-nameType(type(noun-Symbol, qualified(Type))) :-
-    var(Type),
-    !,
-    Symbol = Type.
-nameType(type(noun-Symbol, countable(Type))) :-
     var(Type),
     !,
     Symbol = Type.

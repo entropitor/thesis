@@ -5,7 +5,7 @@
 
 :- use_module(myLexicon, [lexEntry/2 as defaultLexicon]).
 :- use_module(problemLexicon, [pLexicon/2, concept/2, property/3, relation/5, actor/5]).
-:- use_module(types, [addType/2]).
+:- use_module(types, [addType/2, addTypeAttribute/2]).
 
 :- dynamic pLexEntry/2.
 
@@ -20,7 +20,7 @@ addRule(noun(_Type, SyntaxSg, SyntaxPl)) :-
     assertz(pLexEntry(noun, [symbol:Symbol, num:pl, syntax:SyntaxPl, vType:Type]) :- addType(noun-Symbol, Type)).
 addRule(pn(_Type, Syntax)) :-
     syntax_symbol(Syntax, Symbol),
-    assertz(pLexEntry(pn, [symbol:Symbol, syntax:Syntax, vType:Type]) :- addType(pn-Symbol, Type)).
+    assertz((pLexEntry(pn, [symbol:Symbol, syntax:Syntax, vType:Type]) :- addType(pn-Symbol, Type), addTypeAttribute(Type, qualified))).
 addRule(ivpp(_Type, SyntaxSg, PP, SyntaxInf)) :-
     Type = pred(SubjType, ObjType),
     append(SyntaxSg, PP, WordForm),
