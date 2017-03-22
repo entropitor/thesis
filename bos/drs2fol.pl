@@ -29,13 +29,16 @@
 ========================================================================*/
 
 drs2fol(drs([], [Cond]), Formula) :-
+    !,
     cond2fol(Cond, Formula).
 
 drs2fol(drs([], [Cond1, Cond2|Conds]), and(Formula1, Formula2)) :-
+    !,
     cond2fol(Cond1, Formula1),
     drs2fol(drs([], [Cond2|Conds]), Formula2).
 
 drs2fol(drs([X|Referents], Conds), some(X, Formula)) :-
+    !,
     drs2fol(drs(Referents, Conds), Formula).
 
 

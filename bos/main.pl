@@ -28,7 +28,8 @@
                  lambdaDRT/4,
                  infix/0,
                  prefix/0,
-                 useLexicon/1
+                 useLexicon/1,
+                 solvep/1
                 ]).
 
 :- use_module(readLine, [readLine/1,
@@ -54,6 +55,8 @@ simplify(X, Y) :-
 :- use_module(drs2fol, [drs2fol/2]).
 :- use_module(printFol, [printFol/1]).
 
+:- use_module(solution2idp, [solution2idp/2]).
+
 /*========================================================================
     Driver Predicates
 ========================================================================*/
@@ -67,20 +70,20 @@ test :-
 % Test the list of problems
 % fails if any one of the problems fails
 testAll(Problems) :-
-    maplist(testp, Problems, Resultss, Typess),
+    maplist(testp, Problems, Resultss, _),
     format('~n~n~nResults (number of meanings per sentence and for the whole puzzle):~n###################################################################~n'),
-    maplist(printResults, Resultss, Typess),
+    maplist(printResults, Resultss, _),
     \+ (
-        member([_, X, Y], Resultss),
-        X \= Y
+        member([_, _, X], Resultss),
+        X \= 1
     ).
 
-printResults(Results, Types) :-
-    format('Problem ~p: ~p --> ~p~n', Results),
-    typesToSetOfVariables(Types, FixedTypes, TypesPerVariable),
-    writeln(FixedTypes),
-    maplist(writeln, TypesPerVariable),
-    nl.
+printResults(Results, _Types) :-
+    format('Problem ~p: ~p --> ~p~n', Results).
+    %% typesToSetOfVariables(Types, FixedTypes, TypesPerVariable),
+    %% writeln(FixedTypes),
+    %% maplist(writeln, TypesPerVariable),
+    %% nl.
 
 typesToSetOfVariables(Types, FixedTypes, TypesPerVariable) :-
     combineTypes(Types, CombinedTypes),
@@ -100,8 +103,11 @@ typesToSetOfVariables(Types, FixedTypes, TypesPerVariable) :-
                 term_variables(X, [])
             ), FixedTypes).
 
+solvep(Problem) :-
+    testp(Problem, _, [Solution]),
+    solution2idp(Solution, Problem).
 
-testp(Problem, [Problem, NbDRSes, NbResults], FlattenTypes) :-
+testp(Problem, [Problem, NbDRSes, NbResults], Solutions) :-
     useLexicon(Problem),
     problem(Problem, Sentences),
     format('~n###############################~n###   ~p~n###############################~n', [Problem]),
@@ -109,11 +115,15 @@ testp(Problem, [Problem, NbDRSes, NbResults], FlattenTypes) :-
     filterResults(Results, NewResults),
     length(NewResults, NbResults),
     maplist(pairs_keys_values, NewResults, NewDRSss, Types),
-    flatten(Types, FlattenTypes),
+    maplist(toSolution(Sentences), NewDRSss, Types, Solutions),
     nl, print(NbDRSes),
     format('~nNumber of possible meanings in total: ~p', [NbResults]),
     nl,
-    maplist(toFol(Sentences), Types, NewDRSss).
+    %% maplist(toFol(Sentences), Types, NewDRSss),
+    true.
+
+toSolution(Sentences, DRSs, Types, solution(Sentences, DRSs, FlatTypes)) :-
+    flatten(Types, FlatTypes).
 
 toFol(Sentences, Types, DRSs) :-
     maplist(drs2fol, DRSs, FOLs),

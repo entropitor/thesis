@@ -1,11 +1,15 @@
-:- module(printFol, [printFol/1]).
+:- module(printFol, [printFol/1, printFol/2]).
 
 printFol(X) :-
-    printFol(0, X),
+    printFol(console, X).
+
+printFol(Mode, X) :-
+    printFol(Mode, 0, X),
+    !,
     write('.'),
     nl.
 
-printFol(_, que(X, R, B)) :-
+printFol(_Mode, _, que(X, R, B)) :-
     write('?'),
     print(X),
     write('['),
@@ -14,65 +18,71 @@ printFol(_, que(X, R, B)) :-
     print(B),
     write(']').
 
-printFol(Order, eq(X, Y)) :-
+printFol(_, Order, eq(X, Y)) :-
     printParantheses(Order, 2, (
                          print(X),
                          write(' = '),
                          print(Y)
                      )).
-printFol(Order, eq(X)) :-
+printFol(_, Order, eq(X)) :-
     printParantheses(Order, 2, (
                          print(X)
                      )).
-printFol(_, pred(Name, Arg)) :-
+printFol(_, _, pred(Name, Arg)) :-
     X =.. [Name, Arg],
     write(X).
-printFol(_, rel(Name, Arg1, Arg2)) :-
+printFol(_, _, rel(Name, Arg1, Arg2)) :-
     X =.. [Name, Arg1, Arg2],
     write(X).
 
-printFol(Order, some(X, some(X2, F))) :-
+printFol(Mode, Order, some(X, some(X2, F))) :-
     !,
-    printFol(Order, some([X, X2], F)).
-printFol(Order, some(X, F)) :-
-    printQuantifier(Order, 0, [X], F, '∃').
-printFol(Order, all(X, all(X2, F))) :-
+    printFol(Mode, Order, some([X, X2], F)).
+printFol(Mode, Order, some(X, F)) :-
+    printQuantifier(Mode, Order, 0, [X], F, exists).
+printFol(Mode, Order, all(X, all(X2, F))) :-
     !,
-    printFol(Order, all([X, X2], F)).
-printFol(Order, all(X, F)) :-
-    printQuantifier(Order, 0, [X], F, '∀').
+    printFol(Mode, Order, all([X, X2], F)).
+printFol(Mode, Order, all(X, F)) :-
+    printQuantifier(Mode, Order, 0, [X], F, forall).
 
-printFol(Order, not(F)) :-
-    printUnaryConnector(Order, 1, F, '~ ').
-printFol(Order, and(F1, F2)) :-
-    printBinaryConnector(Order, 2, F1, F2, ' & ').
-printFol(Order, or(F1, F2)) :-
-    printBinaryConnector(Order, 3, F1, F2, ' v ').
-printFol(Order, imp(F1, F2)) :-
-    printBinaryConnector(Order, 4, F1, F2, ' => ').
-printFol(Order, bimp(F1, F2)) :-
-    printBinaryConnector(Order, 5, F1, F2, ' <=> ').
+printFol(Mode, Order, not(F)) :-
+    printUnaryConnector(Mode, Order, 1, F, '~ ').
+printFol(Mode, Order, and(F1, F2)) :-
+    printBinaryConnector(Mode, Order, 2, F1, F2, ' & ').
+printFol(Mode, Order, or(F1, F2)) :-
+    printBinaryConnector(Mode, Order, 3, F1, F2, ' v ').
+printFol(Mode, Order, imp(F1, F2)) :-
+    printBinaryConnector(Mode, Order, 4, F1, F2, ' => ').
+printFol(Mode, Order, bimp(F1, F2)) :-
+    printBinaryConnector(Mode, Order, 5, F1, F2, ' <=> ').
 
-printUnaryConnector(Order, NewOrder, F, Connector) :-
+printUnaryConnector(Mode, Order, NewOrder, F, Connector) :-
     printParantheses(Order, NewOrder, (
                          write(Connector),
-                         printFol(NewOrder, F)
+                         printFol(Mode, NewOrder, F)
                      )).
-printBinaryConnector(Order, NewOrder, F1, F2, Connector) :-
+printBinaryConnector(Mode, Order, NewOrder, F1, F2, Connector) :-
     printParantheses(Order, NewOrder, (
-                         printFol(NewOrder, F1),
+                         printFol(Mode, NewOrder, F1),
                          write(Connector),
-                         printFol(NewOrder, F2)
+                         printFol(Mode, NewOrder, F2)
                      )).
-printQuantifier(Order, NewOrder, Xs, F2, Quantifier) :-
-    write(Quantifier),
+printQuantifier(Mode, Order, NewOrder, Xs, F2, Quantifier) :-
+    getQuantifierSymbol(Mode, Quantifier, QuantifierSymbol),
+    write(QuantifierSymbol),
     flatten(Xs, FlatXs),
     printQuantifierVars(FlatXs),
     write(':'),
     tab(1),
     printParantheses(Order, NewOrder, (
-                         printFol(NewOrder, F2)
+                         printFol(Mode, NewOrder, F2)
                      )).
+
+getQuantifierSymbol(idp, exists, '?').
+getQuantifierSymbol(idp, forall, '!').
+getQuantifierSymbol(console, exists, '∃').
+getQuantifierSymbol(console, forall, '∀').
 
 printQuantifierVars([Var]) :-
     !,

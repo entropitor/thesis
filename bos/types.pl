@@ -56,7 +56,9 @@ checkMatchingVar(Type, [_ | Rest]) :-
     checkMatchingVar(Type, Rest).
 
 nameTypes(Types) :-
-    maplist(nameType, Types).
+    maplist(nameType, Types),
+    term_variables(Types, UnnamedTypes),
+    nameUnnamedTypes(UnnamedTypes, 1).
 
 nameType(type(noun-Symbol, Type)) :-
     var(Type),
@@ -71,4 +73,11 @@ nameType(type(noun-Symbol, countable(Type))) :-
     !,
     Symbol = Type.
 nameType(_).
+
+nameUnnamedTypes([], _).
+nameUnnamedTypes([Type | Types], Number) :-
+    Number1 is Number + 1,
+    name(Number, NumberCodes),
+    atom_codes(Type, [116, 121, 112, 101 | NumberCodes]),
+    nameUnnamedTypes(Types, Number1).
 
