@@ -57,11 +57,8 @@ simplify(X, Y) :-
 
 test :-
     testAll([
-                   zebra,
-                   p1
-                 %% thieves,
-                 %% translators,
-                 %% swimming_suits
+                   p1,
+                   p2
              ]).
 
 % Test the list of problems
@@ -77,6 +74,12 @@ testAll(Problems) :-
 
 printResults(Results, Types) :-
     format('Problem ~p: ~p/~p~n', Results),
+    typesToSetOfVariables(Types, FixedTypes, TypesPerVariable),
+    writeln(FixedTypes),
+    maplist(writeln, TypesPerVariable),
+    nl.
+
+typesToSetOfVariables(Types, FixedTypes, TypesPerVariable) :-
     combineTypes(Types, CombinedTypes),
     findall(Bag, (
                 group_by(Var, X, (
@@ -88,14 +91,11 @@ printResults(Results, Types) :-
                              member(X-XVars, Pairs),
                              member(Var, XVars)
                          ), Bag)
-            ), Bags),
+            ), TypesPerVariable),
     findall(X, (
                 member(X, CombinedTypes),
                 term_variables(X, [])
-            ), KnownTypes),
-    writeln(KnownTypes),
-    maplist(writeln, Bags),
-    nl.
+            ), FixedTypes).
 
 
 testp(Problem, [Problem, NbCorrect, NbSentences], FlattenTypes) :-
