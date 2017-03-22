@@ -18,10 +18,9 @@ addRule(noun(_Type, SyntaxSg, SyntaxPl)) :-
     syntax_symbol(SyntaxSg, Symbol),
     assertz(pLexEntry(noun, [symbol:Symbol, num:sg, syntax:SyntaxSg, vType:Type]) :- addType(noun-Symbol, Type)),
     assertz(pLexEntry(noun, [symbol:Symbol, num:pl, syntax:SyntaxPl, vType:Type]) :- addType(noun-Symbol, Type)).
-addRule(pn(_VType, Syntax)) :-
+addRule(pn(_Type, Syntax)) :-
     syntax_symbol(Syntax, Symbol),
-    VType = qualified(_Type),
-    assertz(pLexEntry(pn, [symbol:Symbol, syntax:Syntax, vType:VType]) :- addType(pn-Symbol, VType)).
+    assertz(pLexEntry(pn, [symbol:Symbol, syntax:Syntax, vType:Type]) :- addType(pn-Symbol, Type)).
 addRule(ivpp(_Type, SyntaxSg, PP, SyntaxInf)) :-
     Type = pred(SubjType, ObjType),
     append(SyntaxSg, PP, WordForm),

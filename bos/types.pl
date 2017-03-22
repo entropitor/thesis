@@ -58,6 +58,10 @@ checkMatchingVar(Type, [_ | Rest]) :-
 nameTypes(Types) :-
     maplist(nameType, Types).
 
+nameType(type(noun-Symbol, Type)) :-
+    var(Type),
+    !,
+    Symbol = Type.
 nameType(type(noun-Symbol, qualified(Type))) :-
     var(Type),
     !,

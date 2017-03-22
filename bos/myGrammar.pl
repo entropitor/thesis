@@ -139,10 +139,10 @@ q([sem:Sem])-->
 
 np([coord:no, num:sg, gap:[np:NP-Type], ref:no, sem:NP, vType:Type])--> [].
 
-np([coord:no, num:_Num, gap:[number:countable(Type)], ref:no, sem:NP, vType:countable(Type)])-->
-    { combine(np:NP, [npGap:countable(Type)])}.
-np([coord:no, num:Num, gap:[number:countable(Type)], ref:no, sem:NP, vType:countable(Type)])-->
-    np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:countable(Type)]).
+np([coord:no, num:_Num, gap:[number:Type], ref:no, sem:NP, vType:Type])-->
+    { combine(np:NP, [npGap:Type])}.
+np([coord:no, num:Num, gap:[number:Type], ref:no, sem:NP, vType:Type])-->
+    np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:Type]).
 
 np([coord:conj, num:pl, gap:[], ref:Ref, sem:NP, vType:Type])-->
     np([coord:no, num:sg, gap:[], ref:Ref, sem:NP1, vType:Type]),
@@ -183,27 +183,27 @@ np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
     { combine(np:NP, [det:Det, n:N]) }.
 
 %TODO: fix plural vs singular
-np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:countable(Type)])-->
-    number([sem:Number, vType:countable(Type)]),
-    n([coord:_, num:Num, sem:N, vType:countable(Type)]),
+np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
+    number([sem:Number, vType:Type]),
+    n([coord:_, num:Num, sem:N, vType:Type]),
     { combine(np:NP, [number:Number, n:N]) }.
 
-np([coord:no, num:_Num, gap:[], ref:no, sem:NP, vType:countable(Type)])-->
-    number([sem:Number, vType:countable(Type)]),
+np([coord:no, num:_Num, gap:[], ref:no, sem:NP, vType:Type])-->
+    number([sem:Number, vType:Type]),
     { combine(np:NP, [number:Number]) }.
 
-np([coord:yes, num:Num, gap:[], ref:no, sem:NP, vType:countable(Type)])-->
-    np([coord:no, num:Num, gap:[number:countable(Type)], ref:no, sem:NP1, vType:countable(Type)]),
-    comp([sem:Comp, vType:countable(Type)]),
-    np([coord:no, num:_, gap:[], ref:no, sem:NP2, vType:countable(Type)]),
+np([coord:yes, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
+    np([coord:no, num:Num, gap:[number:Type], ref:no, sem:NP1, vType:Type]),
+    comp([sem:Comp, vType:Type]),
+    np([coord:no, num:_, gap:[], ref:no, sem:NP2, vType:Type]),
     { combine(np:NP, [np:NP1, comp:Comp, np:NP2]) }.
 
-np([coord:yes, num:Num, gap:[], ref:no, sem:NP, vType:countable(Type)])-->
-    np([coord:no, num:Num, gap:[number:countable(Type)], ref:no, sem:NP1, vType:countable(Type)]),
-    comp([sem:Comp, vType:countable(Type)]),
+np([coord:yes, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
+    np([coord:no, num:Num, gap:[number:Type], ref:no, sem:NP1, vType:Type]),
+    comp([sem:Comp, vType:Type]),
     np([coord:no, num:_, gap:[], ref:no, sem:NP2, vType:Type2]),
-    { var(Type2) ; Type2 \= countable(Type) },
-    { combine(np:NP, [np:NP1, comp:Comp, np:NP2, vTypeReal:countable(Type), vTypeOther:Type2]) }.
+    { var(Type2) ; Type2 \= Type },
+    { combine(np:NP, [np:NP1, comp:Comp, np:NP2, vTypeReal:Type, vTypeOther:Type2]) }.
 
 np([coord:no, num:sg, gap:[], ref:no, sem:NP, vType:Type])-->
     pn([sem:PN, vType:Type]),

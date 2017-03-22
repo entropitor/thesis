@@ -123,9 +123,23 @@ toFol(Sentences, Types, DRSs) :-
     pairs_keys_values(Pairs, Sentences, FOLs),
     nl,
     flatten(Types, FlattenedTypes),
-    \+ \+ (nameTypes(FlattenedTypes), numbervars(FOLs, 0, _), maplist(printSentence, Pairs)).
+    \+ \+ (nameTypes(FlattenedTypes), numbervars(FlattenedTypes, 0, End), numbervars(FOLs, End, _), printTypes(FlattenedTypes), maplist(printSentence, Pairs)).
 
+printTypes(Types) :-
+    maplist(getType, Types, RealTypes),
+    list_to_set(RealTypes, AllTypes),
+    maplist(getRepresentativeForType(Types), AllTypes, Representatives),
+    pairs_keys_values(Pairs, AllTypes, Representatives),
+    write('Types: '),
+    print(Pairs),
+    nl.
+getType(type(_, Type), Type).
+getRepresentativeForType([type(_-Var, Type) | _], Type, Var) :-
+    !.
+getRepresentativeForType([_ | Types], Type, Var) :-
+    getRepresentativeForType(Types, Type, Var).
 printSentence(Sentence-FOL) :-
+    write('// '),
     writeln(Sentence),
     printFol(FOL).
 
@@ -135,11 +149,14 @@ filterResults(Results, NewResults) :-
                 maplist(memberIfMultiple, PossibleResult, Results),
                 pairs_keys_values(PossibleResult, _DRSs, Types),
                 flatten(Types, FlattenTypes),
-                combineTypes(FlattenTypes, _NewTypes)
-                %% maplist(print, DRSs),
-                %% nl,
-                %% print(NewTypes)
+                combineTypes(FlattenTypes, NewTypes),
+                \+ endoPredicateType(NewTypes)
             ), NewResults).
+
+endoPredicateType([type(_, pred(X, Y)) | _]) :-
+    X == Y.
+endoPredicateType([_ | Types]) :-
+    endoPredicateType(Types).
 
 memberIfMultiple(fail-[], []).
 memberIfMultiple(H, [H|_]).
