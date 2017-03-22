@@ -68,7 +68,7 @@ test :-
 % fails if any one of the problems fails
 testAll(Problems) :-
     maplist(testp, Problems, Resultss, Typess),
-    format('~n~n~nResults (Number of sentences with 1 meaning):~n#############################################~n'),
+    format('~n~n~nResults (number of meanings per sentence and for the whole puzzle):~n###################################################################~n'),
     maplist(printResults, Resultss, Typess),
     \+ (
         member([_, X, Y], Resultss),
@@ -76,7 +76,7 @@ testAll(Problems) :-
     ).
 
 printResults(Results, Types) :-
-    format('Problem ~p: ~p/~p~n', Results),
+    format('Problem ~p: ~p --> ~p~n', Results),
     typesToSetOfVariables(Types, FixedTypes, TypesPerVariable),
     writeln(FixedTypes),
     maplist(writeln, TypesPerVariable),
@@ -101,7 +101,7 @@ typesToSetOfVariables(Types, FixedTypes, TypesPerVariable) :-
             ), FixedTypes).
 
 
-testp(Problem, [Problem, NbCorrect, NbSentences], FlattenTypes) :-
+testp(Problem, [Problem, NbDRSes, NbResults], FlattenTypes) :-
     useLexicon(Problem),
     problem(Problem, Sentences),
     format('~n###############################~n###   ~p~n###############################~n', [Problem]),
@@ -110,11 +110,8 @@ testp(Problem, [Problem, NbCorrect, NbSentences], FlattenTypes) :-
     length(NewResults, NbResults),
     maplist(pairs_keys_values, NewResults, NewDRSss, Types),
     flatten(Types, FlattenTypes),
-    findall(1, member(1, NbDRSes), L),
-    length(L, NbCorrect),
-    length(Sentences, NbSentences),
     nl, print(NbDRSes),
-    format('~nNumber of sentences with 1 meaning: ~p/~p~nNumber of possible meanings in total: ~p', [NbCorrect, NbSentences, NbResults]),
+    format('~nNumber of possible meanings in total: ~p', [NbResults]),
     nl,
     maplist(toFol(Sentences), Types, NewDRSss).
 
