@@ -10,23 +10,29 @@
 
 solution2idp(solution(Sentences, DRSs, Types), Problem) :-
     maplist(drs2fol, DRSs, FOLs),
-    pairs_keys_values(Pairs, Sentences, FOLs),
+    pairs_keys_values(SentencePairs, Sentences, FOLs),
     nameTypes(Types),
-    writeln(Types),
     nameVariables(FOLs),
-    \+ \+ printFile(Problem, Pairs).
+    getPredicates(Types, Predicates),
+    getBaseTypes(Types, BaseTypes),
 
-printFile(Problem, Pairs) :-
+    writeln(Types),
+    writeln(Predicates),
+    writeln(BaseTypes),
+
+    \+ \+ printFile(Problem, SentencePairs, voc(BaseTypes, Predicates)).
+
+printFile(Problem, SentencePairs, Vocabularium) :-
     problemToFileName(Problem, FileName),
     tell(FileName),
     write('// Problem '),
     writeln(Problem),
     nl,
-    printVocabulary(),
+    printVocabulary(Vocabularium),
     nl,
     printStructure(),
     nl,
-    printTheory(Pairs),
+    printTheory(SentencePairs, Vocabularium),
     nl,
     printMain(),
     nl,
@@ -35,16 +41,51 @@ problemToFileName(Problem, FileName) :-
     atom_concat('output/', Problem, Temp1),
     atom_concat(Temp1, '.idp', FileName).
 
-printVocabulary() :-
+printVocabulary(voc(BaseTypes, Predicates)) :-
     writeln('vocabulary V {'),
+    maplist(printType, BaseTypes),
+    nl,
+    maplist(printPredicate, Predicates),
     writeln('}').
+printType(baseType(Type, constructed:List)) :-
+    !,
+    atomic_list_concat(List, ', ', ListString),
+    format('    type ~p constructed from {~w}~n', [Type, ListString]).
+printType(baseType(Type, int)) :-
+    !,
+    format('    type ~p isa int~n', [Type]).
+printType(baseType(Type, X)) :-
+    !,
+    format('    type ~p //~p~n', [Type, X]).
+printPredicate(predicate(Name, Type1, Type2)) :-
+    format('    ~p(~p, ~p)~n', [Name, Type1, Type2]).
+
 printStructure() :-
     writeln('structure S : V {'),
     writeln('}').
-printTheory(Pairs) :-
+
+printTheory(SentencePairs, voc(_, Predicates)) :-
     writeln('theory T : V {'),
-    maplist(printSentence, Pairs),
+    maplist(printSentence, SentencePairs),
+    nl,
+    format('    // Logigram bijection axioms:~n'),
+    maplist(printLogigramAxiomsForPredicate, Predicates),
+    format('    // Logigram synonym axioms:~n'),
+    printSynonymAxioms(Predicates),
     writeln('}').
+printSentence(Sentence-FOL) :-
+    format('    // ~w~n    ~@~n', [Sentence, printFol(idp, FOL)]).
+printLogigramAxiomsForPredicate(predicate(Name, Type1, Type2)) :-
+    format('    ! x [~p] ?=1 y [~p]: ~p(x, y).~n', [Type1, Type2, Name]),
+    format('    ! x [~p] ?=1 y [~p]: ~p(y, x).~n~n', [Type2, Type1, Name]).
+printSynonymAxioms([]).
+printSynonymAxioms([predicate(Name, Type1, Type2) | Preds]) :-
+    include(=(predicate(_, Type1, Type2)), Preds, Synonyms),
+    maplist(printSynonymAxioms(predicate(Name, Type1, Type2)), Synonyms),
+    printSynonymAxioms(Preds).
+printSynonymAxioms(predicate(Name1, Type1, Type2), predicate(Name2, Type1, Type2)) :-
+    format('    ! x [~p] y [~p]: ~p(x, y) <=> ~p(x, y).~n', [Type1, Type2, Name1, Name2]).
+
 printMain() :-
     writeln('procedure main() {'),
     writeln('    stdoptions.nbmodels = 2;'),
@@ -52,12 +93,6 @@ printMain() :-
     writeln('    model = modelexpand(T,S)'),
     writeln('}').
 
-
-printSentence(Sentence-FOL) :-
-    write('    // '),
-    writeln(Sentence),
-    write('    '),
-    printFol(idp, FOL).
 
 nameVariables(FOL) :-
     term_variables(FOL, Vars),
@@ -79,3 +114,54 @@ codeToAtom(Code, Atom) :-
     C1 is Code // 26 + 96,
     C2 is (Code mod 26) + 97,
     atom_codes(Atom, [C1, C2]).
+
+
+getPredicates([], []).
+getPredicates([type(_Wordsort-Name, pred(T1, T2)) | Types], [predicate(Name, T1, T2) | Preds]) :-
+    !,
+    getPredicates(Types, Preds).
+getPredicates([type(_Wordsort-Name, fun(T1, T2)) | Types], [predicate(Name, T1, T2) | Preds]) :-
+    !,
+    getPredicates(Types, Preds).
+getPredicates([_ | Types], Preds) :-
+    !,
+    getPredicates(Types, Preds).
+
+getBaseTypes(Types, BaseTypes) :-
+    maplist(getBaseTypesForType, Types, Temp1),
+    flatten(Temp1, BaseTypesAtomsList),
+    list_to_set(BaseTypesAtomsList, BaseTypesAtoms),
+    writeln(BaseTypesAtoms),
+    maplist(toBaseType(Types), BaseTypesAtoms, BaseTypes).
+
+getBaseTypesForType(type(_, pred(T1, T2)), [T1, T2]) :-
+    !.
+getBaseTypesForType(type(_, fun(T1, T2)), [T1, T2]) :-
+    !.
+getBaseTypesForType(type(_, T), [T]) :-
+    !.
+getBaseTypesForType(attr(_, _), []) :-
+    !.
+
+
+toBaseType(Types, BaseType, baseType(BaseType, constructed:Symbols)) :-
+    maplist(getPNsForBaseType(BaseType), Types, Symbols1),
+    include(\=(null), Symbols1, Symbols),
+    Symbols \= [],
+    (
+        include(=(attr(BaseType, countable)), Types, []),
+        !
+    ;
+        error('Constructed type used as countable')
+    ),
+    !.
+toBaseType(Types, BaseType, baseType(BaseType, int)) :-
+    include(=(attr(BaseType, countable)), Types, X),
+    X \= [],
+    !.
+toBaseType(_, Type, baseType(Type, unknown)).
+
+getPNsForBaseType(BaseType, type(pn-Symbol, BaseType), Symbol) :-
+    !.
+getPNsForBaseType(_, _, null).
+

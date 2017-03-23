@@ -49,13 +49,13 @@ printFol(Mode, Order, all(X, F)) :-
 printFol(Mode, Order, not(F)) :-
     printUnaryConnector(Mode, Order, 1, F, '~ ').
 printFol(Mode, Order, and(F1, F2)) :-
-    printBinaryConnector(Mode, Order, 2, F1, F2, ' & ').
+    printBinaryConnector(Mode, Order, 2, F1, F2, conjunction).
 printFol(Mode, Order, or(F1, F2)) :-
-    printBinaryConnector(Mode, Order, 3, F1, F2, ' v ').
+    printBinaryConnector(Mode, Order, 3, F1, F2, disjunction).
 printFol(Mode, Order, imp(F1, F2)) :-
-    printBinaryConnector(Mode, Order, 4, F1, F2, ' => ').
+    printBinaryConnector(Mode, Order, 4, F1, F2, implication).
 printFol(Mode, Order, bimp(F1, F2)) :-
-    printBinaryConnector(Mode, Order, 5, F1, F2, ' <=> ').
+    printBinaryConnector(Mode, Order, 5, F1, F2, equivalence).
 
 printUnaryConnector(Mode, Order, NewOrder, F, Connector) :-
     printParantheses(Order, NewOrder, (
@@ -65,11 +65,12 @@ printUnaryConnector(Mode, Order, NewOrder, F, Connector) :-
 printBinaryConnector(Mode, Order, NewOrder, F1, F2, Connector) :-
     printParantheses(Order, NewOrder, (
                          printFol(Mode, NewOrder, F1),
-                         write(Connector),
+                         getSymbol(Mode, Connector, ConnectorCode),
+                         format(' ~w ', [ConnectorCode]),
                          printFol(Mode, NewOrder, F2)
                      )).
 printQuantifier(Mode, Order, NewOrder, Xs, F2, Quantifier) :-
-    getQuantifierSymbol(Mode, Quantifier, QuantifierSymbol),
+    getSymbol(Mode, Quantifier, QuantifierSymbol),
     write(QuantifierSymbol),
     flatten(Xs, FlatXs),
     printQuantifierVars(FlatXs),
@@ -79,10 +80,19 @@ printQuantifier(Mode, Order, NewOrder, Xs, F2, Quantifier) :-
                          printFol(Mode, NewOrder, F2)
                      )).
 
-getQuantifierSymbol(idp, exists, '?').
-getQuantifierSymbol(idp, forall, '!').
-getQuantifierSymbol(console, exists, '∃').
-getQuantifierSymbol(console, forall, '∀').
+getSymbol(idp, exists, '?').
+getSymbol(idp, forall, '!').
+getSymbol(idp, conjunction, '&').
+getSymbol(idp, disjunction, '|').
+getSymbol(idp, implication, '=>').
+getSymbol(idp, equivalence, '<=>').
+
+getSymbol(console, exists, '∃').
+getSymbol(console, forall, '∀').
+getSymbol(console, conjunction, '∧').
+getSymbol(console, disjunction, '∨').
+getSymbol(console, implication, '=>').
+getSymbol(console, equivalence, '<=>').
 
 printQuantifierVars([Var]) :-
     !,
