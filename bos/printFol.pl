@@ -39,12 +39,12 @@ printFol(Mode, Order, some(X, some(X2, F))) :-
     !,
     printFol(Mode, Order, some([X, X2], F)).
 printFol(Mode, Order, some(X, F)) :-
-    printQuantifier(Mode, Order, 0, [X], F, exists).
+    printQuantifier(Mode, Order, [X], F, exists).
 printFol(Mode, Order, all(X, all(X2, F))) :-
     !,
     printFol(Mode, Order, all([X, X2], F)).
 printFol(Mode, Order, all(X, F)) :-
-    printQuantifier(Mode, Order, 0, [X], F, forall).
+    printQuantifier(Mode, Order, [X], F, forall).
 
 printFol(Mode, Order, not(F)) :-
     printUnaryConnector(Mode, Order, 1, F, '~ ').
@@ -69,14 +69,15 @@ printBinaryConnector(Mode, Order, NewOrder, F1, F2, Connector) :-
                          format(' ~w ', [ConnectorCode]),
                          printFol(Mode, NewOrder, F2)
                      )).
-printQuantifier(Mode, Order, NewOrder, Xs, F2, Quantifier) :-
+printQuantifier(Mode, Order, Xs, F2, Quantifier) :-
+    NewOrder = 6,
     getSymbol(Mode, Quantifier, QuantifierSymbol),
-    write(QuantifierSymbol),
     flatten(Xs, FlatXs),
-    printQuantifierVars(FlatXs),
-    write(':'),
-    tab(1),
     printParantheses(Order, NewOrder, (
+                         write(QuantifierSymbol),
+                         printQuantifierVars(FlatXs),
+                         write(':'),
+                         tab(1),
                          printFol(Mode, NewOrder, F2)
                      )).
 

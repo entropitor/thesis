@@ -58,8 +58,8 @@ semLex(cn, M) :-
          vType:_].
 
 semLex(noun, M) :-
-    M = [symbol:Sym,
-         sem:lam(X, drs([], [pred(Sym, X)]))].
+    M = [symbol:_Sym,
+         sem:lam(_X, drs([], []))].
 
 semLex(iv, M) :-
     M = [symbol:Sym,

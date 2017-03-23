@@ -16,6 +16,9 @@ solution2idp(solution(Sentences, DRSs, Types), Problem) :-
     getPredicates(Types, Predicates),
     getBaseTypes(Types, BaseTypes),
 
+    nl,
+    maplist(writeln, FOLs),
+    nl,
     writeln(Types),
     writeln(Predicates),
     writeln(BaseTypes),
@@ -76,8 +79,8 @@ printTheory(SentencePairs, voc(_, Predicates)) :-
 printSentence(Sentence-FOL) :-
     format('    // ~w~n    ~@~n', [Sentence, printFol(idp, FOL)]).
 printLogigramAxiomsForPredicate(predicate(Name, Type1, Type2)) :-
-    format('    ! x [~p] ?=1 y [~p]: ~p(x, y).~n', [Type1, Type2, Name]),
-    format('    ! x [~p] ?=1 y [~p]: ~p(y, x).~n~n', [Type2, Type1, Name]).
+    format('    ! x [~p]: ?=1 y [~p]: ~p(x, y).~n', [Type1, Type2, Name]),
+    format('    ! x [~p]: ?=1 y [~p]: ~p(y, x).~n~n', [Type2, Type1, Name]).
 printSynonymAxioms([]).
 printSynonymAxioms([predicate(Name, Type1, Type2) | Preds]) :-
     include(=(predicate(_, Type1, Type2)), Preds, Synonyms),
