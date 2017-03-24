@@ -7,21 +7,24 @@
 :- use_module(types, [
                   nameTypes/1
               ]).
+:- use_module(typeExtraction, [
+                  getPredicates/2,
+                  getBaseTypes/2
+              ]).
 
 solution2idp(solution(Sentences, DRSs, Types), Problem) :-
     maplist(drs2fol, DRSs, FOLs),
     pairs_keys_values(SentencePairs, Sentences, FOLs),
     nameTypes(Types),
     nameVariables(FOLs),
+    %% writeln(Types),
     getPredicates(Types, Predicates),
     getBaseTypes(Types, BaseTypes),
 
-    nl,
-    maplist(writeln, FOLs),
-    nl,
-    writeln(Types),
-    writeln(Predicates),
-    writeln(BaseTypes),
+    %% nl,
+    %% writeln(Types),
+    %% writeln(Predicates),
+    %% writeln(BaseTypes),
 
     \+ \+ printFile(Problem, SentencePairs, voc(BaseTypes, Predicates)).
 
@@ -91,7 +94,7 @@ printSynonymAxioms(predicate(Name1, Type1, Type2), predicate(Name2, Type1, Type2
 
 printMain() :-
     writeln('procedure main() {'),
-    writeln('    stdoptions.nbmodels = 2;'),
+    writeln('    stdoptions.nbmodels = 10;'),
     writeln('    printmodels(modelexpand(T,S))'),
     writeln('    model = modelexpand(T,S)'),
     writeln('}').
@@ -118,53 +121,4 @@ codeToAtom(Code, Atom) :-
     C2 is (Code mod 26) + 97,
     atom_codes(Atom, [C1, C2]).
 
-
-getPredicates([], []).
-getPredicates([type(_Wordsort-Name, pred(T1, T2)) | Types], [predicate(Name, T1, T2) | Preds]) :-
-    !,
-    getPredicates(Types, Preds).
-getPredicates([type(_Wordsort-Name, fun(T1, T2)) | Types], [predicate(Name, T1, T2) | Preds]) :-
-    !,
-    getPredicates(Types, Preds).
-getPredicates([_ | Types], Preds) :-
-    !,
-    getPredicates(Types, Preds).
-
-getBaseTypes(Types, BaseTypes) :-
-    maplist(getBaseTypesForType, Types, Temp1),
-    flatten(Temp1, BaseTypesAtomsList),
-    list_to_set(BaseTypesAtomsList, BaseTypesAtoms),
-    writeln(BaseTypesAtoms),
-    maplist(toBaseType(Types), BaseTypesAtoms, BaseTypes).
-
-getBaseTypesForType(type(_, pred(T1, T2)), [T1, T2]) :-
-    !.
-getBaseTypesForType(type(_, fun(T1, T2)), [T1, T2]) :-
-    !.
-getBaseTypesForType(type(_, T), [T]) :-
-    !.
-getBaseTypesForType(attr(_, _), []) :-
-    !.
-
-
-toBaseType(Types, BaseType, baseType(BaseType, constructed:Symbols)) :-
-    maplist(getPNsForBaseType(BaseType), Types, Symbols1),
-    include(\=(null), Symbols1, Symbols),
-    Symbols \= [],
-    (
-        include(=(attr(BaseType, countable)), Types, []),
-        !
-    ;
-        error('Constructed type used as countable')
-    ),
-    !.
-toBaseType(Types, BaseType, baseType(BaseType, int)) :-
-    include(=(attr(BaseType, countable)), Types, X),
-    X \= [],
-    !.
-toBaseType(_, Type, baseType(Type, unknown)).
-
-getPNsForBaseType(BaseType, type(pn-Symbol, BaseType), Symbol) :-
-    !.
-getPNsForBaseType(_, _, null).
 

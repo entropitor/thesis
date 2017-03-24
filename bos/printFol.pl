@@ -4,7 +4,7 @@ printFol(X) :-
     printFol(console, X).
 
 printFol(Mode, X) :-
-    printFol(Mode, 0, X),
+    printFol(Mode, 6, X),
     !,
     write('.'),
     nl.

@@ -1,0 +1,18 @@
+vocabulary V {
+    type X = {1; 2} isa nat
+    
+    s(X)
+}
+
+structure S : V {
+}
+
+theory T : V {
+    ! x [X]: s(x) => x > 1.
+}
+
+procedure main() {
+    stdoptions.nbmodels = 2;
+	printmodels(modelexpand(T,S))
+    model = modelexpand(T,S)
+}

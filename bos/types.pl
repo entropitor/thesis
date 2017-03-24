@@ -6,8 +6,7 @@
           ]).
 
 combineTypes(In, Out) :-
-    checkUnkownVars(In, Out1, Success),
-    !,
+    checkUnkownVars(In, In, Out1, Success),
     call(Success),
     toTypesAndAttributes(Out1, Types, Attributes),
     list_to_set(Attributes, AttributeSet),
@@ -52,38 +51,40 @@ addTypeAttribute(Type, Attribute) :-
     b_setval(types, [attr(Type, Attribute) | Types]).
 
 
-checkUnkownVars([], [], true).
-checkUnkownVars([type(WordSort-Var, Type) | Rest], [type(WordSort-Var, Type) | Out], Success) :-
+checkUnkownVars(_, [], [], true).
+checkUnkownVars(AllTypes, [type(WordSort-Var, Type) | Rest], [type(WordSort-Var, Type) | Out], Success) :-
     nonvar(Var),
     !,
-    checkUnkownVars(Rest, Out, Success).
-checkUnkownVars([type(WordSort-Var, Type) | Rest], [type(WordSort-Var, Type) | Out], true) :-
+    checkUnkownVars(AllTypes, Rest, Out, Success).
+checkUnkownVars(AllTypes, [type(WordSort-Var, Type) | Rest], [type(WordSort-Var, Type) | Out], true) :-
     var(Var),
     !,
-    checkMatchingVar(type(WordSort-Var, Type), Rest),
-    checkUnkownVars(Rest, Out, _).
-checkUnkownVars([T | Rest], [T | Out], Success) :-
-    checkUnkownVars(Rest, Out, Success).
+    checkMatchingVar(type(WordSort-Var, Type), AllTypes),
+    checkUnkownVars(AllTypes, Rest, Out, _).
+checkUnkownVars(AllTypes, [T | Rest], [T | Out], Success) :-
+    checkUnkownVars(AllTypes, Rest, Out, Success).
 
 checkMatchingVar(type(_, Type), []) :-
     format("~nError finding predicate for type: ~p", [Type]),
     fail.
-checkMatchingVar(type(Var, Type), [type(Var, Type2) | _]) :-
+checkMatchingVar(type(WS-Var, Type), [type(WS-Var2, Type2) | _]) :-
+    nonvar(Var2),
+    Var = Var2,
     nonvar(Type2),
     Type = Type2.
 checkMatchingVar(Type, [_ | Rest]) :-
     checkMatchingVar(Type, Rest).
 
 nameTypes(Types) :-
-    maplist(nameType, Types),
+    maplist(nameNounType, Types),
     term_variables(Types, UnnamedTypes),
     nameUnnamedTypes(UnnamedTypes, 1).
 
-nameType(type(noun-Symbol, Type)) :-
+nameNounType(type(noun-Symbol, Type)) :-
     var(Type),
     !,
     Symbol = Type.
-nameType(_).
+nameNounType(_).
 
 nameUnnamedTypes([], _).
 nameUnnamedTypes([Type | Types], Number) :-

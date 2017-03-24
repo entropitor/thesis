@@ -56,6 +56,7 @@ simplify(X, Y) :-
 :- use_module(printFol, [printFol/1]).
 
 :- use_module(solution2idp, [solution2idp/2]).
+:- use_module(typeExtraction, [getBaseTypeAtoms/2]).
 
 /*========================================================================
     Driver Predicates
@@ -104,27 +105,49 @@ typesToSetOfVariables(Types, FixedTypes, TypesPerVariable) :-
             ), FixedTypes).
 
 solvep(Problem) :-
-    testp(Problem, _, [Solution]),
+    testp(Problem, _, Sols),
+    Sols = [Solution],
+    nl,
     solution2idp(Solution, Problem).
 
-testp(Problem, [Problem, NbDRSes, NbResults], Solutions) :-
-    useLexicon(Problem),
-    problem(Problem, Sentences),
+testp(ProblemName, [ProblemName, NbDRSes, NbResults], Solutions) :-
+    useLexicon(ProblemName),
+    problem(ProblemName, Problem),
+    Problem = p(_, _, Sentences),
     format('~n###############################~n###   ~p~n###############################~n', [Problem]),
     maplist(testSentence, Sentences, NbDRSes, Results),
-    filterResults(Results, NewResults),
+    filterResults(Problem, Results, NewResults),
     length(NewResults, NbResults),
     maplist(pairs_keys_values, NewResults, NewDRSss, Types),
     maplist(toSolution(Sentences), NewDRSss, Types, Solutions),
     nl, print(NbDRSes),
-    format('~nNumber of possible meanings in total: ~p', [NbResults]),
-    nl,
+    format('~nNumber of possible meanings in total: ~p~n', [NbResults]),
     %% maplist(toFol(Sentences), Types, NewDRSss),
     true.
 
+filterResults(p(NbBaseTypes, _, _), Results, NewResults) :-
+    findall(PossibleResult, (
+                maplist(memberIfMultiple, PossibleResult, Results),
+                pairs_keys_values(PossibleResult, _DRSs, Types),
+                flatten(Types, FlattenTypes),
+                combineTypes(FlattenTypes, NewTypes),
+%% \+ endoPredicateType(NewTypes),
+                \+ \+ (
+                    nameTypes(NewTypes),
+                    getBaseTypeAtoms(NewTypes, BaseTypes),
+                    length(BaseTypes, NbBaseTypes)
+                )
+            ), NewResults).
+
+endoPredicateType([type(_, pred(X, Y)) | _]) :-
+    X == Y.
+endoPredicateType([_ | Types]) :-
+    endoPredicateType(Types).
+
 toSolution(Sentences, DRSs, Types, solution(Sentences, DRSs, CombinedTypes)) :-
     flatten(Types, FlatTypes),
-    combineTypes(FlatTypes, CombinedTypes).
+    combineTypes(FlatTypes, CombinedTypes),
+    !.
 
 toFol(Sentences, Types, DRSs) :-
     maplist(drs2fol, DRSs, FOLs),
@@ -134,7 +157,8 @@ toFol(Sentences, Types, DRSs) :-
     \+ \+ (nameTypes(FlattenedTypes), numbervars(FlattenedTypes, 0, End), numbervars(FOLs, End, _), printTypes(FlattenedTypes), maplist(printSentence, Pairs)).
 
 printTypes(Types) :-
-    maplist(getType, Types, RealTypes),
+    include(=(type(_, _)), Types, Types1),
+    maplist(getType, Types1, RealTypes),
     list_to_set(RealTypes, AllTypes),
     maplist(getRepresentativeForType(Types), AllTypes, Representatives),
     pairs_keys_values(Pairs, AllTypes, Representatives),
@@ -150,21 +174,6 @@ printSentence(Sentence-FOL) :-
     write('// '),
     writeln(Sentence),
     printFol(FOL).
-
-
-filterResults(Results, NewResults) :-
-    findall(PossibleResult, (
-                maplist(memberIfMultiple, PossibleResult, Results),
-                pairs_keys_values(PossibleResult, _DRSs, Types),
-                flatten(Types, FlattenTypes),
-                combineTypes(FlattenTypes, NewTypes),
-                \+ endoPredicateType(NewTypes)
-            ), NewResults).
-
-endoPredicateType([type(_, pred(X, Y)) | _]) :-
-    X == Y.
-endoPredicateType([_ | Types]) :-
-    endoPredicateType(Types).
 
 memberIfMultiple(fail-[], []).
 memberIfMultiple(H, [H|_]).
