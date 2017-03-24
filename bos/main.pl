@@ -55,7 +55,7 @@ simplify(X, Y) :-
 :- use_module(drs2fol, [drs2fol/2]).
 :- use_module(printFol, [printFol/1]).
 
-:- use_module(solution2idp, [solution2idp/2]).
+:- use_module(solution2idp, [solution2idp/3]).
 :- use_module(typeExtraction, [getBaseTypeAtoms/2]).
 
 /*========================================================================
@@ -104,11 +104,12 @@ typesToSetOfVariables(Types, FixedTypes, TypesPerVariable) :-
                 term_variables(X, [])
             ), FixedTypes).
 
-solvep(Problem) :-
-    testp(Problem, _, Sols),
+solvep(ProblemName) :-
+    testp(ProblemName, _, Sols),
     Sols = [Solution],
     nl,
-    solution2idp(Solution, Problem).
+    problem(ProblemName, Problem),
+    solution2idp(Solution, ProblemName, Problem).
 
 testp(ProblemName, [ProblemName, NbDRSes, NbResults], Solutions) :-
     useLexicon(ProblemName),

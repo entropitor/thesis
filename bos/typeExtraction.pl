@@ -1,6 +1,6 @@
 :- module(typeExtraction, [
               getPredicates/2,
-              getBaseTypes/2,
+              getBaseTypes/4,
               getBaseTypeAtoms/2
           ]).
 getPredicates([], []).
@@ -14,9 +14,10 @@ getPredicates([_ | Types], Preds) :-
     !,
     getPredicates(Types, Preds).
 
-getBaseTypes(Types, BaseTypes) :-
+getBaseTypes(Types, BaseTypes, NbBaseTypes, NbConceptsPerType) :-
     getBaseTypeAtoms(Types, BaseTypesAtoms),
-    maplist(toBaseType(Types), BaseTypesAtoms, BaseTypes).
+    length(BaseTypesAtoms, NbBaseTypes),
+    maplist(toBaseType(Types, NbConceptsPerType), BaseTypesAtoms, BaseTypes).
 
 getBaseTypeAtoms(Types, BaseTypesAtoms) :-
     maplist(getBaseTypesForType, Types, Temp1),
@@ -33,13 +34,14 @@ getBaseTypesForType(attr(_, _), []) :-
     !.
 
 
-toBaseType(Types, BaseType, baseType(BaseType, constructed:Symbols)) :-
+toBaseType(Types, NbConceptsPerType, BaseType, baseType(BaseType, constructed:Symbols)) :-
     include(=(attr(BaseType, qualified)), Types, X),
     X \= [],
     !,
     maplist(getPNsForBaseType(BaseType), Types, Symbols1),
-    include(\=(null), Symbols1, Symbols),
-    Symbols \= [],
+    include(\=(null), Symbols1, Symbols2),
+    Symbols2 \= [],
+    completeConstructedSet(Symbols2, NbConceptsPerType, BaseType, Symbols),
     (
         include(=(attr(BaseType, countable)), Types, []),
         !
@@ -47,12 +49,19 @@ toBaseType(Types, BaseType, baseType(BaseType, constructed:Symbols)) :-
         error(err('Constructed type used as countable', BaseType))
     ),
     !.
-toBaseType(Types, BaseType, baseType(BaseType, int)) :-
+toBaseType(Types, _NbConceptsPerType, BaseType, baseType(BaseType, int)) :-
     include(=(attr(BaseType, countable)), Types, X),
     X \= [],
     !.
-toBaseType(_, Type, baseType(Type, unknown)).
+toBaseType(_, _, Type, baseType(Type, unknown)).
 
 getPNsForBaseType(BaseType, type(pn-Symbol, BaseType), Symbol) :-
     !.
 getPNsForBaseType(_, _, null).
+
+
+completeConstructedSet(Symbols, L, _, Symbols) :-
+    length(Symbols, L),
+    !.
+completeConstructedSet(Symbols, _, BaseType, [OtherSymbol | Symbols]) :-
+    atom_concat('the_other_', BaseType, OtherSymbol).

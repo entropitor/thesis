@@ -1,5 +1,5 @@
 :- module(solution2idp, [
-              solution2idp/2
+              solution2idp/3
           ]).
 
 :- use_module(drs2fol, [drs2fol/2]).
@@ -9,27 +9,28 @@
               ]).
 :- use_module(typeExtraction, [
                   getPredicates/2,
-                  getBaseTypes/2
+                  getBaseTypes/4
               ]).
 
-solution2idp(solution(Sentences, DRSs, Types), Problem) :-
+solution2idp(solution(Sentences, DRSs, Types), ProblemName, Problem) :-
+    Problem = p(NbBaseTypes, NbConceptsPerType, _),
     maplist(drs2fol, DRSs, FOLs),
     pairs_keys_values(SentencePairs, Sentences, FOLs),
     nameTypes(Types),
     nameVariables(FOLs),
     %% writeln(Types),
     getPredicates(Types, Predicates),
-    getBaseTypes(Types, BaseTypes),
+    getBaseTypes(Types, BaseTypes, NbBaseTypes, NbConceptsPerType),
 
     %% nl,
     %% writeln(Types),
     %% writeln(Predicates),
     %% writeln(BaseTypes),
 
-    \+ \+ printFile(Problem, SentencePairs, voc(BaseTypes, Predicates)).
+    \+ \+ printFile(ProblemName, Problem, SentencePairs, voc(BaseTypes, Predicates)).
 
-printFile(Problem, SentencePairs, Vocabularium) :-
-    problemToFileName(Problem, FileName),
+printFile(ProblemName, Problem, SentencePairs, Vocabularium) :-
+    problemToFileName(ProblemName, FileName),
     tell(FileName),
     write('// Problem '),
     writeln(Problem),
@@ -43,8 +44,8 @@ printFile(Problem, SentencePairs, Vocabularium) :-
     printMain(),
     nl,
     told.
-problemToFileName(Problem, FileName) :-
-    atom_concat('output/', Problem, Temp1),
+problemToFileName(ProblemName, FileName) :-
+    atom_concat('output/', ProblemName, Temp1),
     atom_concat(Temp1, '.idp', FileName).
 
 printVocabulary(voc(BaseTypes, Predicates)) :-
