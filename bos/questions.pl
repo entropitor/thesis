@@ -1,17 +1,34 @@
 :- module(questions, [
-              askQuestion/3
+              askQuestion/3,
+              setQuestionTopic/1,
+              clearQuestionTopic/0
           ]).
 
+:- dynamic questionTopic/1.
+:- clearQuestionTopic.
+
+setQuestionTopic(X) :-
+    clearQuestionTopic,
+    assertz(questionTopic(X)).
+clearQuestionTopic :-
+    retractall(questionTopic(_)).
+
 askQuestion(Question, _, Answer) :-
+    questionTopic(Topic),
     loadFile('output/cachedAnswers.pl'),
-    answer(Question, Answer),
+    answer(Topic, Question, Answer),
     !.
 askQuestion(Question, Str, Answer) :-
+    questionTopic(Topic),
     askQuestionToUser(Str, Answer),
-    assertz(answer(Question, Answer)),
+    assertz(answer(Topic, Question, Answer)),
     tell('output/cachedAnswers.pl'),
-    listing(answer/2),
+    listing(answer/3),
     told.
+askQuestion(_, _, _) :-
+    \+ questionTopic(_),
+    error('no question topic found').
+
 
 askQuestionToUser(Question, Answer) :-
     writeln(Question),
@@ -23,7 +40,7 @@ loadFile(FileName) :-
     consult(FileName).
 loadFile(FileName) :-
     tell(FileName),
-    writeln(':- dynamic answer/2.'),
+    writeln(':- dynamic answer/3.'),
     told,
     consult(FileName).
 
