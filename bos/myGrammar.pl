@@ -197,18 +197,11 @@ np([coord:no, num:_Num, gap:[], ref:no, sem:NP, vType:Type])-->
     { combine(np:NP, [number:Number]) }.
 
 np([coord:yes, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
-    np([coord:no, num:Num, gap:[number:Type], ref:no, sem:NP1, vType:Type]),
-    comp([sem:Comp, vType:Type]),
-    np([coord:no, num:_, gap:[], ref:no, sem:NP2, vType:Type]),
-    { addTypeAttribute(Type, countable) },
-    { combine(np:NP, [np:NP1, comp:Comp, np:NP2]) }.
-
-np([coord:yes, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
-    np([coord:no, num:Num, gap:[number:Type], ref:no, sem:NP1, vType:Type]),
+    np([coord:no, num:Num, gap:[number:Type], ref:no, sem:NP1, vType:Type1]),
     comp([sem:Comp, vType:Type]),
     np([coord:no, num:_, gap:[], ref:no, sem:NP2, vType:Type2]),
-    { addTypeAttribute(Type, countable) },
-    { combine(np:NP, [np:NP1, comp:Comp, np:NP2, vTypeReal:Type, vTypeOther:Type2]) }.
+    { addTypeAttribute(Type, countable), addTypeAttribute(Type1, countable) },
+    { combine(np:NP, [np:NP1, comp:Comp, np:NP2, vType1:Type1, vType2:Type2]) }.
 
 np([coord:no, num:sg, gap:[], ref:no, sem:NP, vType:Type])-->
     pn([sem:PN, vType:Type]),
