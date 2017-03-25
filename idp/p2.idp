@@ -1,9 +1,9 @@
 // Problem p2
 
 vocabulary V {
-    type person constructed from {ira, bill, pedro, colin, the_other_person}
+    type person constructed from {ira, bill, pedro, colin, oscar}
     type type1 constructed from {worthington, mount_union, gillbertville, lohrville, the_other_type1}
-    type type2 constructed from {the_white_darts, the_orange_darts, the_black_darts, the_red_darts, the_other_type2}
+    type type2 constructed from {the_white_darts, the_black_darts, the_red_darts, the_orange_darts, the_other_type2}
     type point isa int
 
     from(person, type1)
@@ -17,28 +17,31 @@ structure S : V {
 
 theory T : V {
     // Of the contestant who scored 41 points and the person who threw the white darts, one was from Worthington and the other was Ira
-    (?a [person] b [point] c [person]: b = 41 & scored(a,b) & threw(c,the_white_darts) & ~ (a = c) & (from(a,worthington) & ira = c | from(c,worthington) & ira = a)).
+    ?a [person] b [nat] c [person]: b = 41 & scored(a,b) & threw(c,the_white_darts) & ~ (a = c) & (from(a,worthington) & ira = c | from(c,worthington) & ira = a).
 
     // Bill is from Mount union
     from(bill,mount_union).
 
-    // Ira scored 21 points higher than the contestant who threw the orange darts
-    (?d [nat] e [person] f [point] g [point]: d = 21 & threw(e,the_orange_darts) & scored(e,f) & g = f+d & scored(ira,g)).
+    // Ira scored 21 points higher than the contestant from Worthington
+    ?d [nat] e [person] f [point] g [point]: d = 21 & from(e,worthington) & scored(e,f) & g = f+d & scored(ira,g).
+
+    // Oscar scored higher than the contestant who threw the orange darts
+    ?i [person] j [point] k [point]: threw(i,the_orange_darts) & scored(i,j) & k > j & scored(oscar,k).
 
     // The contestant from Mount union threw the black darts
-    (?h [person]: from(h,mount_union) & threw(h,the_black_darts)).
+    ?l [person]: from(l,mount_union) & threw(l,the_black_darts).
 
     // Pedro didn't score 55 points
-    (~ (?i [point]: i = 55 & scored(pedro,i))).
+    ~ (?m [point]: m = 55 & scored(pedro,m)).
 
     // The contestant who threw the red darts was either Colin or the contestant who scored 48 points
-    (?j [person]: threw(j,the_red_darts) & (colin = j | (?k [person] l [point]: l = 48 & scored(k,l) & k = j))).
+    ?n [person]: threw(n,the_red_darts) & (colin = n | (?o [person] p [point]: p = 48 & scored(o,p) & o = n)).
 
     // Of the contestant who scored 41 points and the contestant who threw the orange darts, one was from Gillbertville and the other was from Worthington
-    (?m [person] n [point] o [person]: n = 41 & scored(m,n) & threw(o,the_orange_darts) & ~ (m = o) & (from(m,gillbertville) & from(o,worthington) | from(o,gillbertville) & from(m,worthington))).
+    ?q [person] r [point] s [person]: r = 41 & scored(q,r) & threw(s,the_orange_darts) & ~ (q = s) & (from(q,gillbertville) & from(s,worthington) | from(s,gillbertville) & from(q,worthington)).
 
     // Ira scored 7 points lower than the contestant from Lohrville
-    (?p [nat] q [person] r [point] s [point]: p = 7 & from(q,lohrville) & scored(q,r) & s = r-p & scored(ira,s)).
+    ?t [nat] u [person] v [point] w [point]: t = 7 & from(u,lohrville) & scored(u,v) & w = v-t & scored(ira,w).
 
 
     // Logigram bijection axioms:
@@ -54,9 +57,11 @@ theory T : V {
     // Logigram synonym axioms:
 }
 
+
 procedure main() {
-    stdoptions.nbmodels = 100;
+    stdoptions.nbmodels = 10;
     printmodels(modelexpand(T,S))
+    //printunsatcore(T,S)
     model = modelexpand(T,S)
 }
 
