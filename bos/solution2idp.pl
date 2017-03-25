@@ -18,22 +18,16 @@ solution2idp(solution(Sentences, DRSs, Types), ProblemName, Problem) :-
     pairs_keys_values(SentencePairs, Sentences, FOLs),
     nameTypes(Types),
     nameVariables(FOLs),
-    %% writeln(Types),
     getPredicates(Types, Predicates),
     getBaseTypes(Types, BaseTypes, NbBaseTypes, NbConceptsPerType),
 
-    %% nl,
-    %% writeln(Types),
-    %% writeln(Predicates),
-    %% writeln(BaseTypes),
+    \+ \+ printFile(ProblemName, SentencePairs, voc(BaseTypes, Predicates)).
 
-    \+ \+ printFile(ProblemName, Problem, SentencePairs, voc(BaseTypes, Predicates)).
-
-printFile(ProblemName, Problem, SentencePairs, Vocabularium) :-
+printFile(ProblemName, SentencePairs, Vocabularium) :-
     problemToFileName(ProblemName, FileName),
     tell(FileName),
     write('// Problem '),
-    writeln(Problem),
+    writeln(ProblemName),
     nl,
     printVocabulary(Vocabularium),
     nl,
