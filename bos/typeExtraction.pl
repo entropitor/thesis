@@ -1,7 +1,8 @@
 :- module(typeExtraction, [
               getPredicates/2,
               getBaseTypes/4,
-              getBaseTypeAtoms/2
+              getBaseTypeAtoms/2,
+              getDerivedTypes/3
           ]).
 :- use_module(questions, [
                   askQuestion/3
@@ -84,3 +85,18 @@ getRepresentativeUseForBaseType(Types, BaseType, RepresentativeUse) :-
     format(string(RepresentativeUse), "(e.g. the subject of ~w)", [Symbol]).
 getRepresentativeUseForBaseType(Types, _, RepresentativeUse) :-
     format(string(RepresentativeUse), "(Whoops, couldn't find example of this type in ~p)", [Types]).
+
+
+getDerivedTypes(Types, BaseTypes, DerivedTypes) :-
+    include(=(attr(_, derivedCountable(_))), Types, DerivedTypeAttributes),
+    maplist(attrToDerivedType(BaseTypes), DerivedTypeAttributes, DerivedTypes).
+attrToDerivedType(BaseTypes, attr(DerivedType, derivedCountable(BaseType)), derivedType(DerivedType, BaseType, int:Range)) :-
+    include(=(baseType(BaseType, _)), BaseTypes, [baseType(BaseType, int:BaseTypeRange)]),
+    baseTypeRangeToDerivedTypeRange(BaseTypeRange, Range1),
+    list_to_set(Range1, Range).
+baseTypeRangeToDerivedTypeRange([], []).
+baseTypeRangeToDerivedTypeRange([X | Rest], Range) :-
+    findall(Z, (member(Y, Rest), (Z is X - Y ; Z is Y - X)), Zs),
+    baseTypeRangeToDerivedTypeRange(Rest, Range1),
+    append(Zs, Range1, Range).
+

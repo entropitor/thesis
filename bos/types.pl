@@ -77,8 +77,9 @@ checkMatchingVar(Type, [_ | Rest]) :-
 
 nameTypes(Types) :-
     maplist(nameNounType, Types),
+    nameDerivedTypes(Types, 1, End),
     term_variables(Types, UnnamedTypes),
-    nameUnnamedTypes(UnnamedTypes, 1).
+    nameUnnamedTypes(UnnamedTypes, End).
 
 nameNounType(type(noun-Symbol, Type)) :-
     var(Type),
@@ -92,4 +93,20 @@ nameUnnamedTypes([Type | Types], Number) :-
     name(Number, NumberCodes),
     atom_codes(Type, [116, 121, 112, 101 | NumberCodes]),
     nameUnnamedTypes(Types, Number1).
+
+nameDerivedTypes(Types, Start, End) :-
+    include(=(attr(_, derivedCountable(_))), Types, DerivedTypeAttributes),
+    nameDerivedTypesFromAttributes(DerivedTypeAttributes, Start, End).
+nameDerivedTypesFromAttributes([], Start, Start).
+nameDerivedTypesFromAttributes([attr(DerivedType, derivedCountable(BaseType)) | Rest], Start, End) :-
+    atomic(BaseType),
+    !,
+    atom_concat(BaseType, 'Difference', DerivedType),
+    nameDerivedTypesFromAttributes(Rest, Start, End).
+nameDerivedTypesFromAttributes([attr(DerivedType, derivedCountable(BaseType)) | Rest], Start, End) :-
+    Start1 is Start + 1,
+    nameUnnamedTypes([BaseType], Start),
+    atom_concat(BaseType, 'Difference', DerivedType),
+    nameDerivedTypesFromAttributes(Rest, Start1, End).
+
 

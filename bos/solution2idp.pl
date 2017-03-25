@@ -9,7 +9,8 @@
               ]).
 :- use_module(typeExtraction, [
                   getPredicates/2,
-                  getBaseTypes/4
+                  getBaseTypes/4,
+                  getDerivedTypes/3
               ]).
 :- use_module(questions, [
                   setQuestionTopic/1,
@@ -25,7 +26,8 @@ solution2idp(solution(Sentences, DRSs, Types), ProblemName, Problem) :-
     nameVariables(FOLs),
     getPredicates(Types, Predicates),
     getBaseTypes(Types, BaseTypes, NbBaseTypes, NbConceptsPerType),
-    \+ \+ printFile(ProblemName, SentencePairs, voc(BaseTypes, Predicates)),
+    getDerivedTypes(Types, BaseTypes, DerivedTypes),
+    \+ \+ printFile(ProblemName, SentencePairs, voc(BaseTypes, DerivedTypes, Predicates)),
     clearQuestionTopic.
 
 printFile(ProblemName, SentencePairs, Vocabularium) :-
@@ -47,9 +49,10 @@ problemToFileName(ProblemName, FileName) :-
     atom_concat('output/', ProblemName, Temp1),
     atom_concat(Temp1, '.idp', FileName).
 
-printVocabulary(voc(BaseTypes, Predicates)) :-
+printVocabulary(voc(BaseTypes, DerivedTypes, Predicates)) :-
     writeln('vocabulary V {'),
     maplist(printType, BaseTypes),
+    maplist(printType, DerivedTypes),
     nl,
     maplist(printPredicate, Predicates),
     writeln('}').
@@ -67,6 +70,10 @@ printType(baseType(Type, int:Range)) :-
 printType(baseType(Type, X)) :-
     !,
     format('    type ~p //~p~n', [Type, X]).
+printType(derivedType(Type, BaseType, int:Range)) :-
+    !,
+    atomic_list_concat(Range, '; ', RangeString),
+    format('    type ~p = {~w} isa int // differences between values of type ~p~n', [Type, RangeString, BaseType]).
 printPredicate(predicate(Name, Type1, Type2)) :-
     format('    ~p(~p, ~p)~n', [Name, Type1, Type2]).
 
@@ -74,7 +81,7 @@ printStructure() :-
     writeln('structure S : V {'),
     writeln('}').
 
-printTheory(SentencePairs, voc(_, Predicates)) :-
+printTheory(SentencePairs, voc(_, _, Predicates)) :-
     writeln('theory T : V {'),
     maplist(printSentence, SentencePairs),
     nl,
