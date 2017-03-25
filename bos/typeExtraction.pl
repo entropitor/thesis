@@ -3,6 +3,11 @@
               getBaseTypes/4,
               getBaseTypeAtoms/2
           ]).
+:- use_module(questions, [
+                  askQuestion/3
+              ]).
+
+
 getPredicates([], []).
 getPredicates([type(_Wordsort-Name, pred(T1, T2)) | Types], [predicate(Name, T1, T2) | Preds]) :-
     !,
@@ -49,10 +54,13 @@ toBaseType(Types, NbConceptsPerType, BaseType, baseType(BaseType, constructed:Sy
         error(err('Constructed type used as countable', BaseType))
     ),
     !.
-toBaseType(Types, _NbConceptsPerType, BaseType, baseType(BaseType, int)) :-
+toBaseType(Types, _NbConceptsPerType, BaseType, baseType(BaseType, int:Range)) :-
     include(=(attr(BaseType, countable)), Types, X),
     X \= [],
-    !.
+    !,
+    getRepresentativeUseForBaseType(Types, BaseType, RepresentativeUse),
+    format(string(Str), "What are the possible values for ~p ~w?", [BaseType, RepresentativeUse]),
+    askQuestion(q(BaseType, intRange), Str,Range).
 toBaseType(_, _, Type, baseType(Type, unknown)).
 
 getPNsForBaseType(BaseType, type(pn-Symbol, BaseType), Symbol) :-
@@ -65,3 +73,14 @@ completeConstructedSet(Symbols, L, _, Symbols) :-
     !.
 completeConstructedSet(Symbols, _, BaseType, [OtherSymbol | Symbols]) :-
     atom_concat('the_other_', BaseType, OtherSymbol).
+
+getRepresentativeUseForBaseType(Types, BaseType, RepresentativeUse) :-
+    include(=(type(_, pred(_, BaseType))), Types, [type(_WordSort-Symbol, _) | _]),
+    !,
+    format(string(RepresentativeUse), "(e.g. the object of ~w)", [Symbol]).
+getRepresentativeUseForBaseType(Types, BaseType, RepresentativeUse) :-
+    include(=(type(_, pred(BaseType, _))), Types, [type(_WordSort-Symbol, _) | _]),
+    !,
+    format(string(RepresentativeUse), "(e.g. the subject of ~w)", [Symbol]).
+getRepresentativeUseForBaseType(Types, _, RepresentativeUse) :-
+    format(string(RepresentativeUse), "(Whoops, couldn't find example of this type in ~p)", [Types]).

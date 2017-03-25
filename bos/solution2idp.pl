@@ -11,8 +11,13 @@
                   getPredicates/2,
                   getBaseTypes/4
               ]).
+:- use_module(questions, [
+                  setQuestionTopic/1,
+                  clearQuestionTopic/0
+              ]).
 
 solution2idp(solution(Sentences, DRSs, Types), ProblemName, Problem) :-
+    setQuestionTopic(ProblemName),
     Problem = p(NbBaseTypes, NbConceptsPerType, _),
     maplist(drs2fol, DRSs, FOLs),
     pairs_keys_values(SentencePairs, Sentences, FOLs),
@@ -20,8 +25,8 @@ solution2idp(solution(Sentences, DRSs, Types), ProblemName, Problem) :-
     nameVariables(FOLs),
     getPredicates(Types, Predicates),
     getBaseTypes(Types, BaseTypes, NbBaseTypes, NbConceptsPerType),
-
-    \+ \+ printFile(ProblemName, SentencePairs, voc(BaseTypes, Predicates)).
+    \+ \+ printFile(ProblemName, SentencePairs, voc(BaseTypes, Predicates)),
+    clearQuestionTopic.
 
 printFile(ProblemName, SentencePairs, Vocabularium) :-
     problemToFileName(ProblemName, FileName),
@@ -55,6 +60,10 @@ printType(baseType(Type, constructed:List)) :-
 printType(baseType(Type, int)) :-
     !,
     format('    type ~p isa int~n', [Type]).
+printType(baseType(Type, int:Range)) :-
+    !,
+    atomic_list_concat(Range, '; ', RangeString),
+    format('    type ~p = {~w} isa int~n', [Type, RangeString]).
 printType(baseType(Type, X)) :-
     !,
     format('    type ~p //~p~n', [Type, X]).
