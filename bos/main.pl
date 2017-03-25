@@ -115,7 +115,7 @@ testp(ProblemName, [ProblemName, NbDRSes, NbResults], Solutions) :-
     useLexicon(ProblemName),
     problem(ProblemName, Problem),
     Problem = p(_, _, Sentences),
-    format('~n###############################~n###   ~p~n###############################~n', [Problem]),
+    format('~n###############################~n###   ~p~n###############################~n', [ProblemName]),
     maplist(testSentence, Sentences, NbDRSes, Results),
     filterResults(Problem, Results, NewResults),
     length(NewResults, NbResults),

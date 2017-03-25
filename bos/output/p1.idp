@@ -1,0 +1,66 @@
+// Problem p1
+
+vocabulary V {
+    type animal constructed from {the_other_animal, the_perens_pig, the_eldar_elk, the_byengo_bat, the_nibner_newt}
+    type year = {2006; 2007; 2008; 2009; 2010} isa int
+    type type1 constructed from {the_other_type1, slovakia, ghana, russia, poland}
+    type type2 = {210; 280; 315; 490; 525} isa int
+
+    is_recognized_as_endangered_in(animal, year)
+    lives_in(animal, type1)
+    has_a_population_size_of(animal, type2)
+    from(animal, type1)
+}
+
+structure S : V {
+}
+
+theory T : V {
+    // The perens pig lives in Slovakia and is recognized as endangered in 2009
+    lives_in(the_perens_pig,slovakia) & is_recognized_as_endangered_in(the_perens_pig,2009).
+
+    // The eldar elk has a population size of 210
+    has_a_population_size_of(the_eldar_elk,210).
+
+    // The byengo bat doesn't live in Ghana
+    ~ lives_in(the_byengo_bat,ghana).
+
+    // The animal that lives in Slovakia is recognized as endangered before the animal from Russia
+    ?a [animal] b [year] c [animal] d [year] e [year]: lives_in(a,slovakia) & b>0 & from(c,russia) & is_recognized_as_endangered_in(c,d) & e = d-b & is_recognized_as_endangered_in(a,e).
+
+    // Of the species that has a population size of 490 and the eldar elk, one lives in Poland and the other is recognized as endangered in 2009
+    ?f [animal]: has_a_population_size_of(f,490) & ~ (f = the_eldar_elk) & (lives_in(f,poland) & is_recognized_as_endangered_in(the_eldar_elk,2009) | lives_in(the_eldar_elk,poland) & is_recognized_as_endangered_in(f,2009)).
+
+    // Neither the nibner newt nor the byengo bat has a population size of 525
+    ~ has_a_population_size_of(the_nibner_newt,525) & ~ has_a_population_size_of(the_byengo_bat,525).
+
+    // The species that lives in Ghana is recognized as endangered 2 years after the nibner newt
+    ?g [animal] h [year] i [year]: lives_in(g,ghana) & is_recognized_as_endangered_in(the_nibner_newt,h) & i = h+2 & is_recognized_as_endangered_in(g,i).
+
+    // The animal that lives in Russia doesn't have a population size of 315
+    ?j [animal]: lives_in(j,russia) & ~ has_a_population_size_of(j,315).
+
+
+    // Logigram bijection axioms:
+    ! x [animal]: ?=1 y [year]: is_recognized_as_endangered_in(x, y).
+    ! x [year]: ?=1 y [animal]: is_recognized_as_endangered_in(y, x).
+
+    ! x [animal]: ?=1 y [type1]: lives_in(x, y).
+    ! x [type1]: ?=1 y [animal]: lives_in(y, x).
+
+    ! x [animal]: ?=1 y [type2]: has_a_population_size_of(x, y).
+    ! x [type2]: ?=1 y [animal]: has_a_population_size_of(y, x).
+
+    ! x [animal]: ?=1 y [type1]: from(x, y).
+    ! x [type1]: ?=1 y [animal]: from(y, x).
+
+    // Logigram synonym axioms:
+    ! x [animal] y [type1]: lives_in(x, y) <=> from(x, y).
+}
+
+procedure main() {
+    stdoptions.nbmodels = 10;
+    printmodels(modelexpand(T,S))
+    model = modelexpand(T,S)
+}
+

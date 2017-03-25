@@ -5,13 +5,13 @@
           ]).
 
 :- dynamic questionTopic/1.
-:- clearQuestionTopic.
 
 setQuestionTopic(X) :-
     clearQuestionTopic,
     assertz(questionTopic(X)).
 clearQuestionTopic :-
     retractall(questionTopic(_)).
+:- clearQuestionTopic.
 
 askQuestion(Question, _, Answer) :-
     questionTopic(Topic),
