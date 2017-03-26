@@ -16,6 +16,7 @@
                   setQuestionTopic/1,
                   clearQuestionTopic/0
               ]).
+:- use_module(printTable, [printTable/1]).
 
 solution2idp(solution(Sentences, DRSs, Types), ProblemName, Problem) :-
     setQuestionTopic(ProblemName),
@@ -28,7 +29,26 @@ solution2idp(solution(Sentences, DRSs, Types), ProblemName, Problem) :-
     getBaseTypes(Types, BaseTypes, NbBaseTypes, NbConceptsPerType),
     getDerivedTypes(Types, BaseTypes, DerivedTypes),
     \+ \+ printFile(ProblemName, SentencePairs, voc(BaseTypes, DerivedTypes, Predicates)),
-    clearQuestionTopic.
+    clearQuestionTopic,
+    problemToFileName(ProblemName, FileName),
+    format(string(Command), "idp ~p | node parseOutput.js", [FileName]),
+    open(pipe(Command), read, Stream),
+    read(Stream, IDPOutput),
+    handleIDPOutput(IDPOutput),
+    close(Stream).
+
+handleIDPOutput(models(0, [])) :-
+    format("Couldn't find any models. Something went wrong~n", []).
+handleIDPOutput(models(1, [Model])) :-
+    !,
+    format("Succes! Solution: ~n", []),
+    printModel(Model).
+handleIDPOutput(models(N, Models)) :-
+    N > 1,
+    format("Found too many models. Something went wrong~n", []),
+    maplist(printModel, Models).
+printModel(model(_, Groups)) :-
+    printTable(Groups).
 
 printFile(ProblemName, SentencePairs, Vocabularium) :-
     problemToFileName(ProblemName, FileName),
