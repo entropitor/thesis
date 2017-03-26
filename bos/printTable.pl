@@ -12,7 +12,7 @@ maxPerColumn(Rows, Maxs) :-
     Rows = [Row | _],
     length(Row, L),
     length(Zeros, L),
-    include(=(0), Zeros, Zeros),
+    maplist(=(0), Zeros),
     foldl(maplist(max), Rows, Zeros, Maxs).
 
 maxList(List, Max) :-

@@ -5,7 +5,7 @@ vocabulary V {
     type type1 constructed from {the_other_type1, worthington, mount_union, gillbertville, lohrville}
     type type2 constructed from {the_other_type2, the_white_darts, the_orange_darts, the_black_darts, the_red_darts}
     type point = {41; 48; 55; 62; 69} isa int
-    type pointDifference = {-7; 7; -14; 14; -21; 21; -28; 28} isa int // differences between values of type point
+    type type3 = {-7; 7; -14; 14; -21; 21; -28; 28} isa int // differences between values of type point
 
     from(person, type1)
     threw(person, type2)
@@ -26,7 +26,7 @@ theory T : V {
     ?c [person] d [point] e [point]: from(c,worthington) & scored(c,d) & e = d+21 & scored(ira,e).
 
     // Oscar scored higher than the contestant who threw the orange darts
-    ?f [pointDifference] g [person] h [point] i [point]: f>0 & threw(g,the_orange_darts) & scored(g,h) & i = h+f & scored(oscar,i).
+    ?f [type3] g [person] h [point] i [point]: f>0 & threw(g,the_orange_darts) & scored(g,h) & i = h+f & scored(oscar,i).
 
     // The contestant from Mount union threw the black darts
     ?j [person]: from(j,mount_union) & threw(j,the_black_darts).

@@ -95,18 +95,18 @@ nameUnnamedTypes([Type | Types], Number) :-
     nameUnnamedTypes(Types, Number1).
 
 nameDerivedTypes(Types, Start, End) :-
-    include(=(attr(_, derivedCountable(_))), Types, DerivedTypeAttributes),
-    nameDerivedTypesFromAttributes(DerivedTypeAttributes, Start, End).
-nameDerivedTypesFromAttributes([], Start, Start).
-nameDerivedTypesFromAttributes([attr(DerivedType, derivedCountable(BaseType)) | Rest], Start, End) :-
+    findall(BaseType-DerivedType, member(attr(DerivedType, derivedCountable(BaseType)), Types), DerivedTypePairs),
+    nameDerivedTypesFromPairs(DerivedTypePairs, Start, End).
+nameDerivedTypesFromPairs([], Start, Start).
+nameDerivedTypesFromPairs([BaseType-DerivedType | Rest], Start, End) :-
     atomic(BaseType),
     !,
     atom_concat(BaseType, 'Difference', DerivedType),
-    nameDerivedTypesFromAttributes(Rest, Start, End).
-nameDerivedTypesFromAttributes([attr(DerivedType, derivedCountable(BaseType)) | Rest], Start, End) :-
+    nameDerivedTypesFromPairs(Rest, Start, End).
+nameDerivedTypesFromPairs([BaseType-DerivedType | Rest], Start, End) :-
     Start1 is Start + 1,
     nameUnnamedTypes([BaseType], Start),
     atom_concat(BaseType, 'Difference', DerivedType),
-    nameDerivedTypesFromAttributes(Rest, Start1, End).
+    nameDerivedTypesFromPairs(Rest, Start1, End).
 
 

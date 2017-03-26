@@ -41,23 +41,21 @@ getBaseTypesForType(attr(_, _), []) :-
 
 
 toBaseType(Types, NbConceptsPerType, BaseType, baseType(BaseType, constructed:Symbols)) :-
-    include(=(attr(BaseType, qualified)), Types, X),
-    X \= [],
+    member(attr(BaseType, qualified), Types),
     !,
     maplist(getPNsForBaseType(BaseType), Types, Symbols1),
     include(\=(null), Symbols1, Symbols2),
     Symbols2 \= [],
     completeConstructedSet(Symbols2, NbConceptsPerType, BaseType, Symbols),
     (
-        include(=(attr(BaseType, countable)), Types, []),
+        \+ member(attr(BaseType, countable), Types),
         !
     ;
         error(err('Constructed type used as countable', BaseType))
     ),
     !.
 toBaseType(Types, _NbConceptsPerType, BaseType, baseType(BaseType, int:Range)) :-
-    include(=(attr(BaseType, countable)), Types, X),
-    X \= [],
+    member(attr(BaseType, countable), Types),
     !,
     getRepresentativeUseForBaseType(Types, BaseType, RepresentativeUse),
     format(string(Str), "What are the possible values for ~p ~w?", [BaseType, RepresentativeUse]),
@@ -76,11 +74,11 @@ completeConstructedSet(Symbols, _, BaseType, [OtherSymbol | Symbols]) :-
     atom_concat('the_other_', BaseType, OtherSymbol).
 
 getRepresentativeUseForBaseType(Types, BaseType, RepresentativeUse) :-
-    include(=(type(_, pred(_, BaseType))), Types, [type(_WordSort-Symbol, _) | _]),
+    member(type(_WordSort-Symbol, pred(_, BaseType)), Types),
     !,
     format(string(RepresentativeUse), "(e.g. the object of ~w)", [Symbol]).
 getRepresentativeUseForBaseType(Types, BaseType, RepresentativeUse) :-
-    include(=(type(_, pred(BaseType, _))), Types, [type(_WordSort-Symbol, _) | _]),
+    member(type(_WordSort-Symbol, pred(BaseType, _)), Types),
     !,
     format(string(RepresentativeUse), "(e.g. the subject of ~w)", [Symbol]).
 getRepresentativeUseForBaseType(Types, _, RepresentativeUse) :-
@@ -88,10 +86,11 @@ getRepresentativeUseForBaseType(Types, _, RepresentativeUse) :-
 
 
 getDerivedTypes(Types, BaseTypes, DerivedTypes) :-
-    include(=(attr(_, derivedCountable(_))), Types, DerivedTypeAttributes),
-    maplist(attrToDerivedType(BaseTypes), DerivedTypeAttributes, DerivedTypes).
-attrToDerivedType(BaseTypes, attr(DerivedType, derivedCountable(BaseType)), derivedType(DerivedType, BaseType, int:Range)) :-
-    include(=(baseType(BaseType, _)), BaseTypes, [baseType(BaseType, int:BaseTypeRange)]),
+    findall(BaseType-DerivedType, member(attr(DerivedType, derivedCountable(BaseType)), Types), DerivedTypePairs),
+    maplist(pairToDerivedType(BaseTypes), DerivedTypePairs, DerivedTypes).
+pairToDerivedType(BaseTypes, BaseType-DerivedType, derivedType(DerivedType, BaseType, int:Range)) :-
+    member(baseType(BaseType, int:BaseTypeRange), BaseTypes),
+    !,
     baseTypeRangeToDerivedTypeRange(BaseTypeRange, Range1),
     list_to_set(Range1, Range).
 baseTypeRangeToDerivedTypeRange([], []).
