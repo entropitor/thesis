@@ -28,6 +28,8 @@
 :- use_module(myLexiconSemantics, [semLex/2]).
 :- use_module(myGrammarSemantics, [combine/2]).
 
+:- use_module(types, [addTypeAttribute/2]).
+
 /*========================================================================
     Texts
 ========================================================================*/
@@ -140,7 +142,7 @@ q([sem:Sem])-->
 np([coord:no, num:sg, gap:[np:NP-Type], ref:no, sem:NP, vType:Type])--> [].
 
 np([coord:no, num:_Num, gap:[number:Type], ref:no, sem:NP, vType:Type])-->
-    { combine(np:NP, [npGap:Type])}.
+    { combine(np:NP, [npGap:Type]) }.
 np([coord:no, num:Num, gap:[number:Type], ref:no, sem:NP, vType:Type])-->
     np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:Type]).
 
@@ -186,24 +188,20 @@ np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
 np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
     number([sem:Number, vType:Type]),
     n([coord:_, num:Num, sem:N, vType:Type]),
+    { addTypeAttribute(Type, countable) },
     { combine(np:NP, [number:Number, n:N]) }.
 
 np([coord:no, num:_Num, gap:[], ref:no, sem:NP, vType:Type])-->
     number([sem:Number, vType:Type]),
+    { addTypeAttribute(Type, countable) },
     { combine(np:NP, [number:Number]) }.
 
 np([coord:yes, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
     np([coord:no, num:Num, gap:[number:Type], ref:no, sem:NP1, vType:Type]),
     comp([sem:Comp, vType:Type]),
-    np([coord:no, num:_, gap:[], ref:no, sem:NP2, vType:Type]),
-    { combine(np:NP, [np:NP1, comp:Comp, np:NP2]) }.
-
-np([coord:yes, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
-    np([coord:no, num:Num, gap:[number:Type], ref:no, sem:NP1, vType:Type]),
-    comp([sem:Comp, vType:Type]),
     np([coord:no, num:_, gap:[], ref:no, sem:NP2, vType:Type2]),
-    { var(Type2) ; Type2 \= Type },
-    { combine(np:NP, [np:NP1, comp:Comp, np:NP2, vTypeReal:Type, vTypeOther:Type2]) }.
+    { addTypeAttribute(Type, countable) },
+    { combine(np:NP, [np:NP1, comp:Comp, np:NP2, vType1:Type, vType2:Type2]) }.
 
 np([coord:no, num:sg, gap:[], ref:no, sem:NP, vType:Type])-->
     pn([sem:PN, vType:Type]),

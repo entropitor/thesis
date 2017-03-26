@@ -45,8 +45,8 @@ semLex(det, M) :-
 
 semLex(number, M) :-
     M = [number:Num,
-         sem:lam(U, lam(V, merge(merge(drs([variable(X, Type, decl)], [eq(X, Num)]), app(U, X)), app(V, X)))),
-         vType:Type].
+         sem:lam(U, lam(V, merge(app(U, Num), app(V, Num)))),
+         vType:_Type].
 
 semLex(pn, M) :-
     M = [symbol:Sym,
@@ -58,8 +58,8 @@ semLex(cn, M) :-
          vType:_].
 
 semLex(noun, M) :-
-    M = [symbol:Sym,
-         sem:lam(X, drs([], [pred(Sym, X)]))].
+    M = [symbol:_Sym,
+         sem:lam(_X, drs([], []))].
 
 semLex(iv, M) :-
     M = [symbol:Sym,

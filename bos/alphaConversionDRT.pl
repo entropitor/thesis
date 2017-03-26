@@ -33,7 +33,6 @@
 alphaConvertDRS(B1, B2) :-
     alphaConvertDRS(B1, []-_, B2).
 
-
 /*========================================================================
     Alpha Conversion (term)
 ========================================================================*/
@@ -78,7 +77,7 @@ alphaConvertDRS(X1, Vars-Vars, X2) :-
 
 alphaConvertDRS(X1, Vars-Vars, X2) :-
     nonvar(X1),
-    atom(X1),
+    atomic(X1),
     X2 = X1.
 
 alphaConvertDRS(Exp, Vars-Vars, lam(Y, B2)) :-
