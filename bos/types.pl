@@ -6,9 +6,7 @@
           ]).
 
 combineTypes(In, Out) :-
-    checkUnkownVars(In, In, Out1, Success),
-    call(Success),
-    toTypesAndAttributes(Out1, Types, Attributes),
+    toTypesAndAttributes(In, Types, Attributes),
     list_to_set(Attributes, AttributeSet),
     combineTypes2(Types, TypesOut),
     append(TypesOut, AttributeSet, Out).
@@ -51,29 +49,32 @@ addTypeAttribute(Type, Attribute) :-
     b_setval(types, [attr(Type, Attribute) | Types]).
 
 
-checkUnkownVars(_, [], [], true).
-checkUnkownVars(AllTypes, [type(WordSort-Var, Type) | Rest], [type(WordSort-Var, Type) | Out], Success) :-
-    nonvar(Var),
-    !,
-    checkUnkownVars(AllTypes, Rest, Out, Success).
-checkUnkownVars(AllTypes, [type(WordSort-Var, Type) | Rest], [type(WordSort-Var, Type) | Out], true) :-
-    var(Var),
-    !,
-    checkMatchingVar(type(WordSort-Var, Type), AllTypes),
-    checkUnkownVars(AllTypes, Rest, Out, _).
-checkUnkownVars(AllTypes, [T | Rest], [T | Out], Success) :-
-    checkUnkownVars(AllTypes, Rest, Out, Success).
+%% checkUnkownVars([], [], true).
+%% checkUnkownVars([type(WordSort-Var, Type) | Rest], [type(WordSort-Var, Type) | Out], Success) :-
+%%     nonvar(Var),
+%%     !,
+%%     checkUnkownVars(Rest, Out, Success).
+%% checkUnkownVars([type(WordSort-Var, Type) | Rest], [type(WordSort-Var, Type) | Out], true) :-
+%%     var(Var),
+%%     !,
+%%     reverse(Rest, RestReversed),
+%%     writeln(RestReversed),
+%%     checkMatchingVar(type(WordSort-Var, Type), RestReversed),
+%%     !,
+%%     checkUnkownVars(Rest, Out, _).
+%% checkUnkownVars([T | Rest], [T | Out], Success) :-
+%%     checkUnkownVars(Rest, Out, Success).
 
-checkMatchingVar(type(_, Type), []) :-
-    format("~nError finding predicate for type: ~p", [Type]),
-    fail.
-checkMatchingVar(type(WS-Var, Type), [type(WS-Var2, Type2) | _]) :-
-    nonvar(Var2),
-    Var = Var2,
-    nonvar(Type2),
-    Type = Type2.
-checkMatchingVar(Type, [_ | Rest]) :-
-    checkMatchingVar(Type, Rest).
+%% checkMatchingVar(type(_, Type), []) :-
+%%     format("~nError finding predicate for type: ~p", [Type]),
+%%     fail.
+%% checkMatchingVar(type(WS-Var, Type), [type(WS-Var2, Type2) | _]) :-
+%%     nonvar(Var2),
+%%     Var = Var2,
+%%     nonvar(Type2),
+%%     Type = Type2.
+%% checkMatchingVar(Type, [_ | Rest]) :-
+%%     checkMatchingVar(Type, Rest).
 
 nameTypes(Types) :-
     maplist(nameNounType, Types),

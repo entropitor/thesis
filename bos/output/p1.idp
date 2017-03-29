@@ -27,7 +27,7 @@ theory T : V {
     ~ lives_in(the_byengo_bat,ghana).
 
     // The animal that lives in Slovakia is recognized as endangered before the animal from Russia
-    ?a [animal] b [type3] c [animal] d [year] e [year]: lives_in(a,slovakia) & b>0 & from(c,russia) & is_recognized_as_endangered_in(c,d) & e = d-b & is_recognized_as_endangered_in(a,e).
+    ?a [animal] b [type3] c [year] d [animal] e [year]: lives_in(a,slovakia) & b>0 & from(d,russia) & is_recognized_as_endangered_in(d,c) & e = c-b & is_recognized_as_endangered_in(a,e).
 
     // Of the species that has a population size of 490 and the eldar elk, one lives in Poland and the other is recognized as endangered in 2009
     ?f [animal]: has_a_population_size_of(f,490) & ~ (f = the_eldar_elk) & (lives_in(f,poland) & is_recognized_as_endangered_in(the_eldar_elk,2009) | lives_in(the_eldar_elk,poland) & is_recognized_as_endangered_in(f,2009)).
