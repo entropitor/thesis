@@ -9,8 +9,8 @@
 
 combineTypes(In, Out) :-
     toTypesAndAttributes(In, Types, Attributes),
-    list_to_set(Attributes, AttributeSet),
     combineTypes2(Types, TypesOut),
+    list_to_set(Attributes, AttributeSet),
     append(TypesOut, AttributeSet, Out).
 
 toTypesAndAttributes([], [], []).
@@ -40,9 +40,9 @@ matchType(Var, Type1, Type2) :-
     fail.
 
 addType(_, _) :-
-\+ nb_current(types, _),
-nb_setval(types, []),
-fail.
+    \+ nb_current(types, _),
+    nb_setval(types, []),
+    fail.
 addType(Symbol, Type) :-
     b_getval(types, Types),
     b_setval(types, [type(Symbol, Type) | Types]).
@@ -130,7 +130,8 @@ getDerivedTypes([_ | Rest], Types) :-
 simplifyCandidates(CombinedTypes, NbBaseTypes, RealCandidates, TypesForMatrix) :-
     length(RealCandidates, NbBaseTypes),
     !,
-    include(\=(compared(_, _)), CombinedTypes, RealCombinedTypes),
+    include(\=(neq(_, _)), CombinedTypes, Temp),
+    include(\=(eq(_, _)), Temp, RealCombinedTypes),
     combineTypes(RealCombinedTypes, TypesForMatrix).
 simplifyCandidates(CombinedTypes, NbBaseTypes, RealCandidates, TypesForMatrix) :-
     length(RealCandidates, N),
@@ -141,7 +142,7 @@ simplifyCandidates(CombinedTypes, NbBaseTypes, RealCandidates, TypesForMatrix) :
     list_to_set(RealCandidates, NewCandidates),
     simplifyCandidates(NewCombinedTypes, NbBaseTypes, NewCandidates, TypesForMatrix).
 
-askSimplificationQuestion(CombinedTypes, [compared(Symbol1, Symbol2) | CombinedTypes]) :-
+askSimplificationQuestion(CombinedTypes, NewCombinedTypes) :-
     member(type(_-Symbol1, Type1), CombinedTypes),
     nonvar(Type1),
     Type1 = pred(S1, O1),
@@ -150,16 +151,28 @@ askSimplificationQuestion(CombinedTypes, [compared(Symbol1, Symbol2) | CombinedT
     nonvar(Type2),
     Type2 = pred(S2, O2),
     \+ \+ (S1 = S2, O1 = O2),
-    \+ member(compared(Symbol1, Symbol2), CombinedTypes),
-    \+ member(compared(Symbol2, Symbol1), CombinedTypes),
+    \+ compared(Symbol1, Symbol2, CombinedTypes),
     format(string(Question), "Are ~p and ~p the same relation? [yes/no]", [Symbol1, Symbol2]),
     askQuestion(eq(Symbol1, Symbol2), Question, Answer),
     (
         Answer = yes
     ->
         S1 = S2,
-        O1 = O2
+        O1 = O2,
+        NewCombinedTypes = [eq(Symbol1, Symbol2) | CombinedTypes]
     ;
-        true
+        NewCombinedTypes = [neq(Symbol1, Symbol2) | CombinedTypes]
     ).
 
+compared(S1, S2, Types) :-
+    eq(S1, S2, Types).
+compared(S1, S2, Types) :-
+    neq(S1, S2, Types).
+eq(S1, S2, Types) :-
+    member(eq(S1, S2), Types).
+eq(S1, S2, Types) :-
+    member(eq(S2, S1), Types).
+neq(S1, S2, Types) :-
+    member(neq(S1, S2), Types).
+neq(S1, S2, Types) :-
+    member(neq(S2, S1), Types).
