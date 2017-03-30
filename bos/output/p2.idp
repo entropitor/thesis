@@ -10,6 +10,7 @@ vocabulary V {
     from(person, type1)
     threw(person, type2)
     scored(person, point)
+    finishes_with(person, point)
 }
 
 structure S : V {
@@ -19,28 +20,28 @@ theory T : V {
     // Of the contestant who scored 41 points and the person who threw the white darts, one was from Worthington and the other was Ira
     ?a [person] b [person]: scored(a,41) & threw(b,the_white_darts) & ~ (a = b) & (from(a,worthington) & ira = b | from(b,worthington) & ira = a).
 
-    // Bill is from Mount union
+    // Bill was from Mount union
     from(bill,mount_union).
 
     // Ira scored 21 points higher than the contestant from Worthington
     ?c [point] d [person] e [point]: from(d,worthington) & scored(d,c) & e = c+21 & scored(ira,e).
 
-    // Oscar scored higher than the contestant who threw the orange darts
+    // Oscar scored higher than the player who threw the orange darts
     ?f [type3] g [point] h [person] i [point]: f>0 & threw(h,the_orange_darts) & scored(h,g) & i = g+f & scored(oscar,i).
 
     // The contestant from Mount union threw the black darts
     ?j [person]: from(j,mount_union) & threw(j,the_black_darts).
 
-    // Pedro didn't score 55 points
-    ~ scored(pedro,55).
+    // Pedro didn't finish with 55 points
+    ~ finishes_with(pedro,55).
 
-    // The contestant who threw the red darts was either Colin or the contestant who scored 48 points
+    // The player who threw the red darts was either Colin or the contestant who scored 48 points
     ?k [person]: threw(k,the_red_darts) & (colin = k | (?l [person]: scored(l,48) & l = k)).
 
-    // Of the contestant who scored 41 points and the contestant who threw the orange darts, one was from Gillbertville and the other was from Worthington
+    // Of the contestant who scored 41 points and the person who threw the orange darts, one was from Gillbertville and the other was from Worthington
     ?m [person] n [person]: scored(m,41) & threw(n,the_orange_darts) & ~ (m = n) & (from(m,gillbertville) & from(n,worthington) | from(n,gillbertville) & from(m,worthington)).
 
-    // Ira scored 7 points lower than the contestant from Lohrville
+    // Ira scored 7 points lower than the player from Lohrville
     ?o [point] p [person] q [point]: from(p,lohrville) & scored(p,o) & q = o-7 & scored(ira,q).
 
 
@@ -54,7 +55,11 @@ theory T : V {
     ! x [person]: ?=1 y [point]: scored(x, y).
     ! x [point]: ?=1 y [person]: scored(y, x).
 
+    ! x [person]: ?=1 y [point]: finishes_with(x, y).
+    ! x [point]: ?=1 y [person]: finishes_with(y, x).
+
     // Logigram synonym axioms:
+    ! x [person] y [point]: scored(x, y) <=> finishes_with(x, y).
 }
 
 procedure main() {

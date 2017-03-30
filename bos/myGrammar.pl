@@ -366,7 +366,7 @@ debug(X, X) :-
 ========================================================================*/
 
 pp([type:Type, sem:PP, vType:SubjType])-->
-    prep([type:Type, syntax:_, sem:Prep, vType:fun(SubjType, ObjType)]),
+    prep([type:Type, syntax:_, sem:Prep, vType:pred(SubjType, ObjType)]),
     np([coord:_, num:_, gap:[], ref:no, sem:NP, vType:ObjType]),
     { combine(pp:PP, [prep:Prep, np:NP]) }.
 

@@ -13,10 +13,11 @@ clearQuestionTopic :-
     retractall(questionTopic(_)).
 :- clearQuestionTopic.
 
-askQuestion(Question, _, Answer) :-
+askQuestion(Question, Str, Answer) :-
     questionTopic(Topic),
     loadFile('output/cachedAnswers.pl'),
     answer(Topic, Question, Answer),
+    simulationQuestionAskedToUser(Str, Answer),
     !.
 askQuestion(Question, Str, Answer) :-
     questionTopic(Topic),
@@ -43,4 +44,7 @@ loadFile(FileName) :-
     writeln(':- dynamic answer/3.'),
     told,
     consult(FileName).
+
+simulationQuestionAskedToUser(Str, Answer) :-
+    format("~w~n|: ~p.~n", [Str, Answer]).
 
