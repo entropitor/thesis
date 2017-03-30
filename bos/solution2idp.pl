@@ -5,7 +5,8 @@
 :- use_module(drs2fol, [drs2fol/2]).
 :- use_module(printFol, [printFol/2]).
 :- use_module(types, [
-                  nameTypes/1
+                  nameTypes/1,
+                  combineTypesToMatrix/4
               ]).
 :- use_module(typeExtraction, [
                   getPredicates/2,
@@ -18,9 +19,10 @@
               ]).
 :- use_module(printTable, [printTable/1]).
 
-solution2idp(solution(Sentences, DRSs, Types), ProblemName, Problem) :-
+solution2idp(solution(Sentences, DRSs, TypesIn), ProblemName, Problem) :-
     setQuestionTopic(ProblemName),
     Problem = p(NbBaseTypes, NbConceptsPerType, _),
+    combineTypesToMatrix(TypesIn, NbBaseTypes, NbConceptsPerType, Types),
     maplist(drs2fol, DRSs, FOLs),
     pairs_keys_values(SentencePairs, Sentences, FOLs),
     nameTypes(Types),

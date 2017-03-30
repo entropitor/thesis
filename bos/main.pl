@@ -117,27 +117,35 @@ testp(ProblemName, [ProblemName, NbDRSes, NbResults], Solutions) :-
     Problem = p(_, _, Sentences),
     format('~n###############################~n###   ~p~n###############################~n', [ProblemName]),
     maplist(testSentence, Sentences, NbDRSes, Results),
+    nl,
     filterResults(Problem, Results, NewResults),
     length(NewResults, NbResults),
     maplist(pairs_keys_values, NewResults, NewDRSss, Types),
-    maplist(toSolution(Sentences), NewDRSss, Types, Solutions),
+    maplist(toSolution(Problem), NewDRSss, Types, Solutions),
     nl, print(NbDRSes),
     format('~nNumber of possible meanings in total: ~p~n', [NbResults]),
     %% maplist(toFol(Sentences), Types, NewDRSss),
     true.
 
-filterResults(p(NbBaseTypes, _, _), Results, NewResults) :-
+filterResults(p(_NbBaseTypes, _, _), Results, NewResults) :-
     findall(PossibleResult, (
-                maplist(memberIfMultiple, PossibleResult, Results),
-                pairs_keys_values(PossibleResult, _DRSs, Types),
-                flatten(Types, FlattenTypes),
-                combineTypes(FlattenTypes, NewTypes),
-%% \+ endoPredicateType(NewTypes),
-                \+ \+ (
-                    nameTypes(NewTypes),
-                    getBaseTypeAtoms(NewTypes, BaseTypes),
-                    length(BaseTypes, NbBaseTypes)
-                )
+                maplist(memberIfMultiple, PossibleResult, Results)
+                %% pairs_keys_values(PossibleResult, _DRSs, Types),
+                %% flatten(Types, FlattenTypes),
+                %% combineTypes(FlattenTypes, NewTypes)
+                %% \+ endoPredicateType(NewTypes),
+                %% \+ \+ (
+                %%     nameTypes(NewTypes),
+                %%     getBaseTypeAtoms(NewTypes, BaseTypes),
+                %%     \+ (
+                %%         member(attr(TypeX, countable), Types),
+                %%         member(attr(TypeX, qualified), Types)
+                %%     ),
+                %%     nl,
+                %%     writeln(NewTypes),
+                %%     writeln(BaseTypes),
+                %%     length(BaseTypes, NbBaseTypes)
+                %% )
             ), NewResults).
 
 endoPredicateType([type(_, pred(X, Y)) | _]) :-
@@ -145,7 +153,7 @@ endoPredicateType([type(_, pred(X, Y)) | _]) :-
 endoPredicateType([_ | Types]) :-
     endoPredicateType(Types).
 
-toSolution(Sentences, DRSs, Types, solution(Sentences, DRSs, CombinedTypes)) :-
+toSolution(p(_NbBaseTypes, _NbConceptsPerType, Sentences), DRSs, Types, solution(Sentences, DRSs, CombinedTypes)) :-
     flatten(Types, FlatTypes),
     combineTypes(FlatTypes, CombinedTypes),
     !.

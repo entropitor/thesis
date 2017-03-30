@@ -1,9 +1,11 @@
 :- module(types, [
               combineTypes/2,
+              combineTypesToMatrix/4,
               addType/2,
               addTypeAttribute/2,
               nameTypes/1
           ]).
+:- use_module(questions, [askQuestion/3]).
 
 combineTypes(In, Out) :-
     toTypesAndAttributes(In, Types, Attributes),
@@ -110,4 +112,54 @@ nameDerivedTypesFromPairs([BaseType-DerivedType | Rest], Start, End) :-
     atom_concat(BaseType, 'Difference', DerivedType),
     nameDerivedTypesFromPairs(Rest, Start1, End).
 
+combineTypesToMatrix(CombinedTypes, NbBaseTypes, _NbConceptsPerType, TypesForMatrix) :-
+    getDerivedTypes(CombinedTypes, DerivedTypes),
+    term_variables(CombinedTypes, BaseTypeCandidates),
+    list_to_ord_set(DerivedTypes, DerivedTypesSet),
+    list_to_ord_set(BaseTypeCandidates, BaseTypeCandidatesSet),
+    ord_subtract(BaseTypeCandidatesSet, DerivedTypesSet, RealCandidates),
+    simplifyCandidates(CombinedTypes, NbBaseTypes, RealCandidates, TypesForMatrix).
+
+getDerivedTypes([], []).
+getDerivedTypes([attr(DerivedType, derivedCountable(_)) | Rest], [DerivedType | Types]) :-
+    !,
+    getDerivedTypes(Rest, Types).
+getDerivedTypes([_ | Rest], Types) :-
+    getDerivedTypes(Rest, Types).
+
+simplifyCandidates(CombinedTypes, NbBaseTypes, RealCandidates, TypesForMatrix) :-
+    length(RealCandidates, NbBaseTypes),
+    !,
+    include(\=(compared(_, _)), CombinedTypes, RealCombinedTypes),
+    combineTypes(RealCombinedTypes, TypesForMatrix).
+simplifyCandidates(CombinedTypes, NbBaseTypes, RealCandidates, TypesForMatrix) :-
+    length(RealCandidates, N),
+    N > NbBaseTypes,
+    !,
+    askSimplificationQuestion(CombinedTypes, NewCombinedTypes),
+    !,
+    list_to_set(RealCandidates, NewCandidates),
+    simplifyCandidates(NewCombinedTypes, NbBaseTypes, NewCandidates, TypesForMatrix).
+
+askSimplificationQuestion(CombinedTypes, [compared(Symbol1, Symbol2) | CombinedTypes]) :-
+    member(type(_-Symbol1, Type1), CombinedTypes),
+    nonvar(Type1),
+    Type1 = pred(S1, O1),
+    member(type(_-Symbol2, Type2), CombinedTypes),
+    Symbol1 \= Symbol2,
+    nonvar(Type2),
+    Type2 = pred(S2, O2),
+    \+ \+ (S1 = S2, O1 = O2),
+    \+ member(compared(Symbol1, Symbol2), CombinedTypes),
+    \+ member(compared(Symbol2, Symbol1), CombinedTypes),
+    format(string(Question), "Are ~p and ~p the same relation? [yes/no]", [Symbol1, Symbol2]),
+    askQuestion(eq(Symbol1, Symbol2), Question, Answer),
+    (
+        Answer = yes
+    ->
+        S1 = S2,
+        O1 = O2
+    ;
+        true
+    ).
 
