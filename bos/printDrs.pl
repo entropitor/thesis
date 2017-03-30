@@ -259,6 +259,9 @@ formatConds([Basic|Rest], In-[[9474, 32|Line]|Out], N0-N2) :-
       Formatting Basic Conditions
 ========================================================================*/
 
+formatBasic(alldifferent(Arg), Line) :-
+    formatBasic(pred(alldifferent, Arg), Line).
+
 formatBasic(pred(Functor, Arg), Line) :-
     name(Functor, F),
     makeConstant(Arg, A),
