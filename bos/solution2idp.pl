@@ -21,7 +21,7 @@
 
 solution2idp(solution(Sentences, DRSs, TypesIn), ProblemName, Problem) :-
     setQuestionTopic(ProblemName),
-    Problem = p(NbBaseTypes, NbConceptsPerType, _),
+    Problem = problem(NbBaseTypes, NbConceptsPerType, _, _),
     combineTypesToMatrix(TypesIn, NbBaseTypes, NbConceptsPerType, Types),
     maplist(drs2fol, DRSs, FOLs),
     pairs_keys_values(SentencePairs, Sentences, FOLs),

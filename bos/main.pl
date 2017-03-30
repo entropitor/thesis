@@ -112,9 +112,9 @@ solvep(ProblemName) :-
     solution2idp(Solution, ProblemName, Problem).
 
 testp(ProblemName, [ProblemName, NbDRSes, NbResults], Solutions) :-
-    useLexicon(ProblemName),
     problem(ProblemName, Problem),
-    Problem = p(_, _, Sentences),
+    Problem = problem(_, _, Sentences, Lexicon),
+    useLexicon(Lexicon),
     format('~n###############################~n###   ~p~n###############################~n', [ProblemName]),
     maplist(testSentence, Sentences, NbDRSes, Results),
     nl,
@@ -127,7 +127,7 @@ testp(ProblemName, [ProblemName, NbDRSes, NbResults], Solutions) :-
     %% maplist(toFol(Sentences), Types, NewDRSss),
     true.
 
-filterResults(p(_NbBaseTypes, _, _), Results, NewResults) :-
+filterResults(problem(_NbBaseTypes, _, _, _), Results, NewResults) :-
     findall(PossibleResult, (
                 maplist(memberIfMultiple, PossibleResult, Results)
                 %% pairs_keys_values(PossibleResult, _DRSs, Types),
@@ -153,7 +153,7 @@ endoPredicateType([type(_, pred(X, Y)) | _]) :-
 endoPredicateType([_ | Types]) :-
     endoPredicateType(Types).
 
-toSolution(p(_NbBaseTypes, _NbConceptsPerType, Sentences), DRSs, Types, solution(Sentences, DRSs, CombinedTypes)) :-
+toSolution(problem(_NbBaseTypes, _NbConceptsPerType, Sentences, _), DRSs, Types, solution(Sentences, DRSs, CombinedTypes)) :-
     flatten(Types, FlatTypes),
     combineTypes(FlatTypes, CombinedTypes),
     !.

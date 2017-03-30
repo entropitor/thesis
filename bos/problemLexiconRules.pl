@@ -4,13 +4,11 @@
           ]).
 
 :- use_module(myLexicon, [lexEntry/2 as defaultLexicon]).
-:- use_module(problemLexicon, [pLexicon/2, concept/2, property/3, relation/5, actor/5]).
 :- use_module(types, [addType/2, addTypeAttribute/2]).
 
 :- dynamic pLexEntry/2.
 
-useLexicon(LexiconName) :-
-    pLexicon(LexiconName, Rules),
+useLexicon(Rules) :-
     retractall(pLexEntry(_, _)),
     maplist(addRule, Rules).
 
