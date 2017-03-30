@@ -37,28 +37,6 @@
 :- discontiguous problemLexicon:relation/5.
 :- discontiguous problemLexicon:actor/5.
 
-%% /*========================================================================
-%%     Puzzle: Zebra
-%% ========================================================================*/
-
-%% concept(person, constructed:[[the, englishman], [the, spaniard], [the, ukrainian], [the, japanese], [the, norwegian]]).
-%% concept(house, nominal).
-%% concept(color, constructed:[[red], [green], [ivory], [yellow], [blue]]).
-%% concept(animal, constructed:[[the, dog], [the, zebra], [the, snail], [the, fox], [the, horse]]).
-%% concept(drink, constructed:[[coffee], [tea], [milk], [water], [orange, juice]]).
-%% concept(cigarette, constructed:[[chesterfields], [kools], [parliaments], [old, gold], [lucky, strike]]).
-
-%% property(house, [position], int).
-%% property(house, [color], color).
-
-%% relation(house, house, [is, next], [to], [is, next]).
-%% relation(person, house, [lives], [in], [live]).
-%% relation(person, animal, [keeps], [], [keep]).
-%% relation(person, drink, [drinks], [], [drink]).
-%% relation(person, cigarette, [smokes], [], [smoke]).
-
-%% actor(person, cigarette, [smoker], [of], [smokes]).
-
 /*========================================================================
     Puzzle: p1
 ========================================================================*/
@@ -78,25 +56,13 @@ pLexicon(p1, [
             pn(country, [slovakia]),
             noun(year, [year], [years]),
             ivpp(pred(species, country), [lives], [in], [live]),
-            ivpp(pred(species, year), [is, recognized, as, endangered], [in], [are, recognized, as, endangered]),
-            ivpp(pred(species, year), [is, listed], [in], [are, listed]),
+            ivpp(pred(species, year), [was, recognized, as, endangered], [in], [are, recognized, as, endangered]),
+            ivpp(pred(species, year), [was, listed], [in], [are, listed]),
             ivpp(pred(species, population), [has, a, population, size], [of], [have, a, population, size]),
-            prep(fun(country, species), [from])
+            ivpp(pred(species, population), [has, a, surviving, population, size], [of], [have, a, surviving, population, size]),
+            prep(fun(country, species), [from]),
+            prep(fun(population, species), [with, a, population, size, of])
         ]).
-
-%% concept(species, constructed:[[the, perens, pig], [the, byengo, bat], [the, nibner, newt], [the, eldar, elk], [the, osbele, oryx]]).
-%% %% concept(population, constructed:[[210], [280], [315], [490], [525]]).
-%% concept(country, constructed:[[ghana], [honduras], [poland], [russia], [slovakia]]).
-%% %% concept(year, constructed:[[2006], [2007], [2008], [2009], [2010]]).
-%% concept(year, countable:[years]).
-
-%% property(species, [population, size], population).
-
-%% %% relation(species, country, [lives], [in], [live]).
-%% relation(species, year, [is, recognized, as, endangered], [in], [is, recognized, as, endangered]).
-%% relation(species, year, [is, listed], [in], [is, listed]).
-%% relation(species, population, [has, a, population, size], [of], [have, a, population, size]).
-
 
 /*========================================================================
     Puzzle: p2
@@ -126,16 +92,4 @@ pLexicon(p2, [
             ivpp(pred(contestant, score), [finishes], [with], [finish]),
             prep(fun(city, contestant), [from])
         ]).
-
-
-%% concept(contestant, constructed:[[bill], [colin], [ira], [oscar], [pedro]]).
-%% concept(darts, constructed:[[the, black, darts], [the, orange, darts], [the, red, darts], [the, white, darts], [the, yellow, darts]]).
-%% concept(city, constructed:[[mount, union], [gillbertville], [lohrville], [worthington], [yorktown]]).
-%% concept(total, countable:[points]).
-
-
-%% relation(contestant, darts, [threw], [], [throw]).
-%% relation(contestant, score, [scored], [], [score]).
-
-%% actor(contestant, city, [the, contestant], [from], [from]).
 
