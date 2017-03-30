@@ -209,7 +209,7 @@ np([coord:yes, num:Num, gap:G, ref:no, sem:NP, vType:Type])-->
     { addTypeAttribute(Type, countable) },
     { combine(np:NP, [np:NP1, comp:Comp, np:NP2, vType1:Type, vType2:Type2]) }.
 
-np([coord:no, num:sg, gap:[], ref:no, sem:NP, vType:Type])-->
+np([coord:no, num:_, gap:[], ref:no, sem:NP, vType:Type])-->
     pn([sem:PN, vType:Type]),
     { combine(np:NP, [pn:PN]) }.
 
@@ -426,6 +426,7 @@ number([sem:Sem, vType:Type], [Number|T], T) :-
 
 pn([sem:Sem, vType:Type])-->
     { lexEntry(pn, [symbol:Sym, syntax:Word, vType:Type]) },
+    optional([the]),
     Word,
     { semLex(pn, [symbol:Sym, sem:Sem]) }.
 

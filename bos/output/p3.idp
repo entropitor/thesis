@@ -1,0 +1,74 @@
+// Problem p3
+
+vocabulary V {
+    type type1 constructed from {the_other_type1, orange_shirts, blue_shirts, red_shirts, lime_green_shirts}
+    type team constructed from {oddballs, turkey_rolls, rowdy_rollers, alley_cats, splitters}
+    type point = {715; 727; 739; 751; 763} isa int
+    type type2 constructed from {the_other_type2, stacyville, lathrop, woodstock, castro_valley}
+
+    wore(team, type1)
+    finished_with(team, point)
+    had_a_final_score_of(team, point)
+    from(team, type2)
+    in(team, type1)
+}
+
+structure S : V {
+}
+
+theory T : V {
+    // The team that finished with 739 points wore orange shirts
+    ?a [team]: finished_with(a,739) & wore(a,orange_shirts).
+
+    // Of the squad in the blue shirts and the team from Stacyville, one had a final score of 715 points and the other was the Oddballs
+    ?b [team] c [team]: in(b,blue_shirts) & from(c,stacyville) & ~ (b = c) & (had_a_final_score_of(b,715) & oddballs = c | had_a_final_score_of(c,715) & oddballs = b).
+
+    // Of the Turkey Rolls and the team from Lathrop, one wore orange shirts and the other wore red shirts
+    ?d [team]: from(d,lathrop) & ~ (turkey_rolls = d) & (wore(turkey_rolls,orange_shirts) & wore(d,red_shirts) | wore(d,orange_shirts) & wore(turkey_rolls,red_shirts)).
+
+    // The rowdy rollers finished 12 points below the team in orange shirts
+    ?e [point] f [team] g [point]: in(f,orange_shirts) & finished_with(f,e) & g = e-12 & finished_with(rowdy_rollers,g).
+
+    // The squad that finished with 727 points was either the team in the orange shirts or the squad from Woodstock
+    ?h [team]: finished_with(h,727) & ((?i [team]: in(i,orange_shirts) & i = h) | (?j [team]: from(j,woodstock) & j = h)).
+
+    // The Turkey Rolls weren't from Castro Valley
+    ~ from(turkey_rolls,castro_valley).
+
+    // The Alley Cats had a final score of 763 points
+    had_a_final_score_of(alley_cats,763).
+
+    // The team in the blue shirts, the Splitters, the squad from Lathrop and the Rowdy Rollers were all different teams
+    ?k [team] l [team]: ~ (k = splitters) & ~ (k = l) & ~ (k = rowdy_rollers) & ~ (splitters = l) & ~ (splitters = rowdy_rollers) & ~ (l = rowdy_rollers) & in(k,blue_shirts) & from(l,lathrop).
+
+    // The squad that finished with 715 points didn't wear lime green shirts
+    ?m [team]: finished_with(m,715) & ~ wore(m,lime_green_shirts).
+
+
+    // Logigram bijection axioms:
+    ! x [team]: ?=1 y [type1]: wore(x, y).
+    ! x [type1]: ?=1 y [team]: wore(y, x).
+
+    ! x [team]: ?=1 y [point]: finished_with(x, y).
+    ! x [point]: ?=1 y [team]: finished_with(y, x).
+
+    ! x [team]: ?=1 y [point]: had_a_final_score_of(x, y).
+    ! x [point]: ?=1 y [team]: had_a_final_score_of(y, x).
+
+    ! x [team]: ?=1 y [type2]: from(x, y).
+    ! x [type2]: ?=1 y [team]: from(y, x).
+
+    ! x [team]: ?=1 y [type1]: in(x, y).
+    ! x [type1]: ?=1 y [team]: in(y, x).
+
+    // Logigram synonym axioms:
+    ! x [team] y [type1]: wore(x, y) <=> in(x, y).
+    ! x [team] y [point]: finished_with(x, y) <=> had_a_final_score_of(x, y).
+}
+
+procedure main() {
+    stdoptions.nbmodels = 10;
+    printmodels(modelexpand(T,S))
+    model = modelexpand(T,S)
+}
+

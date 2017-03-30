@@ -72,3 +72,39 @@ problem(p2, problem(4,5, [
                         prep(fun(city, contestant), [from])
         ])).
 
+
+% ADAPTED!!!
+% added "shirts" to clue 3
+problem(p3, problem(4, 5, [
+                        "The team that finished with 739 points wore orange shirts",
+                        "Of the squad in the blue shirts and the team from Stacyville, one had a final score of 715 points and the other was the Oddballs",
+                        "Of the Turkey Rolls and the team from Lathrop, one wore orange shirts and the other wore red shirts",
+                        "The rowdy rollers finished 12 points below the team in orange shirts",
+                        "The squad that finished with 727 points was either the team in the orange shirts or the squad from Woodstock",
+                        "The Turkey Rolls weren't from Castro Valley",
+                        "The Alley Cats had a final score of 763 points",
+                        "The team in the blue shirts, the Splitters, the squad from Lathrop and the Rowdy Rollers were all different teams",
+                        "The squad that finished with 715 points didn't wear lime green shirts"
+                    ], [
+                        noun(team, [team], [teams]),
+                        ivpp(pred(team, score), [finished], [with], [finish]),
+                        noun(point, [point], [points]),
+                        tv(pred(team, color), [wore], [wear]),
+                        pn(color, [orange, shirts]),
+                        noun(team, [squad], [squads]),
+                        prep(pred(color, team), [in]),
+                        pn(color, [blue, shirts]),
+                        prep(pred(city, team), [from]),
+                        pn(city, [stacyville]),
+                        ivpp(pred(team, score), [had, a, final, score], [of], [have, a, final, score, of]),
+                        pn(team, [oddballs]),
+                        pn(team, [turkey, rolls]),
+                        pn(city, [lathrop]),
+                        pn(color, [red, shirts]),
+                        pn(team, [rowdy, rollers]),
+                        pn(city, [woodstock]),
+                        pn(city, [castro, valley]),
+                        pn(team, [alley, cats]),
+                        pn(team, [splitters]),
+                        pn(color, [lime, green, shirts])
+                    ])).

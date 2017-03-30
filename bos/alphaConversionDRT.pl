@@ -157,5 +157,8 @@ alphaConvertCondition(eq(X1, Y1), Vars, eq(X2, Y2)) :-
     alphaConvertTerm(Vars, X1, X2),
     alphaConvertTerm(Vars, Y1, Y2).
 
+alphaConvertCondition(alldifferent(X1), Vars, alldifferent(X2)) :-
+    alphaConvertTerm(Vars, X1, X2).
+
 alphaConvertCondition(eq(X1), Vars, eq(X2)) :-
     alphaConvertTerm(Vars, X1, X2).

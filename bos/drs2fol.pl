@@ -32,6 +32,13 @@ drs2fol(drs([], [Cond]), Formula) :-
     !,
     cond2fol(Cond, Formula).
 
+drs2fol(drs([], Conds), and(Formula1, Formula2)) :-
+    partition(isAlldifferent, Conds, AllDifferents, NormalConds),
+    AllDifferents \= [],
+    !,
+    alldifferent2fol(AllDifferents, Formula1),
+    drs2fol(drs([], NormalConds), Formula2).
+
 drs2fol(drs([], [Cond1, Cond2|Conds]), and(Formula1, Formula2)) :-
     !,
     cond2fol(Cond1, Formula1),
@@ -67,3 +74,25 @@ cond2fol(eq(X), eq(X)).
 cond2fol(pred(Sym, X), pred(Sym, X)).
 
 cond2fol(rel(Sym, X, Y), rel(Sym, X, Y)).
+
+/*========================================================================
+    Translate alldifferent constraints into FOL formulas
+========================================================================*/
+
+isAlldifferent(alldifferent(_)).
+alldifferentToVariable(alldifferent(X), X).
+
+alldifferent2fol(AllDifferents, Formula) :-
+    maplist(alldifferentToVariable, AllDifferents, Variables),
+    alldifferentVariablesToConstraints(Variables, Formula).
+
+alldifferentVariablesToConstraints([A, B], not(eq(A, B))) :-
+    !.
+alldifferentVariablesToConstraints([A, B | C], and(Formula1, Formula2)) :-
+    variableDifferentFromOthers(A, [B|C], Formula1),
+    alldifferentVariablesToConstraints([B | C], Formula2).
+
+variableDifferentFromOthers(A, [B], not(eq(A, B))) :-
+    !.
+variableDifferentFromOthers(A, [B, C | D], and(not(eq(A, B)), Formula)) :-
+    variableDifferentFromOthers(A, [C | D], Formula).
