@@ -50,7 +50,7 @@ semLex(number, M) :-
 
 semLex(pn, M) :-
     M = [symbol:Sym,
-         sem:lam(P, merge(drs([], []), app(P, Sym)))].
+         sem:lam(P, app(P, Sym))].
 
 semLex(cn, M) :-
     M = [symbol:Sym,

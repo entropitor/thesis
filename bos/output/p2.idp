@@ -23,10 +23,10 @@ theory T : V {
     from(bill,mount_union).
 
     // Ira scored 21 points higher than the contestant from Worthington
-    ?c [person] d [point] e [point]: from(c,worthington) & scored(c,d) & e = d+21 & scored(ira,e).
+    ?c [point] d [person] e [point]: from(d,worthington) & scored(d,c) & e = c+21 & scored(ira,e).
 
     // Oscar scored higher than the contestant who threw the orange darts
-    ?f [type3] g [person] h [point] i [point]: f>0 & threw(g,the_orange_darts) & scored(g,h) & i = h+f & scored(oscar,i).
+    ?f [type3] g [point] h [person] i [point]: f>0 & threw(h,the_orange_darts) & scored(h,g) & i = g+f & scored(oscar,i).
 
     // The contestant from Mount union threw the black darts
     ?j [person]: from(j,mount_union) & threw(j,the_black_darts).
@@ -41,7 +41,7 @@ theory T : V {
     ?m [person] n [person]: scored(m,41) & threw(n,the_orange_darts) & ~ (m = n) & (from(m,gillbertville) & from(n,worthington) | from(n,gillbertville) & from(m,worthington)).
 
     // Ira scored 7 points lower than the contestant from Lohrville
-    ?o [person] p [point] q [point]: from(o,lohrville) & scored(o,p) & q = p-7 & scored(ira,q).
+    ?o [point] p [person] q [point]: from(p,lohrville) & scored(p,o) & q = o-7 & scored(ira,q).
 
 
     // Logigram bijection axioms:
