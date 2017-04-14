@@ -1,4 +1,5 @@
 \chapter{Achtergrond}
+Om deze thesis te begrijpen worden hier een aantal concepten uitgelegd die niet per se tot de achtergrondkennis behoren van de lezer. Definite Clause Grammars zijn een soort van grammatica die een aantal voordelen biedt voor het parsen van natuurlijke taal. Feature structures zorgen voor een beperking van het aantal grammaticale regels en verhogen de leesbaarheid ervan.
 
 \section{Definite Clause Grammars}
 \label{sec:DCG}
@@ -10,6 +11,7 @@ Definite Clause Grammars \cite{Pereira1980} zijn een uitbreiding van contextvrij
   \item Het is mogelijk om prolog code toe te voegen die extra restricties oplegt aan de grammatica.
 \end{enumerate}
 
+\subsection{Een eerste grammatica}
 \begin{ex}
   Een voorbeeld van een DCG grammatica is:
   \begin{quote}
@@ -20,10 +22,11 @@ Definite Clause Grammars \cite{Pereira1980} zijn een uitbreiding van contextvrij
     \texttt{v ---> [zie].}
   \end{quote}
 \end{ex} 
-\texttt{s} is het startsymbool en staat voor \texttt{sentence}. \texttt{np} staat voor \texttt{noun phrase} (naamwoordgroep of nominale constituent), \texttt{vp} voor \texttt{verb phrase} (verbale constituent) en \texttt{v} voor \texttt{verb}. We gebruiken de Engelse namen voor gelijkaardigheid met de literatuur. Deze grammatica zegt dat een zin bestaat uit een noun phrase gevold door een verb phrase. Een verb phrase is dan weer een werkwoord gevolgd door een noun phrase.
+\texttt{s} is het startsymbool en staat voor \texttt{sentence}. \texttt{np} staat voor \texttt{noun phrase} (naamwoordgroep of nominale constituent), \texttt{vp} voor \texttt{verb phrase} (verbale constituent) en \texttt{v} voor \texttt{verb}. Deze grammatica zegt dat een zin bestaat uit een noun phrase gevold door een verb phrase. Een verb phrase is dan weer een werkwoord gevolgd door een noun phrase.
 
 De zin \example{ik zie hem} is onderdeel van deze taal. Maar ook de zin \example{ik zie ik} is deel van de taal. Om dit op te lossen kunnen we argumenten meegeven aan de niet-terminaal \texttt{np}.
 
+\subsection{De woordvorm is afhankelijk van de context}
 \begin{ex}
   \label{ex:nom-acc-features}
   Deze verbeterde grammatica houdt rekening met welke woordvorm kan voorkomen in welke context.
@@ -38,6 +41,7 @@ De zin \example{ik zie hem} is onderdeel van deze taal. Maar ook de zin \example
 
 De \texttt{nom} en \texttt{acc} slaan hier op de naamvallen \texttt{nominatief} en \texttt{accusatief}. Ze geven aan in welke functie de naamwoordgroepen gebruikt mogen worden binnen een zin.
 
+\subsection{Een boom als resultaat}
 \begin{ex} Verder is het ook mogelijk om een boom op te bouwen tijdens het parsen.
   \begin{quote}
     \texttt{s(Tree) ---> np(NP, nom), vp(Tree, NP).} \\
@@ -54,6 +58,7 @@ Bij het parsen van \example{ik zie hem} krijgen we nu volgende boom:
 
 Merk op dat deze boom de structuur van de grammatica niet hoeft te volgen. Het werkwoord wordt hier tot belangrijkste woord van de zin gebombardeerd.
 
+\subsection{Prolog-code in de grammatica}
 \begin{ex} Ten slotte is het mogelijk om prolog restricties te embedden in de grammatica door deze prolog goals tussen accolades te plaatsen.
   \begin{quote}
     \texttt{expression(X) ---> factor(X).} \\
@@ -67,7 +72,7 @@ Merk op dat deze boom de structuur van de grammatica niet hoeft te volgen. Het w
   \end{quote}
 \end{ex} 
 
-Bovenstaande grammatica kan simpele wiskunde expressies omvormen tot de wiskundige waarde. Zo wordt \texttt{2 + 4 * 5} omgevormd tot \texttt{22} volgens volgende boom. Hierbij wordt de waarde van onder naar boven gepropageerd.
+Bovenstaande grammatica kan simpele wiskunde expressies omvormen tot de wiskundige waarde. Zo wordt \texttt{2 + 4 * 5} omgevormd tot \texttt{22} volgens volgende boom. Hierbij wordt de waarde van onder uit de boom naar boven toe gepropageerd via unificatie.
 
 \Tree[.expression(22)
         [.term(22) [.factor(2) [.number(2) 2 ]]
@@ -76,10 +81,78 @@ Bovenstaande grammatica kan simpele wiskunde expressies omvormen tot de wiskundi
 
 De prologcode in de accolades heeft twee functies. Enerzijds berekent die de waarde van een subexpressie zoals een factor of een term. Anderzijds beperkt de prologcode de grammatica. Een \texttt{numeral} bestaat uit 1 token maar enkel als dat token een getal is volgens prolog. Zo'n beperking in prolog kan ook gebruikt worden om uit de beperkingen van een contextvrije grammatica te treden.
 
-\paragraph{}Een laatste opmerking bij deze grammatica is de asymmetrische vorm voor factoren en termen. Een factor is bijvoorbeeld niet gedefinieerd als de vermenigvuldiging van 2 factoren. Dit komt omdat DCG's niet enkel definities zijn van grammatica's maar ook een uitvoeringsstrategie hebben. M.a.w. men krijgt er gratis een parser bij. Deze parser werkt, net als prolog, top-down en van links naar rechts. In het geval van links recursieve regels, zou de parser in een oneindige lus kunnen geraken. Het is echter een bekend resultaat dat men een grammatica altijd kan omvormen zodat deze niet langer links recursief is. Dit is dus geen beperking op welke talen voorgesteld kunnen worden.
+\subsection{Conclusie}
+\paragraph{} Definite Clause Grammars zijn expressieve grammatica's die uitermate geschikt zijn voor het modelleren van de grammatica van een natuurlijke taal. In deze thesis zullen alle grammatica's dan ook gegeven worden in de vorm van een DCG.
 
-\paragraph{} DCG's zonder prolog code zijn zeer declaratief. Men kan ze namelijk ook puur als definitie van een grammatica beschouwen. Zo kan men een chart parser schrijven die gebruik maakt van een DCG als definitie van de grammatica. Chart parsers zijn interessant voor CNL's omdat ze onthouden welke partiële en volledige constituenten ze al gevonden hebben \cite{Kuhn2008}. Daardoor is er geen nood aan backtracking. Men moet zo niet telkens opnieuw bewijzen wat in een andere tak al bewezen was. Een chart parser onthoudt dat \example{een man} een naamwoordgroep is en kijkt hoe het deze woordgroep kan combineren met andere woorden tot partiële of volledige constituenten. Daardoor is een chart parser veel sneller dan de gratis parser van prolog.
+% \paragraph{}Een laatste opmerking bij deze grammatica is de asymmetrische vorm voor factoren en termen. Een factor is bijvoorbeeld niet gedefinieerd als de vermenigvuldiging van 2 factoren. Dit komt omdat DCG's niet enkel definities zijn van grammatica's maar ook een uitvoeringsstrategie hebben. M.a.w. men krijgt er gratis een parser bij. Deze parser werkt, net als prolog, top-down en van links naar rechts. In het geval van links recursieve regels, zou de parser in een oneindige lus kunnen geraken. Het is echter een bekend resultaat dat men een grammatica altijd kan omvormen zodat deze niet langer links recursief is. Dit is dus geen beperking op welke talen voorgesteld kunnen worden.
 
-Bovendien kan men uit de partiële constituenten afleiden welke woordcategorieën kunnen volgen op een partiële zin. Zo kan de partiële zin \example{Een rode} gevolgd worden door een adjectief of substantief maar niet door een lidwoord of een werkwoord. Op basis hiervan kan men een suggestietool maken die suggesties geeft i.v.m.\ welke woorden kunnen volgen.
+% \paragraph{} DCG's zonder prolog code zijn zeer declaratief. Men kan ze namelijk ook puur als definitie van een grammatica beschouwen. Zo kan men een chart parser schrijven die gebruik maakt van een DCG als definitie van de grammatica. Chart parsers zijn interessant voor CNL's omdat ze onthouden welke parti\"ele en volledige constituenten ze al gevonden hebben \cite{Kuhn2008}. Daardoor is er geen nood aan backtracking. Men moet zo niet telkens opnieuw bewijzen wat in een andere tak al bewezen was. Een chart parser onthoudt dat \example{een man} een naamwoordgroep is en kijkt hoe het deze woordgroep kan combineren met andere woorden tot parti\"ele of volledige constituenten. Daardoor is een chart parser veel sneller dan de gratis parser van prolog.
 
-Ten slotte kan men bij het toevoegen van een woord aan een partiële zin, de resultaten van de vorige parse gebruiken. Dit levert een extra performantiewinst op t.o.v.\ de gratis parser in het geval van incrementele parses. Dit is vooral interessant tijdens het schrijven van een zin, waarbij de vorige partiële zin steeds wordt uitgebreid met één woord. Een chart parser hoeft in dat geval namelijk enkel te kijken naar dit nieuwe woord en naar wat er in het geheugen is van de vorige parse, niet meer naar de andere woorden in de zin.
+% Bovendien kan men uit de parti\"ele constituenten afleiden welke woordcategorie\"en kunnen volgen op een parti\"ele zin. Zo kan de parti\"ele zin \example{Een rode} gevolgd worden door een adjectief of substantief maar niet door een lidwoord of een werkwoord. Op basis hiervan kan men een suggestietool maken die suggesties geeft i.v.m.\ welke woorden kunnen volgen.
+
+% Ten slotte kan men bij het toevoegen van een woord aan een parti\"ele zin, de resultaten van de vorige parse gebruiken. Dit levert een extra performantiewinst op t.o.v.\ de gratis parser in het geval van incrementele parses. Dit is vooral interessant tijdens het schrijven van een zin, waarbij de vorige parti\"ele zin steeds wordt uitgebreid met \'e\'en woord. Een chart parser hoeft in dat geval namelijk enkel te kijken naar dit nieuwe woord en naar wat er in het geheugen is van de vorige parse, niet meer naar de andere woorden in de zin.
+
+\section{Feature structures}
+\label{sec:featureStructures}
+
+\paragraph{} Een feature structure is een term uit de taalkunde. Men kan ze zien als \textit{named arguments} voor een niet-terminaal die gebruikt worden om een explosie aan grammaticale regels te voorkomen. Zo kan een \texttt{np} en \texttt{vp} een feature \texttt{getal} hebben dat aangeeft of de woordgroep in het enkelvoud of meervoud staat. De grammaticale regel voor een zin kan dan aangeven dat het onderwerp en werkwoord moeten overeenkomen in getal. Andere features geven bijvoorbeeld de naamval aan van een naamwoordgroep. Blackburn en Striegnitz \cite{NLPCourse} geven de volgende grammaticale regel als voorbeeld (hierbij staat \texttt{CAT} voor de categorie van een woordgroep):
+
+\[
+  \fstructure{
+    \feature{CAT}{s}
+  }
+  \rightarrow
+  \fstructure{
+    \feature{CAT}{np}
+    \feature{NAAMVAL}{nom}
+    \feature{GETAL}{\fvariable{1}}
+  }
+  \fstructure{
+    \feature{CAT}{vp}
+    \feature{GETAL}{\fvariable{1}}
+  }
+\]
+
+Deze regel zegt dat een zin bestaat uit een \texttt{np} gevolgd door een \texttt{vp}. De \texttt{np} moet de naamval \texttt{nom} hebben. Bovendien moet het getal van de \texttt{np} en de \texttt{vp} unificeren (de \framebox{1} kan men zien als een variabele).
+
+Grammatica's die gebruik maken van feature structures, gebruiken altijd unificatie voor het samenvoegen van meerdere structuren. Niet alle features moeten namelijk altijd een waarde toegekend krijgen. Zo kan een eigennaam voorkomen als onderwerp en als lijdend voorwerp (en heeft dus geen waarde voor de feature \texttt{naamval}). Terwijl \example{ik} enkel als onderwerp kan voorkomen (en dus wel een waarde heeft voor die feature). Zoals in het voorbeeld hierboven kan men door unificatie ook controleren of meerdere woordgroepen dezelfde waarden hebben voor een feature.
+
+\paragraph{} Zoals Shieber et al.\ \cite{Shieber2003} aanhalen, verschillen prolog termen van feature structures enkel in vorm. Zo speelt de volgorde in prolog wel een rol. Ten slotte moet men steeds alle features vermelden, ook als ze ongebonden zijn. Qua expressiviteit voegen ze echter niets toe aan DCG's. Zo is bovenstaande grammaticale regel op basis van feature structures equivalent met volgende DCG-regel:
+
+\[
+    \texttt{s ---> np([naamval:nom, getal:Getal]), vp([getal:Getal]).} \\
+\]
+
+\paragraph{} Feature structures (en argumenten in DCG's) zijn handig om de explosie van grammatica regels te voorkomen.
+\begin{ex}  Een voorbeeld van een grammatica zonder feature structures uit \cite{NLPCourse}:
+  \label{ex:explosion}
+  \begin{quote}
+    \texttt{s ---> np\_{singular}, vp\_{singular}.} \\
+    \texttt{s ---> np\_{plural}, vp\_{plural}.} \\
+    \texttt{np ---> np\_{singular}.} \\
+    \texttt{np ---> np\_{plural}.} \\
+    \texttt{np\_{singular} ---> det, n\_{singular}.} \\
+    \texttt{np\_{plural} ---> det, n\_{plural}.} \\
+    \texttt{vp\_{singular} ---> intransitive\_verb\_{singular}.} \\
+    \texttt{vp\_{singular} ---> transitive\_verb\_{singular}, np.} \\
+    \texttt{vp\_{plural} ---> intransitive\_verb\_{plural}.} \\
+    \texttt{vp\_{plural} ---> transitive\_verb\_{plural}, np.} \\
+    \texttt{n\_singular ---> [man].} \\
+    ...
+  \end{quote}
+\end{ex} 
+Hierbij staat de \texttt{n} voor zelfstandig naamwoord (van het Engelse \texttt{noun}) en \texttt{det} voor determinator. Deze grammatica can veel korter gemaakt worden door gebruik te maken van feature structures:
+
+\begin{ex}  Een grammatica met feature structures equivalent aan voorbeeld \ref{ex:explosion} (ook uit \cite{NLPCourse})
+  \begin{quote}
+    \texttt{s ---> np([num:Num]), vp([num:Num]).} \\
+    \texttt{np([num:Num]) ---> det, n(num:Num).} \\
+    \texttt{vp([num:Num]) ---> intransitive\_verb([num:Num]).} \\
+    \texttt{vp([num:Num]) ---> transitive\_verb([num:Num]), np(\_).} \\
+    \texttt{n([num:singular]) ---> [man].} \\
+    ...
+  \end{quote}
+\end{ex} 
+
+\paragraph{Conclusie} Door gebruik te maken van feature structures is de grammatica simpeler en leesbaarder. Bovendien hoeft het concept dat een zin bestaat uit een \texttt{np} gevolgd door een \texttt{vp} maar \'e\'en keer te worden uitgedrukt. De feature structures zorgen voor de congruentie in getal van het onderwerp met het werkwoord.
+

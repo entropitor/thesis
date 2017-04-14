@@ -1,9 +1,9 @@
-\documentclass[master=cws,masteroption=ai,ascii,utf8]{kulemt}
+\documentclass[master=cws,masteroption=ai,inputenc=utf8]{kulemt}
 \setup{title={Automatisch vertalen van logigrammen naar logica},
   author={Jens Claes},
   promotor={Prof. dr. M. Denecker},
-  assessor={Ir.\,W. Eetveel\and W. Eetrest},
-  assistant={Ir. L. Janssens}}
+  assessor={},
+  assistant={Dr. Ir. B. Bogaerts \and Ir. L. Janssens}}
 % De volgende \setup mag verwijderd worden als geen fiche gewenst is.
 \setup{filingcard,
   translatedtitle={Automatic translation of logigrams into logic},
@@ -36,9 +36,38 @@
 \newtheorem{ex}{Voorbeeld}[section]
 
 \newcommand{\example}[1]{\textit{``#1''}}
+
 \newcommand{\fstructure}[1]{\left [\begin{tabular}{lr}#1\end{tabular}\right]}
 \newcommand{\feature}[2]{#1 & #2 \\}
 \newcommand{\fvariable}[1]{\framebox{#1}}
+
+\newcommand{\drs}[4]{\begin{table}[h]
+  \centering
+  #1
+  \caption{#2}
+  \label{drs:#3}
+  #4
+\end{table}}
+\newcommand{\drsBox}[2]{
+  \begin{tabular}{|l|}
+    \hline
+    #1 \\
+    \hline
+    #2
+    \hline
+  \end{tabular}
+}
+\newcommand{\drsBoxImpl}[4]{
+  \begin{tabular}{|lcl|}
+    \hline
+    #1 & & \\
+    \hline
+    #2
+    #3 & $\Rightarrow$ & #4 \\
+    & & \\
+    \hline
+  \end{tabular}
+}
 
 
 % Tenslotte wordt hyperref gebruikt voor pdf bestanden.
@@ -55,12 +84,36 @@
 
 %\includeonly{hfdst-n}
 \begin{document}
+% \drs{
+%   \drsBox{A}{
+%     man(A) \\
+%     loves(A, jan) \\
+%   }
+% }{Test Drs}{test}{}
 
-\begin{preface}
-  Dit is mijn dankwoord om iedereen te danken die mij bezig gehouden heeft.
-  Hierbij dank ik mijn promotor, mijn begeleider en de voltallige jury.
-  Ook mijn familie heeft mij erg gesteund natuurlijk.
-\end{preface}
+% \drs{
+%   \lambda X.
+%   \drsBoxImpl{A}
+%   {
+%     man(A) & & \\
+%   }
+%   {
+%     \drsBox{B}{
+%       loves(A, B) \\
+%     }
+%   }
+%   {
+%     \drsBox{}{
+%       woman(X) \\
+%     }
+%   }
+% }{Test Drs2}{test2}{}
+
+% \begin{preface}
+%   Dit is mijn dankwoord om iedereen te danken die mij bezig gehouden heeft.
+%   Hierbij dank ik mijn promotor, mijn begeleider en de voltallige jury.
+%   Ook mijn familie heeft mij erg gesteund natuurlijk.
+% \end{preface}
 
 \tableofcontents*
 
@@ -83,24 +136,26 @@
 
 \include{ch_inleiding}
 \include{ch_motivatie}
-\include{ch_achtergrond}
-\include{ch_probleemstelling}
 
 % Nu begint de eigenlijke tekst
 \mainmatter
+\include{ch_achtergrond}
 
-\include{hfdst-1}
-\include{hfdst-2}
-% ... en zo verder tot
-\include{hfdst-n}
-\include{besluit}
+\include{ch_related}
+\include{ch_probleemstelling}
+
+% \include{hfdst-1}
+% \include{hfdst-2}
+% % ... en zo verder tot
+% \include{hfdst-n}
+% \include{besluit}
 
 % Indien er bijlagen zijn:
 \appendixpage*          % indien gewenst
-\appendix
-\include{app-A}
-% ... en zo verder tot
-\include{app-n}
+% \appendix
+% \include{app-A}
+% % ... en zo verder tot
+% \include{app-n}
 
 \backmatter
 % Na de bijlagen plaatst men nog de bibliografie.
