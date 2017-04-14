@@ -1,0 +1,85 @@
+\chapter{Achtergrond}
+
+\section{Definite Clause Grammars}
+\label{sec:DCG}
+Definite Clause Grammars \cite{Pereira1980} zijn een uitbreiding van contextvrije grammatica's die vaak ingebakken zitten in logische talen zoals prolog. Pereira et al.\ \cite{Pereira1980} geven 3 voorbeelden van hoe DCG's kunnen helpen bij het parsen van natuurlijke talen:
+
+\begin{enumerate}
+  \item De woordvorm kan afhankelijk gemaakt worden van de context waarin deze verschijnt. Zo kan men eisen dat een werkwoord in de juiste vervoeging voorkomt.
+  \item Tijdens het parsen kan men een boom opbouwen die de semantiek van de zin moet vatten. Deze boom hoeft niet isomorf te zijn met de structuur van de grammatica.
+  \item Het is mogelijk om prolog code toe te voegen die extra restricties oplegt aan de grammatica.
+\end{enumerate}
+
+\begin{ex}
+  Een voorbeeld van een DCG grammatica is:
+  \begin{quote}
+    \texttt{s ---> np, vp.} \\
+    \texttt{np ---> [ik].} \\
+    \texttt{np ---> [hem].} \\
+    \texttt{vp ---> v, np.} \\
+    \texttt{v ---> [zie].}
+  \end{quote}
+\end{ex} 
+\texttt{s} is het startsymbool en staat voor \texttt{sentence}. \texttt{np} staat voor \texttt{noun phrase} (naamwoordgroep of nominale constituent), \texttt{vp} voor \texttt{verb phrase} (verbale constituent) en \texttt{v} voor \texttt{verb}. We gebruiken de Engelse namen voor gelijkaardigheid met de literatuur. Deze grammatica zegt dat een zin bestaat uit een noun phrase gevold door een verb phrase. Een verb phrase is dan weer een werkwoord gevolgd door een noun phrase.
+
+De zin \example{ik zie hem} is onderdeel van deze taal. Maar ook de zin \example{ik zie ik} is deel van de taal. Om dit op te lossen kunnen we argumenten meegeven aan de niet-terminaal \texttt{np}.
+
+\begin{ex}
+  \label{ex:nom-acc-features}
+  Deze verbeterde grammatica houdt rekening met welke woordvorm kan voorkomen in welke context.
+  \begin{quote}
+    \texttt{s ---> np(nom), vp.} \\
+    \texttt{np(nom) ---> [ik].} \\
+    \texttt{np(acc) ---> [hem].} \\
+    \texttt{vp ---> v, np(acc).} \\
+    \texttt{v ---> [zie].} \\
+  \end{quote}
+\end{ex} 
+
+De \texttt{nom} en \texttt{acc} slaan hier op de naamvallen \texttt{nominatief} en \texttt{accusatief}. Ze geven aan in welke functie de naamwoordgroepen gebruikt mogen worden binnen een zin.
+
+\begin{ex} Verder is het ook mogelijk om een boom op te bouwen tijdens het parsen.
+  \begin{quote}
+    \texttt{s(Tree) ---> np(NP, nom), vp(Tree, NP).} \\
+    \texttt{np(ik, nom) ---> [ik].} \\
+    \texttt{np(hem, acc) ---> [hem].} \\
+    \texttt{vp(Tree, Subject) ---> v(Tree, Subject, Object), np(Object, acc).} \\
+    \texttt{v(zien(Subject, Object), Subject, Object) ---> [zie].}
+  \end{quote}
+\end{ex} 
+
+Bij het parsen van \example{ik zie hem} krijgen we nu volgende boom:
+
+\Tree[.\textit{zien} \textit{ik} \textit{hem} ]
+
+Merk op dat deze boom de structuur van de grammatica niet hoeft te volgen. Het werkwoord wordt hier tot belangrijkste woord van de zin gebombardeerd.
+
+\begin{ex} Ten slotte is het mogelijk om prolog restricties te embedden in de grammatica door deze prolog goals tussen accolades te plaatsen.
+  \begin{quote}
+    \texttt{expression(X) ---> factor(X).} \\
+    \texttt{expression(X) ---> term(X).} \\
+
+    \texttt{factor(X) ---> numeral(X).} \\
+    \texttt{factor(X) ---> numberal(A), [*], factor(B), \{X is A * B\}.} \\
+    \texttt{term(X) ---> factor(A), [+], expression(B), \{X is A + B\}.} \\
+
+    \texttt{numeral(X) ---> [X], \{number(X)\}.} \\
+  \end{quote}
+\end{ex} 
+
+Bovenstaande grammatica kan simpele wiskunde expressies omvormen tot de wiskundige waarde. Zo wordt \texttt{2 + 4 * 5} omgevormd tot \texttt{22} volgens volgende boom. Hierbij wordt de waarde van onder naar boven gepropageerd.
+
+\Tree[.expression(22)
+        [.term(22) [.factor(2) [.number(2) 2 ]]
+                   +
+                   [.expression(20) [.factor(20) [.number(4) 4 ] * [.factor(5) [.number(5) 5 ]]]]]]
+
+De prologcode in de accolades heeft twee functies. Enerzijds berekent die de waarde van een subexpressie zoals een factor of een term. Anderzijds beperkt de prologcode de grammatica. Een \texttt{numeral} bestaat uit 1 token maar enkel als dat token een getal is volgens prolog. Zo'n beperking in prolog kan ook gebruikt worden om uit de beperkingen van een contextvrije grammatica te treden.
+
+\paragraph{}Een laatste opmerking bij deze grammatica is de asymmetrische vorm voor factoren en termen. Een factor is bijvoorbeeld niet gedefinieerd als de vermenigvuldiging van 2 factoren. Dit komt omdat DCG's niet enkel definities zijn van grammatica's maar ook een uitvoeringsstrategie hebben. M.a.w. men krijgt er gratis een parser bij. Deze parser werkt, net als prolog, top-down en van links naar rechts. In het geval van links recursieve regels, zou de parser in een oneindige lus kunnen geraken. Het is echter een bekend resultaat dat men een grammatica altijd kan omvormen zodat deze niet langer links recursief is. Dit is dus geen beperking op welke talen voorgesteld kunnen worden.
+
+\paragraph{} DCG's zonder prolog code zijn zeer declaratief. Men kan ze namelijk ook puur als definitie van een grammatica beschouwen. Zo kan men een chart parser schrijven die gebruik maakt van een DCG als definitie van de grammatica. Chart parsers zijn interessant voor CNL's omdat ze onthouden welke partiële en volledige constituenten ze al gevonden hebben \cite{Kuhn2008}. Daardoor is er geen nood aan backtracking. Men moet zo niet telkens opnieuw bewijzen wat in een andere tak al bewezen was. Een chart parser onthoudt dat \example{een man} een naamwoordgroep is en kijkt hoe het deze woordgroep kan combineren met andere woorden tot partiële of volledige constituenten. Daardoor is een chart parser veel sneller dan de gratis parser van prolog.
+
+Bovendien kan men uit de partiële constituenten afleiden welke woordcategorieën kunnen volgen op een partiële zin. Zo kan de partiële zin \example{Een rode} gevolgd worden door een adjectief of substantief maar niet door een lidwoord of een werkwoord. Op basis hiervan kan men een suggestietool maken die suggesties geeft i.v.m.\ welke woorden kunnen volgen.
+
+Ten slotte kan men bij het toevoegen van een woord aan een partiële zin, de resultaten van de vorige parse gebruiken. Dit levert een extra performantiewinst op t.o.v.\ de gratis parser in het geval van incrementele parses. Dit is vooral interessant tijdens het schrijven van een zin, waarbij de vorige partiële zin steeds wordt uitgebreid met één woord. Een chart parser hoeft in dat geval namelijk enkel te kijken naar dit nieuwe woord en naar wat er in het geheugen is van de vorige parse, niet meer naar de andere woorden in de zin.

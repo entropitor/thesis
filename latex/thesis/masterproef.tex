@@ -1,0 +1,116 @@
+\documentclass[master=cws,masteroption=ai,ascii,utf8]{kulemt}
+\setup{title={Automatisch vertalen van logigrammen naar logica},
+  author={Jens Claes},
+  promotor={Prof. dr. M. Denecker},
+  assessor={Ir.\,W. Eetveel\and W. Eetrest},
+  assistant={Ir. L. Janssens}}
+% De volgende \setup mag verwijderd worden als geen fiche gewenst is.
+\setup{filingcard,
+  translatedtitle={Automatic translation of logigrams into logic},
+  udc=621.3,
+  shortabstract={Hier komt een heel bondig abstract van hooguit 500
+    woorden. \LaTeX\ commando's mogen hier gebruikt worden. Blanco lijnen
+    (of het commando \texttt{\string\pa r}) zijn wel niet toegelaten!
+    \endgraf \lipsum[2]}}
+% Verwijder de "%" op de volgende lijn als je de kaft wil afdrukken
+%\setup{coverpageonly}
+% Verwijder de "%" op de volgende lijn als je enkel de eerste pagina's wil
+% afdrukken en de rest bv. via Word aanmaken.
+%\setup{frontpagesonly}
+
+% Kies de fonts voor de gewone tekst, bv. Latin Modern
+\setup{font=lm}
+
+% Hier kun je dan nog andere pakketten laden of eigen definities voorzien
+\usepackage[dutch]{babel}
+\usepackage{pgf-pie}
+\usepackage{url}
+\usepackage[T1]{fontenc}
+% \usepackage[utf8]{inputenc}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{qtree}
+\usepackage{footnote}
+
+\theoremstyle{definition}
+\newtheorem{ex}{Voorbeeld}[section]
+
+\newcommand{\example}[1]{\textit{``#1''}}
+\newcommand{\fstructure}[1]{\left [\begin{tabular}{lr}#1\end{tabular}\right]}
+\newcommand{\feature}[2]{#1 & #2 \\}
+\newcommand{\fvariable}[1]{\framebox{#1}}
+
+
+% Tenslotte wordt hyperref gebruikt voor pdf bestanden.
+% Dit mag verwijderd worden voor de af te drukken versie.
+\usepackage[pdfusetitle,colorlinks,plainpages=false]{hyperref}
+
+%%%%%%%
+% Om wat tekst te genereren wordt hier het lipsum pakket gebruikt.
+% Bij een echte masterproef heb je dit natuurlijk nooit nodig!
+\IfFileExists{lipsum.sty}%
+ {\usepackage{lipsum}\setlipsumdefault{11-13}}%
+ {\newcommand{\lipsum}[1][11-13]{\par Hier komt wat tekst: lipsum ##1.\par}}
+%%%%%%%
+
+%\includeonly{hfdst-n}
+\begin{document}
+
+\begin{preface}
+  Dit is mijn dankwoord om iedereen te danken die mij bezig gehouden heeft.
+  Hierbij dank ik mijn promotor, mijn begeleider en de voltallige jury.
+  Ook mijn familie heeft mij erg gesteund natuurlijk.
+\end{preface}
+
+\tableofcontents*
+
+\begin{abstract}
+  In dit \texttt{abstract} environment wordt een al dan niet uitgebreide
+  samenvatting van het werk gegeven. De bedoeling is wel dat dit tot
+  1~bladzijde beperkt blijft.
+
+  \lipsum[1]
+\end{abstract}
+
+% Een lijst van figuren en tabellen is optioneel
+%\listoffigures
+%\listoftables
+% Bij een beperkt aantal figuren en tabellen gebruik je liever het volgende:
+\listoffiguresandtables
+% De lijst van symbolen is eveneens optioneel.
+% Deze lijst moet wel manueel aangemaakt worden, bv. als volgt:
+\include{symbols}
+
+\include{ch_inleiding}
+\include{ch_motivatie}
+\include{ch_achtergrond}
+\include{ch_probleemstelling}
+
+% Nu begint de eigenlijke tekst
+\mainmatter
+
+\include{hfdst-1}
+\include{hfdst-2}
+% ... en zo verder tot
+\include{hfdst-n}
+\include{besluit}
+
+% Indien er bijlagen zijn:
+\appendixpage*          % indien gewenst
+\appendix
+\include{app-A}
+% ... en zo verder tot
+\include{app-n}
+
+\backmatter
+% Na de bijlagen plaatst men nog de bibliografie.
+% Je kan de  standaard "abbrv" bibliografiestijl vervangen door een andere.
+\bibliographystyle{abbrv}
+\bibliography{referenties}
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

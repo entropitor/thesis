@@ -9,6 +9,9 @@
 *.log
 *.gz
 
+*.lot
+*.lof
+
 _region_.tex
 *.el
 *.fdb_latexmk
