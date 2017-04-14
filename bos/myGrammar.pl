@@ -213,6 +213,14 @@ np([coord:no, num:_, gap:[], ref:no, sem:NP, vType:Type])-->
     pn([sem:PN, vType:Type]),
     { combine(np:NP, [pn:PN]) }.
 
+% TODO: re-add?
+%% np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
+%%     det([mood:decl, type:_, num:Num, sem:Det, vType:Type]),
+%%     np([coord:no, num:_, gap:[], ref:no, sem:NP2, vType:Type2]),
+%%     n([coord:_, num:Num, sem:N, vType:Type]),
+%%     { combine(np:NP, [det:Det, np:NP2, n:N, vType2:Type2]) }.
+
+
 %np([coord:no, num:sg, gap:[], ref:Ref, sem:NP])-->
 %    pro([ref:Ref, sem:PN]),
 %    { combine(np:NP, [pn:PN]) }.
