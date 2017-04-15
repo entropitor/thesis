@@ -67,7 +67,7 @@ Schwitter \cite{Schwitter2006} vermeldt drie klassieke manieren van voorstellen 
 \subsection{Implementatie}
 \paragraph{} Zowel ACE als PENG zijn ge\"implementeerd in prolog met behulp van Definite Clause Grammars (DCG) en feature structures voor het omzetten van de natuurlijke taal naar DRS-structuren \cite{Fuchs2008, Schwitter2006}.
 
-\paragraph{Definite Clause Grammars} Aangezien zowel ACE als PENG gebruiken maken van prolog voor hun (eerste) implementatie, is de keuze voor DCG's voor de hand liggend omwille van de parser die men er gratis bijkrijgt. In de tools voor ACE en PENG wordt er echter gebruik gemaakt van een chart parser. Deze parser kan tijdens het schrijven van de zinnen, heel snel voorspellen welke woordcategorie\"en kunnen volgen. Dit helpt de gebruiker bij het schrijven van grammaticaal correcte zinnen zonder de taal te moeten kennen. PENG gebruikt zo'n chart parsers in ECOLE \cite{Schwitter2003}. ACE heeft in navolging van PENG ook AceWiki \cite{Kuhn2008} gemaakt, een subset van ACE voor semantische wiki's. AceWiki bevat ook een suggestietool. Kuhn et al.\ \cite{Kuhn2008} leggen in detail uit hoe zo'n chart parser gemaakt kan worden voor een CNL en vergelijken de performantie van deze parsers met de gratis parser van prolog.
+\paragraph{Definite Clause Grammars} Aangezien zowel ACE als PENG gebruiken maken van prolog voor hun (eerste) implementatie, is de keuze voor DCG's voor de hand liggend omwille van de parser die men er gratis bijkrijgt. In de tools voor ACE en PENG wordt er echter gebruik gemaakt van een chart parser. Deze parser kan tijdens het schrijven van de zinnen, heel snel voorspellen welke woordcategorie\"en kunnen volgen. Dit helpt de gebruiker bij het schrijven van grammaticaal correcte zinnen zonder de taal te moeten kennen. PENG gebruikt zo'n chart parsers in ECOLE \cite{Schwitter2003}. ACE heeft in navolging van PENG ook AceWiki \cite{Kuhn2008} gemaakt, een subset van ACE voor semantische wiki's. Ook AceWiki bevat een suggestietool. Kuhn et al.\ \cite{Kuhn2008} leggen in detail uit hoe zo'n chart parser gemaakt kan worden voor een CNL en vergelijken de performantie van deze parsers met de gratis parser van prolog.
 
 \paragraph{Feature structures} Naast DCG's wordt er in ACE en PENG ook gebruikt gemaakt van feature structures \cite{Shieber2003, NLPCourse}. Binnen ACE en PENG zorgen de feature structures voor de syntactische correctheid van de zinnen in de gasttaal, het Engels. Via unificatie kan men namelijk testen of een bepaalde woordgroep voldoet aan de voorwaarden van de context. De unificatie van de feature \texttt{getal} van het onderwerp en het werkwoord zorgt voor de congruentie in getal van het onderwerp met het werkwoord. Op die manier zijn zinnen die in ACE en/of PENG geldig zijn, ook geldig in het Engels. Zoals sectie \ref{sec:featureStructures} aanhaalt, wordt op deze manier een explosie van het aantal grammaticale regels vermeden.
 
@@ -92,7 +92,7 @@ Concreet bevat een DRS-structuur een lijst van \textit{discourse referents} (woo
 \end{savenotes}
 
 
-\paragraph{Conclusie} DCG's zijn een uitbreiding op contextvrije grammatica's uit de wereld van logisch programmeren. Feature structures en Discourse Representation Structures zijn concepten uit de lingu\"istiek. Ze worden gebruikt om de natuurlijke taal en haar semantiek te modelleren. Zo helpen feature structures om een explosie van het aantal grammatica regels te voorkomen. Discourse Representation Structures worden dan weer vooral gebruikt om de coreferentie-analyse te vergemakkelijken. Beiden concepten passen mooi binnen ACE en PENG omdat deze talen ook ontstaan zijn in het vakgebied van computationele lingu\"istiek.
+\paragraph{Conclusie} DCG's zijn een uitbreiding op contextvrije grammatica's uit de wereld van logisch programmeren. Feature structures en Discourse Representation Structures zijn concepten uit de lingu\"istiek. Ze worden gebruikt om de natuurlijke taal en haar semantiek te modelleren. Zo helpen feature structures om een explosie van het aantal grammatica regels te voorkomen. Discourse Representation Structures worden dan weer vooral gebruikt om de coreferentie-analyse te vergemakkelijken. Beiden concepten worden gebruikt in de tools rond ACE en PENG omdat deze talen ontstaan zijn in het vakgebied van computationele lingu\"istiek.
 
 \section{Kennisrepresentatie}
 \label{sec:ASP}
@@ -117,12 +117,12 @@ Naast een categorie heeft elk woord ook een betekenis uitgedrukt in een uitbreid
 
 \begin{equation}
   \label{eq:lambda}
-  \begin{align*}
+  \begin{aligned}
   \lambda_{birds\ fly} &= \lambda_{fly}@\lambda_{birds} \\
           &= (\lambda x.fly(X) \leftarrow x@X)@(\lambda x.bird(x)) \\
           &= fly(X) \leftarrow (\lambda x.bird(x))@X \\
           &= fly(X) \leftarrow bird(X)
-  \end{align*}
+  \end{aligned}
 \end{equation}
 
 Elk woord heeft een betekenis die men kan zien als een ASP-expressie met gaten erin die opgevuld worden door de combinatie met andere woorden. De manier van combineren van de $\lambda$-expressies hangt af van de categorie\"en van de woorden. Het nadeel aan deze aanpak is dat elk woord (minstens) \'e\'en betekenis moeten hebben in het formaat van een $\lambda$-ASP-expressie. Constantini et al.\ \cite{Costantini2010} lossen dit probleem deels op door gebruik te maken van $\lambda$-ASP-expressie-templates. Sommige woorden hebben nog steeds een eigen $\lambda$-ASP-expressie, voor de andere kan er \'e\'en afgeleid worden uit een $\lambda$-ASP-expressie-template. Zo is $\lambda x. <noun>(x)$ de template voor substantieven. Het gedeelte $<noun>$ moet vervagen worden door een specifieke instantie. Het woord \textit{birds} heeft zo nog steeds dezelfde betekenis.

@@ -113,7 +113,7 @@ De prologcode in de accolades heeft twee functies. Enerzijds berekent die de waa
   }
 \]
 
-Deze regel zegt dat een zin bestaat uit een \texttt{np} gevolgd door een \texttt{vp}. De \texttt{np} moet de naamval \texttt{nom} hebben. Bovendien moet het getal van de \texttt{np} en de \texttt{vp} unificeren (de \framebox{1} kan men zien als een variabele).
+Deze regel zegt dat een zin bestaat uit een \texttt{np} gevolgd door een \texttt{vp}. De \texttt{np} moet de naamval \texttt{nom} hebben. Bovendien moet het getal van de \texttt{np} en de \texttt{vp} unificeren (de \framebox{1} is een variabele).
 
 Grammatica's die gebruik maken van feature structures, gebruiken altijd unificatie voor het samenvoegen van meerdere structuren. Niet alle features moeten namelijk altijd een waarde toegekend krijgen. Zo kan een eigennaam voorkomen als onderwerp en als lijdend voorwerp (en heeft dus geen waarde voor de feature \texttt{naamval}). Terwijl \example{ik} enkel als onderwerp kan voorkomen (en dus wel een waarde heeft voor die feature). Zoals in het voorbeeld hierboven kan men door unificatie ook controleren of meerdere woordgroepen dezelfde waarden hebben voor een feature.
 
@@ -162,11 +162,11 @@ Voor het vertalen van natuurlijke taal naar logica zouden we graag gebruik maken
 Ze suggereren Discourse Representation Structures als alternatief. Deze structuren bestaan uit een lijst van \textit{discourse referents} (woordgroepen waarnaar andere woordgroepen kunnen verwijzen) en een lijst van condities i.v.m. die referenties \cite{Bos2011}. Blackburn en Bos \cite{Blackburn2006} geven o.a. een vertaling van deze DRS-structuren naar eerste-orde-logica. DRS-structuren hebben dus ook een formele betekenis, zoals we verder zullen aantonen, zijn ze echter beter geschikt als doeltaal. Van hieruit kan dan verder vertaald worden naar eerste-orde-logica volgens de vertaling van Blackburn en Bos. Wij hernemen hier hun vertaling als verdere introductie tot deze structuren:
 
 \[
-\Bigg(\drs{x_1, ..., x_n}{
-  \gamma_1 \\
-  ... \\
-  \gamma_n
-}\Bigg)^{fo} = \exists x_1...\exists x_n\Big((\gamma_1)^{fo} \land ... \land (\gamma_n)^{fo}\Big)
+  \Bigg(\drs{x_1, \ldots, x_n}{
+      \gamma_1 \\
+      \ldots \\
+      \gamma_n
+    }\Bigg)^{fo} = \exists x_{1} \ldots \exists x_n\Big((\gamma_{1})^{fo} \land \ldots \land (\gamma_n)^{fo}\Big)
 \]
 
 En de vertaling van alle mogelijke condities:

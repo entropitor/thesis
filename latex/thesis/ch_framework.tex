@@ -33,15 +33,15 @@ De grammatica bepaalt welke woorden samen woordgroepen vormen, welke woordgroepe
 \paragraph{Een simpele grammatica} \autoref{gramm:simple-gramm} bevat een simpele grammatica. Een simpele zin bestaat uit een \texttt{np} gevolgd door een \texttt{vp}, beiden met hetzelfde getal. Een noun phrase (\texttt{np}) of naamwoordgroep is een woordgroep waar het naamwoord het belangrijkste woord is. Deze woordgroep verwijst altijd naar één of meerdere entiteiten. Een verb phrase (\texttt{vp}) of verbale constituent is een woordgroep waar het werkwoord het belangrijkste woord is. Een verbale constituent drukt een actie uit.
 
 \begin{ex}
-  \caption[Een simpele grammatica]{Een simpele grammatica. De lexicale categorieën zijn \texttt{pn}, \texttt{det}, \texttt{n}, \texttt{iv} en \texttt{tv}}
+  Een simpele grammatica. De lexicale categorieën zijn \texttt{pn}, \texttt{det}, \texttt{n}, \texttt{iv} en \texttt{tv}
   \label{gramm:simple-gramm}
   \begin{quote}
-    \texttt{s --> np([num:Num]), vp([num:Num]).} \\
-    \texttt{s --> [if], s, s.} \\
-    \texttt{np([num:sg]) --> pn.} \\
-    \texttt{np([num:Num]) --> det([num:Num]), n([num:Num]).} \\
-    \texttt{vp([num:Num]) --> iv([num:Num]).} \\
-    \texttt{vp([num:Num]) --> tv([num:Num]), np([num:\_]).} \\
+    \texttt{s ---> np([num:Num]), vp([num:Num]).} \\
+    \texttt{s ---> [if], s, s.} \\
+    \texttt{np([num:sg]) ---> pn.} \\
+    \texttt{np([num:Num]) ---> det([num:Num]), n([num:Num]).} \\
+    \texttt{vp([num:Num]) ---> iv([num:Num]).} \\
+    \texttt{vp([num:Num]) ---> tv([num:Num]), np([num:\_]).} \\
   \end{quote}
 \end{ex} 
 
@@ -62,5 +62,154 @@ Bovenstaande grammatica is nog heel beperkt. De moeilijkheid ligt erin om de gra
 Op elke knoop in deze boom zullen we later Frege's compositionality principe toepassen: de betekenis van een woordgroep is gelijk aan een combinatie van de betekenissen van de woord(groep)en waaruit ze bestaat.
 
 \paragraph{Conclusie} De grammatica bepaalt welke combinaties van woorden zinnen vormen. Ze bepaalt dus welke zinnen in de taal liggen en welke er buiten vallen. Bovendien geeft de grammatica ons een boom. Deze boom zullen we gebruiken om de betekenis van onder uit naar boven toe te laten propageren volgens Frege's compositionality principe.
+
+\section{Grammaticale semantiek}
+Het lexicon bepaalt welke woorden gebruikt mogen worden, de grammatica hoe deze woorden een zin kunnen vormen. De vraag die nog rest is welke betekenis de zin heeft. Daarvoor doen we een beroep op de lambda-calcalus. In deze sectie bespreken we hoe we de betekenis van een woordgroep kunnen afleiden uit de betekenis van de woordgroepen waaruit ze bestaan. In de volgende sectie bespreken we de betekenis van de woorden uit het lexicon.
+
+\paragraph{Een getypeerde lambda-calcalus}
+Voor de betekenis van de taal zullen we gebruiken maken van een getypeerde lambda-calcalus. We gebruiken het symbool \texttt{@} voor de applicatie uit de lambda-calcalus, naar analogie met Blackburn en Bos. Er zijn drie types in onze lambda-calcalus \texttt{e} voor entiteiten, \texttt{t} voor \textit{truth values} en het functie-type die we noteren met $\rightarrow$. Zo is $\lambda x. man(x)$ een lambda-expressie van type $e \rightarrow t$. Elk woord zal een lambda-formule als betekenis krijgen. Deze formules zullen gecombineerd worden tot één formule voor de zin die geen lambda's meer bevat. Die formule vormt de betekenis van de zin.
+
+\paragraph{Frege's compositionality principe} Voor de betekenis van de grammatica berusten we op Frege's compositionality principe: De betekenis van een woordgroep bestaat uit een combinatie van de betekenissen van de woord(groep)en waaruit ze bestaat en de manier waarop ze gecombineerd werden. Op deze manier propageren we de semantiek van de woorden (die de bladeren in de boom vormen) naar boven toe om zo de betekenis van de zin te verkrijgen. We gebruiken een feature om deze propagatie uit te voeren. We hernemen bovenstaande grammaticale regels nu één voor één en voegen de semantiek toe. Later zullen we aantonen dat deze simpele combinatieregels tot een zinnig resultaat leiden.
+%We gebruiken de uitgebreide notatie van de feature structures voor de leesbaarheid.
+
+\begin{table}[h]
+  \begin{tabular}{|@{}ll|}
+    \hline & \\
+    \texttt{s ---> np([num:Num]), vp([num:Num]).}              & $\sem{s} = \sem{vp}@\sem{np}$ \\
+    \texttt{s ---> [if], s, s.}                                & $\sem{s} = \drs{}{\sem{s1} \Rightarrow \sem{s2}}$ \\
+    \texttt{np([num:sg]) ---> pn.}                             & $\sem{np} = \sem{pn}$ \\
+    \texttt{np([num:Num]) ---> det([num:Num]), n([num:Num]).}  & $\sem{np} = \sem{det}@\sem{n}$ \\
+    \texttt{vp([num:Num]) ---> iv([num:Num]).}                 & $\sem{vp} = \sem{iv}$ \\
+    \texttt{vp([num:Num]) ---> tv([num:Num]), np([num:\_]).}   & $\sem{vp} = \sem{tv}@\sem{np}$ \\
+    \hline
+  \end{tabular}
+  \caption{De semantiek van de grammatica uit \autoref{gramm:simple-gramm}}
+  \label{tbl:grammar-sem}
+\end{table}
+
+\autoref{tbl:grammar-sem} geeft een overzicht van de semantiek van de grammatica uit \autoref{gramm:simple-gramm}. Voor woordgroepen die maar uit één woord bestaan is de betekenis van de woordgroep gelijk aan die van het woord zelf. Voor de meeste andere woordgroepen is de betekenis een simpele lambda-applicatie van de betekenissen van de woordgroepen waaruit ze bestaan. Enkel voor de speciale zinsstructuur van de conditionele zin is er ook een speciale constructie nodig in de semantiek.
+
+% \[
+%   \fstructure{
+%     \feature{CAT}{s}
+%     \feature{SEM}{\fvariable{VP}@\fvariable{NP}}
+%   }
+%   \rightarrow
+%   \fstructure{
+%     \feature{CAT}{np}
+%     \feature{NUM}{\fvariable{Num}}
+%     \feature{SEM}{\fvariable{NP}}
+%   }
+%   \fstructure{
+%     \feature{CAT}{vp}
+%     \feature{NUM}{\fvariable{Num}}
+%     \feature{SEM}{\fvariable{VP}}
+%   }
+% \]
+% De semantiek van een simpele zin is de lambda-applicatie van de semantiek van de naamwoordgroep op die van de verbale constituent.
+
+% \[
+%   \fstructure{
+%     \feature{CAT}{s}
+%     \feature{SEM}{\drs{}{\fvariable{S1} \Rightarrow \fvariable{S2}}}
+%   }
+%   \rightarrow
+%   if
+%   \fstructure{
+%     \feature{CAT}{s}
+%     \feature{SEM}{\fvariable{S1}}
+%   }
+%   \fstructure{
+%     \feature{CAT}{s}
+%     \feature{SEM}{\fvariable{S2}}
+%   }
+% \]
+% De semantiek van een conditionele zin wordt vertaald op een implicatie in een DRS.
+
+% \[
+%   \fstructure{
+%     \feature{CAT}{np}
+%     \feature{NUM}{sg}
+%     \feature{SEM}{\fvariable{PN}}
+%   }
+%   \rightarrow
+%   \fstructure{
+%     \feature{CAT}{pn}
+%     \feature{SEM}{\fvariable{PN}}
+%   }
+% \]
+% De semantiek van een naamwoordgroep die bestaat uit een eigennaam is gelijk aan de semantiek van die eigennaam.
+
+% \[
+%   \fstructure{
+%     \feature{CAT}{np}
+%     \feature{NUM}{\fvariable{Num}}
+%     \feature{SEM}{\fvariable{DET}@\fvariable{N}}
+%   }
+%   \rightarrow
+%   \fstructure{
+%     \feature{CAT}{det}
+%     \feature{NUM}{\fvariable{Num}}
+%     \feature{SEM}{\fvariable{DET}}
+%   }
+%   \fstructure{
+%     \feature{CAT}{n}
+%     \feature{NUM}{\fvariable{Num}}
+%     \feature{SEM}{\fvariable{N}}
+%   }
+% \]
+% De semantiek van een naamwoordgroep die bestaat uit een lidwoord en een zelfstandig naamwoord is de applicatie van de semantiek van het zelfstandig naamwoord op die van het lidwoord.
+
+% \[
+%   \fstructure{
+%     \feature{CAT}{vp}
+%     \feature{NUM}{\fvariable{Num}}
+%     \feature{SEM}{\fvariable{IV}}
+%   }
+%   \rightarrow
+%   \fstructure{
+%     \feature{CAT}{iv}
+%     \feature{NUM}{\fvariable{Num}}
+%     \feature{SEM}{\fvariable{IV}}
+%   }
+% \]
+% De betekenis van een verbale constituent die bestaat uit een onovergankelijk werkwoord is gelijk aan die van het werkwoord.
+
+% \[
+%   \fstructure{
+%     \feature{CAT}{vp}
+%     \feature{NUM}{\fvariable{Num}}
+%     \feature{SEM}{\fvariable{TV}@\fvariable{NP}}
+%   }
+%   \rightarrow
+%   \fstructure{
+%     \feature{CAT}{tv}
+%     \feature{NUM}{\fvariable{Num}}
+%     \feature{SEM}{\fvariable{TV}}
+%   }
+%   \fstructure{
+%     \feature{CAT}{np}
+%     \feature{NUM}{\fvariable{1}}
+%     \feature{SEM}{\fvariable{NP}}
+%   }
+% \]
+% De betekenis van een verbale constituent die bestaat uit een vergankelijk werkwoord met lijdend voorwerp is gelijk aan die van het lijdend voorwerp toegepast op die van het werkwoord.
+
+% \begin{ex}
+%   Een simpele grammatica met semantiek. De lexicale categorieën zijn \texttt{pn}, \texttt{det}, \texttt{n}, \texttt{iv} en \texttt{tv}
+%   \label{gramm:simple-gramm}
+%   \begin{quote}
+%     \texttt{s([sem:VP@NP]) ---> np([num:Num, sem:NP]), vp([num:Num, sem:VP]).} \\
+%     \texttt{s([sem:drs([], [S1 => S2])]) ---> [if], s([sem:S1]), s([sem:S2]).} \\
+%     \texttt{np([num:sg]) ---> pn.} \\
+%     \texttt{np([num:Num]) ---> det([num:Num]), n([num:Num]).} \\
+%     \texttt{vp([num:Num]) ---> iv([num:Num]).} \\
+%     \texttt{vp([num:Num]) ---> tv([num:Num]), np([num:\_]).} \\
+%   \end{quote}
+% \end{ex} 
+
+\paragraph{Een signatuur voor een naamwoordgroep (np)} Een naamwoordgroep is een woordgroep waarin het naamwoord het belangrijkste woord is. De betekenis ervan is een verwijzing naar een entiteit (of een groep van entiteiten). Een naïve signatuur voor een \texttt{np} zou dus $np :: e$ kunnen zijn. Echter, als er sprake is van kwantificatie zoals bij ``a man'' of ``every man'' dan is er ook sprake van een scope. Deze kan niet gevat woorden in een simpele signatuur als $np :: e$.
+
+Er is dus nood aan een signatuur die een box rond een entiteit bevat. $np :: (e \rightarrow t) \rightarrow t$ voldoet hieraan.
 
 

@@ -32,10 +32,11 @@
 \usepackage{qtree}
 \usepackage{footnote}
 \usepackage{float}
+\usepackage{stmaryrd}
 
 \theoremstyle{definition}
-\newtheorem{ex}{Voorbeeld}[section]
-% \newfloat{ex}{thp}{loex}[section]
+\newtheorem{ex}{Voorbeeld}[chapter]
+% \newfloat{ex}{thp}{loex}[chapter]
 % \floatname{ex}{Voorbeeld}
 \def\exautorefname{Voorbeeld}
 
@@ -45,11 +46,13 @@
 \newcommand{\feature}[2]{#1 & #2 \\}
 \newcommand{\fvariable}[1]{\framebox{#1}}
 
-\newfloat{drsFloat}{thp}{lodrs}[section]
+\newcommand{\sem}[1]{$\llbracket#1\rrbracket$}
+
+\newfloat{drsFloat}{thp}{lodrs}[chapter]
 \floatname{drsFloat}{DRS}
 \def\drsFloatautorefname{DRS}
 \newcommand{\drs}[2]{
-  \begin{tabular}{|l|}
+  \begin{tabular}{|>{$}l<{$}|}
     \hline
     #1 \\
     \hline
