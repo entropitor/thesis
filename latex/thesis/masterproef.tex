@@ -31,9 +31,13 @@
 \usepackage{amsmath}
 \usepackage{qtree}
 \usepackage{footnote}
+\usepackage{float}
 
 \theoremstyle{definition}
 \newtheorem{ex}{Voorbeeld}[section]
+% \newfloat{ex}{thp}{loex}[section]
+% \floatname{ex}{Voorbeeld}
+\def\exautorefname{Voorbeeld}
 
 \newcommand{\example}[1]{\textit{``#1''}}
 
@@ -41,13 +45,9 @@
 \newcommand{\feature}[2]{#1 & #2 \\}
 \newcommand{\fvariable}[1]{\framebox{#1}}
 
-\newcommand{\drsTable}[4]{\begin{table}[h]
-  \centering
-  #4
-  \caption{#1}
-  \label{drs:#2}
-  #3
-\end{table}}
+\newfloat{drsFloat}{thp}{lodrs}[section]
+\floatname{drsFloat}{DRS}
+\def\drsFloatautorefname{DRS}
 \newcommand{\drs}[2]{
   \begin{tabular}{|l|}
     \hline
@@ -62,13 +62,6 @@
     & & \\
     \drs{#1}{#2} $\Rightarrow$ \drs{#3}{#4} \\
     & & \\
-    % \hline
-    % #1 & & \\
-    % \hline
-    % #2
-    % #3 & $\Rightarrow$ & #4 \\
-    % & & \\
-    % \hline
   \end{tabular}
 }
 
@@ -122,6 +115,7 @@
 
 \include{ch_related}
 \include{ch_probleemstelling}
+\include{ch_framework}
 
 % \include{hfdst-1}
 % \include{hfdst-2}

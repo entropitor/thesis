@@ -75,16 +75,20 @@ Schwitter \cite{Schwitter2006} vermeldt drie klassieke manieren van voorstellen 
 
 Bos \cite{Bos2011} stelt dat DRS-structuren zowel de rol van semantische inhoud als die van tekstuele context spelen. M.a.w.\ met behulp van deze structuren kan men achterhalen wat de semantiek van een tekst is maar tegelijk bieden ze ook een context aan die helpt bij de coreferentie-analyse. Zo wordt tijdens het parsen de semantiek van een zin opgebouwd en tegelijk de coreferenties opgelost.
 
-Concreet bevat een DRS-structuur een lijst van \textit{discourse referents} (woordgroepen waarnaar andere woordgroepen kunnen verwijzen) en een lijst van bepaling i.v.m. die referenties \cite{Bos2011}. Tabel \ref{drs:example} geeft een voorbeeld van zo'n DRS-structuur voor de zin \example{There is a movie which every man loves deeply}. Er zijn in totaal 3 \textit{discourse referents}: \texttt{movie}, \texttt{man} en \texttt{loves}. Merk op dat naar deze laatste verwezen wordt door het bijwoord \textit{deeply}.
+Concreet bevat een DRS-structuur een lijst van \textit{discourse referents} (woordgroepen waarnaar andere woordgroepen kunnen verwijzen) en een lijst van bepaling i.v.m. die referenties \cite{Bos2011}. \ref{drs:example} geeft een voorbeeld van zo'n DRS-structuur voor de zin \example{There is a movie which every man loves deeply}. Er zijn in totaal 3 \textit{discourse referents}: \texttt{movie}, \texttt{man} en \texttt{loves}. Merk op dat naar deze laatste verwezen wordt door het bijwoord \textit{deeply}.
 
 \begin{savenotes}
-  \drsTable{Een DRS-structuur voor de zin \example{There is a movie which every man loves deeply.} \protect\footnotemark}{example}{\footnotetext{Deze DRS-structuur werd lichtjes aangepast aan de output van APE (http://attempto.ifi.uzh.ch/ape/)}}{
+  \begin{drsFloat}
+    \centering
     \drs{A}{
       movie(A) \\
       \ifdrs{B}{man(B)}
             {C}{loves(C, B, A) \\ deeply(C)}
     }
-  }
+    \caption{Een DRS-structuur voor de zin \example{There is a movie which every man loves deeply.} \protect\footnotemark}
+    \label{drs:example}
+    \footnotetext{Deze DRS-structuur werd lichtjes aangepast aan de output van APE (http://attempto.ifi.uzh.ch/ape/)}
+  \end{drsFloat}
 \end{savenotes}
 
 

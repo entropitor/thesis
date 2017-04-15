@@ -1,0 +1,66 @@
+\chapter{Een framework voor semantische analyse}
+In dit hoofdstuk bespreken we het framework van Blackburn en Bos \cite{Blackburn2005, Blackburn2006} voor semantische analyse. Het bestaat uit 4 onderdelen die redelijk los staan van elkaar: het lexicon (het vocabularium), de grammatica, de grammaticale semantiek en de lexicale semantiek. Het hele framework is gebaseerd op lambda-calcalus. De doeltaal is vrij te kiezen. Blackburn en Bos vertalen in hun eerste boek \cite{Blackburn2005} naar eerste-orde-logica. In hun tweede boek \cite{Blackburn2006} vertalen ze naar DRS-structuren. Ook de vorm van de grammatica is vrij te kiezen. Zowel Blackburn en Bos als deze thesis gebruiken DCG's om de grammatica te specifiëren. Baral et al. \cite{Baral2008} gebruiken een gelijkaardig framework maar met behulp van een Combinatorische Categorische Grammatica.
+
+\paragraph{} \textit{Dit hele hoofdstuk is een samenvatting van de boeken van Blackburn en Bos \cite{Blackburn2005, Blackburn2006} ``A first course in computational semantics''}
+
+\section{Lexicon}
+Het lexicon bestaat uit een opsomming van alle woorden met een aantal (taalkundige) features (zoals de categorie van het woord). Tabel \ref{tbl:lexicon} geeft een voorbeeld van een lexicon. Het lexicon is meer dan een woordenboek. Het bevat alle woordvormen, niet enkel de basisvorm. Zo komt ``love'' drie keer voor in het lexicon. ``love'' zelf komt één keer voor als infinitief en één keer als meervoud van de tegenwoordige tijd. ``loves'' is dan weer het enkelvoud van de tegenwoordige tijd.
+
+\begin{table}[!]
+  \centering
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    \textbf{Woordvorm} & \textbf{Categorie} & \textbf{Andere features} \\ \midrule
+    man                & noun               & num=sg            \\
+    men                & noun               & num=pl            \\
+    woman              & noun               & num=sg            \\
+    women              & noun               & num=pl            \\
+    Jens               & proper noun        &                   \\
+    love               & transitive verb    & inf=inf           \\
+    loves              & transitive verb    & inf=fin, num=sg   \\
+    love               & transitive verb    & inf=fin, num=pl   \\
+    a                  & determinator       & type=existential  \\
+    every              & determinator       & type=universal    \\
+    \bottomrule
+  \end{tabular}
+  \caption{Een voorbeeld van een lexicon}
+  \label{tbl:lexicon}
+\end{table}
+
+\section{Grammatica}
+De grammatica bepaalt welke woorden samen woordgroepen vormen, welke woordgroepen samen andere woordgroepen vormen en welke woordgroepen een zin vormen. Op die manier ontstaat er een boom van woorden.
+
+\paragraph{Een simpele grammatica} \autoref{gramm:simple-gramm} bevat een simpele grammatica. Een simpele zin bestaat uit een \texttt{np} gevolgd door een \texttt{vp}, beiden met hetzelfde getal. Een noun phrase (\texttt{np}) of naamwoordgroep is een woordgroep waar het naamwoord het belangrijkste woord is. Deze woordgroep verwijst altijd naar één of meerdere entiteiten. Een verb phrase (\texttt{vp}) of verbale constituent is een woordgroep waar het werkwoord het belangrijkste woord is. Een verbale constituent drukt een actie uit.
+
+\begin{ex}
+  \caption[Een simpele grammatica]{Een simpele grammatica. De lexicale categorieën zijn \texttt{pn}, \texttt{det}, \texttt{n}, \texttt{iv} en \texttt{tv}}
+  \label{gramm:simple-gramm}
+  \begin{quote}
+    \texttt{s --> np([num:Num]), vp([num:Num]).} \\
+    \texttt{s --> [if], s, s.} \\
+    \texttt{np([num:sg]) --> pn.} \\
+    \texttt{np([num:Num]) --> det([num:Num]), n([num:Num]).} \\
+    \texttt{vp([num:Num]) --> iv([num:Num]).} \\
+    \texttt{vp([num:Num]) --> tv([num:Num]), np([num:\_]).} \\
+  \end{quote}
+\end{ex} 
+
+Een complexe zin bestaat uit het functiewoord ``if'' gevolgd door twee zinnen (bijvoorbeeld ``If a man breathes, he lives''). Een functiewoord is deel van de grammatica en zijn de enigste woorden die niet voorkomen in het lexicon. Ze helpen om de structuur van de zin te herkennen. De betekenis van deze woorden komt via de grammaticale semantiek naar boven.
+
+Een naamwoordgroep (\texttt{np}) kan bestaan uit een eigen naam (proper name of \texttt{pn}) of uit een determinator (\texttt{det}, bijvoorbeeld een lidwoord) en een zelfstandig naamwoord (noun of \texttt{n}) die overeenkomen in getal. Een eigennaam is in deze grammatica altijd in het enkelvoud.
+
+Een verbale constituent (\texttt{vp}) bestaat uit een onovergankelijk werkwoord (intransitive verb of \texttt{iv}) of uit een vergankelijk werkwoord (transitive verb of \texttt{tv}) gevolgd door een nieuwe naamwoordgroep (als lijdend voorwerp). Het werkwoord moet in getal overeenkomen met het getal van de verbale constituent. Daardoor zal het getal van het werkwoord en het onderwerp altijd overeenkomen.
+
+De lexicale categorieën in \autoref{gramm:simple-gramm} zijn \texttt{pn}, \texttt{det}, \texttt{n}, \texttt{iv} en \texttt{tv}. Dat wil zeggen dat men deze niet-terminalen moet gaan opzoeken in het lexicon.
+
+Bovenstaande grammatica is nog heel beperkt. De moeilijkheid ligt erin om de grammatica simpel te houden maar toch zoveel mogelijk gewenste zinnen toe te laten. Om logigrammen automatisch te kunnen vertalen moet er dus een grammatica opgesteld worden die de zinnen van deze logigrammen omvat.
+
+\paragraph{Een boom} Op basis van deze grammatica kunnen we ook een parse trees opbouwen voor elke geldige zinnen. Zo wordt ``Every man loves mary'' omgezet in de boom
+
+\Tree[.s [.np [.det every ] [.n man ]] [.vp [.tv loves ] [.np [.pn mary ]]]]
+
+Op elke knoop in deze boom zullen we later Frege's compositionality principe toepassen: de betekenis van een woordgroep is gelijk aan een combinatie van de betekenissen van de woord(groep)en waaruit ze bestaat.
+
+\paragraph{Conclusie} De grammatica bepaalt welke combinaties van woorden zinnen vormen. Ze bepaalt dus welke zinnen in de taal liggen en welke er buiten vallen. Bovendien geeft de grammatica ons een boom. Deze boom zullen we gebruiken om de betekenis van onder uit naar boven toe te laten propageren volgens Frege's compositionality principe.
+
+
