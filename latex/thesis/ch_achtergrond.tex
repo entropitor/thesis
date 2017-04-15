@@ -1,5 +1,5 @@
 \chapter{Achtergrond}
-Om deze thesis te begrijpen worden hier een aantal concepten uitgelegd die niet per se tot de achtergrondkennis behoren van de lezer. Definite Clause Grammars zijn een soort van grammatica die een aantal voordelen biedt voor het parsen van natuurlijke taal. Feature structures zorgen voor een beperking van het aantal grammaticale regels en verhogen de leesbaarheid ervan.
+Om deze thesis te begrijpen worden hier een aantal concepten uitgelegd die niet per se tot de achtergrondkennis behoren van de lezer. Definite Clause Grammars zijn een soort van grammatica die een aantal voordelen biedt voor het parsen van natuurlijke taal. Feature structures zorgen voor een beperking van het aantal grammaticale regels en verhogen de leesbaarheid ervan. Discourse Representation Theory is een theorie uit de taalkunde voor het vatten van de betekenis van taal. Het introduceert Discourse Representation Structures, een logica die dichter aanleunt bij de natuurlijke taal.
 
 \section{Definite Clause Grammars}
 \label{sec:DCG}
@@ -156,3 +156,32 @@ Hierbij staat de \texttt{n} voor zelfstandig naamwoord (van het Engelse \texttt{
 
 \paragraph{Conclusie} Door gebruik te maken van feature structures is de grammatica simpeler en leesbaarder. Bovendien hoeft het concept dat een zin bestaat uit een \texttt{np} gevolgd door een \texttt{vp} maar \'e\'en keer te worden uitgedrukt. De feature structures zorgen voor de congruentie in getal van het onderwerp met het werkwoord.
 
+\section{Discourse Representation Theory}
+Voor het vertalen van natuurlijke taal naar logica zouden we graag gebruik maken van Frege's compositionality principe: De betekenis van een zin bestaat uit de combinatie van de betekenissen van de delen ervan. Als we eerste-orde-logica als doeltaal van onze vertaling nemen, komen we echter vrij snel in de problemen. Neem bijvoorbeeld de zin ``If a man lives, he breathes''. De vertaling hiervan in eerste-orde-logica is $\forall x. man(x) \Rightarrow breath(x)$. De vertaling van ``a man lives'' is echter $\exists x. man(x)$, wat geen deel uit maakt van de betekenis van de hele zin. Blackburn en Bos \cite{Blackburn2006} geven nog een aantal andere voorbeelden waarvoor DRS-structuren beter geschikt zijn dan eerste-orde-logica (bijvoorbeeld voor het oplossen van anaforische referenties).
+
+Ze suggereren Discourse Representation Structures als alternatief. Deze structuren bestaan uit een lijst van \textit{discourse referents} (woordgroepen waarnaar andere woordgroepen kunnen verwijzen) en een lijst van condities i.v.m. die referenties \cite{Bos2011}. Blackburn en Bos \cite{Blackburn2006} geven o.a. een vertaling van deze DRS-structuren naar eerste-orde-logica. DRS-structuren hebben dus ook een formele betekenis, zoals we verder zullen aantonen, zijn ze echter beter geschikt als doeltaal. Van hieruit kan dan verder vertaald worden naar eerste-orde-logica volgens de vertaling van Blackburn en Bos. Wij hernemen hier hun vertaling als verdere introductie tot deze structuren:
+
+\[
+\Bigg(\drs{x_1, ..., x_n}{
+  \gamma_1 \\
+  ... \\
+  \gamma_n
+}\Bigg)^{fo} = \exists x_1...\exists x_n\Big((\gamma_1)^{fo} \land ... \land (\gamma_n)^{fo}\Big)
+\]
+
+En de vertaling van alle mogelijke condities:
+
+\[\Big(R(x_1, ..., x_n)\Big)^{fo} = R(x_1, ..., x_n)\]
+\[\Big(\tau_1 = \tau_2\Big)^{fo} = \Big(\tau_1 = \tau_2\Big)\]
+\[\Big(\lnot B)^{fo} = \lnot\Big(B\Big)^{fo}\]
+\[\Big(B_1 \lor B_2)^{fo} = \Big(B_1\Big)^{fo} \lor \Big(B_2\Big)^{fo}\]
+
+\[\Big(\drs{x_1, ..., x_n}{\gamma_1 \\ ... \\ \gamma_2} \Rightarrow B\Big)^{fo} =  \forall x_1...\forall x_n\Bigg(\Big((\gamma_1)^{fo} \land ... \land (\gamma_n)^{fo}\Big) \Rightarrow \Big(B\Big)^{fo} \Bigg)\]
+
+De vertaling van ``If a man lives, he breathes'' naar DRS is \\
+
+\drs{}{\ifdrs{X}{man(X) \\ lives(X)}{}{breathes(X)}}
+
+\paragraph{} Merk op dat de betekenis van het deel ``a man lives'' \drs{X}{man(X) \\ lives(X)} wel deel uitmaakt van de betekenis van de hele zin.
+
+\section{Conclusie} Definite Clause Grammars vormen een expressieve grammatica die natuurlijke taal in al haar facetten makkelijk kan modelleren. Feature Structures komen overeen met argumenten in prolog en kunnen gebruikt worden om grammatica's kort en leesbaar te houden. Discourse Representation Structures vormen een representatie die tussen natuurlijke taal en eerste-orde-logica ligt. Ze zijn even expressief als eerste-orde-logica maar een aantal concepten in de natuurlijke taal zijn beter te modelleren met DRS-structuren.

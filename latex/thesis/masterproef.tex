@@ -3,7 +3,7 @@
   author={Jens Claes},
   promotor={Prof. dr. M. Denecker},
   assessor={},
-  assistant={Dr. Ir. B. Bogaerts \and Ir. L. Janssens}}
+  assistant={Dr. B. Bogaerts \and Ir. L. Janssens}}
 % De volgende \setup mag verwijderd worden als geen fiche gewenst is.
 \setup{filingcard,
   translatedtitle={Automatic translation of logigrams into logic},
@@ -41,31 +41,34 @@
 \newcommand{\feature}[2]{#1 & #2 \\}
 \newcommand{\fvariable}[1]{\framebox{#1}}
 
-\newcommand{\drs}[4]{\begin{table}[h]
+\newcommand{\drsTable}[4]{\begin{table}[h]
   \centering
-  #1
-  \caption{#2}
-  \label{drs:#3}
   #4
+  \caption{#1}
+  \label{drs:#2}
+  #3
 \end{table}}
-\newcommand{\drsBox}[2]{
+\newcommand{\drs}[2]{
   \begin{tabular}{|l|}
     \hline
     #1 \\
     \hline
-    #2
+    #2 \\
     \hline
   \end{tabular}
 }
-\newcommand{\drsBoxImpl}[4]{
-  \begin{tabular}{|lcl|}
-    \hline
-    #1 & & \\
-    \hline
-    #2
-    #3 & $\Rightarrow$ & #4 \\
+\newcommand{\ifdrs}[4]{
+  \begin{tabular}{@{}lcl}
     & & \\
-    \hline
+    \drs{#1}{#2} $\Rightarrow$ \drs{#3}{#4} \\
+    & & \\
+    % \hline
+    % #1 & & \\
+    % \hline
+    % #2
+    % #3 & $\Rightarrow$ & #4 \\
+    % & & \\
+    % \hline
   \end{tabular}
 }
 
@@ -84,30 +87,6 @@
 
 %\includeonly{hfdst-n}
 \begin{document}
-% \drs{
-%   \drsBox{A}{
-%     man(A) \\
-%     loves(A, jan) \\
-%   }
-% }{Test Drs}{test}{}
-
-% \drs{
-%   \lambda X.
-%   \drsBoxImpl{A}
-%   {
-%     man(A) & & \\
-%   }
-%   {
-%     \drsBox{B}{
-%       loves(A, B) \\
-%     }
-%   }
-%   {
-%     \drsBox{}{
-%       woman(X) \\
-%     }
-%   }
-% }{Test Drs2}{test2}{}
 
 % \begin{preface}
 %   Dit is mijn dankwoord om iedereen te danken die mij bezig gehouden heeft.

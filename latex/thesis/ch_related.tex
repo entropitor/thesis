@@ -71,56 +71,20 @@ Schwitter \cite{Schwitter2006} vermeldt drie klassieke manieren van voorstellen 
 
 \paragraph{Feature structures} Naast DCG's wordt er in ACE en PENG ook gebruikt gemaakt van feature structures \cite{Shieber2003, NLPCourse}. Binnen ACE en PENG zorgen de feature structures voor de syntactische correctheid van de zinnen in de gasttaal, het Engels. Via unificatie kan men namelijk testen of een bepaalde woordgroep voldoet aan de voorwaarden van de context. De unificatie van de feature \texttt{getal} van het onderwerp en het werkwoord zorgt voor de congruentie in getal van het onderwerp met het werkwoord. Op die manier zijn zinnen die in ACE en/of PENG geldig zijn, ook geldig in het Engels. Zoals sectie \ref{sec:featureStructures} aanhaalt, wordt op deze manier een explosie van het aantal grammaticale regels vermeden.
 
-\paragraph{DRS} Naast feature structures maken ACE en PENG ook gebruik van Discourse Representation Structures. Deze structuren kunnen vertaald worden naar eerste-orde-logica. Ze zijn een onderdeel van Discourse Representation Theory. Dit is een taalkundig framework om de semantiek van natuurlijke taal te vatten. \'E\'en van de sterke punten van DRS-structuren is het oplossen van coreferenties. \cite{Fuchs2008drs} bevat meer informatie over hoe DRS-structuren gebruikt worden binnen ACE.
+\paragraph{DRS} Naast feature structures maken ACE en PENG ook gebruik van Discourse Representation Structures. Ze zijn een onderdeel van Discourse Representation Theory. Dit is een taalkundig framework om de semantiek van natuurlijke taal te vatten. Één van de sterke punten van DRS-structuren is het oplossen van coreferenties. \cite{Fuchs2008drs} bevat meer informatie over hoe DRS-structuren gebruikt worden binnen ACE.
 
 Bos \cite{Bos2011} stelt dat DRS-structuren zowel de rol van semantische inhoud als die van tekstuele context spelen. M.a.w.\ met behulp van deze structuren kan men achterhalen wat de semantiek van een tekst is maar tegelijk bieden ze ook een context aan die helpt bij de coreferentie-analyse. Zo wordt tijdens het parsen de semantiek van een zin opgebouwd en tegelijk de coreferenties opgelost.
 
 Concreet bevat een DRS-structuur een lijst van \textit{discourse referents} (woordgroepen waarnaar andere woordgroepen kunnen verwijzen) en een lijst van bepaling i.v.m. die referenties \cite{Bos2011}. Tabel \ref{drs:example} geeft een voorbeeld van zo'n DRS-structuur voor de zin \example{There is a movie which every man loves deeply}. Er zijn in totaal 3 \textit{discourse referents}: \texttt{movie}, \texttt{man} en \texttt{loves}. Merk op dat naar deze laatste verwezen wordt door het bijwoord \textit{deeply}.
 
 \begin{savenotes}
-\drs{
-  \drsBoxImpl{A}{
-    movie(A) & & \\    
-  }{
-    \drsBox{B}{
-      man(B) \\
-    }
-  }{
-    \drsBox{C}{
-      loves(C, B, A) \\
-      deeply(C) \\
+  \drsTable{Een DRS-structuur voor de zin \example{There is a movie which every man loves deeply.} \protect\footnotemark}{example}{\footnotetext{Deze DRS-structuur werd lichtjes aangepast aan de output van APE (http://attempto.ifi.uzh.ch/ape/)}}{
+    \drs{A}{
+      movie(A) \\
+      \ifdrs{B}{man(B)}
+            {C}{loves(C, B, A) \\ deeply(C)}
     }
   }
-}{Een DRS-structuur voor de zin \example{There is a movie which every man loves deeply.} \protect\footnotemark}{example}{\footnotetext{Deze DRS-structuur werd lichtjes aangepast aan de output van APE (http://attempto.ifi.uzh.ch/ape/)}}
-% \begin{table}[h]
-%   \centering
-%   \begin{tabular}{|lcl|}
-%     \hline
-%     A & & \\
-%     \hline
-%     movie(A) & & \\ 
-%     \begin{tabular}{|l|}
-%       \hline
-%       B \\
-%       \hline
-%       man(B) \\
-%       \hline
-%     \end{tabular} & $\Rightarrow$ & \begin{tabular}{|l|}
-%       \hline
-%       C \\
-%       \hline
-%       loves(C, B, A) \\
-%       deeply(C) \\
-%       \hline
-%     \end{tabular} \\
-%     & & \\
-%     \hline
-
-%   \end{tabular}
-%   \caption{Een DRS-structuur voor de zin \example{There is a movie which every man loves deeply.} \protect\footnotemark}
-%   \label{table:DRS}
-%   \footnotetext{Deze DRS-structuur werd lichtjes aangepast aan de output van APE (http://attempto.ifi.uzh.ch/ape/)}
-% \end{table}
 \end{savenotes}
 
 
