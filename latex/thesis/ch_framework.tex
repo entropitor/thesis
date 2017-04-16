@@ -4,23 +4,23 @@ In dit hoofdstuk bespreken we het framework van Blackburn en Bos \cite{Blackburn
 \paragraph{} \textit{Dit hele hoofdstuk is een samenvatting van de boeken van Blackburn en Bos \cite{Blackburn2005, Blackburn2006} ``A first course in computational semantics''}
 
 \section{Lexicon}
-Het lexicon bestaat uit een opsomming van alle woorden met een aantal (taalkundige) features (zoals de categorie van het woord). Tabel \ref{tbl:lexicon} geeft een voorbeeld van een lexicon. Het lexicon is meer dan een woordenboek. Het bevat alle woordvormen, niet enkel de basisvorm. Zo komt ``love'' drie keer voor in het lexicon. ``love'' zelf komt één keer voor als infinitief en één keer als meervoud van de tegenwoordige tijd. ``loves'' is dan weer het enkelvoud van de tegenwoordige tijd.
+Het lexicon bestaat uit een opsomming van alle woorden met een aantal (taalkundige) features (zoals de categorie van het woord). Tabel \ref{tbl:lexicon} geeft een voorbeeld van een lexicon. Het lexicon is meer dan een woordenboek. Het bevat alle woordvormen, niet enkel de basisvorm. Zo komt ``love'' drie keer voor in het lexicon. ``love'' zelf komt één keer voor als infinitief en één keer als meervoud van de tegenwoordige tijd. ``loves'' is dan weer het enkelvoud van de tegenwoordige tijd. De meeste woordvormen hebben ook een feature ``Symbool'', dit zal gebruikt worden bij de semantiek van de woorden.
 
 \begin{table}[!]
   \centering
-  \begin{tabular}{@{}lll@{}}
+  \begin{tabular}{@{}llll@{}}
     \toprule
-    \textbf{Woordvorm} & \textbf{Categorie} & \textbf{Andere features} \\ \midrule
-    man                & noun               & num=sg            \\
-    men                & noun               & num=pl            \\
-    woman              & noun               & num=sg            \\
-    women              & noun               & num=pl            \\
-    Jens               & proper noun        &                   \\
-    love               & transitive verb    & inf=inf           \\
-    loves              & transitive verb    & inf=fin, num=sg   \\
-    love               & transitive verb    & inf=fin, num=pl   \\
-    a                  & determinator       & type=existential  \\
-    every              & determinator       & type=universal    \\
+    \textbf{Woordvorm} & \textbf{Categorie} & \textbf{Symbool} & \textbf{Andere features} \\ \midrule
+    man                & noun               & man              & num=sg            \\
+    men                & noun               & man              & num=pl            \\
+    woman              & noun               & woman            & num=sg            \\
+    women              & noun               & woman            & num=pl            \\
+    Jens               & proper noun        & Jens             &                   \\
+    love               & transitive verb    & loves            & inf=inf           \\
+    loves              & transitive verb    & loves            & inf=fin, num=sg   \\
+    love               & transitive verb    & loves            & inf=fin, num=pl   \\
+    a                  & determinator       & /                & type=existential  \\
+    every              & determinator       & /                & type=universal    \\
     \bottomrule
   \end{tabular}
   \caption{Een voorbeeld van een lexicon}
@@ -63,9 +63,10 @@ Op elke knoop in deze boom zullen we later Frege's compositionality principe toe
 
 \paragraph{Conclusie} De grammatica bepaalt welke combinaties van woorden zinnen vormen. Ze bepaalt dus welke zinnen in de taal liggen en welke er buiten vallen. Bovendien geeft de grammatica ons een boom. Deze boom zullen we gebruiken om de betekenis van onder uit naar boven toe te laten propageren volgens Frege's compositionality principe.
 
-\section{Grammaticale semantiek}
-Het lexicon bepaalt welke woorden gebruikt mogen worden, de grammatica hoe deze woorden een zin kunnen vormen. De vraag die nog rest is welke betekenis de zin heeft. Daarvoor doen we een beroep op de lambda-calcalus. In deze sectie bespreken we hoe we de betekenis van een woordgroep kunnen afleiden uit de betekenis van de woordgroepen waaruit ze bestaan. In de volgende sectie bespreken we de betekenis van de woorden uit het lexicon.
+\section{Semantiek}
+Het lexicon bepaalt welke woorden gebruikt mogen worden, de grammatica hoe deze woorden een zin kunnen vormen. De vraag die nog rest is welke betekenis de zin heeft. Daarvoor doen we een beroep op de lambda-calcalus. Eerst bespreken we hoe we de betekenis van een woordgroep kunnen afleiden uit de betekenis van de woordgroepen waaruit ze bestaan. Daarna bespreken we de betekenis van de woorden uit het lexicon.
 
+\subsection{Semantiek van de grammatica}
 \paragraph{Een getypeerde lambda-calcalus}
 Voor de betekenis van de taal zullen we gebruiken maken van een getypeerde lambda-calcalus. We gebruiken het symbool \texttt{@} voor de applicatie uit de lambda-calcalus, naar analogie met Blackburn en Bos. Er zijn drie types in onze lambda-calcalus \texttt{e} voor entiteiten, \texttt{t} voor \textit{truth values} en het functie-type die we noteren met $\rightarrow$. Zo is $\lambda x. man(x)$ een lambda-expressie van type $e \rightarrow t$. Elk woord zal een lambda-formule als betekenis krijgen. Deze formules zullen gecombineerd worden tot één formule voor de zin die geen lambda's meer bevat. Die formule vormt de betekenis van de zin.
 
@@ -73,16 +74,18 @@ Voor de betekenis van de taal zullen we gebruiken maken van een getypeerde lambd
 %We gebruiken de uitgebreide notatie van de feature structures voor de leesbaarheid.
 
 \begin{table}[h]
-  \begin{tabular}{|@{}ll|}
-    \hline & \\
+  \begin{tabular}{@{}ll}
+    \hline
+    \textbf{Grammaticale regel} & \textbf{Semantiek} \\
+    \hline
     \texttt{s ---> np([num:Num]), vp([num:Num]).}              & $\sem{s} = \sem{vp}@\sem{np}$ \\
     \texttt{s ---> [if], s, s.}                                & $\sem{s} = \drs{}{\sem{s1} \Rightarrow \sem{s2}}$ \\
     \texttt{np([num:sg]) ---> pn.}                             & $\sem{np} = \sem{pn}$ \\
     \texttt{np([num:Num]) ---> det([num:Num]), n([num:Num]).}  & $\sem{np} = \sem{det}@\sem{n}$ \\
     \texttt{vp([num:Num]) ---> iv([num:Num]).}                 & $\sem{vp} = \sem{iv}$ \\
-    \texttt{vp([num:Num]) ---> tv([num:Num]), np([num:\_]).}   & $\sem{vp} = \sem{tv}@\sem{np}$ \\
     \hline
   \end{tabular}
+  \centering
   \caption{De semantiek van de grammatica uit \autoref{gramm:simple-gramm}}
   \label{tbl:grammar-sem}
 \end{table}
@@ -208,8 +211,54 @@ Voor de betekenis van de taal zullen we gebruiken maken van een getypeerde lambd
 %   \end{quote}
 % \end{ex} 
 
-\paragraph{Een signatuur voor een naamwoordgroep (np)} Een naamwoordgroep is een woordgroep waarin het naamwoord het belangrijkste woord is. De betekenis ervan is een verwijzing naar een entiteit (of een groep van entiteiten). Een naïve signatuur voor een \texttt{np} zou dus $np :: e$ kunnen zijn. Echter, als er sprake is van kwantificatie zoals bij ``a man'' of ``every man'' dan is er ook sprake van een scope. Deze kan niet gevat woorden in een simpele signatuur als $np :: e$.
+\subsection{Semantiek van het lexicon} We weten nu hoe we de semantiek van de woorden kunnen combineren tot de semantiek van de woordgroepen en bij uitbreiding tot die van een zin. Er ontbreekt enkel nog de semantiek van de woorden zelf.
 
-Er is dus nood aan een signatuur die een box rond een entiteit bevat. $np :: (e \rightarrow t) \rightarrow t$ voldoet hieraan.
+Voor we de betekenis van woorden kunnen opstellen moeten we eerst de signatuur achterhalen. Cruciaal voor het framework is dat elke woordgroep exact 1 signatuur heeft. Zodanig dat we altijd woordgroepen van dezelfde categorie kunnen uitwisselen voor elkaar. We gebruiken de functie $\tau$ om de signatuur van een woordgroep aan te duiden.
 
+We beginnen met de signatuur van een naamwoordgroep (\texttt{np}) te achterhalen. Daarna bekijken we achtereenvolgens de eigennaam (\texttt{pn}), het zelfstandig naamwoord (\texttt{n}) en het lidwoord (\texttt{det}). Ten slotte bekijken we de hiërarchie van de verbale constituenten: de verbale constituent zelf (\texttt{vp}), onovergankelijk werkwoord (\texttt{iv}) en overgankelijk werkwoord (\texttt{tv}).
 
+\paragraph{De signatuur voor een naamwoordgroep (np)} Een naamwoordgroep is een woordgroep waarin het naamwoord het belangrijkste woord is. De betekenis ervan is een verwijzing naar een entiteit (of een groep van entiteiten). Een naïve signatuur voor een \texttt{np} zou dus $\tau(np) = e$ kunnen zijn. Echter, als er sprake is van kwantificatie zoals bij ``a man'' of ``every man'' dan is er ook sprake van een scope. Deze kan niet gevat woorden in een simpele signatuur als $\tau(np) = e$.
+
+Er is dus nood aan een signatuur die een box rond een entiteit bevat. $$\tau(np) = (e \rightarrow t) \rightarrow t$$ voldoet hieraan.
+
+\paragraph{Eigennaam, zelfstandig naamwoord en lidwoord} De signatuur van een eigennaam is gelijk aan die van een naamwoordgroep. Dat volgt uit de semantiek van de grammatica. $$\tau(pn) = \tau(np) = (e \rightarrow t) \rightarrow t$$ Uit de semantiek van de grammatica volgt ook dat de signatuur van een lidwoord gelijk is aan die van een zelfstandig naamwoord naar een naamwoordgroep. $$ \tau(det) = \tau(n) \rightarrow \tau(np) = \tau(n) \rightarrow (e \rightarrow t) \rightarrow t$$ Een zelfstandig naamwoord is een conditie voor een entiteit. Elke entiteit kan ofwel omschreven worden met het naamwoord of niet. Het is dus een functie van een entiteit naar een truth value. $$\tau(n) = e \rightarrow t$$ Waardoor de signatuur voor een lidwoord gelijk is aan $$ \tau(det) = \tau(n) \rightarrow (e \rightarrow t) \rightarrow t = (e \rightarrow t) \rightarrow (e \rightarrow t) \rightarrow t $$
+
+\paragraph{Verbale constituent} De signatuur voor een verbale constituent (\texttt{vp}) volgt opnieuw uit de grammatica en de andere signaturen $$\tau(vp) = \tau(np) \rightarrow \tau(s) = ((e \rightarrow t) \rightarrow t) \rightarrow t$$ De signatuur van een onovergankelijk werkwoord is gelijk aan die van een verbale constituent (volgens de grammatica). $$\tau(iv) = \tau(vp) = ((e \rightarrow t) \rightarrow t) \rightarrow t$$ De signatuur van een vergankelijk werkwoord wordt dan $$\tau(tv) = \tau(np) \rightarrow \tau(vp) = ((e \rightarrow t) \rightarrow t) \rightarrow ((e \rightarrow t) \rightarrow t) \rightarrow t$$
+
+\paragraph{} \autoref{tbl:signaturen} vat alle signaturen nog eens samen. Elke inwendige knoop in de parse tree heeft nu al een betekenis in functie van de betekenis van haar directe kinderen. Er rest enkel nog de vraag wat de betekenis is van de woorden, de bladeren van de boom. Alle woorden moeten een een lambda-expressie als betekenis krijgen. Blackburn en Bos gebruiken hiervoor \textit{semantische macro's}. Dat wil zeggen dat ze voor elke lexicale categorie een functie hebben die een woordvorm uit het lexicon afbeeldt op een lambda-expressie. Hiervoor wordt de feature ``Symbool'' van het woord in kwestie gebruikt.
+
+\begin{table}[h]
+  \begin{tabular}{@{}lll}
+    \hline
+    \textbf{Grammaticale categorie}             & \textbf{Signatuur} \\
+    \hline 
+    Zin (\texttt{s})                          & $t$ \\
+    Naamwoordgroep (\texttt{np})              & $(e \rightarrow t) \rightarrow t$ \\
+    Eigennaam (\texttt{pn})                   & $(e \rightarrow t) \rightarrow t$ \\
+    Zelfstandig naamwoord (\texttt{n})        & $(e \rightarrow t)$ \\
+    Lidwoord (\texttt{det})                   & $(e \rightarrow t) \rightarrow (e \rightarrow t) \rightarrow t$ \\
+    Verbale constituent (\texttt{vp})         & $((e \rightarrow t) \rightarrow t) \rightarrow t$ \\
+    Onovergankelijk werkwoord (\texttt{iv})   & $((e \rightarrow t) \rightarrow t) \rightarrow t$ \\
+    Vergankelijke werkwoord (\texttt{tv})     & $((e \rightarrow t) \rightarrow t) \rightarrow ((e \rightarrow t) \rightarrow t) \rightarrow t$ \\
+    \hline
+  \end{tabular}
+  \centering
+  \caption{De signaturen van de grammaticale categorieën uit \autoref{gramm:simple-gramm}}
+  \label{tbl:signaturen}
+\end{table}
+
+De grammatica van \autoref{gramm:simple-gramm} telt 5 lexicale categorieën: \texttt{pn}, \texttt{n}, \texttt{det}, \texttt{iv} en \texttt{tv}.
+\begin{itemize}
+  \item Een eigennaam kan vertaald worden als een constante met als naam het symbool dat bij die eigennaam hoort. $\sem{pn} = \lambdaf{P}{\app{P}{\textit{Symbool}}}$. Bijvoorbeeld voor ``Jens'': $\sem{Jens} = \lambdaf{P}{\app{P}{Jens}}$
+  \item Een zelfstandig naamwoord test of een referentie voldoet aan het naamwoord zelf. $\sem{n} = \lambdaf{x}{\drs{}{\textit{Symbool}(x)}}$. Bijvoorbeeld voor ``man'': $\sem{man} = \lambdaf{x}{\drs{}{man(x)}}$
+  \item Een lidwoord of meer algemeen een determinator introduceert een nieuwe referentie die een bepaalde scope heeft. Hier zijn er meerdere soorten vertalingen afhankelijk van het type van determinator. Een lidwoord heeft 2 argumenten: de \textit{restriction} en \textit{nuclear scope}. De \textit{restriction} wordt opgevuld wordt door het zelfstandig naamwoord (met eventuele bijzinnen). De \textit{nuclear scope} wordt opgevuld door de verbale constituent.
+    \begin{itemize}
+      \item De universele determinator (zoals ``every''): Het is duidelijk dat de variabele met een universele quantor gebonden moet zijn. In eerste-orde-logica krijgen we dan $\sem{det_{universeel}} = \lambdaf{R}{\lambdaf{S}{\forall x. \left( \app{R}{x} \Rightarrow \app{S}{x} \right)}}$. In DRS wordt dit $$\sem{det_{universeel}} = \lambdaf{R}{\lambdaf{S}{\drs{}{\drsImpl{\drsMerge{\drs{x}{}}{\app{R}{x}}}{\app{S}{x}}}}}$$
+      \item De existentiële determinator (zoals ``a'') introduceert een variabele die gebonden is door een existentiële quantor. $$\sem{det_{existentieel}} = \lambdaf{R}{\lambdaf{S}{\left( \drs{x}{} \oplus \app{R}{x} \oplus \app{S}{x} \right)}}$$
+      \item De negatieve determinator (zoals ``no''): Deze determinator drukt uit dat er geen entiteit bestaat die aan bepaalde voorwaarden voldoet. Deze introduceert dus een genegeerde existentiële quantor. $$\sem{det_{negatief}} = \lambdaf{R}{\lambdaf{S}{\drs{}{\lnot \left( \drs{x}{} \oplus \app{R}{x} \oplus \app{S}{x} \right)}}}$$
+    \end{itemize}
+  \item Een onovergankelijk werkwoord neemt de naamwoordgroep die het onderwerp vormt als argument. Het moet de referentie van die naamwoordgroep terug uit de box halen en testen of die referentie de actie van het werkwoord uitvoert $$\sem{iv} = \lambdaf{N}{\app{N}{\lambdaf{x}{\drs{}{\textit{Symbool}(x)}}}}$$
+  \item Een overgankelijk werkwoord is gelijkaardig maar moet twee referenties uit hun box halen. Het eerste argument is het lijdend voorwerp, het tweede het onderwerp. $$\lambdaf{N1}{\lambdaf{N2}{\appB{N2}{\lambdaf{x2}{\appB{N1}{\lambdaf{x1}{\drs{}{\textit{Symbool}(x2, x1)}}}}}}}$$
+\end{itemize}
+
+Merk op dat al deze lambda-expressies voldoen aan de signaturen van \autoref{tbl:signaturen}

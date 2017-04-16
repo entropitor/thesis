@@ -165,8 +165,8 @@ Ze suggereren Discourse Representation Structures als alternatief. Deze structur
   \Bigg(\drs{x_1, \ldots, x_n}{
       \gamma_1 \\
       \ldots \\
-      \gamma_n
-    }\Bigg)^{fo} = \exists x_{1} \ldots \exists x_n\Big((\gamma_{1})^{fo} \land \ldots \land (\gamma_n)^{fo}\Big)
+      \gamma_m
+    }\Bigg)^{fo} = \exists x_{1} \ldots \exists x_n\Big((\gamma_{1})^{fo} \land \ldots \land (\gamma_m)^{fo}\Big)
 \]
 
 En de vertaling van alle mogelijke condities:
@@ -178,10 +178,31 @@ En de vertaling van alle mogelijke condities:
 
 \[\Big(\drs{x_1, ..., x_n}{\gamma_1 \\ ... \\ \gamma_2} \Rightarrow B\Big)^{fo} =  \forall x_1...\forall x_n\Bigg(\Big((\gamma_1)^{fo} \land ... \land (\gamma_n)^{fo}\Big) \Rightarrow \Big(B\Big)^{fo} \Bigg)\]
 
+Ten slotte kan men twee DRS-structuren samenvoegen door de referenties en de condities samen te voegen:
+
+\[
+  \drsMerge{\drs{x_1, \ldots, x_k}{
+      \gamma_1 \\
+      \ldots \\
+      \gamma_l
+    }}{\drs{y_1, \ldots, y_m}{
+      \delta_1 \\
+      \ldots \\
+      \delta_n
+    }} = \drs{x_1, \ldots, x_k, y_1, \ldots, y_m}{
+    \gamma_1 \\
+    \ldots \\
+    \gamma_l \\
+    \delta_1 \\
+    \ldots \\
+    \delta_n
+  }
+\]
+
 De vertaling van ``If a man lives, he breathes'' naar DRS is \\
 
-\drs{}{\ifdrs{X}{man(X) \\ lives(X)}{}{breathes(X)}}
+\drs{}{\ifdrs{x}{man(x) \\ lives(x)}{}{breathes(x)}}
 
-\paragraph{} Merk op dat de betekenis van het deel ``a man lives'' \drs{X}{man(X) \\ lives(X)} wel deel uitmaakt van de betekenis van de hele zin.
+\paragraph{} Merk op dat de betekenis van het deel ``a man lives'' \drs{x}{man(x) \\ lives(x)} wel deel uitmaakt van de betekenis van de hele zin.
 
 \section{Conclusie} Definite Clause Grammars vormen een expressieve grammatica die natuurlijke taal in al haar facetten makkelijk kan modelleren. Feature Structures komen overeen met argumenten in prolog en kunnen gebruikt worden om grammatica's kort en leesbaar te houden. Discourse Representation Structures vormen een representatie die tussen natuurlijke taal en eerste-orde-logica ligt. Ze zijn even expressief als eerste-orde-logica maar een aantal concepten in de natuurlijke taal zijn beter te modelleren met DRS-structuren.

@@ -1,4 +1,4 @@
-\documentclass[master=cws,masteroption=ai,inputenc=utf8]{kulemt}
+\documentclass[master=cws,masteroption=ai,inputenc=utf8,dutch]{kulemt}
 \setup{title={Automatisch vertalen van logigrammen naar logica},
   author={Jens Claes},
   promotor={Prof. dr. M. Denecker},
@@ -46,7 +46,7 @@
 \newcommand{\feature}[2]{#1 & #2 \\}
 \newcommand{\fvariable}[1]{\framebox{#1}}
 
-\newcommand{\sem}[1]{$\llbracket#1\rrbracket$}
+\newcommand{\sem}[1]{\llbracket#1\rrbracket}
 
 \newfloat{drsFloat}{thp}{lodrs}[chapter]
 \floatname{drsFloat}{DRS}
@@ -60,14 +60,28 @@
     \hline
   \end{tabular}
 }
-\newcommand{\ifdrs}[4]{
-  \begin{tabular}{@{}lcl}
-    & & \\
-    \drs{#1}{#2} $\Rightarrow$ \drs{#3}{#4} \\
-    & & \\
+\newcommand{\drsMerge}[2]{
+  \left( #1 \oplus #2 \right)
+}
+\newcommand{\drsImpl}[2]{
+  \begin{tabular}{@{}l}
+    \\
+    $#1 \Rightarrow #2$ \\
+    \\
   \end{tabular}
 }
-
+\newcommand{\ifdrs}[4]{
+  \drsImpl{\drs{#1}{#2}}{\drs{#3}{#4}}
+}
+\newcommand{\lambdaf}[2]{
+  \lambda #1 \cdot #2
+}
+\newcommand{\appB}[2]{
+  \app{#1}{\left( #2 \right)}
+}
+\newcommand{\app}[2]{
+  #1 @ #2
+}
 
 % Tenslotte wordt hyperref gebruikt voor pdf bestanden.
 % Dit mag verwijderd worden voor de af te drukken versie.
