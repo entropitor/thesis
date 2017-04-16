@@ -11,16 +11,19 @@ Het lexicon bestaat uit een opsomming van alle woorden met een aantal (taalkundi
   \begin{tabular}{@{}llll@{}}
     \toprule
     \textbf{Woordvorm} & \textbf{Categorie} & \textbf{Symbool} & \textbf{Andere features} \\ \midrule
-    man                & noun               & man              & num=sg            \\
-    men                & noun               & man              & num=pl            \\
-    woman              & noun               & woman            & num=sg            \\
-    women              & noun               & woman            & num=pl            \\
-    Jens               & proper noun        & Jens             &                   \\
-    love               & transitive verb    & loves            & inf=inf           \\
-    loves              & transitive verb    & loves            & inf=fin, num=sg   \\
-    love               & transitive verb    & loves            & inf=fin, num=pl   \\
-    a                  & determinator       & /                & type=existential  \\
-    every              & determinator       & /                & type=universal    \\
+    man                & zelfstandig naamwoord     & man     & num=sg            \\
+    men                & zelfstandig naamwoord     & man     & num=pl            \\
+    woman              & zelfstandig naamwoord     & woman   & num=sg            \\
+    women              & zelfstandig naamwoord     & woman   & num=pl            \\
+    John               & eigennaam                 & John    &                   \\
+    sleep              & onovergankelijk werkwoord & sleeps  & inf=inf           \\
+    sleeps             & onovergankelijk werkwoord & sleeps  & inf=fin, num=sg   \\
+    sleep              & onovergankelijk werkwoord & sleeps  & inf=fin, num=pl   \\
+    love               & overgankelijk werkwoord   & loves   & inf=inf           \\
+    loves              & overgankelijk werkwoord   & loves   & inf=fin, num=sg   \\
+    love               & overgankelijk werkwoord   & loves   & inf=fin, num=pl   \\
+    a                  & determinator              & /       & type=existential  \\
+    every              & determinator              & /       & type=universal    \\
     \bottomrule
   \end{tabular}
   \caption{Een voorbeeld van een lexicon}
@@ -249,7 +252,7 @@ Er is dus nood aan een signatuur die een box rond een entiteit bevat. $$\tau(np)
 
 De grammatica van \autoref{gramm:simple-gramm} telt 5 lexicale categorieën: \texttt{pn}, \texttt{n}, \texttt{det}, \texttt{iv} en \texttt{tv}.
 \begin{itemize}
-  \item Een eigennaam kan vertaald worden als een constante met als naam het symbool dat bij die eigennaam hoort. $\sem{pn} = \lambdaf{P}{\app{P}{\textit{Symbool}}}$. Bijvoorbeeld voor ``Jens'': $\sem{Jens} = \lambdaf{P}{\app{P}{Jens}}$
+  \item Een eigennaam kan vertaald worden als een constante met als naam het symbool dat bij die eigennaam hoort. $\sem{pn} = \lambdaf{P}{\app{P}{\textit{Symbool}}}$. Bijvoorbeeld voor ``John'': $\sem{John} = \lambdaf{P}{\app{P}{John}}$
   \item Een zelfstandig naamwoord test of een referentie voldoet aan het naamwoord zelf. $\sem{n} = \lambdaf{x}{\drs{}{\textit{Symbool}(x)}}$. Bijvoorbeeld voor ``man'': $\sem{man} = \lambdaf{x}{\drs{}{man(x)}}$
   \item Een lidwoord of meer algemeen een determinator introduceert een nieuwe referentie die een bepaalde scope heeft. Hier zijn er meerdere soorten vertalingen afhankelijk van het type van determinator. Een lidwoord heeft 2 argumenten: de \textit{restriction} en \textit{nuclear scope}. De \textit{restriction} wordt opgevuld wordt door het zelfstandig naamwoord (met eventuele bijzinnen). De \textit{nuclear scope} wordt opgevuld door de verbale constituent.
     \begin{itemize}
@@ -258,7 +261,110 @@ De grammatica van \autoref{gramm:simple-gramm} telt 5 lexicale categorieën: \te
       \item De negatieve determinator (zoals ``no''): Deze determinator drukt uit dat er geen entiteit bestaat die aan bepaalde voorwaarden voldoet. Deze introduceert dus een genegeerde existentiële quantor. $$\sem{det_{negatief}} = \lambdaf{R}{\lambdaf{S}{\drs{}{\lnot \left( \drs{x}{} \oplus \app{R}{x} \oplus \app{S}{x} \right)}}}$$
     \end{itemize}
   \item Een onovergankelijk werkwoord neemt de naamwoordgroep die het onderwerp vormt als argument. Het moet de referentie van die naamwoordgroep terug uit de box halen en testen of die referentie de actie van het werkwoord uitvoert $$\sem{iv} = \lambdaf{N}{\app{N}{\lambdaf{x}{\drs{}{\textit{Symbool}(x)}}}}$$
-  \item Een overgankelijk werkwoord is gelijkaardig maar moet twee referenties uit hun box halen. Het eerste argument is het lijdend voorwerp, het tweede het onderwerp. $$\lambdaf{N1}{\lambdaf{N2}{\appB{N2}{\lambdaf{x2}{\appB{N1}{\lambdaf{x1}{\drs{}{\textit{Symbool}(x2, x1)}}}}}}}$$
+  \item Een overgankelijk werkwoord is gelijkaardig maar moet twee referenties uit hun box halen. Het eerste argument is het lijdend voorwerp, het tweede het onderwerp. We halen eerst het onderwerp uit haar box. Op die manier zullen de quantoren van het onderwerp voor die van het lijdend voorwerp komen. Hierdoor leggen we dus vast hoe quantifier scope ambiguïteiten opgelost worden.\footnote{Blackburn en Bos bespreken in hun boek hoe men binnen dit framework de andere lezingen van een quantifier scope ambiguïteit kan verkrijgen} $$\sem{tv} = \lambdaf{N1}{\lambdaf{N2}{\appB{N2}{\lambdaf{x2}{\appB{N1}{\lambdaf{x1}{\drs{}{\textit{Symbool}(x2, x1)}}}}}}}$$
 \end{itemize}
 
 Merk op dat al deze lambda-expressies voldoen aan de signaturen van \autoref{tbl:signaturen}
+
+\section{Een voorbeeld}
+In deze sectie illustreren we het framework aan de hand van de zin ``If every man sleeps, a woman loves John''. De parse tree die bij deze zin hoort is
+
+\Tree[.s if [.s [.np [.det every ] [.n man ]] [.vp [.iv sleeps ]]] [.s [.np [.det a ] [.n woman ]] [.vp [.tv loves ] [.np [.pn john ]]]]]
+
+Frege's compositionality principe leert ons dat we elke knoop apart mogen behandelen om daarna de resultaten te combineren.
+
+\subsection{Every man sleeps}
+% \subsection{Every man}
+% \Tree[.np:$\app{\sem{det}}{\sem{n}}$ [.det:$\lambdaf{R}{\lambdaf{S}{\drs{}{\drsImpl{\drsMerge{\drs{x}{}}{\app{R}{x}}}{\app{S}{x}}}}}$ every ] [.n:$\lambdaf{x}{\drs{}{man(x)}}$ man ]]
+% \Tree[.np [.det every ] [.n man ]]
+
+% \begin{equation*}
+  \begin{align*}
+    \sem{np_{every\ man}} &= \app{\sem{det}}{\sem{n}} \\
+             &= \appB{\lambdaf{R}{\lambdaf{S}{\drs{}{\drsImpl{\drsMerge{\drs{x}{}}{\app{R}{x}}}{\app{S}{x}}}}}}{\lambdaf{x}{\drs{}{man(x)}}} \\
+             &= \lambdaf{S}{\drs{}{\drsImpl{\drsMerge{\drs{x}{}}{\app{\left( \lambdaf{x}{\drs{}{man(x)}} \right)}{x}}}{\app{S}{x}}}} \\
+             &= \lambdaf{S}{\drs{}{\drsImpl{\drsMerge{\drs{x}{}}{\drs{}{man(x)}}}{\app{S}{x}}}} \\
+             &= \lambdaf{S}{\drs{}{\drsImpl{\drs{x}{man(x)}}{\app{S}{x}}}} \\
+  \label{eq:np-every-man}
+  \end{align*}
+% \end{equation*}
+
+% \subsection{Every man sleeps}
+% \Tree[.s:$\app{\sem{vp}}{\sem{np}}$ [.np_{every\ man}:$\lambdaf{S}{\drs{}{\drsImpl{\drs{x}{man(x)}}{\app{S}{x}}}}$ ] [.vp [.iv:$\lambdaf{N}{\app{N}{\lambdaf{x}{\drs{}{sleeps(x)}}}}$ sleeps ]]]
+% \Tree[.s [.np_{every\ man} ] [.vp [.iv sleeps ]]]
+
+% \begin{equation*}
+  \begin{align*}
+    \sem{s_{every\ man\ sleeps}} &= \app{\sem{vp}}{\sem{np}} \\
+                            &= \appB{\left( \lambdaf{N}{\app{N}{\lambdaf{x}{\drs{}{sleeps(x)}}}} \right)}{\lambdaf{S}{\drs{}{\drsImpl{\drs{x}{man(x)}}{\app{S}{x}}}}} \\
+                            &= \app{\left( \lambdaf{S}{\drs{}{\drsImpl{\drs{x}{man(x)}}{\app{S}{x}}}} \right)}{\lambdaf{x}{\drs{}{sleeps(x)}}} \\
+                            &= \drs{}{\drsImpl{\drs{x}{man(x)}}{\app{\left( \lambdaf{x}{\drs{}{sleeps(x)}} \right)}{x}}} \\
+                            &= \drs{}{\drsImpl{\drs{x}{man(x)}}{\drs{}{sleeps(x)}}} \\
+  \label{eq:s-every-man-sleeps}
+  \end{align*}
+% \end{equation*}
+
+\subsection{A woman loves John}
+% \subsection{A woman}
+% \Tree[.np:$\app{\sem{det}}{\sem{n}}$ [.det:$\lambdaf{R}{\lambdaf{S}{\left( \drs{x}{} \oplus \app{R}{x} \oplus \app{S}{x} \right)}}$ a ] [.n:$\lambdaf{x}{\drs{}{woman(x)}}$ woman ]]
+% \Tree[.np [.det a ] [.n woman ]]
+
+% \begin{equation*}
+  \begin{align*}
+    \sem{np_{a\ woman}} &= \app{\sem{det}}{\sem{n}} \\
+             &= \appB{\lambdaf{R}{\lambdaf{S}{\left( \drs{x}{} \oplus \app{R}{x} \oplus \app{S}{x} \right)}}}{\lambdaf{x}{\drs{}{woman(x)}}} \\
+             &= \lambdaf{S}{\left( \drs{x}{} \oplus \drs{}{woman(x)} \oplus \app{S}{x} \right)} \\
+             &= \lambdaf{S}{\drsMerge{\drs{x}{woman(x)}}{\app{S}{x}}} \\
+  \label{eq:np-a-woman}
+  \end{align*}
+% \end{equation*}
+
+% \subsection{loves John}
+% \Tree[.vp:$\app{\sem{tv}}{\sem{np}}$ [.tv:$\lambdaf{N1}{\lambdaf{N2}{\appB{N2}{\lambdaf{x2}{\appB{N1}{\lambdaf{x1}{\drs{}{loves(x2, x1)}}}}}}}$ loves ] [.np:$\sem{pn}$ [.pn:$\lambdaf{P}{\app{P}{john}}$ john ]]]
+% \Tree[.vp [.tv loves ] [.np [.pn john ]]]
+
+% \begin{equation*}
+  \begin{align*}
+    \sem{vp_{loves\ john}} &= \app{\sem{tv}}{\sem{np}} \\
+                        &= \appB{\lambdaf{N1}{\lambdaf{N2}{\appB{N2}{\lambdaf{x2}{\appB{N1}{\lambdaf{x1}{\drs{}{loves(x2, x1)}}}}}}}}{\lambdaf{P}{\app{P}{john}}} \\
+                        &= \lambdaf{N2}{\appB{N2}{\lambdaf{x2}{\appB{\left (\lambdaf{P}{\app{P}{john}\right)}}{\lambdaf{x1}{\drs{}{loves(x2, x1)}}}}}} \\
+                        &= \lambdaf{N2}{\appB{N2}{\lambdaf{x2}{\app{\left( \lambdaf{x1}{\drs{}{loves(x2, x1)}} \right)}{john}}}} \\
+                        &= \lambdaf{N2}{\appB{N2}{\lambdaf{x2}{\drs{}{loves(x2, john)}}}} \\
+  \label{eq:vp-loves-john}
+  \end{align*}
+% \end{equation*}
+
+Niet alleen heeft deze lambda-expressie een signatuur die gelijk is aan die van een onovergankelijk werkwoord, de structuur lijkt er ook sterk op.
+
+% \subsection{A woman loves John}
+% \Tree[.s:$\app{\sem{vp}}{\sem{np}}$ [.np_{a\ woman}:$\lambdaf{S}{\drsMerge{\drs{x}{woman(x)}}{\app{S}{x}}}$ ] [.vp_{loves\ john}:$\lambdaf{N2}{\appB{N2}{\lambdaf{x2}{\drs{}{loves(x2, john)}}}}$ ]]
+% \Tree[.s [.np_{a\ woman} ] [.vp_{loves\ john} ]]
+
+% \begin{equation*}
+  \begin{align*}
+    \sem{s_{a\ woman\ loves\ john}} &= \app{\sem{vp}}{\sem{np}} \\
+                              &= \appB{\left( \lambdaf{N2}{\appB{N2}{\lambdaf{x2}{\drs{}{loves(x2, john)}}}} \right)}{\lambdaf{S}{\drsMerge{\drs{x}{woman(x)}}{\app{S}{x}}}} \\
+                              &= \appB{\lambdaf{S}{\drsMerge{\drs{x}{woman(x)}}{\app{S}{x}}}}{\lambdaf{x2}{\drs{}{loves(x2, john)}}} \\
+                              &= \drsMerge{\drs{x}{woman(x)}}{\app{\left( \lambdaf{x2}{\drs{}{loves(x2, john)}} \right)}{x}} \\
+                              &= \drsMerge{\drs{x}{woman(x)}}{\drs{}{loves(x, john)}} \\
+                              &= \drs{x}{woman(x) \\ loves(x, john)} \\
+  \label{eq:s-a-woman-loves-john}
+  \end{align*}
+% \end{equation*}
+
+\subsection{If every man sleeps, a woman loves John}
+% \Tree[.s:$\drs{}{\sem{s1} \Rightarrow \sem{s2}}$ if [.s_{every\ man\ sleeps} ] [.s_{a\ woman\ loves\ john} ]]
+% Met $\sem{s1} = \drs{}{\drsImpl{\drs{x}{man(x)}}{\drs{}{sleeps(x)}}}$ en $\sem{s2} = \drs{x}{woman(x) \\ loves(x, john)}$ 
+% \Tree[.s if [.s_{every\ man\ sleeps} ] [.s_{a\ woman\ loves\ john} ]]
+
+% \begin{equation*}
+  \begin{align*}
+    \sem{s} &= \drs{}{\sem{s1} \Rightarrow \sem{s2}} \\
+            % &= \drs{}{\drsImpl{\drs{}{\drsImpl{\drs{x}{man(x)}}{\drs{}{sleeps(x)}}}}{\drs{x}{woman(x) \\ loves(x, john)}}} \\
+            &= \drs{}{\drsImpl{\drs{}{\drsImpl{\drs{x}{man(x)}}{\drs{}{sleeps(x)}}}}{\drs{y}{woman(y) \\ loves(y, john)}}} \\
+            &= \bigg( \forall x \cdot man(x) \Rightarrow sleeps(x) \bigg) \Rightarrow \bigg( \exists y \cdot woman(y) \land loves(y, john) \bigg)
+  \label{eq:s-if-a-woman-loves-john-every-man-sleeps}
+  \end{align*}
+% \end{equation*}
+
+Dit is de vertaling zoals we die zouden verwachten.
