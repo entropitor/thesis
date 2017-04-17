@@ -33,7 +33,7 @@ Het lexicon bestaat uit een opsomming van alle woorden met een aantal (taalkundi
 \section{Grammatica}
 De grammatica bepaalt welke woorden samen woordgroepen vormen, welke woordgroepen samen andere woordgroepen vormen en welke woordgroepen een zin vormen. Op die manier ontstaat er een boom van woorden.
 
-\paragraph{Een simpele grammatica} \autoref{gramm:simple-gramm} bevat een simpele grammatica. Een simpele zin bestaat uit een \texttt{np} gevolgd door een \texttt{vp}, beiden met hetzelfde getal. Een noun phrase (\texttt{np}) of naamwoordgroep is een woordgroep waar het naamwoord het belangrijkste woord is. Deze woordgroep verwijst altijd naar één of meerdere entiteiten. Een verb phrase (\texttt{vp}) of verbale constituent is een woordgroep waar het werkwoord het belangrijkste woord is. Een verbale constituent drukt een actie uit.
+\paragraph{Een simpele grammatica} \autoref{gramm:simple-gramm} bevat een simpele grammatica. Een simpele zin bestaat uit een \texttt{np} gevolgd door een \texttt{vp}, beiden met hetzelfde getal. Een noun phrase (\texttt{np}) naamwoordgroep of nominale constituent is een woordgroep waar het naamwoord het belangrijkste woord is. Deze woordgroep verwijst altijd naar één of meerdere entiteiten. Een verb phrase (\texttt{vp}) of verbale constituent is een woordgroep waar het werkwoord het belangrijkste woord is. Een verbale constituent drukt een actie uit.
 
 \begin{ex}
   Een simpele grammatica. De lexicale categorieën zijn \texttt{pn}, \texttt{det}, \texttt{n}, \texttt{iv} en \texttt{tv}. Voor deze categorieën wordt het lexicon gebruikt.
@@ -219,9 +219,9 @@ Voor de betekenis van de taal zullen we gebruiken maken van een getypeerde lambd
 
 Voor we de betekenis van woorden kunnen opstellen moeten we eerst de signatuur achterhalen. Cruciaal voor het framework is dat elke grammaticale categorie exact 1 signatuur heeft. Zodanig dat we altijd woordgroepen van dezelfde categorie kunnen uitwisselen voor elkaar. We gebruiken de functie $\tau$ om de signatuur aan te duiden.
 
-We beginnen met de signatuur van een naamwoordgroep (\texttt{np}) te achterhalen. Daarna bekijken we achtereenvolgens de eigennaam (\texttt{pn}), het zelfstandig naamwoord (\texttt{n}) en het lidwoord (\texttt{det}). Ten slotte bekijken we de hiërarchie van de verbale constituenten: de verbale constituent zelf (\texttt{vp}), onovergankelijk werkwoord (\texttt{iv}) en overgankelijk werkwoord (\texttt{tv}).
+We beginnen met de signatuur van een nominale constituent (\texttt{np}) te achterhalen. Daarna bekijken we achtereenvolgens de eigennaam (\texttt{pn}), het zelfstandig naamwoord (\texttt{n}) en het lidwoord (\texttt{det}). Ten slotte bekijken we de hiërarchie van de verbale constituenten: de verbale constituent zelf (\texttt{vp}), onovergankelijk werkwoord (\texttt{iv}) en overgankelijk werkwoord (\texttt{tv}).
 
-\paragraph{De signatuur voor een naamwoordgroep (np)} Een naamwoordgroep is een woordgroep waarin het naamwoord het belangrijkste woord is. De betekenis ervan is een verwijzing naar een entiteit (of een groep van entiteiten). Een naïve signatuur voor een \texttt{np} zou dus $\tau(np) = e$ kunnen zijn. Echter, als er sprake is van kwantificatie zoals bij ``a man'' of ``every man'' dan is er ook sprake van een scope. Deze kan niet gevat woorden in een simpele signatuur als $\tau(np) = e$.
+\paragraph{De signatuur voor een nominale constituent (np)} Een nominale constituent of naamwoordgroep is een woordgroep waarin het naamwoord het belangrijkste woord is. De betekenis ervan is een verwijzing naar een entiteit (of een groep van entiteiten). Een naïve signatuur voor een \texttt{np} zou dus $\tau(np) = e$ kunnen zijn. Echter, als er sprake is van kwantificatie zoals bij ``a man'' of ``every man'' dan is er ook sprake van een scope. Deze kan niet gevat woorden in een simpele signatuur als $\tau(np) = e$.
 
 Er is dus nood aan een signatuur die een box rond een entiteit bevat. $$\tau(np) = (e \rightarrow t) \rightarrow t$$ voldoet hieraan.
 
