@@ -1,0 +1,36 @@
+graph example {
+  node [shape = none] the contestant from "Mount Union" threw "the black darts";
+  node [shape = none] det np2;
+  node [shape = record];
+
+  s -- {np1 vp}
+  np1 -- {det n}
+  det -- the
+  n -- {noun nmod}
+  noun -- contestant
+  nmod -- {prep np2}
+  prep -- from
+  np2 -- pn1
+  pn1 -- "Mount Union"
+  vp -- tv, np3
+  tv -- threw
+  np3 -- pn2
+  pn2 -- "the black darts"
+
+  det [label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD>DET</TD></TR><TR><TD>&lambda;R &middot; &lambda;S &middot; &exist;x &middot; R@x &and; S@x</TD></TR></TABLE>>]
+  noun [label = "{NOUN|&lambda;x &middot; contestant(x)}"]
+  prep [label = "{PREP|&lambda;N &middot; &lambda;P &middot; &lambda;x &middot; N@(&lambda;y &middot; from(x, y) &and; P@x)}"]
+  pn1 [label = "{PN|&lambda;P &middot; P@MountUnion}"]
+  tv [label = "{TV|&lambda;N1 &middot; &lambda;N2 &middot; N2@(&lambda;x2 &middot; N1@(&lambda;x1 &middot; threw(x2, x1)))}"]
+  pn2 [label = "{PN|&lambda;P &middot; P@TheBlackDarts}"]
+
+  np2 [label = <<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"><TR><TD>NP</TD></TR><TR><TD>&#x301a;pn&#x301b;</TD></TR><TR><TD>&lambda;P &middot; P@MountUnion</TD></TR></TABLE>>]
+  np3 [label = "{NP|&#x301a;pn&#x301b;|&lambda;P &middot; P@TheBlackDarts}"]
+
+  vp [label = "{VP|&#x301a;tv&#x301b;@&#x301a;np&#x301b;|&lambda;N2 &middot; N2@(&lambda;x2 &middot; threw(x2, TheBlackDarts))}"]
+
+  nmod [label = "{NMOD|&#x301a;prep&#x301b;@&#x301a;np&#x301b;|&lambda;P &middot; &lambda;x &middot; (from(x, MountUnion) &and; P@x)}"]
+  n [label = "{N|&#x301a;nmod&#x301b;@&#x301a;noun&#x301b;|&lambda;x &middot; (from(x, MountUnion) &and; contestant(x))}"]
+  np1 [label = "{NP|&#x301a;det&#x301b;@&#x301a;n&#x301b;|&lambda;S &middot; &exist;x &middot; (from(x, MountUnion) &and; contestant(x)) &and; S@x}"];
+  s [label = "{S|&#x301a;vp&#x301b;@&#x301a;np&#x301b;|&exist;x &middot; (from(x, MountUnion) &and; contestant(x)) &and; threw(x, TheBlackDarts)}"]
+}
