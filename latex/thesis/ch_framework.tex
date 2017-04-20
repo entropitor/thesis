@@ -1,7 +1,7 @@
 \chapter{Een framework voor semantische analyse}
 In dit hoofdstuk bespreken we het framework van Blackburn en Bos \cite{Blackburn2005, Blackburn2006} voor semantische analyse. Het bestaat uit 4 onderdelen: het lexicon (het vocabularium), de grammatica, de semantiek van de grammaticale regels en de semantiek van de woorden in het lexicon. Het hele framework is gebaseerd op lambda-calcalus en Frege's compositionality principe dat stelt dat de betekenis van een woordgroep enkel afhangt van de betekenissen van de woorden waaruit ze bestaat.
 
-\paragraph{} \textit{Dit hele hoofdstuk is een samenvatting van de relevante hoofdstukken van de boeken van Blackburn en Bos \cite{Blackburn2005, Blackburn2006} ``A first course in computational semantics''}
+\paragraph{} \textit{Dit hele hoofdstuk is een samenvatting van de relevante hoofdstukken van de boeken van Blackburn en Bos \cite{Blackburn2005, Blackburn2006}}
 
 \section{Lexicon}
 Het lexicon bestaat uit een opsomming van alle woorden met een aantal (taalkundige) features (zoals de categorie van het woord). Tabel \ref{tbl:lexicon} geeft een voorbeeld van een lexicon. Het lexicon is meer dan een woordenboek. Het bevat alle woordvormen, niet enkel de basisvorm. Zo komt ``love'' drie keer voor in het lexicon. ``love'' zelf komt één keer voor als infinitief en één keer als meervoud van de tegenwoordige tijd. ``loves'' is dan weer het enkelvoud van de tegenwoordige tijd. De meeste woordvormen hebben ook een feature ``Symbool'', dit zal gebruikt worden bij de semantiek van de woorden.
@@ -286,7 +286,7 @@ Frege's compositionality principe leert ons dat we elke knoop apart mogen behand
              &= \lambdaf{S}{\drs{}{\drsImpl{\drsMerge{\drs{x}{}}{\app{\left( \lambdaf{x}{\drs{}{man(x)}} \right)}{x}}}{\app{S}{x}}}} \\
              &= \lambdaf{S}{\drs{}{\drsImpl{\drsMerge{\drs{x}{}}{\drs{}{man(x)}}}{\app{S}{x}}}} \\
              &= \lambdaf{S}{\drs{}{\drsImpl{\drs{x}{man(x)}}{\app{S}{x}}}} \\
-  \label{eq:np-every-man}
+  % \label{eq:np-every-man}
   \end{align*}
 % \end{equation*}
 
@@ -301,7 +301,7 @@ Frege's compositionality principe leert ons dat we elke knoop apart mogen behand
                             &= \app{\left( \lambdaf{S}{\drs{}{\drsImpl{\drs{x}{man(x)}}{\app{S}{x}}}} \right)}{\lambdaf{x}{\drs{}{sleeps(x)}}} \\
                             &= \drs{}{\drsImpl{\drs{x}{man(x)}}{\app{\left( \lambdaf{x}{\drs{}{sleeps(x)}} \right)}{x}}} \\
                             &= \drs{}{\drsImpl{\drs{x}{man(x)}}{\drs{}{sleeps(x)}}} \\
-  \label{eq:s-every-man-sleeps}
+  % \label{eq:s-every-man-sleeps}
   \end{align*}
 % \end{equation*}
 
@@ -316,7 +316,7 @@ Frege's compositionality principe leert ons dat we elke knoop apart mogen behand
              &= \appB{\lambdaf{R}{\lambdaf{S}{\left( \drs{x}{} \oplus \app{R}{x} \oplus \app{S}{x} \right)}}}{\lambdaf{x}{\drs{}{woman(x)}}} \\
              &= \lambdaf{S}{\left( \drs{x}{} \oplus \drs{}{woman(x)} \oplus \app{S}{x} \right)} \\
              &= \lambdaf{S}{\drsMerge{\drs{x}{woman(x)}}{\app{S}{x}}} \\
-  \label{eq:np-a-woman}
+  % \label{eq:np-a-woman}
   \end{align*}
 % \end{equation*}
 
@@ -331,7 +331,7 @@ Frege's compositionality principe leert ons dat we elke knoop apart mogen behand
                         &= \lambdaf{N2}{\appB{N2}{\lambdaf{x2}{\appB{\left (\lambdaf{P}{\app{P}{john}\right)}}{\lambdaf{x1}{\drs{}{loves(x2, x1)}}}}}} \\
                         &= \lambdaf{N2}{\appB{N2}{\lambdaf{x2}{\app{\left( \lambdaf{x1}{\drs{}{loves(x2, x1)}} \right)}{john}}}} \\
                         &= \lambdaf{N2}{\appB{N2}{\lambdaf{x2}{\drs{}{loves(x2, john)}}}} \\
-  \label{eq:vp-loves-john}
+  % \label{eq:vp-loves-john}
   \end{align*}
 % \end{equation*}
 
@@ -349,7 +349,7 @@ Niet alleen heeft deze lambda-expressie een signatuur die gelijk is aan die van 
                               &= \drsMerge{\drs{x}{woman(x)}}{\app{\left( \lambdaf{x2}{\drs{}{loves(x2, john)}} \right)}{x}} \\
                               &= \drsMerge{\drs{x}{woman(x)}}{\drs{}{loves(x, john)}} \\
                               &= \drs{x}{woman(x) \\ loves(x, john)} \\
-  \label{eq:s-a-woman-loves-john}
+  % \label{eq:s-a-woman-loves-john}
   \end{align*}
 % \end{equation*}
 
@@ -364,7 +364,7 @@ Niet alleen heeft deze lambda-expressie een signatuur die gelijk is aan die van 
             % &= \drs{}{\drsImpl{\drs{}{\drsImpl{\drs{x}{man(x)}}{\drs{}{sleeps(x)}}}}{\drs{x}{woman(x) \\ loves(x, john)}}} \\
             &= \drs{}{\drsImpl{\drs{}{\drsImpl{\drs{x}{man(x)}}{\drs{}{sleeps(x)}}}}{\drs{y}{woman(y) \\ loves(y, john)}}} \\
             &= \bigg( \forall x \cdot man(x) \Rightarrow sleeps(x) \bigg) \Rightarrow \bigg( \exists y \cdot woman(y) \land loves(y, john) \bigg)
-  \label{eq:s-if-a-woman-loves-john-every-man-sleeps}
+  % \label{eq:s-if-a-woman-loves-john-every-man-sleeps}
   \end{align*}
 % \end{equation*}
 
