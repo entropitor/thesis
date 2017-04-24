@@ -28,7 +28,7 @@
 :- use_module(myLexiconSemantics, [semLex/2]).
 :- use_module(myGrammarSemantics, [combine/2]).
 
-:- use_module(types, [addTypeAttribute/2]).
+:- use_module(types, [addType/2, addTypeAttribute/2]).
 
 /*========================================================================
     Texts
@@ -221,12 +221,11 @@ np([coord:no, num:_, gap:[], ref:no, sem:NP, vType:Type])-->
     pn([sem:PN, vType:Type]),
     { combine(np:NP, [pn:PN]) }.
 
-% TODO: re-add?
-%% np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
-%%     det([mood:decl, type:_, num:Num, sem:Det, vType:Type]),
-%%     np([coord:no, num:_, gap:[], ref:no, sem:NP2, vType:Type2]),
-%%     n([coord:_, num:Num, sem:N, vType:Type]),
-%%     { combine(np:NP, [det:Det, np:NP2, n:N, vType2:Type2]) }.
+np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
+    det([mood:decl, type:_, num:Num, sem:Det, vType:Type]),
+    np([coord:no, num:_, gap:[], ref:no, sem:NP2, vType:Type2]),
+    n([coord:_, num:Num, sem:N, vType:Type]),
+    { combine(np:NP, [det:Det, np:NP2, n:N, vType1:Type, vType2:Type2]) }.
 
 
 %np([coord:no, num:sg, gap:[], ref:Ref, sem:NP])-->
@@ -383,7 +382,7 @@ debug(X, X) :-
 
 pp([type:Type, sem:PP, vType:SubjType])-->
     prep([type:Type, syntax:_, sem:Prep, vType:pred(SubjType, ObjType)]),
-    np([coord:_, num:_, gap:[], ref:no, sem:NP, vType:ObjType]),
+    np([coord:no, num:_, gap:[], ref:no, sem:NP, vType:ObjType]),
     { combine(pp:PP, [prep:Prep, np:NP]) }.
 
 
@@ -438,11 +437,13 @@ det([mood:M, type:Type, num:Num, sem:Det, vType:VType])-->
 
 number([sem:Sem, vType:Type], [Number|T], T) :-
     integer(Number),
-    semLex(number, [number:Number, sem:Sem, vType:Type]).
+    semLex(number, [number:Number, sem:Sem, vType:Type]),
+    addType(number-Number, Type).
 number([sem:Sem, vType:Type])-->
     { lexEntry(number, [syntax:Word, number:Number]) },
     Word,
-    { semLex(number, [number:Number, sem:Sem, vType:Type]) }.
+    { semLex(number, [number:Number, sem:Sem, vType:Type]) },
+    { addType(number-Number, Type) }.
 
 pn([sem:Sem, vType:Type])-->
     { lexEntry(pn, [symbol:Sym, syntax:Word, vType:Type]) },

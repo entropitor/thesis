@@ -1,0 +1,72 @@
+// Problem p4
+
+vocabulary V {
+    type type1 constructed from {the_other_type1, eldon, york, frenchboro, unity}
+    type graduate constructed from {michael, jackie, orlando, ivan, lonnie}
+    type year = {2005; 2006; 2007; 2008; 2009} isa int
+    type type2 constructed from {the_other_type2, dodgers, giants, mariners, indians}
+
+    from(graduate, type1)
+    graduated_in(graduate, year)
+    plays_for(graduate, type2)
+    with(graduate, type2)
+}
+
+structure S : V {
+}
+
+theory T : V {
+    // Michael isn't from Eldon
+    ~ from(michael,eldon).
+
+    // The 2008 graduate is either Jackie or Michael
+    ?a [graduate]: (jackie = a | michael = a) & graduated_in(a,2008).
+
+    // The 2006 graduate is either Ivan or Orlando
+    ?b [graduate]: (ivan = b | orlando = b) & graduated_in(b,2006).
+
+    // The Dodgers player didn't graduate in 2007 or 2008
+    ?c [graduate]: ~ (graduated_in(c,2007) | graduated_in(c,2008)) & plays_for(c,dodgers).
+
+    // Jackie graduated 2 years before the player from York
+    ?d [year] e [graduate] f [year]: from(e,york) & graduated_in(e,d) & f = d-2 & graduated_in(jackie,f).
+
+    // The 2007 graduate doesn't play for the Giants
+    ?g [graduate]: ~ plays_for(g,giants) & graduated_in(g,2007).
+
+    // Of Lonnie and the person from Frenchboro, one is with the Dodgers and the other graduated in 2005
+    ?h [graduate]: from(h,frenchboro) & ~ (lonnie = h) & (with(lonnie,dodgers) & graduated_in(h,2005) | with(h,dodgers) & graduated_in(lonnie,2005)).
+
+    // The five players are the person from Frenchboro, Ivan, the player with the Indians, the person with the Mariners and the graduate that plays for the Giants
+    ?i [graduate] j [graduate] k [graduate] l [graduate]: ~ (i = ivan) & ~ (i = j) & ~ (i = k) & ~ (i = l) & ~ (ivan = j) & ~ (ivan = k) & ~ (ivan = l) & ~ (j = k) & ~ (j = l) & ~ (k = l) & from(i,frenchboro) & with(j,indians) & with(k,mariners) & plays_for(l,giants).
+
+    // The person who graduated in 2005 is from Unity
+    ?m [graduate]: graduated_in(m,2005) & from(m,unity).
+
+    // Lonnie plays for the Mariners
+    plays_for(lonnie,mariners).
+
+
+    // Logigram bijection axioms:
+    ! x [graduate]: ?=1 y [type1]: from(x, y).
+    ! x [type1]: ?=1 y [graduate]: from(y, x).
+
+    ! x [graduate]: ?=1 y [year]: graduated_in(x, y).
+    ! x [year]: ?=1 y [graduate]: graduated_in(y, x).
+
+    ! x [graduate]: ?=1 y [type2]: plays_for(x, y).
+    ! x [type2]: ?=1 y [graduate]: plays_for(y, x).
+
+    ! x [graduate]: ?=1 y [type2]: with(x, y).
+    ! x [type2]: ?=1 y [graduate]: with(y, x).
+
+    // Logigram synonym axioms:
+    ! x [graduate] y [type2]: plays_for(x, y) <=> with(x, y).
+}
+
+procedure main() {
+    stdoptions.nbmodels = 10;
+    printmodels(modelexpand(T,S))
+    model = modelexpand(T,S)
+}
+

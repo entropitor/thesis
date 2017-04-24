@@ -3,23 +3,41 @@
               combineTypesToMatrix/4,
               addType/2,
               addTypeAttribute/2,
-              nameTypes/1
+              addMissingType/2,
+              nameTypes/1,
+              resolveMissingTypes/2
           ]).
 :- use_module(questions, [askQuestion/3]).
 
 combineTypes(In, Out) :-
-    toTypesAndAttributes(In, Types, Attributes),
+    toTypesAndAttributes(In, Types-MissingTypes, Attributes),
     combineTypes2(Types, TypesOut),
     list_to_set(Attributes, AttributeSet),
-    append(TypesOut, AttributeSet, Out).
+    append(TypesOut, MissingTypes, Out1),
+    append(Out1, AttributeSet, Out).
 
-toTypesAndAttributes([], [], []).
-toTypesAndAttributes([type(X, Y) | Rest], [type(X, Y) | Types], Attributes) :-
+toTypesAndAttributes([], []-[], []).
+toTypesAndAttributes([type(X, Y) | Rest], [type(X, Y) | Types]-MissingTypes, Attributes) :-
     !,
-    toTypesAndAttributes(Rest, Types, Attributes).
+    toTypesAndAttributes(Rest, Types-MissingTypes, Attributes).
+toTypesAndAttributes([missingType(X, Y) | Rest], Types-[missingType(X, Y) | MissingTypes], Attributes) :-
+    !,
+    toTypesAndAttributes(Rest, Types-MissingTypes, Attributes).
 toTypesAndAttributes([attr(X, Y) | Rest], Types, [attr(X, Y) | Attributes]) :-
     !,
     toTypesAndAttributes(Rest, Types, Attributes).
+
+resolveMissingTypes(Types, Types) :-
+    \+ memberchk(missingType(_, _), Types),
+    !.
+resolveMissingTypes(Types, TypesOut2) :-
+    selectchk(missingType(X, Y), Types, TypesOut),
+    resolveMissingType(X, Y, Types),
+    resolveMissingTypes(TypesOut, TypesOut2).
+resolveMissingType(X, Y, Types) :-
+    member(type(_-X, Type), Types),
+    Type == Y,
+    !.
 
 combineTypes2([], []) :-
     !.
@@ -45,11 +63,20 @@ addType(_, _) :-
     fail.
 addType(Symbol, Type) :-
     b_getval(types, Types),
+    %% (
+    %%     var(Type)
+    %%  ->
+    %%      Type1 = baseType(Type)
+    %%  ;
+    %%      Type1 = Type
+    %% ),
     b_setval(types, [type(Symbol, Type) | Types]).
 addTypeAttribute(Type, Attribute) :-
     b_getval(types, Types),
     b_setval(types, [attr(Type, Attribute) | Types]).
-
+addMissingType(Symbol, Type) :-
+    b_getval(types, Types),
+    b_setval(types, [missingType(Symbol, Type) | Types]).
 
 %% checkUnkownVars([], [], true).
 %% checkUnkownVars([type(WordSort-Var, Type) | Rest], [type(WordSort-Var, Type) | Out], Success) :-
@@ -114,7 +141,7 @@ nameDerivedTypesFromPairs([BaseType-DerivedType | Rest], Start, End) :-
 
 combineTypesToMatrix(CombinedTypes, NbBaseTypes, _NbConceptsPerType, TypesForMatrix) :-
     getDerivedTypes(CombinedTypes, DerivedTypes),
-    term_variables(CombinedTypes, BaseTypeCandidates),
+    getBaseTypeCandidates(CombinedTypes, BaseTypeCandidates),
     list_to_ord_set(DerivedTypes, DerivedTypesSet),
     list_to_ord_set(BaseTypeCandidates, BaseTypeCandidatesSet),
     ord_subtract(BaseTypeCandidatesSet, DerivedTypesSet, RealCandidates),
@@ -127,11 +154,21 @@ getDerivedTypes([attr(DerivedType, derivedCountable(_)) | Rest], [DerivedType | 
 getDerivedTypes([_ | Rest], Types) :-
     getDerivedTypes(Rest, Types).
 
+getBaseTypeCandidates([], []).
+getBaseTypeCandidates([type(_, Type) | Types], Vars) :-
+    !,
+    term_variables(Type, Vars1),
+    append(Vars1, Vars2, Vars),
+    getBaseTypeCandidates(Types, Vars2).
+getBaseTypeCandidates([_ | Types], Vars) :-
+    getBaseTypeCandidates(Types, Vars).
+
 simplifyCandidates(CombinedTypes, NbBaseTypes, RealCandidates, TypesForMatrix) :-
     length(RealCandidates, NbBaseTypes),
     !,
     include(\=(neq(_, _)), CombinedTypes, Temp),
-    include(\=(eq(_, _)), Temp, RealCombinedTypes),
+    include(\=(eq(_, _)), Temp, Temp1),
+    include(\=(notObjectOf(_, _)), Temp1, RealCombinedTypes),
     combineTypes(RealCombinedTypes, TypesForMatrix).
 simplifyCandidates(CombinedTypes, NbBaseTypes, RealCandidates, TypesForMatrix) :-
     length(RealCandidates, N),
@@ -151,8 +188,9 @@ askSimplificationQuestion(CombinedTypes, NewCombinedTypes) :-
     nonvar(Type2),
     Type2 = pred(S2, O2),
     \+ \+ (S1 = S2, O1 = O2),
+    \+ (Type1 == Type2),
     \+ compared(Symbol1, Symbol2, CombinedTypes),
-    format(string(Question), "Are ~p and ~p the same relation? [yes/no]", [Symbol1, Symbol2]),
+    format(string(Question), "Are '~p' and '~p' the same relation? [yes/no]", [Symbol1, Symbol2]),
     askQuestion(eq(Symbol1, Symbol2), Question, Answer),
     (
         Answer = yes
@@ -163,6 +201,26 @@ askSimplificationQuestion(CombinedTypes, NewCombinedTypes) :-
     ;
         NewCombinedTypes = [neq(Symbol1, Symbol2) | CombinedTypes]
     ).
+askSimplificationQuestion(CombinedTypes, NewCombinedTypes) :-
+    member(type(number-Number, Type1), CombinedTypes),
+    member(attr(Type2, countable), CombinedTypes),
+    \+ (Type1 == Type2),
+    member(type(_-Symbol, PredType), CombinedTypes),
+    nonvar(PredType),
+    PredType = pred(_S, O),
+    O == Type2,
+    \+ (member(notObjectOf(Number, Symbol), CombinedTypes)),
+    format(string(Question), "Is '~p' a possible object of the '~p' relation? [yes/no]", [Number, Symbol]),
+    askQuestion(objectOf(Number, Symbol), Question, Answer),
+    (
+        Answer = yes
+     ->
+         Type1 = Type2,
+         NewCombinedTypes = CombinedTypes
+     ;
+        NewCombinedTypes = [notObjectOf(Number, Symbol) | CombinedTypes]
+    ).
+
 
 compared(S1, S2, Types) :-
     eq(S1, S2, Types).

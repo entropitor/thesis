@@ -6,6 +6,7 @@
 :- use_module(printFol, [printFol/2]).
 :- use_module(types, [
                   nameTypes/1,
+                  resolveMissingTypes/2,
                   combineTypesToMatrix/4
               ]).
 :- use_module(typeExtraction, [
@@ -22,7 +23,8 @@
 solution2idp(solution(Sentences, DRSs, TypesIn), ProblemName, Problem) :-
     setQuestionTopic(ProblemName),
     Problem = problem(NbBaseTypes, NbConceptsPerType, _, _),
-    combineTypesToMatrix(TypesIn, NbBaseTypes, NbConceptsPerType, Types),
+    combineTypesToMatrix(TypesIn, NbBaseTypes, NbConceptsPerType, TypesMatrix),
+    resolveMissingTypes(TypesMatrix, Types),
     maplist(drs2fol, DRSs, FOLs),
     pairs_keys_values(SentencePairs, Sentences, FOLs),
     nameTypes(Types),

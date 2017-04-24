@@ -72,7 +72,6 @@ problem(p2, problem(4,5, [
                         prep(fun(city, contestant), [from])
         ])).
 
-
 % ADAPTED!!!
 % added "shirts" to clue 3
 problem(p3, problem(4, 5, [
@@ -110,6 +109,7 @@ problem(p3, problem(4, 5, [
                     ])).
 
 %ADAPTED
+% isn't playing -> doesn't play (clue 6)
 % dropped now from clue 7
 % adapted clue 8 to be a real enumeration
 % dropped "currently" from clue 10
@@ -119,7 +119,7 @@ problem(p4, problem(4, 5, [
                         "The 2006 graduate is either Ivan or Orlando",
                         "The Dodgers player didn't graduate in 2007 or 2008",
                         "Jackie graduated 2 years before the player from York",
-                        "The 2007 graduate isn't playing for the Giants",
+                        "The 2007 graduate doesn't play for the Giants",
                         "Of Lonnie and the person from Frenchboro, one is with the Dodgers and the other graduated in 2005",
                         %% "The five players are the person from Frenchboro, Ivan, and the three players currently with the Indians, Mariners and Giants",
                         "The five players are the person from Frenchboro, Ivan, the player with the Indians, the person with the Mariners and the graduate that plays for the Giants",
