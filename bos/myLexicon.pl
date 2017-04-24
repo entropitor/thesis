@@ -50,9 +50,29 @@ lexEntry(det, [syntax:[the], mood:decl, num:sg, type:def]).
 %% lexEntry(det, [syntax:[the], mood:decl, num:pl, type:def]).
 
 /*========================================================================
+    Numbers
+========================================================================*/
+lexEntry(number, [syntax:[one], number:1]).
+lexEntry(number, [syntax:[two], number:2]).
+lexEntry(number, [syntax:[three], number:3]).
+lexEntry(number, [syntax:[four], number:4]).
+lexEntry(number, [syntax:[five], number:5]).
+lexEntry(number, [syntax:[six], number:6]).
+lexEntry(number, [syntax:[seven], number:7]).
+lexEntry(number, [syntax:[eight], number:8]).
+lexEntry(number, [syntax:[nine], number:9]).
+lexEntry(number, [syntax:[ten], number:10]).
+lexEntry(number, [syntax:[eleven], number:11]).
+lexEntry(number, [syntax:[twelve], number:12]).
+lexEntry(number, [syntax:[thirtheen], number:13]).
+lexEntry(number, [syntax:[fourteen], number:14]).
+lexEntry(number, [syntax:[fifteen], number:15]).
+
+/*========================================================================
     Copula
 ========================================================================*/
 lexEntry(cop, [pol:pos, syntax:[is], inf:fin, num:sg]).
+lexEntry(cop, [pol:neg, syntax:[isnt], inf:fin, num:sg]).
 lexEntry(cop, [pol:neg, syntax:[is, not], inf:fin, num:sg]).
 
 lexEntry(cop, [pol:pos, syntax:[was], inf:fin, num:sg]).
