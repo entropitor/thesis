@@ -119,7 +119,7 @@ s([coord:no, sem:Sem])-->
     number([sem:_, vType:Type]),
     n([coord:_, num:pl, sem:_, vType:Type]),
     cop([type:np, inf:fin, num:pl, sem:Cop]),
-    np([coord:_, num:_, gap:[], ref:no, sem:NP, vType:Type]),
+    np([coord:conj, num:_, gap:[], ref:no, sem:NP, vType:Type]),
     { combine(s:Sem, [cop:Cop, np:NP, alldifferent])}.
 
 sinv([gap:G, sem:S])-->
