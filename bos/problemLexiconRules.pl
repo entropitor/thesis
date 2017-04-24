@@ -33,9 +33,16 @@ addRule(tv(_Type, SyntaxSg, SyntaxInf)) :-
     syntax_symbol(SyntaxSg, Symbol),
     assertz(pLexEntry(tv, [symbol:Symbol, syntax:SyntaxSg, inf:fin, num:sg, vType:Type]) :- addType(tv-Symbol, Type)),
     assertz(pLexEntry(tv, [symbol:Symbol, syntax:SyntaxInf, inf:inf, num:sg, vType:Type]) :- addType(tv-Symbol, Type)).
+addRule(tvgap(_Type, SyntaxSg, Gap, SyntaxInf)) :-
+    append(SyntaxSg, Gap, WordForm),
+    syntax_symbol(WordForm, Symbol),
+    assertz(pLexEntry(tvgap, [symbol:Symbol, syntax:SyntaxSg, gap:Gap, inf:fin, num:sg, vType:Type]) :- addType(tvgap-Symbol, Type)),
+    assertz(pLexEntry(tvgap, [symbol:Symbol, syntax:SyntaxInf, gap:Gap, inf:inf, num:sg, vType:Type]) :- addType(tvgap-Symbol, Type)).
 addRule(prep(_Type, Syntax)) :-
     syntax_symbol(Syntax, Symbol),
     assertz(pLexEntry(prep, [symbol:Symbol, syntax:Syntax, vType:Type]) :- addType(prep-Symbol, Type)).
+addRule(comp(Type, Syntax)) :-
+    assertz(pLexEntry(comp, [type:Type, syntax:Syntax])).
 
 lexEntry(X, Y) :-
     defaultLexicon(X, Y).
