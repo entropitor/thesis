@@ -149,6 +149,41 @@ problem(p4, problem(4, 5, [
                         pn(city, [unity])
                      ])).
 
+problem(p5, problem(4, 5, [
+                        "Mattie is 113 years old",
+                        "The person who lives in Tehama is a native of either Kansas or Oregon",
+                        "The Washington native is 1 year older than Ernesto",
+                        "Roxanne is 2 years younger than the Kansas native",
+                        "The person who lives in Zearing isn't a native of Alaska",
+                        "The person who is 111 years old doesn't live in Plymouth",
+                        "The Oregon native is either Zachary or the person who lives in Tehama",
+                        "The person who lives in Shaver Lake is 1 year younger than Roxanne",
+                        "The centenarian who lives in Plymouth isn't a native of Alaska",
+                        "Of the person who lives in Tehama and Mattie, one is a native of Alaska and the other is from Kansas"
+                     ], [
+                        pn(person, [mattie]),
+                        tvgap(pred(person, year), [is], [old], [are]),
+                        noun(year, [year], [years]),
+                        noun(person, [person], [persons]),
+                        ivpp(pred(person, city), [lives], [in], [live]),
+                        pn(city, [tehama]),
+                        noun(person, [native], [natives]),
+                        pn(state, [kansas]),
+                        pn(state, [oregon]),
+                        pn(state, [washington]),
+                        comp(higher, [older, than]),
+                        pn(person, [ernesto]),
+                        pn(person, [roxanne]),
+                        comp(lower, [younger, than]),
+                        pn(city, [zearing]),
+                        pn(state, [alaska]),
+                        pn(city, [plymouth]),
+                        pn(person, [zachary]),
+                        pn(city, [shaver, lake]),
+                        noun(person, [centenarian], [centenarians]),
+                        prep(pred(person, state), [a, native, of]),
+                        prep(pred(person, state), [from])
+                     ])).
 
 % ADAPTED!!!
 % replaced "$... per share" with "... dollar per share"

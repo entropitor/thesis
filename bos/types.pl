@@ -202,6 +202,7 @@ askSimplificationQuestion(CombinedTypes, NewCombinedTypes) :-
         NewCombinedTypes = [neq(Symbol1, Symbol2) | CombinedTypes]
     ).
 askSimplificationQuestion(CombinedTypes, NewCombinedTypes) :-
+    member(missingType(_, pred(_, Type1)), CombinedTypes),
     member(type(number-Number, Type1), CombinedTypes),
     member(attr(Type2, countable), CombinedTypes),
     \+ (Type1 == Type2),
@@ -219,6 +220,27 @@ askSimplificationQuestion(CombinedTypes, NewCombinedTypes) :-
          NewCombinedTypes = CombinedTypes
      ;
         NewCombinedTypes = [notObjectOf(Number, Symbol) | CombinedTypes]
+    ).
+askSimplificationQuestion(CombinedTypes, NewCombinedTypes) :-
+    member(missingType(_, pred(_, Type1)), CombinedTypes),
+    member(type(pn-Symbol1, TypePN), CombinedTypes),
+    TypePN == Type1,
+    member(attr(Type2, qualified), CombinedTypes),
+    \+ (Type1 == Type2),
+    member(type(_-Symbol2, PredType), CombinedTypes),
+    nonvar(PredType),
+    PredType = pred(_S, O),
+    O == Type2,
+    \+ (member(notObjectOf(Symbol1, Symbol2), CombinedTypes)),
+    format(string(Question), "Is '~p' a possible object of the '~p' relation? [yes/no]", [Symbol1, Symbol2]),
+    askQuestion(objectOf(Symbol1, Symbol2), Question, Answer),
+    (
+        Answer = yes
+    ->
+        Type1 = Type2,
+        NewCombinedTypes = CombinedTypes
+    ;
+        NewCombinedTypes = [notObjectOf(Symbol1, Symbol2) | CombinedTypes]
     ).
 
 
