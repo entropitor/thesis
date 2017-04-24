@@ -72,7 +72,6 @@ problem(p2, problem(4,5, [
                         prep(fun(city, contestant), [from])
         ])).
 
-
 % ADAPTED!!!
 % added "shirts" to clue 3
 problem(p3, problem(4, 5, [
@@ -108,3 +107,83 @@ problem(p3, problem(4, 5, [
                         ppn(team, [splitters]),
                         pn(color, [lime, green, shirts])
                     ])).
+
+%ADAPTED
+% isn't playing -> doesn't play (clue 6)
+% dropped now from clue 7
+% adapted clue 8 to be a real enumeration
+% dropped "currently" from clue 10
+problem(p4, problem(4, 5, [
+                        "Michael isn't from Eldon",
+                        "The 2008 graduate is either Jackie or Michael",
+                        "The 2006 graduate is either Ivan or Orlando",
+                        "The Dodgers player didn't graduate in 2007 or 2008",
+                        "Jackie graduated 2 years before the player from York",
+                        "The 2007 graduate doesn't play for the Giants",
+                        "Of Lonnie and the person from Frenchboro, one is with the Dodgers and the other graduated in 2005",
+                        %% "The five players are the person from Frenchboro, Ivan, and the three players currently with the Indians, Mariners and Giants",
+                        "The five players are the person from Frenchboro, Ivan, the player with the Indians, the person with the Mariners and the graduate that plays for the Giants",
+                        "The person who graduated in 2005 is from Unity",
+                        "Lonnie plays for the Mariners"
+                     ], [
+                        pn(person, [michael]),
+                        prep(pred(person, city), [from]),
+                        pn(city, [eldon]),
+                        noun(person, [graduate], [graduates]),
+                        pn(person, [jackie]),
+                        pn(person, [ivan]),
+                        pn(person, [orlando]),
+                        pn(team, [dodgers]),
+                        noun(person, [player], [players]),
+                        ivpp(pred(person, year), [graduated], [in], [graduate]),
+                        noun(year, [year], [years]),
+                        pn(city, [york]),
+                        ivpp(pred(person, team), [plays], [for], [play]),
+                        pn(team, [giants]),
+                        pn(person, [lonnie]),
+                        noun(person, [person], [persons]),
+                        pn(city, [frenchboro]),
+                        prep(pred(person, team), [with]),
+                        pn(team, [indians]),
+                        pn(team, [mariners]),
+                        pn(city, [unity])
+                     ])).
+
+
+% ADAPTED!!!
+% replaced "$... per share" with "... dollar per share"
+problem(p11, problem(4, 5, [
+                         "The utilities stock was 1 dollar per share less expensive than the stock Geraldo bought",
+                         "GXTV was 2 dollar per share less expensive than QMZ",
+                         "The financial stock wasn't purchased by Edith",
+                         "PSTO sold for 29 dollar per share",
+                         "The stock Abigail bought was either KMPP or JMO",
+                         "The health-care stock was 2 dollar per share more expensive than the financial stock",
+                         "The energy stock was less expensive than JMO",
+                         "Heathcliff bought the real estate stock",
+                         "Of QMZ and GXTV, one sold for 26 dollar per share and the other was in the health-care sector",
+                         "Abigail didn't purchase the stock that sold for 25 dollar per share"
+                     ], [
+                         pn(sector, [utilities, stock]),
+                         noun(price, [dollar, per, share], [dollars, per, share]),
+                         % less expensive
+                         noun(stock, [stock], [stocks]),
+                         pn(person, [geraldo]),
+                         tv(pred(person, stock), [bought], [buy]),
+                         pn(stock, [gxtv]),
+                         pn(stock, [qmz]),
+                         pn(sector, [financial, stock]),
+                         % does this work? (passive form)
+                         ivpp(pred(stock, person), [purchased], [by], [purchase]),
+                         pn(stock, [psto]),
+                         ivpp(pred(stock, price), [sold], [for], [sell]),
+                         pn(person, [abigail]),
+                         pn(stock, [kmpp]),
+                         pn(stock, [jmo]),
+                         pn(sector, ['health-care', stock]),
+                         % more expensive
+                         pn(sector, [energy, stock]),
+                         pn(person, [heathcliff]),
+                         pn(sector, [real, estate, stock])
+                         % in the health-care sector vs the health-care stock
+                     ])).

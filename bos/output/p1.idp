@@ -1,8 +1,8 @@
 // Problem p1
 
 vocabulary V {
-    type animal constructed from {the_other_animal, the_perens_pig, the_eldar_elk, the_byengo_bat, the_nibner_newt}
     type year = {2006; 2007; 2008; 2009; 2010} isa int
+    type animal constructed from {the_other_animal, the_perens_pig, the_eldar_elk, the_byengo_bat, the_nibner_newt}
     type type1 constructed from {the_other_type1, slovakia, ghana, russia, poland}
     type type2 = {210; 280; 315; 490; 525} isa int
     type type3 = {-1; 1; -2; 2; -3; 3; -4; 4} isa int // differences between values of type year

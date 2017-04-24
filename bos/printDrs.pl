@@ -263,18 +263,25 @@ formatBasic(alldifferent(Arg), Line) :-
     formatBasic(pred(alldifferent, Arg), Line).
 
 formatBasic(pred(Functor, Arg), Line) :-
-    name(Functor, F),
+    formatFunctor(Functor, F),
     makeConstant(Arg, A),
     appendLists(F, [40|A], T),
     appendLists(T, [41], Line).
 
 formatBasic(rel(Functor, Arg1, Arg2), Line) :-
-    name(Functor, F),
+    formatFunctor(Functor, F),
     makeConstant(Arg1, A1),
     makeConstant(Arg2, A2),
     appendLists(F, [40|A1], T1),
     appendLists(T1, [44, 32|A2], T2),
     appendLists(T2, [41], Line).
+
+formatFunctor(Functor, F) :-
+    atomic(Functor),
+    !,
+    name(Functor, F).
+formatFunctor(_, F) :-
+    name('???', F).
 
 
 /*========================================================================
