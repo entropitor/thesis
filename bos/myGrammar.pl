@@ -350,37 +350,39 @@ vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
 
 vp([coord:no, inf:I, num:Num, gap:[], sem:VP, vType:TypeObj])-->
     np([coord:_, num:_, gap:[], ref:Ref, sem:NP, vType:TypeSubj]),
-    tv([inf:I, num:Num, ref:Ref, gap:[], sem:TV, vType:pred(TypeSubj, TypeObj)]),
+    tv([inf:I, num:Num, ref:Ref, gap:_-[], sem:TV, vType:pred(TypeSubj, TypeObj)]),
     { combine(vp:VP, [np:NP, tv:TV]) }.
 
 vp([coord:no, inf:I, num:Num, gap:G, sem:VP, vType:TypeSubj])-->
-    tv([inf:I, num:Num, ref:Ref, gap:Gap, sem:TV, vType:pred(TypeSubj, TypeObj)]),
+    tv([inf:I, num:Num, ref:Ref, gap:GapBefore-GapAfter, sem:TV, vType:pred(TypeSubj, TypeObj)]),
+    optional(GapBefore, UsedGapBefore),
     np([coord:NPCoord, num:_, gap:[tv:TV-pred(TypeSubj, TypeObj) | G], ref:Ref, sem:NP, vType:TypeObj]),
-    conditional(Gap, NPCoord \= comp),
+    optional(GapAfter, UsedGapAfter),
+    { UsedGapBefore \= true -> NPCoord == comp ; true },
+    { UsedGapAfter \= true -> NPCoord == comp ; true },
     { combine(vp:VP, [tv:TV, np:NP]) }.
 
-vp([coord:no, inf:I, num:Num, gap:G, sem:VP, vType:TypeSubj])-->
-    ivpp([inf:I, num:Num, pp:PP, sem:IVPP, vType:pred(TypeSubj, TypeObj)]),
-    optional(PP),
-    np([coord:_, num:_, gap:[tv:IVPP-pred(TypeSubj, TypeObj) | G], ref:_, sem:NP, vType:TypeObj]),
-    { combine(vp:VP, [tv:IVPP, np:NP]) }.
+%% vp([coord:no, inf:I, num:Num, gap:G, sem:VP, vType:TypeSubj])-->
+%%     ivpp([inf:I, num:Num, pp:PP, sem:IVPP, vType:pred(TypeSubj, TypeObj)]),
+%%     optional(PP),
+%%     np([coord:_, num:_, gap:[tv:IVPP-pred(TypeSubj, TypeObj) | G], ref:_, sem:NP, vType:TypeObj]),
+%%     { combine(vp:VP, [tv:IVPP, np:NP]) }.
 
-vp([coord:no, inf:I, num:Num, gap:[pp:PP], sem:VP, vType:TypeObj])-->
-    np([coord:_, num:_, gap:_, ref:_, sem:NP, vType:TypeSubj]),
-    ivpp([inf:I, num:Num, pp:PP, sem:IVPP, vType:pred(TypeSubj, TypeObj)]),
-    { combine(vp:VP, [tv:IVPP, npSubj:NP]) }.
+%% vp([coord:no, inf:I, num:Num, gap:[pp:PP], sem:VP, vType:TypeObj])-->
+%%     np([coord:_, num:_, gap:_, ref:_, sem:NP, vType:TypeSubj]),
+%%     ivpp([inf:I, num:Num, pp:PP, sem:IVPP, vType:pred(TypeSubj, TypeObj)]),
+%%     { combine(vp:VP, [tv:IVPP, npSubj:NP]) }.
 
 optional(X)-->
-    X.
-optional(_)-->
+    optional(X, _).
+optional([], _)-->
     [].
-
-conditional(X, Condition)-->
-    X,
-    { call(Condition) }.
-conditional(_, Condition)-->
-    [],
-    { \+ call(Condition) }.
+optional(X, true)-->
+    { X \= [] },
+    X.
+optional(X, fail)-->
+    { X \= [] },
+    [].
 
 
 numberOrAll-->
@@ -424,20 +426,25 @@ iv([inf:Inf, num:Num, sem:Sem, vType:Type])-->
     Word,
     { semLex(iv, [symbol:Sym, sem:Sem]) }.
 
-ivpp([inf:Inf, num:Num, pp:PP, sem:Sem, vType:Type])-->
-    { lexEntry(ivpp, [symbol:Sym, syntax:Word, pp:PP, inf:Inf, num:Num, vType:Type]) },
-    Word,
-    { semLex(ivpp, [symbol:Sym, sem:Sem]) }.
+%% ivpp([inf:Inf, num:Num, pp:PP, sem:Sem, vType:Type])-->
+%%     { lexEntry(ivpp, [symbol:Sym, syntax:Word, pp:PP, inf:Inf, num:Num, vType:Type]) },
+%%     Word,
+%%     { semLex(ivpp, [symbol:Sym, sem:Sem]) }.
 
-tv([inf:Inf, num:Num, ref:Ref, gap:[], sem:Sem, vType:Type])-->
+tv([inf:Inf, num:Num, ref:_, gap:[]-[], sem:Sem, vType:Type])-->
     { lexEntry(tv, [symbol:Sym, syntax:Word, inf:Inf, num:Num, vType:Type]) },
     Word,
-    { semLex(tv, [symbol:Sym, ref:Ref, sem:Sem]) }.
+    { semLex(tv, [symbol:Sym, sem:Sem]) }.
 
-tv([inf:Inf, num:Num, ref:Ref, gap:Gap, sem:Sem, vType:Type])-->
+tv([inf:Inf, num:Num, ref:_, gap:PP-[], sem:Sem, vType:Type])-->
+    { lexEntry(ivpp, [symbol:Sym, syntax:Word, pp:PP, inf:Inf, num:Num, vType:Type]) },
+    Word,
+    { semLex(tv, [symbol:Sym, sem:Sem]) }.
+
+tv([inf:Inf, num:Num, ref:_, gap:[]-Gap, sem:Sem, vType:Type])-->
     { lexEntry(tvgap, [symbol:Sym, syntax:Word, gap:Gap, inf:Inf, num:Num, vType:Type]) },
     Word,
-    { semLex(tv, [symbol:Sym, ref:Ref, sem:Sem]) }.
+    { semLex(tv, [symbol:Sym, sem:Sem]) }.
 
 cop([type:Type, inf:Inf, num:Num, sem:Sem])-->
     { lexEntry(cop, [pol:Pol, syntax:Word, inf:Inf, num:Num]) },
