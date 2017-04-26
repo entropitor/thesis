@@ -122,6 +122,14 @@ lexEntry(av, [syntax:[did], inf:fin, num:pl, pol:pos]).
 lexEntry(av, [syntax:[did, not], inf:fin, num:pl, pol:neg]).
 lexEntry(av, [syntax:[didn, t], inf:fin, num:pl, pol:neg]).
 
+lexEntry(av, [syntax:[is], inf:fin, num:sg, pol:pos]).
+lexEntry(av, [syntax:[is, not], inf:fin, num:sg, pol:neg]).
+lexEntry(av, [syntax:[isn, t], inf:fin, num:sg, pol:neg]).
+
+lexEntry(av, [syntax:[was], inf:fin, num:sg, pol:pos]).
+lexEntry(av, [syntax:[was, not], inf:fin, num:sg, pol:neg]).
+lexEntry(av, [syntax:[wasn, t], inf:fin, num:sg, pol:neg]).
+
 /*========================================================================
     Nouns
 ========================================================================*/

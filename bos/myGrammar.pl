@@ -309,7 +309,8 @@ vp([coord:yes, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
 
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
     av([inf:Inf, num:Num, sem:Mod]),
-    vp([coord:_, inf:inf, num:_, gap:[], sem:V2, vType:Type]),
+    { member(Inf2, [inf, part]) },
+    vp([coord:_, inf:Inf2, num:_, gap:[], sem:V2, vType:Type]),
     { combine(vp:VP, [av:Mod, vp:V2]) }.
 
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
