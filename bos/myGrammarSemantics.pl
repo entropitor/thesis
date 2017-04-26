@@ -24,6 +24,7 @@
 :- module(myGrammarSemantics, [combine/2]).
 
 :- use_module(types, [addType/2, addMissingType/2, addTypeAttribute/2]).
+:- use_module(myLexiconSemantics, [semLex/2]).
 /*========================================================================
     Semantic Rules
 ========================================================================*/
@@ -60,6 +61,7 @@ combine(np:app(app(B, A), C), [np: A, comp:B, np:C, vType1:Type, vType2:Type]).
 combine(np:lam(N, merge(drs([variable(X, Type1, decl)], [eq(X > 0)]), app(N, X))), [npGap:Type]) :- addTypeAttribute(Type1, derivedCountable(Type)).
 combine(np:lam(P, merge(merge(drs([variable(Z, Type, decl)], []), app(app(B, lam(N, app(N, Z))), A)), app(P, Z))), [np: A, tv:B, vType:Type]).
 combine(np:lam(P, app(app(A, C), lam(X, app(B, lam(Y, merge(app(P, X), drs([], [rel(R, X, Y)]))))))), [det:A, np:B, n:C, vType1:Type1, vType2:Type2]) :- addMissingType(R, pred(Type1, Type2)).
+combine(np:lam(P, app(app(A, C), lam(X, app(B, lam(Y, merge(app(P, X), drs([], [rel(R, X, Y)]))))))), [np:B, s:s, n:C, vType1:Type1, vType2:Type2]) :- addMissingType(R, pred(Type1, Type2)), semLex(det, [type:indef, num:sg, sem:A, vType:Type1]).
 
 combine(whnp:app(A, B), [det:A, n:B]).
 combine(whnp:A, [qnp:A]).

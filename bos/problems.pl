@@ -1,5 +1,10 @@
 :- module(problems, [problem/2]).
 
+:- use_module(problemsPosterEvaluation, [problem/2 as problemPosterEvaluation]).
+
+problem(X, Y) :-
+    problemPosterEvaluation(X, Y).
+
 % ADAPTED!!!
 % Clue 4: the 'sometime' was dropped
 problem(p1, problem(4,5, [
@@ -184,6 +189,50 @@ problem(p5, problem(4, 5, [
                         prep(pred(person, state), [a, native, of]),
                         prep(pred(person, state), [from])
                      ])).
+
+% ADAPTED
+% clue 4: of the two dogs who graduated in March and April -> of the dog who graduated in March and the dog who graduated in April, ...
+% clue 10: dropped sometime
+problem(p6, problem(4, 5, [
+                        "Officer Quinn's dog graduated in either March or April",
+                        "Aries didn't graduate in March, May or June",
+                        "The dog who graduated in March didn't go to Cole County",
+                        "Of the dog who graduated in March and the dog who graduated in April, one went to Tanager County and the other was assigned to Officer Ingram",
+                        "Aries wasn't assigned to Officer Ingram",
+                        "Barca didn't go to Kermit County",
+                        "The dog sent to Kermit County, the K-9 unit assigned to Officer Lyons and the canine who graduated in June are three different dogs",
+                        "The dog assigned to Officer Salinas graduated 2 months after Aries",
+                        "Of the dogs sent to Sycamore County and Tinkerbell, one graduated in July and the other was assigned to Officer Underwoord",
+                        "Jaws graduated after the dog sent to Tanager County",
+                        "McGruff went to Sycamore County"
+        ], [
+                        pn(agent, [officer, quinn]),
+                        noun(dog, [dog], [dogs]),
+                        ivpp(pred(dog, month), [graduated], [in], [graduate]),
+                        pnn(month, [march], 3),
+                        pnn(month, [april], 4),
+                        pn(dog, [aries]),
+                        pn(dog, [barca]),
+                        pnn(month, [may], 5),
+                        pnn(month, [june], 6),
+                        ivpp(pred(dog, county), [went], [to], [go]),
+                        pn(county, [cole, county]),
+                        pn(county, [tanager, county]),
+                        ivpp(pred(dog, agent), [assigned], [to], [assigned]),
+                        pn(agent, [officer, ingram]),
+                        pn(county, [kermit, county]),
+                        ivpp(pred(dog, county), [sent], [to], [send]),
+                        noun(dog, [k9, unit], [k9, units]),
+                        noun(dog, [canine], [canines]),
+                        pn(agent, [officer, salinas]),
+                        noun(month, [month], [months]),
+                        pn(county, [sycamore, county]),
+                        pn(dog, [tinkerbell]),
+                        pnn(month, [july], 7),
+                        pn(agent, [officer, underwood]),
+                        pn(dog, [jaws]),
+                        pn(dog, [mcgruff])
+        ])).
 
 % ADAPTED!!!
 % replaced "$... per share" with "... dollar per share"

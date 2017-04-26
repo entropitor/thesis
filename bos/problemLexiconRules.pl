@@ -43,6 +43,8 @@ addRule(prep(_Type, Syntax)) :-
     assertz(pLexEntry(prep, [symbol:Symbol, syntax:Syntax, vType:Type]) :- addType(prep-Symbol, Type)).
 addRule(comp(Type, Syntax)) :-
     assertz(pLexEntry(comp, [type:Type, syntax:Syntax])).
+addRule(pnn(_Type, Syntax, _Number)) :-
+    addRule(pn(_, Syntax)).
 
 lexEntry(X, Y) :-
     defaultLexicon(X, Y).

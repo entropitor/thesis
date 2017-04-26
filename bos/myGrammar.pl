@@ -227,6 +227,11 @@ np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
     n([coord:_, num:Num, sem:N, vType:Type]),
     { combine(np:NP, [det:Det, np:NP2, n:N, vType1:Type, vType2:Type2]) }.
 
+np([coord:yes, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
+    np([coord:no, num:_, gap:[], ref:no, sem:NP2, vType:Type2]),
+    [s],
+    n([coord:_, num:Num, sem:N, vType:Type]),
+    { combine(np:NP, [np:NP2, s:s, n:N, vType1:Type, vType2:Type2]) }.
 
 %np([coord:no, num:sg, gap:[], ref:Ref, sem:NP])-->
 %    pro([ref:Ref, sem:PN]),
