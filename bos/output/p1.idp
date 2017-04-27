@@ -7,11 +7,11 @@ vocabulary V {
     type type2 = {210; 280; 315; 490; 525} isa int
     type type3 = {-1; 1; -2; 2; -3; 3; -4; 4} isa int // differences between values of type year
 
-    was_recognized_as_endangered_in(animal, year)
+    recognized_as_endangered_in(animal, year)
     lives_in(animal, type1)
     has_a_population_size_of(animal, type2)
     from(animal, type1)
-    was_listed_in(animal, year)
+    listed_in(animal, year)
     with_a_population_size_of(animal, type2)
     has_a_surviving_population_size_of(animal, type2)
 }
@@ -21,7 +21,7 @@ structure S : V {
 
 theory T : V {
     // The perens pig lives in Slovakia and was recognized as endangered in 2009
-    lives_in(the_perens_pig,slovakia) & was_recognized_as_endangered_in(the_perens_pig,2009).
+    lives_in(the_perens_pig,slovakia) & recognized_as_endangered_in(the_perens_pig,2009).
 
     // The eldar elk has a population size of 210
     has_a_population_size_of(the_eldar_elk,210).
@@ -30,24 +30,24 @@ theory T : V {
     ~ lives_in(the_byengo_bat,ghana).
 
     // The animal that lives in Slovakia was listed before the animal from Russia
-    ?a [animal] b [type3] c [year] d [animal] e [year]: lives_in(a,slovakia) & b>0 & from(d,russia) & was_listed_in(d,c) & e = c-b & was_listed_in(a,e).
+    ?a [animal] b [type3] c [year] d [animal] e [year]: lives_in(a,slovakia) & b>0 & from(d,russia) & listed_in(d,c) & e = c-b & listed_in(a,e).
 
     // Of the species with a population size of 490 and the eldar elk, one lives in Poland and the other was recognized as endangered in 2009
-    ?f [animal]: with_a_population_size_of(f,490) & ~ (f = the_eldar_elk) & (lives_in(f,poland) & was_recognized_as_endangered_in(the_eldar_elk,2009) | lives_in(the_eldar_elk,poland) & was_recognized_as_endangered_in(f,2009)).
+    ?f [animal]: with_a_population_size_of(f,490) & ~ (f = the_eldar_elk) & (lives_in(f,poland) & recognized_as_endangered_in(the_eldar_elk,2009) | lives_in(the_eldar_elk,poland) & recognized_as_endangered_in(f,2009)).
 
     // Neither the nibner newt nor the byengo bat has a surviving population size of 525
     ~ has_a_surviving_population_size_of(the_nibner_newt,525) & ~ has_a_surviving_population_size_of(the_byengo_bat,525).
 
     // The species that lives in Ghana was listed 2 years after the nibner newt
-    ?g [animal] h [year] i [year]: lives_in(g,ghana) & was_listed_in(the_nibner_newt,h) & i = h+2 & was_listed_in(g,i).
+    ?g [animal] h [year] i [year]: lives_in(g,ghana) & listed_in(the_nibner_newt,h) & i = h+2 & listed_in(g,i).
 
     // The animal that lives in Russia doesn't have a surviving population size of 315
     ?j [animal]: lives_in(j,russia) & ~ has_a_surviving_population_size_of(j,315).
 
 
     // Logigram bijection axioms:
-    ! x [animal]: ?=1 y [year]: was_recognized_as_endangered_in(x, y).
-    ! x [year]: ?=1 y [animal]: was_recognized_as_endangered_in(y, x).
+    ! x [animal]: ?=1 y [year]: recognized_as_endangered_in(x, y).
+    ! x [year]: ?=1 y [animal]: recognized_as_endangered_in(y, x).
 
     ! x [animal]: ?=1 y [type1]: lives_in(x, y).
     ! x [type1]: ?=1 y [animal]: lives_in(y, x).
@@ -58,8 +58,8 @@ theory T : V {
     ! x [animal]: ?=1 y [type1]: from(x, y).
     ! x [type1]: ?=1 y [animal]: from(y, x).
 
-    ! x [animal]: ?=1 y [year]: was_listed_in(x, y).
-    ! x [year]: ?=1 y [animal]: was_listed_in(y, x).
+    ! x [animal]: ?=1 y [year]: listed_in(x, y).
+    ! x [year]: ?=1 y [animal]: listed_in(y, x).
 
     ! x [animal]: ?=1 y [type2]: with_a_population_size_of(x, y).
     ! x [type2]: ?=1 y [animal]: with_a_population_size_of(y, x).
@@ -68,7 +68,7 @@ theory T : V {
     ! x [type2]: ?=1 y [animal]: has_a_surviving_population_size_of(y, x).
 
     // Logigram synonym axioms:
-    ! x [animal] y [year]: was_recognized_as_endangered_in(x, y) <=> was_listed_in(x, y).
+    ! x [animal] y [year]: recognized_as_endangered_in(x, y) <=> listed_in(x, y).
     ! x [animal] y [type1]: lives_in(x, y) <=> from(x, y).
     ! x [animal] y [type2]: has_a_population_size_of(x, y) <=> with_a_population_size_of(x, y).
     ! x [animal] y [type2]: with_a_population_size_of(x, y) <=> has_a_surviving_population_size_of(x, y).

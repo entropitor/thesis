@@ -80,3 +80,6 @@ addRule(tvPrep(SyntaxSg, PP, SyntaxInf, SyntaxPart)) :-
     assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxInf, pp:PP, inf:inf, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)),
     assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxPart, pp:PP, inf:part, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)),
     assertz(pLexEntry(prep, [symbol:Symbol, syntax:PP, vType:pred(SubjType, ObjType)])).
+addRule(prep(Syntax)) :-
+    syntax_symbol(Syntax, Symbol),
+    assertz(pLexEntry(prep, [symbol:Symbol, syntax:Syntax, vType:Type]) :- addType(prep-Symbol, Type)).
