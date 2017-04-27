@@ -214,7 +214,8 @@ np([coord:no, num:_Num, gap:[], ref:no, sem:NP, vType:Type])-->
 np([coord:comp, num:Num, gap:G, ref:no, sem:NP, vType:Type])-->
     np([coord:no, num:Num, gap:[number:Type], ref:no, sem:NP1, vType:Type]),
     comp([sem:Comp, vType:Type]),
-    np([coord:no, num:_, gap:[useTVGap | G], ref:no, sem:NP2, vType:Type2]),
+    { Gap = [useTVGap | G] ; Gap = G},
+    np([coord:_, num:_, gap:Gap, ref:no, sem:NP2, vType:Type2]),
     { addTypeAttribute(Type, countable) },
     { combine(np:NP, [np:NP1, comp:Comp, np:NP2, vType1:Type, vType2:Type2]) }.
 
