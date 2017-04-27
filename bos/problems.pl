@@ -230,6 +230,46 @@ problem(p6, problem(4, 5, [
                         pnn([july], 7)
         ])).
 
+% ADAPTED
+% CLUE 1 and 2: May 18 -> in May
+% CLUE 2: from Norway, from Canada -> The Norwegian, The Canadian
+% CLUE 3, 8 and 9: ADD "birthday" to end of clue
+problem(p7, problem(4, 5, [
+                        "The Norwegian's birthday is in May",
+                        %% "Of Bill and the traveler born in June, one is from Norway and the other is from Canada",
+                        "Of Bill and the traveler born in June, one is the Norwegian and the other is the Canadian",
+                        "Izzy's birthday is 1 month after the politician's birthday",
+                        %% "The engineer is from France",
+                        "The engineer is the frenchman",
+                        "The South African's birthday is in either April or May",
+                        "The musician's birthday isn't in April",
+                        %% "Jeffrey is either French or South African",
+                        "Jeffrey is either the Frenchman or the South African",
+                        "The Canadian's birthday is 1 month after the surgeon's birthday",
+                        "Harry's birthday is sometime before Bill's birthday"
+        ], [
+                        noun([birthday], [birthdays]),
+                        noun([traveler], [travelers]),
+                        noun([month], [months]),
+                        pn([norwegian]),
+                        pn([bill]),
+                        pn([canadian]),
+                        pn([izzy]),
+                        pn([politician]),
+                        pn([engineer]),
+                        pn([frenchman]),
+                        pn([musician]),
+                        pn([jeffrey]),
+                        pn([harry]),
+                        pn([south, african]),
+                        pn([surgeon]),
+                        pnn([may], 5),
+                        pnn([june], 6),
+                        pnn([april], 4),
+                        tvPrep([born], [in], [born], [born])
+                        %% prep([in])
+        ])).
+
 % ADAPTED!!!
 % replaced "$... per share" with "... dollar per share"
 problem(p11, problem(4, 5, [
