@@ -415,7 +415,7 @@ rc([num:Num, sem:RC, vType:Type])-->
     { combine(rc:RC, [relpro:RP, vp:VP]) }.
 
 rc([num:Num, sem:RC, vType:Type])-->
-    prep([type:n, syntax:PP, sem:_, vType:_]),
+    prep([type:v, syntax:PP, sem:_, vType:_]),
     relpro([sem:RP]),
     vp([coord:_, inf:fin, num:Num, gap:[pp:PP], sem:VP, vType:Type]),
     { combine(rc:RC, [relpro:RP, vp:VP]) }.
@@ -501,7 +501,7 @@ relpro([sem:Sem])-->
     { semLex(relpro, [sem:Sem]) }.
 
 prep([type:Type, syntax:Word, sem:Sem, vType:VType])-->
-    { lexEntry(prep, [symbol:Sym, syntax:Word, vType:VType]) },
+    { lexEntry(prep, [symbol:Sym, syntax:Word, type:Type, vType:VType]) },
     Word,
     { semLex(prep, [symbol:Sym, type:Type, sem:Sem]) }.
 

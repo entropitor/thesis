@@ -308,6 +308,43 @@ problem(p8, problem(4, 5, [
                         comp(higher, [more, than])
         ])).
 
+% p8 with extra prep's to fix problem of too little predicates
+problem(p8b, problem(4, 5, [
+                        "The flower printed in 25 minutes",
+                        "The design from adrienne took 15 minutes to print",
+                        "The piece that printed in 30 minutes wasn't the mask",
+                        "Of the item that printed in 10 minutes and the piece from Bertha, one was the flower and the other was in orange",
+                        "The orange item required 5 minutes fewer than the yellow design to print",
+                        "The design from Adrienne was either the phone case or the item that printed in 30 minutes",
+                        "The white item took 10 minutes more than Stella's piece",
+                        "The piece from raquel wasn't the mask",
+                        "Of the whistle and the blue piece, one took 30 minutes to print and the other took 10 minutes to print"
+        ], [
+                        noun([minute], [minutes]),
+                        noun([design], [designs]),
+                        noun([piece], [pieces]),
+                        noun([item], [items]),
+                        pn([flower]),
+                        pn([mask]),
+                        pn([phone, case]),
+                        pn([whistle]),
+                        pn([adrienne]),
+                        pn([bertha]),
+                        pn([raquel]),
+                        pn([stella]),
+                        pn([orange]),
+                        pn([yellow]),
+                        pn([blue]),
+                        pn([white]),
+                        tvPrep([printed], [in], [print], [printed]),
+                        tvGap([took], [to, print], [take]),
+                        tvGap([required], [to, print], [require]),
+                        prep([from]),
+                        prep([in]),
+                        comp(lower, [fewer, than]),
+                        comp(higher, [more, than])
+        ])).
+
 % ADAPTED!!!
 % replaced "$... per share" with "... dollar per share"
 problem(p11, problem(4, 5, [
