@@ -418,6 +418,16 @@ rc([num:Num, sem:RC, vType:Type])-->
     vp([coord:_, inf:fin, num:Num, gap:[pp:PP], sem:VP, vType:Type]),
     { combine(rc:RC, [relpro:RP, vp:VP]) }.
 
+% For performance reasons only (could add [] as relpro as well)
+rc([num:Num, sem:RC, vType:TypeSubj])-->
+    { semLex(relpro, [sem:RP]) },
+    tv([inf:part, num:Num, ref:Ref, gap:GapBefore-GapAfter, sem:TV, vType:pred(TypeSubj, TypeObj)]),
+    GapBefore,
+    np([coord:no, num:_, gap:[], ref:Ref, sem:NP, vType:TypeObj]),
+    GapAfter,
+    { combine(rc:RC, [relpro:RP, vp:app(TV, NP)]) }.
+
+
 /*========================================================================
     Lexical Rules
 ========================================================================*/

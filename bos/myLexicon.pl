@@ -92,6 +92,7 @@ lexEntry(cop, [pol:neg, syntax:[weren, t], inf:fin, num:pl]).
 lexEntry(relpro, [syntax:[who]]).
 lexEntry(relpro, [syntax:[which]]).
 lexEntry(relpro, [syntax:[that]]).
+%% lexEntry(relpro, [syntax:[]]).
 
 /*========================================================================
     Coordinations

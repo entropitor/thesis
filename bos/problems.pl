@@ -202,7 +202,7 @@ problem(p6, problem(4, 5, [
                         "Barca didn't go to Kermit County",
                         "The dog sent to Kermit County, the K-9 unit assigned to Officer Lyons and the canine who graduated in June are three different dogs",
                         "The dog assigned to Officer Salinas graduated 2 months after Aries",
-                        "Of the dogs sent to Sycamore County and Tinkerbell, one graduated in July and the other was assigned to Officer Underwoord",
+                        "Of the dog sent to Sycamore County and Tinkerbell, one graduated in July and the other was assigned to Officer Underwood",
                         "Jaws graduated after the dog sent to Tanager County",
                         "McGruff went to Sycamore County"
         ], [
@@ -217,6 +217,7 @@ problem(p6, problem(4, 5, [
                         pn([sycamore, county]),
                         pn([tinkerbell]),
                         pn([officer, underwood]),
+                        pn([officer, lyons]),
                         pn([jaws]),
                         pn([mcgruff]),
                         noun([dog], [dogs]),
