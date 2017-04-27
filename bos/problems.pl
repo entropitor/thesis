@@ -270,6 +270,44 @@ problem(p7, problem(4, 5, [
                         %% prep([in])
         ])).
 
+% ADAPTED
+% CLUE 4: orange -> the orange item
+% CLUE 5 and 7: 5 fewer minutes -> 5 minutes fewer, moved to print to the end
+% CLUE 9: just 10 -> 10 minutes to print
+problem(p8, problem(4, 5, [
+                        "The flower printed in 25 minutes",
+                        "Adrienne's design took 15 minutes to print",
+                        "The piece that printed in 30 minutes wasn't the mask",
+                        "Of the item that printed in 10 minutes and Bertha's piece, one was the flower and the other was the orange item",
+                        "The orange item required 5 minutes fewer than the yellow design to print",
+                        "Adrienne's design was either the phone case or the item that printed in 30 minutes",
+                        "The white item took 10 minutes more than Stella's piece",
+                        "Raquel's piece wasn't the mask",
+                        "Of the whistle and the blue piece, one took 30 minutes to print and the other took 10 minutes to print"
+        ], [
+                        noun([minute], [minutes]),
+                        noun([design], [designs]),
+                        noun([piece], [pieces]),
+                        noun([item], [items]),
+                        pn([flower]),
+                        pn([mask]),
+                        pn([phone, case]),
+                        pn([whistle]),
+                        pn([adrienne]),
+                        pn([bertha]),
+                        pn([raquel]),
+                        pn([stella]),
+                        pn([orange]),
+                        pn([yellow]),
+                        pn([blue]),
+                        pn([white]),
+                        tvPrep([printed], [in], [print], [printed]),
+                        tvGap([took], [to, print], [take]),
+                        tvGap([required], [to, print], [require]),
+                        comp(lower, [fewer, than]),
+                        comp(higher, [more, than])
+        ])).
+
 % ADAPTED!!!
 % replaced "$... per share" with "... dollar per share"
 problem(p11, problem(4, 5, [

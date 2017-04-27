@@ -105,9 +105,9 @@ s([coord:question, sem:Sem])-->
 
 s([coord:no, sem:Sem])-->
     [of],
-    np([coord:no, num:sg, gap:[], ref:no, sem:NP1, vType:SubjType]),
+    np([coord:_, num:sg, gap:[], ref:no, sem:NP1, vType:SubjType]),
     [and],
-    np([coord:no, num:sg, gap:[], ref:no, sem:NP2, vType:SubjType]),
+    np([coord:_, num:sg, gap:[], ref:no, sem:NP2, vType:SubjType]),
     [one],
     vp([coord:no, inf:fin, num:sg, gap:[], sem:VP1, vType:SubjType]),
     [and, the, other],
@@ -158,7 +158,7 @@ np([coord:no, num:Num, gap:[number:Type], ref:no, sem:NP, vType:Type])-->
 np([coord:no, num:Num, gap:[tv:_TV-pred(_TypeSubj, TypeObj) | G], ref:no, sem:NP, vType:TypeObj])-->
     np([coord:no, num:Num, gap:G, ref:no, sem:NP, vType:TypeObj]).
 np([coord:no, num:Num, gap:[useTVGap, tv:TV-pred(TypeSubj, TypeObj) | G], ref:no, sem:NP, vType:TypeObj])-->
-    np([coord:no, num:Num, gap:G, ref:no, sem:NP1, vType:TypeSubj]),
+    np([coord:_, num:Num, gap:G, ref:no, sem:NP1, vType:TypeSubj]),
     { combine(np:NP, [np:NP1, tv:TV, vType:TypeObj])}.
 
 np([coord:conj, num:pl, gap:G, ref:Ref, sem:NP, vType:Type])-->
@@ -214,7 +214,7 @@ np([coord:no, num:_Num, gap:[], ref:no, sem:NP, vType:Type])-->
 np([coord:comp, num:Num, gap:G, ref:no, sem:NP, vType:Type])-->
     np([coord:no, num:Num, gap:[number:Type], ref:no, sem:NP1, vType:Type]),
     comp([sem:Comp, vType:Type]),
-    { Gap = [useTVGap | G] ; Gap = G},
+    { G = [tv:_ | _] -> Gap = [useTVGap | G] ; Gap = G},
     np([coord:_, num:_, gap:Gap, ref:no, sem:NP2, vType:Type2]),
     { addTypeAttribute(Type, countable) },
     { combine(np:NP, [np:NP1, comp:Comp, np:NP2, vType1:Type, vType2:Type2]) }.
