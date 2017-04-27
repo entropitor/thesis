@@ -1,0 +1,76 @@
+// Problem p6
+
+vocabulary V {
+    type month = {3; 4; 5; 6; 7} isa int
+    type dog constructed from {aries, barca, tinkerbell, jaws, mcgruff}
+    type type1 constructed from {officer_quinn, officer_ingram, officer_lyons, officer_salinas, officer_underwood}
+    type type2 constructed from {the_other_type2, cole_county, tanager_county, kermit_county, sycamore_county}
+    type type3 = {-1; 1; -2; 2; -3; 3; -4; 4} isa int // differences between values of type month
+
+    graduated_in(dog, month)
+    went_to(dog, type2)
+    assigned_to(dog, type1)
+    sent_to(dog, type2)
+}
+
+structure S : V {
+}
+
+theory T : V {
+    // Officer Quinn's dog graduated in either March or April
+    ?a [dog]: (graduated_in(a,3) | graduated_in(a,4)) & assigned_to(a,officer_quinn).
+
+    // Aries didn't graduate in March, May or June
+    ~ (graduated_in(aries,3) | graduated_in(aries,5) | graduated_in(aries,6)).
+
+    // The dog who graduated in March didn't go to Cole County
+    ?b [dog]: graduated_in(b,3) & ~ went_to(b,cole_county).
+
+    // Of the dog who graduated in March and the dog who graduated in April, one went to Tanager County and the other was assigned to Officer Ingram
+    ?c [dog] d [dog]: graduated_in(c,3) & graduated_in(d,4) & ~ (c = d) & (went_to(c,tanager_county) & assigned_to(d,officer_ingram) | went_to(d,tanager_county) & assigned_to(c,officer_ingram)).
+
+    // Aries wasn't assigned to Officer Ingram
+    ~ assigned_to(aries,officer_ingram).
+
+    // Barca didn't go to Kermit County
+    ~ went_to(barca,kermit_county).
+
+    // The dog sent to Kermit County, the K-9 unit assigned to Officer Lyons and the canine who graduated in June are three different dogs
+    ?e [dog] f [dog] g [dog]: ~ (e = f) & ~ (e = g) & ~ (f = g) & sent_to(e,kermit_county) & assigned_to(f,officer_lyons) & graduated_in(g,6).
+
+    // The dog assigned to Officer Salinas graduated 2 months after Aries
+    ?h [dog] i [month] j [month]: assigned_to(h,officer_salinas) & graduated_in(aries,i) & j = i+2 & graduated_in(h,j).
+
+    // Of the dog sent to Sycamore County and Tinkerbell, one graduated in July and the other was assigned to Officer Underwood
+    ?k [dog]: sent_to(k,sycamore_county) & ~ (k = tinkerbell) & (graduated_in(k,7) & assigned_to(tinkerbell,officer_underwood) | graduated_in(tinkerbell,7) & assigned_to(k,officer_underwood)).
+
+    // Jaws graduated after the dog sent to Tanager County
+    ?l [type3] m [month] n [dog] o [month]: l>0 & sent_to(n,tanager_county) & graduated_in(n,m) & o = m+l & graduated_in(jaws,o).
+
+    // McGruff went to Sycamore County
+    went_to(mcgruff,sycamore_county).
+
+
+    // Logigram bijection axioms:
+    ! x [dog]: ?=1 y [month]: graduated_in(x, y).
+    ! x [month]: ?=1 y [dog]: graduated_in(y, x).
+
+    ! x [dog]: ?=1 y [type2]: went_to(x, y).
+    ! x [type2]: ?=1 y [dog]: went_to(y, x).
+
+    ! x [dog]: ?=1 y [type1]: assigned_to(x, y).
+    ! x [type1]: ?=1 y [dog]: assigned_to(y, x).
+
+    ! x [dog]: ?=1 y [type2]: sent_to(x, y).
+    ! x [type2]: ?=1 y [dog]: sent_to(y, x).
+
+    // Logigram synonym axioms:
+    ! x [dog] y [type2]: went_to(x, y) <=> sent_to(x, y).
+}
+
+procedure main() {
+    stdoptions.nbmodels = 10;
+    printmodels(modelexpand(T,S))
+    model = modelexpand(T,S)
+}
+
