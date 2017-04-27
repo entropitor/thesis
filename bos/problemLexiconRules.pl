@@ -65,6 +65,9 @@ addRule(comp(Type, Syntax)) :-
 addRule(pn(Syntax)) :-
     syntax_symbol(Syntax, Symbol),
     assertz((pLexEntry(pn, [symbol:Symbol, syntax:Syntax, num:sg, vType:Type]) :- addType(pn-Symbol, Type), addTypeAttribute(Type, qualified))).
+addRule(ppn(Syntax)) :-
+    syntax_symbol(Syntax, Symbol),
+    assertz((pLexEntry(pn, [symbol:Symbol, syntax:Syntax, num:_, vType:Type]) :- addType(pn-Symbol, Type), addTypeAttribute(Type, qualified))).
 addRule(pnn(Syntax, Number)) :-
     syntax_symbol(Syntax, Symbol),
     assertz((pLexEntry(pn, [symbol:Number, syntax:Syntax, num:sg, vType:Type]) :- addType(pn-Symbol, Type), addTypeAttribute(Type, countable))).
@@ -72,6 +75,10 @@ addRule(noun(SyntaxSg, SyntaxPl)) :-
     syntax_symbol(SyntaxSg, Symbol),
     assertz(pLexEntry(noun, [symbol:Symbol, num:sg, syntax:SyntaxSg, vType:Type]) :- addType(noun-Symbol, Type)),
     assertz(pLexEntry(noun, [symbol:Symbol, num:pl, syntax:SyntaxPl, vType:Type]) :- addType(noun-Symbol, Type)).
+addRule(tv(SyntaxSg, SyntaxInf)) :-
+    syntax_symbol(SyntaxSg, Symbol),
+    assertz(pLexEntry(tv, [symbol:Symbol, syntax:SyntaxSg, inf:fin, num:sg, vType:Type]) :- addType(tv-Symbol, Type)),
+    assertz(pLexEntry(tv, [symbol:Symbol, syntax:SyntaxInf, inf:inf, num:sg, vType:Type]) :- addType(tv-Symbol, Type)).
 addRule(tvPrep(SyntaxSg, PP, SyntaxInf, SyntaxPart)) :-
     Type = pred(SubjType, ObjType),
     append(SyntaxSg, PP, WordForm),
