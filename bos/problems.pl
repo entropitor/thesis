@@ -1,5 +1,10 @@
 :- module(problems, [problem/2]).
 
+:- use_module(problemsPosterEvaluation, [problem/2 as problemPosterEvaluation]).
+
+problem(X, Y) :-
+    problemPosterEvaluation(X, Y).
+
 % ADAPTED!!!
 % Clue 4: the 'sometime' was dropped
 problem(p1, problem(4,5, [
@@ -184,6 +189,51 @@ problem(p5, problem(4, 5, [
                         prep(pred(person, state), [a, native, of]),
                         prep(pred(person, state), [from])
                      ])).
+
+% ADAPTED
+% clue 4: of the two dogs who graduated in March and April -> of the dog who graduated in March and the dog who graduated in April, ...
+% clue 10: dropped sometime
+problem(p6, problem(4, 5, [
+                        "Officer Quinn's dog graduated in either March or April",
+                        "Aries didn't graduate in March, May or June",
+                        "The dog who graduated in March didn't go to Cole County",
+                        "Of the dog who graduated in March and the dog who graduated in April, one went to Tanager County and the other was assigned to Officer Ingram",
+                        "Aries wasn't assigned to Officer Ingram",
+                        "Barca didn't go to Kermit County",
+                        "The dog sent to Kermit County, the K-9 unit assigned to Officer Lyons and the canine who graduated in June are three different dogs",
+                        "The dog assigned to Officer Salinas graduated 2 months after Aries",
+                        "Of the dog sent to Sycamore County and Tinkerbell, one graduated in July and the other was assigned to Officer Underwood",
+                        "Jaws graduated after the dog sent to Tanager County",
+                        "McGruff went to Sycamore County"
+        ], [
+                        pn([officer, quinn]),
+                        pn([aries]),
+                        pn([barca]),
+                        pn([cole, county]),
+                        pn([tanager, county]),
+                        pn([officer, ingram]),
+                        pn([kermit, county]),
+                        pn([officer, salinas]),
+                        pn([sycamore, county]),
+                        pn([tinkerbell]),
+                        pn([officer, underwood]),
+                        pn([officer, lyons]),
+                        pn([jaws]),
+                        pn([mcgruff]),
+                        noun([dog], [dogs]),
+                        noun([k9, unit], [k9, units]),
+                        noun([canine], [canines]),
+                        noun([month], [months]),
+                        tvPrep([graduated], [in], [graduate], [graduated]),
+                        tvPrep([went], [to], [go], [went]),
+                        tvPrep([assigned], [to], [assign], [assigned]),
+                        tvPrep([sent], [to], [send], [sent]),
+                        pnn([march], 3),
+                        pnn([april], 4),
+                        pnn([may], 5),
+                        pnn([june], 6),
+                        pnn([july], 7)
+        ])).
 
 % ADAPTED!!!
 % replaced "$... per share" with "... dollar per share"

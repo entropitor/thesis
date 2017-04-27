@@ -38,8 +38,8 @@ solution2idp(solution(Sentences, DRSs, TypesIn), ProblemName, Problem) :-
     format(string(Command), "idp ~p | node parseOutput.js", [FileName]),
     open(pipe(Command), read, Stream),
     read(Stream, IDPOutput),
-    handleIDPOutput(IDPOutput),
-    close(Stream).
+    close(Stream),
+    handleIDPOutput(IDPOutput).
 
 handleIDPOutput(models(0, [])) :-
     format("Couldn't find any models. Something went wrong~n", []).
@@ -52,7 +52,18 @@ handleIDPOutput(models(N, Models)) :-
     format("Found too many models. Something went wrong~n", []),
     maplist(printModel, Models).
 printModel(model(_, Groups)) :-
-    printTable(Groups).
+    sortGroups(Groups, Sorted),
+    printTable(Sorted).
+
+sortGroups([Row | Rows], Sorted) :-
+    nth1(I, Row, X),
+    number(X),
+    !,
+    predsort(sortByColumn(I), [Row | Rows], Sorted).
+sortByColumn(I, Delta, R1, R2) :-
+    nth1(I, R1, X1),
+    nth1(I, R2, X2),
+    compare(Delta, X1, X2).
 
 printFile(ProblemName, SentencePairs, Vocabularium) :-
     problemToFileName(ProblemName, FileName),

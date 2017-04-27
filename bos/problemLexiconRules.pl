@@ -12,6 +12,20 @@ useLexicon(Rules) :-
     retractall(pLexEntry(_, _)),
     maplist(addRule, Rules).
 
+lexEntry(X, Y) :-
+    defaultLexicon(X, Y).
+lexEntry(X, Y) :-
+    pLexEntry(X, Y).
+
+syntax_symbol(Syntax, Symbol) :-
+    atomic_list_concat(Syntax, '_', Symbol).
+symbol_syntax(Symbol, Syntax) :-
+    split_string(Symbol, '_', '', L),
+    maplist(atom_chars, Syntax, L).
+
+/*========================================================================
+    Rules
+========================================================================*/
 addRule(noun(_Type, SyntaxSg, SyntaxPl)) :-
     syntax_symbol(SyntaxSg, Symbol),
     assertz(pLexEntry(noun, [symbol:Symbol, num:sg, syntax:SyntaxSg, vType:Type]) :- addType(noun-Symbol, Type)),
@@ -43,14 +57,26 @@ addRule(prep(_Type, Syntax)) :-
     assertz(pLexEntry(prep, [symbol:Symbol, syntax:Syntax, vType:Type]) :- addType(prep-Symbol, Type)).
 addRule(comp(Type, Syntax)) :-
     assertz(pLexEntry(comp, [type:Type, syntax:Syntax])).
+%% addRule(pnn(_Type, Syntax, _Number)) :-
+%%     addRule(pn(_, Syntax)).
 
-lexEntry(X, Y) :-
-    defaultLexicon(X, Y).
-lexEntry(X, Y) :-
-    pLexEntry(X, Y).
 
-syntax_symbol(Syntax, Symbol) :-
-    atomic_list_concat(Syntax, '_', Symbol).
-symbol_syntax(Symbol, Syntax) :-
-    split_string(Symbol, '_', '', L),
-    maplist(atom_chars, Syntax, L).
+
+addRule(pn(Syntax)) :-
+    syntax_symbol(Syntax, Symbol),
+    assertz((pLexEntry(pn, [symbol:Symbol, syntax:Syntax, num:sg, vType:Type]) :- addType(pn-Symbol, Type), addTypeAttribute(Type, qualified))).
+addRule(pnn(Syntax, Number)) :-
+    syntax_symbol(Syntax, Symbol),
+    assertz((pLexEntry(pn, [symbol:Number, syntax:Syntax, num:sg, vType:Type]) :- addType(pn-Symbol, Type), addTypeAttribute(Type, countable))).
+addRule(noun(SyntaxSg, SyntaxPl)) :-
+    syntax_symbol(SyntaxSg, Symbol),
+    assertz(pLexEntry(noun, [symbol:Symbol, num:sg, syntax:SyntaxSg, vType:Type]) :- addType(noun-Symbol, Type)),
+    assertz(pLexEntry(noun, [symbol:Symbol, num:pl, syntax:SyntaxPl, vType:Type]) :- addType(noun-Symbol, Type)).
+addRule(tvPrep(SyntaxSg, PP, SyntaxInf, SyntaxPart)) :-
+    Type = pred(SubjType, ObjType),
+    append(SyntaxSg, PP, WordForm),
+    syntax_symbol(WordForm, Symbol),
+    assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxSg, pp:PP, inf:fin, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)),
+    assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxInf, pp:PP, inf:inf, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)),
+    assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxPart, pp:PP, inf:part, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)),
+    assertz(pLexEntry(prep, [symbol:Symbol, syntax:PP, vType:pred(SubjType, ObjType)])).

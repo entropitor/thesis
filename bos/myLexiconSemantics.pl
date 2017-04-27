@@ -67,7 +67,6 @@ semLex(iv, M) :-
 
 semLex(tv, M) :-
     M = [symbol:Sym,
-         _,
          sem:lam(N1, lam(N2, app(N2, lam(X, app(N1, lam(Y, drs([], [rel(Sym, X, Y)])))))))].
 
 semLex(ivpp, M) :-

@@ -81,6 +81,9 @@ readRest(Rest, notended) :-
 readWord(32, [], notended) :-
     !.      %%% blank
 
+readWord(39, [], notended) :-
+    !.      %%% apostrophe '
+
 readWord(46, [], notended) :-
     !.      %%% full stop
 

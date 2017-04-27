@@ -72,19 +72,19 @@ lexEntry(number, [syntax:[fifteen], number:15]).
     Copula
 ========================================================================*/
 lexEntry(cop, [pol:pos, syntax:[is], inf:fin, num:sg]).
-lexEntry(cop, [pol:neg, syntax:[isnt], inf:fin, num:sg]).
+lexEntry(cop, [pol:neg, syntax:[isn, t], inf:fin, num:sg]).
 lexEntry(cop, [pol:neg, syntax:[is, not], inf:fin, num:sg]).
 
 lexEntry(cop, [pol:pos, syntax:[was], inf:fin, num:sg]).
 lexEntry(cop, [pol:neg, syntax:[was, not], inf:fin, num:sg]).
-lexEntry(cop, [pol:neg, syntax:[wasnt], inf:fin, num:sg]).
+lexEntry(cop, [pol:neg, syntax:[wasn, t], inf:fin, num:sg]).
 
 lexEntry(cop, [pol:pos, syntax:[are], inf:fin, num:pl]).
 lexEntry(cop, [pol:neg, syntax:[are, not], inf:fin, num:pl]).
 
 lexEntry(cop, [pol:pos, syntax:[were], inf:fin, num:pl]).
 lexEntry(cop, [pol:neg, syntax:[were, not], inf:fin, num:pl]).
-lexEntry(cop, [pol:neg, syntax:[werent], inf:fin, num:pl]).
+lexEntry(cop, [pol:neg, syntax:[weren, t], inf:fin, num:pl]).
 
 /*========================================================================
     Relative Pronouns
@@ -92,6 +92,7 @@ lexEntry(cop, [pol:neg, syntax:[werent], inf:fin, num:pl]).
 lexEntry(relpro, [syntax:[who]]).
 lexEntry(relpro, [syntax:[which]]).
 lexEntry(relpro, [syntax:[that]]).
+%% lexEntry(relpro, [syntax:[]]).
 
 /*========================================================================
     Coordinations
@@ -108,19 +109,27 @@ lexEntry(coordPrefix, [syntax:[neither], type:neg]).
 ========================================================================*/
 lexEntry(av, [syntax:[does], inf:fin, num:sg, pol:pos]).
 lexEntry(av, [syntax:[does, not], inf:fin, num:sg, pol:neg]).
-lexEntry(av, [syntax:[doesnt], inf:fin, num:sg, pol:neg]).
+lexEntry(av, [syntax:[doesn, t], inf:fin, num:sg, pol:neg]).
 
 lexEntry(av, [syntax:[do], inf:fin, num:pl, pol:pos]).
 lexEntry(av, [syntax:[do, not], inf:fin, num:pl, pol:neg]).
-lexEntry(av, [syntax:[dont], inf:fin, num:pl, pol:neg]).
+lexEntry(av, [syntax:[don, t], inf:fin, num:pl, pol:neg]).
 
 lexEntry(av, [syntax:[did], inf:fin, num:sg, pol:pos]).
 lexEntry(av, [syntax:[did, not], inf:fin, num:sg, pol:neg]).
-lexEntry(av, [syntax:[didnt], inf:fin, num:sg, pol:neg]).
+lexEntry(av, [syntax:[didn, t], inf:fin, num:sg, pol:neg]).
 
 lexEntry(av, [syntax:[did], inf:fin, num:pl, pol:pos]).
 lexEntry(av, [syntax:[did, not], inf:fin, num:pl, pol:neg]).
-lexEntry(av, [syntax:[didnt], inf:fin, num:pl, pol:neg]).
+lexEntry(av, [syntax:[didn, t], inf:fin, num:pl, pol:neg]).
+
+lexEntry(av, [syntax:[is], inf:fin, num:sg, pol:pos]).
+lexEntry(av, [syntax:[is, not], inf:fin, num:sg, pol:neg]).
+lexEntry(av, [syntax:[isn, t], inf:fin, num:sg, pol:neg]).
+
+lexEntry(av, [syntax:[was], inf:fin, num:sg, pol:pos]).
+lexEntry(av, [syntax:[was, not], inf:fin, num:sg, pol:neg]).
+lexEntry(av, [syntax:[wasn, t], inf:fin, num:sg, pol:neg]).
 
 /*========================================================================
     Nouns
