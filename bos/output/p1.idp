@@ -29,7 +29,7 @@ theory T : V {
     // The byengo bat doesn't live in Ghana
     ~ lives_in(the_byengo_bat,ghana).
 
-    // The animal that lives in Slovakia was listed before the animal from Russia
+    // The animal that lives in Slovakia was listed sometime before the animal from Russia
     ?a [animal] b [type3] c [year] d [animal] e [year]: lives_in(a,slovakia) & b>0 & from(d,russia) & listed_in(d,c) & e = c-b & listed_in(a,e).
 
     // Of the species with a population size of 490 and the eldar elk, one lives in Poland and the other was recognized as endangered in 2009

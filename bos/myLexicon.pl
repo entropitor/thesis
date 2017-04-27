@@ -200,3 +200,9 @@ lexEntry(comp, [type:lower, syntax:[before]]).
 lexEntry(comp, [type:higher, syntax:[higher, than]]).
 lexEntry(comp, [type:higher, syntax:[above]]).
 lexEntry(comp, [type:higher, syntax:[after]]).
+
+/*========================================================================
+    Some phrase
+========================================================================*/
+lexEntry(somePhrase, [syntax:[sometime]]).
+lexEntry(somePhrase, [syntax:[somewhat]]).

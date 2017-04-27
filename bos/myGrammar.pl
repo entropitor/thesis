@@ -150,6 +150,7 @@ q([sem:Sem])-->
 np([coord:no, num:sg, gap:[np:NP-Type], ref:no, sem:NP, vType:Type])--> [].
 
 np([coord:no, num:_Num, gap:[number:Type], ref:no, sem:NP, vType:Type])-->
+    optional(somePhrase),
     { combine(np:NP, [npGap:Type]) }.
 np([coord:no, num:Num, gap:[number:Type], ref:no, sem:NP, vType:Type])-->
     np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:Type]).
@@ -545,3 +546,6 @@ comp([sem:Sem, vType:VType])-->
     Word,
     { semLex(comp, [type:Type, sem:Sem, vType:VType]) }.
 
+somePhrase()-->
+    { lexEntry(somePhrase, [syntax:Word]) },
+    Word.

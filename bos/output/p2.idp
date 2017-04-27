@@ -26,7 +26,7 @@ theory T : V {
     // Ira scored 21 points higher than the contestant from Worthington
     ?c [point] d [person] e [point]: from(d,worthington) & scored(d,c) & e = c+21 & scored(ira,e).
 
-    // Oscar scored higher than the player who threw the orange darts
+    // Oscar scored somewhat higher than the player who threw the orange darts
     ?f [type3] g [point] h [person] i [point]: f>0 & threw(h,the_orange_darts) & scored(h,g) & i = g+f & scored(oscar,i).
 
     // The contestant from Mount union threw the black darts

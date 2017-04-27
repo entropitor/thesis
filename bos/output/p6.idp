@@ -44,7 +44,7 @@ theory T : V {
     // Of the dog sent to Sycamore County and Tinkerbell, one graduated in July and the other was assigned to Officer Underwood
     ?k [dog]: sent_to(k,sycamore_county) & ~ (k = tinkerbell) & (graduated_in(k,7) & assigned_to(tinkerbell,officer_underwood) | graduated_in(tinkerbell,7) & assigned_to(k,officer_underwood)).
 
-    // Jaws graduated after the dog sent to Tanager County
+    // Jaws graduated sometime after the dog sent to Tanager County
     ?l [type3] m [month] n [dog] o [month]: l>0 & sent_to(n,tanager_county) & graduated_in(n,m) & o = m+l & graduated_in(jaws,o).
 
     // McGruff went to Sycamore County

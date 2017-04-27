@@ -5,13 +5,11 @@
 problem(X, Y) :-
     problemPosterEvaluation(X, Y).
 
-% ADAPTED!!!
-% Clue 4: the 'sometime' was dropped
 problem(p1, problem(4,5, [
                         "The perens pig lives in Slovakia and was recognized as endangered in 2009",
                         "The eldar elk has a population size of 210",
                         "The byengo bat doesn't live in Ghana",
-                        "The animal that lives in Slovakia was listed before the animal from Russia",
+                        "The animal that lives in Slovakia was listed sometime before the animal from Russia",
                         "Of the species with a population size of 490 and the eldar elk, one lives in Poland and the other was recognized as endangered in 2009",
                         "Neither the nibner newt nor the byengo bat has a surviving population size of 525",
                         "The species that lives in Ghana was listed 2 years after the nibner newt",
@@ -39,13 +37,11 @@ problem(p1, problem(4,5, [
                         prep([with, a, population, size, of])
         ])).
 
-% ADAPTED!!!
-% dropped "somewhat" from clue 4
 problem(p2, problem(4,5, [
                         "Of the contestant who scored 41 points and the person who threw the white darts, one was from Worthington and the other was Ira",
                         "Bill was from Mount union",
                         "Ira scored 21 points higher than the contestant from Worthington",
-                        "Oscar scored higher than the player who threw the orange darts",
+                        "Oscar scored somewhat higher than the player who threw the orange darts",
                         "The contestant from Mount union threw the black darts",
                         "Pedro didn't finish with 55 points",
                         "The player who threw the red darts was either Colin or the contestant who scored 48 points",
@@ -192,7 +188,6 @@ problem(p5, problem(4, 5, [
 
 % ADAPTED
 % clue 4: of the two dogs who graduated in March and April -> of the dog who graduated in March and the dog who graduated in April, ...
-% clue 10: dropped sometime
 problem(p6, problem(4, 5, [
                         "Officer Quinn's dog graduated in either March or April",
                         "Aries didn't graduate in March, May or June",
@@ -203,7 +198,7 @@ problem(p6, problem(4, 5, [
                         "The dog sent to Kermit County, the K-9 unit assigned to Officer Lyons and the canine who graduated in June are three different dogs",
                         "The dog assigned to Officer Salinas graduated 2 months after Aries",
                         "Of the dog sent to Sycamore County and Tinkerbell, one graduated in July and the other was assigned to Officer Underwood",
-                        "Jaws graduated after the dog sent to Tanager County",
+                        "Jaws graduated sometime after the dog sent to Tanager County",
                         "McGruff went to Sycamore County"
         ], [
                         pn([officer, quinn]),
