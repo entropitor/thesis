@@ -277,4 +277,44 @@ problem(p16, problem(4, 5, [
                          prep([from])
                      ])).
 
+% 2, 9) the one -> the outing
+% 5, 7) Oscar's -> the tour from Oscar
+
+% begin is for time, start for place
+% remove group: group of 6 -> tour with 6
+% add 10 to group sizes: they overlap!!!
+% Add extra type!!!
+problem(p17, problem(5, 5, [
+                         "The 11 am tour won't start at high park",
+                         "Zachary's outing will begin 1 hour before the outing starting at Casa Loma",
+                         "The tour with 17 people will begin 3 hours before the tour with 16",
+                         "The tour with 12 people will start at Yorkville",
+                         "Zachary's trip will begin 3 hours before the trip from Janice",
+                         "Zachary's outing will begin 2 hours before the tour starting at Yorkville",
+                         "Of the 7 am tour and the tour from Oscar, one will start at Yorkville and the other will start at City Hall",
+                         "The outing from Whitney isn't with 15 people",
+                         "The Yorkville tour, the tour beginning at 9 am and the outing with 15 people are three different tours"
+                     ], [
+                         noun([am], [ams]),
+                         noun([tour], [tours]),
+                         noun([outing], [outings]),
+                         noun([person], [people]),
+                         noun([hour], [hours]),
+                         %% noun([group], [groups]),
+                         noun([trip], [trips]),
+                         pn([high, park]),
+                         pn([casa, loma]),
+                         pn([zachary]),
+                         pn([yorkville]),
+                         pn([janice]),
+                         pn([oscar]),
+                         pn([city, hall]),
+                         pn([whitney]),
+                         tvPrep([start], [at], [start], [starting]),
+                         tvPrep([begin], [at], [begin], [beginning]),
+                         prep([with]),
+                         prep([from]),
+                         prep([of])
+                     ])).
+
 %% problem(foo, problem(4, 5, [], [])).
