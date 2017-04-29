@@ -85,7 +85,15 @@ semLex(cop, M) :-
          sem:lam(Adj, lam(N, app(N, lam(X, app(app(Adj, lam(_, drs([], []))), X)))))];
     M = [pol:neg,
          type:adj,
-         sem:lam(Adj, lam(N, app(N, lam(X, drs([], [not(app(app(Adj, lam(_, drs([], []))), X))])))))].
+         sem:lam(Adj, lam(N, app(N, lam(X, drs([], [not(app(app(Adj, lam(_, drs([], []))), X))])))))];
+    M = [pol:neg,
+         type:tv,
+         %% sem:lam(P, lam(N1, lam(N2, app(N, lam(X, drs([], [not(app(P, lam(Y, app(Y, X))))])))))];
+         sem:lam(T, lam(N1, lam(N2, app(N2, lam(X2, app(N1, lam(X1, drs([], [not(app(app(T, lam(P1, app(P1, X1))), lam(P2, app(P2, X2))))]))))))))];
+         %% sem:lam(P, lam(N1, lam(N2, app(N, lam(X, drs([], [not(app(P, lam(Y, app(Y, X))))])))))];
+    M = [pol:pos,
+         type:tv,
+         sem:lam(P, P)].
 
 semLex(relpro, M) :-
     M = [sem:lam(P, lam(Q, lam(X, merge(app(P, lam(R, app(R, X))), app(Q, X)))))].

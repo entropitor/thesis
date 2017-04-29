@@ -411,13 +411,13 @@ pp([type:Type, sem:PP, vType:SubjType])-->
 
 rc([num:Num, sem:RC, vType:Type])-->
     relpro([sem:RP]),
-    vp([coord:_, inf:fin, num:Num, gap:[], sem:VP, vType:Type]),
+    vp([coord:no, inf:fin, num:Num, gap:[], sem:VP, vType:Type]),
     { combine(rc:RC, [relpro:RP, vp:VP]) }.
 
 rc([num:Num, sem:RC, vType:Type])-->
     prep([type:v, syntax:PP, sem:_, vType:_]),
     relpro([sem:RP]),
-    vp([coord:_, inf:fin, num:Num, gap:[pp:PP], sem:VP, vType:Type]),
+    vp([coord:no, inf:fin, num:Num, gap:[pp:PP], sem:VP, vType:Type]),
     { combine(rc:RC, [relpro:RP, vp:VP]) }.
 
 % For performance reasons only (could add [] as relpro as well)
@@ -458,6 +458,13 @@ tv([inf:Inf, num:Num, ref:_, gap:[]-Gap, sem:Sem, vType:Type])-->
     { lexEntry(tvgap, [symbol:Sym, syntax:Word, gap:Gap, inf:Inf, num:Num, vType:Type]) },
     Word,
     { semLex(tv, [symbol:Sym, sem:Sem]) }.
+
+tv([inf:Inf, num:Num, ref:_, gap:[]-Gap, sem:Sem, vType:Type])-->
+    cop([type:tv, inf:Inf, num:Num, sem:Cop]),
+    { lexEntry(copgap, [symbol:Sym, syntax:Word, gap:Gap, vType:Type]) },
+    Word,
+    { semLex(tv, [symbol:Sym, sem:SemTV]) },
+    { combine(tv:Sem, [cop:Cop, tv:SemTV]) }.
 
 cop([type:Type, inf:Inf, num:Num, sem:Sem])-->
     { lexEntry(cop, [pol:Pol, syntax:Word, inf:Inf, num:Num]) },

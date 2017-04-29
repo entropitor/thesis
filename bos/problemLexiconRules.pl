@@ -56,6 +56,11 @@ addRule(tvGap(SyntaxSg, Gap, SyntaxInf)) :-
     syntax_symbol(WordForm, Symbol),
     assertz(pLexEntry(tvgap, [symbol:Symbol, syntax:SyntaxSg, gap:Gap, inf:fin, num:sg, vType:Type]) :- addType(tvgap-Symbol, Type)),
     assertz(pLexEntry(tvgap, [symbol:Symbol, syntax:SyntaxInf, gap:Gap, inf:inf, num:sg, vType:Type]) :- addType(tvgap-Symbol, Type)).
+addRule(copGap(Syntax, Gap)) :-
+    append([is], Syntax, SyntaxSg),
+    append(SyntaxSg, Gap, WordForm),
+    syntax_symbol(WordForm, Symbol),
+    assertz(pLexEntry(copgap, [symbol:Symbol, syntax:Syntax, gap:Gap, vType:Type]) :- addType(copgap-Symbol, Type)).
 addRule(prep(Syntax)) :-
     syntax_symbol(Syntax, Symbol),
     assertz(pLexEntry(prep, [symbol:Symbol, syntax:Syntax, type:n, vType:Type]) :- addType(prep-Symbol, Type)).
