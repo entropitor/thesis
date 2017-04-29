@@ -173,11 +173,16 @@ simplifyCandidates(CombinedTypes, NbBaseTypes, RealCandidates, TypesForMatrix) :
 simplifyCandidates(CombinedTypes, NbBaseTypes, RealCandidates, TypesForMatrix) :-
     length(RealCandidates, N),
     N > NbBaseTypes,
-    !,
     askSimplificationQuestion(CombinedTypes, NewCombinedTypes),
     !,
     list_to_set(RealCandidates, NewCandidates),
+    writeln(NewCandidates),
     simplifyCandidates(NewCombinedTypes, NbBaseTypes, NewCandidates, TypesForMatrix).
+simplifyCandidates(_CombinedTypes, NbBaseTypes, RealCandidates, _TypesForMatrix) :-
+    length(RealCandidates, N),
+    N > NbBaseTypes,
+    format("All possible questions are asked but types are not yet unified enough~n"),
+    fail.
 
 askSimplificationQuestion(CombinedTypes, NewCombinedTypes) :-
     member(type(_-Symbol1, Type1), CombinedTypes),
@@ -203,7 +208,8 @@ askSimplificationQuestion(CombinedTypes, NewCombinedTypes) :-
     ).
 askSimplificationQuestion(CombinedTypes, NewCombinedTypes) :-
     member(missingType(_, pred(_, Type1)), CombinedTypes),
-    member(type(number-Number, Type1), CombinedTypes),
+    member(type(number-Number, TypeNumber), CombinedTypes),
+    Type1 == TypeNumber,
     member(attr(Type2, countable), CombinedTypes),
     \+ (Type1 == Type2),
     member(type(_-Symbol, PredType), CombinedTypes),

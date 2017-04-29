@@ -345,6 +345,43 @@ problem(p8b, problem(4, 5, [
                         comp(higher, [more, than])
         ])).
 
+% ADAPTED
+% clue 1: with the 10 am class => scheduled at 10
+% clue 1: 17 or 21 years old => isn't 17 years old AND isn't 21 years old
+% clue 4: repeat "is scheduled"
+% clue 2, 4, 5 and 6: 2 sentences each
+% clue 9: youngest => 15 years old
+problem(p9, problem(4, 5, [
+                        "The client scheduled at 10 am isn't 17 years old and isn't 21 years old",
+                        "Opal isn't 20 years old and is scheduled 2 hours after Harold",
+                        "Harold is being trained by Mr Terry and isn't 17 years old",
+                        "Mr alford's client isn't 17 years old and is scheduled sometime before the trainee who is 15 year old and is scheduled 2 hours after Harold",
+                        "Mr french's trainee isn't 20 years old and is scheduled 1 hour after mr terry's client",
+                        "Elmer is being trained by Mr underwood and is scheduled 2 hours after jerry",
+                        %% "Elmer isn't the youngest student"
+                        "Elmer isn't 15 years old"
+        ], [
+                        noun([client], [clients]),
+                        %% noun([class], [classes]),
+                        noun([hour], [hours]),
+                        noun([year], [years]),
+                        noun([trainee], [trainees]),
+                        noun([student], [students]),
+                        noun([am], [ams]),
+                        pn([opal]),
+                        pn([harold]),
+                        pn([mr, terry]),
+                        pn([mr, alford]),
+                        pn([mr, french]),
+                        pn([elmer]),
+                        pn([mr, underwood]),
+                        pn([jerry]),
+                        tvPrep([scheduled], [at], [schedule], [scheduled]),
+                        tvPrep([is, being, trained], [by], [be, trained], [trained]),
+                        copGap([], [old]),
+                        prep([with])
+        ])).
+
 % ADAPTED!!!
 % replaced "$... per share" with "... dollar per share"
 problem(p11, problem(4, 5, [

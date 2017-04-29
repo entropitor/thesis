@@ -1,0 +1,59 @@
+// Problem p9
+
+vocabulary V {
+    type year = {15; 17; 18; 20; 21} isa int
+    type client constructed from {the_other_client, harold, opal, jerry, elmer}
+    type am = {9; 10; 11; 12; 13} isa int
+    type type1 constructed from {the_other_type1, mr_terry, mr_alford, mr_french, mr_underwood}
+    type type2 = {-1; 1; -2; 2; -3; 3; -4; 4} isa int // differences between values of type am
+
+    is_old(client, year)
+    scheduled_at(client, am)
+    is_being_trained_by(client, type1)
+}
+
+structure S : V {
+}
+
+theory T : V {
+    // The client scheduled at 10 am isn't 17 years old and isn't 21 years old
+    ?a [client]: scheduled_at(a,10) & ~ is_old(a,17) & ~ is_old(a,21).
+
+    // Opal isn't 20 years old and is scheduled 2 hours after Harold
+    ?b [am] c [am]: ~ is_old(opal,20) & scheduled_at(harold,b) & c = b+2 & scheduled_at(opal,c).
+
+    // Harold is being trained by Mr Terry and isn't 17 years old
+    is_being_trained_by(harold,mr_terry) & ~ is_old(harold,17).
+
+    // Mr alford's client isn't 17 years old and is scheduled sometime before the trainee who is 15 year old and is scheduled 2 hours after Harold
+    ?d [client] e [type2] f [am] g [client] h [am] i [am] j [am]: ~ is_old(d,17) & e>0 & is_old(g,15) & scheduled_at(g,f) & h = f-e & scheduled_at(d,h) & scheduled_at(harold,i) & j = i+2 & scheduled_at(d,j) & is_being_trained_by(d,mr_alford).
+
+    // Mr french's trainee isn't 20 years old and is scheduled 1 hour after mr terry's client
+    ?k [client] l [am] m [client] n [am]: ~ is_old(k,20) & scheduled_at(m,l) & is_being_trained_by(m,mr_terry) & n = l+1 & scheduled_at(k,n) & is_being_trained_by(k,mr_french).
+
+    // Elmer is being trained by Mr underwood and is scheduled 2 hours after jerry
+    ?o [am] p [am]: is_being_trained_by(elmer,mr_underwood) & scheduled_at(jerry,o) & p = o+2 & scheduled_at(elmer,p).
+
+    // Elmer isn't 15 years old
+    ~ is_old(elmer,15).
+
+
+    // Logigram bijection axioms:
+    ! x [client]: ?=1 y [year]: is_old(x, y).
+    ! x [year]: ?=1 y [client]: is_old(y, x).
+
+    ! x [client]: ?=1 y [am]: scheduled_at(x, y).
+    ! x [am]: ?=1 y [client]: scheduled_at(y, x).
+
+    ! x [client]: ?=1 y [type1]: is_being_trained_by(x, y).
+    ! x [type1]: ?=1 y [client]: is_being_trained_by(y, x).
+
+    // Logigram synonym axioms:
+}
+
+procedure main() {
+    stdoptions.nbmodels = 10;
+    printmodels(modelexpand(T,S))
+    model = modelexpand(T,S)
+}
+

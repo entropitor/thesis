@@ -76,7 +76,7 @@ combine(nmod:A, [pp:A]).
 combine(nmod:A, [rc:A]).
 combine(nmod:lam(P, app(A, app(B, P))), [pp:A, nmod:B]).
 
-combine(vp:app(app(B, A), C), [vp:A, coord:B, vp:C]).
+combine(vp:lam(N, app(N, lam(X, app(app(app(B, A), C), lam(P, app(P, X)))))), [vp:A, coord:B, vp:C]).
 combine(vp:app(A, B), [av:A, vp:B]).
 combine(vp:app(A, B), [cop:A, np:B]).
 combine(vp:app(A, B), [cop:A, adj:B]).
@@ -91,3 +91,4 @@ combine(pp:app(A, B), [prep:A, np:B]).
 
 combine(rc:app(A, B), [relpro:A, vp:B]).
 
+combine(tv:app(A, B), [cop:A, tv:B]).
