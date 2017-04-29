@@ -1,0 +1,69 @@
+// Problem p10
+
+vocabulary V {
+    type type1 constructed from {the_other_type1, capellini, rotini, tagliolini, farfalle}
+    type person constructed from {the_other_person, angie, damon, claudia, elisa}
+    type type2 = {7; 8; 9; 10; 11} isa int
+    type type3 constructed from {the_other_type3, arrabiata_sauce, marinara_sauce, puttanesca_sauce, bolognese_sauce}
+
+    ordered(person, type1)
+    paid(person, type2)
+    chose(person, type3)
+    had(person, type1)
+}
+
+structure S : V {
+}
+
+theory T : V {
+    // Angie didn't order capellini
+    ~ ordered(angie,capellini).
+
+    // The person who did order capellini paid $11
+    ?a [person]: ordered(a,capellini) & paid(a,11).
+
+    // Damon paid $8
+    paid(damon,8).
+
+    // Claudia, the person who paid $9 and the person who chose arrabiata sauce were three different people
+    ?b [person] c [person]: ~ (claudia = b) & ~ (claudia = c) & ~ (b = c) & paid(b,9) & chose(c,arrabiata_sauce).
+
+    // Angie was either the runner who ordered rotini or the diner who paid $11
+    (?d [person]: ordered(d,rotini) & d = angie) | (?e [person]: paid(e,11) & e = angie).
+
+    // The competitor who chose marinara sauce paid $2 less than the runner who ordered tagliolini
+    ?f [person] g [type2] h [person] i [type2]: chose(f,marinara_sauce) & ordered(h,tagliolini) & paid(h,g) & i = g-2 & paid(f,i).
+
+    // Elisa paid $2 less than the person who chose puttanesca sauce
+    ?j [type2] k [person] l [type2]: chose(k,puttanesca_sauce) & paid(k,j) & l = j-2 & paid(elisa,l).
+
+    // Of Claudia and the person who paid $7, one chose bolognese sauce and the other ordered tagliolini
+    ?m [person]: paid(m,7) & ~ (claudia = m) & (chose(claudia,bolognese_sauce) & ordered(m,tagliolini) | chose(m,bolognese_sauce) & ordered(claudia,tagliolini)).
+
+    // Damon had either farfalle or rotini
+    had(damon,farfalle) | had(damon,rotini).
+
+
+    // Logigram bijection axioms:
+    ! x [person]: ?=1 y [type1]: ordered(x, y).
+    ! x [type1]: ?=1 y [person]: ordered(y, x).
+
+    ! x [person]: ?=1 y [type2]: paid(x, y).
+    ! x [type2]: ?=1 y [person]: paid(y, x).
+
+    ! x [person]: ?=1 y [type3]: chose(x, y).
+    ! x [type3]: ?=1 y [person]: chose(y, x).
+
+    ! x [person]: ?=1 y [type1]: had(x, y).
+    ! x [type1]: ?=1 y [person]: had(y, x).
+
+    // Logigram synonym axioms:
+    ! x [person] y [type1]: ordered(x, y) <=> had(x, y).
+}
+
+procedure main() {
+    stdoptions.nbmodels = 10;
+    printmodels(modelexpand(T,S))
+    model = modelexpand(T,S)
+}
+

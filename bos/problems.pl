@@ -362,7 +362,6 @@ problem(p9, problem(4, 5, [
                         "Elmer isn't 15 years old"
         ], [
                         noun([client], [clients]),
-                        %% noun([class], [classes]),
                         noun([hour], [hours]),
                         noun([year], [years]),
                         noun([trainee], [trainees]),
@@ -380,6 +379,47 @@ problem(p9, problem(4, 5, [
                         tvPrep([is, being, trained], [by], [be, trained], [trained]),
                         copGap([], [old]),
                         prep([with])
+        ])).
+
+% ADAPTED
+% whoever -> the person who
+% integer dollars
+% order: only for pasta, not for sauce
+% Damon's bill came to 8 -> Damon paid 8
+problem(p10, problem(4, 5, [
+                         "Angie didn't order capellini",
+                         "The person who did order capellini paid $11",
+                         "Damon paid $8",
+                         "Claudia, the person who paid $9 and the person who chose arrabiata sauce were three different people",
+                         "Angie was either the runner who ordered rotini or the diner who paid $11",
+                         "The competitor who chose marinara sauce paid $2 less than the runner who ordered tagliolini",
+                         "Elisa paid $2 less than the person who chose puttanesca sauce",
+                         "Of Claudia and the person who paid $7, one chose bolognese sauce and the other ordered tagliolini",
+                         "Damon had either farfalle or rotini"
+        ], [
+                        noun([person], [people]),
+                        noun([runner], [runners]),
+                        noun([diner], [diners]),
+                        noun([competitor], [competitors]),
+                        %% noun([bill], [bills]),
+                        pn([angie]),
+                        pn([capellini]),
+                        pn([damon]),
+                        pn([claudia]),
+                        pn([arrabiata, sauce]),
+                        pn([rotini]),
+                        pn([marinara, sauce]),
+                        pn([tagliolini]),
+                        pn([puttanesca, sauce]),
+                        pn([bolognese, sauce]),
+                        pn([farfalle]),
+                        pn([elisa]),
+                        tv([ordered], [order]),
+                        tv([chose], [chose]),
+                        tv([had], [have]),
+                        tv([paid], [pay]),
+                        tvPrep([came], [to], [come], [come]),
+                        comp(lower, [less, than])
         ])).
 
 % ADAPTED!!!
