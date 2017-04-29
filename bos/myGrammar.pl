@@ -116,7 +116,7 @@ s([coord:no, sem:Sem])-->
 
 s([coord:no, sem:Sem])-->
     [the],
-    number([sem:_, vType:Type]),
+    number([sem:_, vType:_]),
     n([coord:_, num:pl, sem:_, vType:Type]),
     cop([type:np, inf:fin, num:pl, sem:Cop]),
     np([coord:conj, num:_, gap:[], ref:no, sem:NP, vType:Type]),
@@ -489,8 +489,8 @@ number([sem:Sem, vType:Type], [Number|T], T) :-
 number([sem:Sem, vType:Type])-->
     { lexEntry(number, [syntax:Word, number:Number]) },
     Word,
-    { semLex(number, [number:Number, sem:Sem, vType:Type]) }.
-    %% { addType(number-Number, Type) }.
+    { semLex(number, [number:Number, sem:Sem, vType:Type]) },
+    { addType(number-Number, Type) }.
 
 pn([num:Num, sem:Sem, vType:Type])-->
     { lexEntry(pn, [symbol:Sym, syntax:Word, num:Num, vType:Type]) },
