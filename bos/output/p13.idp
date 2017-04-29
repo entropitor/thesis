@@ -1,0 +1,76 @@
+// Problem p13
+
+vocabulary V {
+    type type2 = {750; 1000; 1250; 1500; 1750} isa int
+    type piece constructed from {the_other_piece, valencia, waldarama, tombawomba, sniffletoe}
+    type type3 constructed from {kelly, isabel, lucas, nicole, herman}
+    type type4 constructed from {the_other_type4, vancouver, ypsilanti, mexico_city, st_moritz}
+    type type5 = {-250; 250; -500; 500; -750; 750; -1000; 1000} isa int // differences between values of type type2
+
+    cost(piece, type2)
+    go_to(piece, type4)
+    from(piece, type3)
+    sold_for(piece, type2)
+}
+
+structure S : V {
+}
+
+theory T : V {
+    // Kelly's piece didn't cost $1250
+    ?a [piece]: ~ cost(a,1250) & from(a,kelly).
+
+    // Valencia cost somewhat more than Isabel's dummy
+    ?b [type5] c [type2] d [piece] e [type2]: b>0 & cost(d,c) & from(d,isabel) & e = c+b & cost(valencia,e).
+
+    // The puppet going to Vancouver, the $750 dummy and the $1500 piece are three different dummies
+    ?f [piece] g [piece] h [piece]: ~ (f = g) & ~ (f = h) & ~ (g = h) & go_to(f,vancouver) & cost(g,750) & cost(h,1500).
+
+    // Waldarama didn't cost $750 or $1500
+    ~ (cost(waldarama,750) | cost(waldarama,1500)).
+
+    // Kelly's puppet isn't going to Ypsilanti
+    ?i [piece]: ~ go_to(i,ypsilanti) & from(i,kelly).
+
+    // The dummy going to Mexico City is either Tombawomba or the puppet from Lucas
+    ?j [piece]: go_to(j,mexico_city) & (tombawomba = j | (?k [piece]: from(k,lucas) & k = j)).
+
+    // The puppet from Nicole, the $1000 piece and the puppet going to Ypsilanti are three different dummies
+    ?l [piece] m [piece] n [piece]: ~ (l = m) & ~ (l = n) & ~ (m = n) & from(l,nicole) & cost(m,1000) & go_to(n,ypsilanti).
+
+    // Of the $750 puppet and the piece going to Mexico City, one is Tombawomba and the other is from Isabel
+    ?o [piece] p [piece]: go_to(p,mexico_city) & ~ (o = p) & (tombawomba = o & from(p,isabel) | tombawomba = p & from(o,isabel)) & cost(o,750).
+
+    // The puppet going to Ypsilanti cost $250 more than the puppet going to St. Moritz.
+    ?q [piece] r [type2] s [piece] t [type2]: go_to(q,ypsilanti) & go_to(s,st_moritz) & cost(s,r) & t = r+250 & cost(q,t).
+
+    // Of the $1000 dummy and the $1250 dummy, one is from Herman and the other is going to Mexico City
+    ?u [piece] v [piece]: ~ (u = v) & (from(u,herman) & go_to(v,mexico_city) | from(v,herman) & go_to(u,mexico_city)) & cost(v,1250) & cost(u,1000).
+
+    // Sniffletoe sold for $1000
+    sold_for(sniffletoe,1000).
+
+
+    // Logigram bijection axioms:
+    ! x [piece]: ?=1 y [type2]: cost(x, y).
+    ! x [type2]: ?=1 y [piece]: cost(y, x).
+
+    ! x [piece]: ?=1 y [type4]: go_to(x, y).
+    ! x [type4]: ?=1 y [piece]: go_to(y, x).
+
+    ! x [piece]: ?=1 y [type3]: from(x, y).
+    ! x [type3]: ?=1 y [piece]: from(y, x).
+
+    ! x [piece]: ?=1 y [type2]: sold_for(x, y).
+    ! x [type2]: ?=1 y [piece]: sold_for(y, x).
+
+    // Logigram synonym axioms:
+    ! x [piece] y [type2]: cost(x, y) <=> sold_for(x, y).
+}
+
+procedure main() {
+    stdoptions.nbmodels = 10;
+    printmodels(modelexpand(T,S))
+    model = modelexpand(T,S)
+}
+

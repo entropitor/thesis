@@ -341,8 +341,7 @@ problem(p8b, problem(4, 5, [
                         tvGap([required], [to, print], [require]),
                         prep([from]),
                         prep([in]),
-                        comp(lower, [fewer, than]),
-                        comp(higher, [more, than])
+                        comp(lower, [fewer, than])
         ])).
 
 % ADAPTED
@@ -418,6 +417,5 @@ problem(p10, problem(4, 5, [
                         tv([chose], [chose]),
                         tv([had], [have]),
                         tv([paid], [pay]),
-                        tvPrep([came], [to], [come], [come]),
-                        comp(lower, [less, than])
+                        tvPrep([came], [to], [come], [come])
         ])).

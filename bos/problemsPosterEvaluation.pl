@@ -86,7 +86,48 @@ problem(p12, problem(4, 5, [
                          tv([ordered], [order]),
                          tv([drank], [drink]),
                          tv([got], [get]),
-                         prep([with]),
-                         comp(higher, [more, than]),
-                         comp(lower, [less, than])
+                         prep([with])
+                     ])).
+
+% ADAPTED
+% clue 6: lucas's puppet -> the puppet from Lucas
+% clue 7: nicole's puppet -> the puppet from Nicole
+% clue 8: isabel's -> from isabel
+% clue 9: the one -> the puppet
+% clue 10: of the $1000 and $1250 dummies -> of the $1000 dummy and the $1250 dummy
+% clue 10: herman's -> from herman
+problem(p13, problem(4, 5, [
+                         "Kelly's piece didn't cost $1250",
+                         "Valencia cost somewhat more than Isabel's dummy",
+                         "The puppet going to Vancouver, the $750 dummy and the $1500 piece are three different dummies",
+                         "Waldarama didn't cost $750 or $1500",
+                         "Kelly's puppet isn't going to Ypsilanti",
+                         "The dummy going to Mexico City is either Tombawomba or the puppet from Lucas",
+                         "The puppet from Nicole, the $1000 piece and the puppet going to Ypsilanti are three different dummies",
+                         "Of the $750 puppet and the piece going to Mexico City, one is Tombawomba and the other is from Isabel",
+                         "The puppet going to Ypsilanti cost $250 more than the puppet going to St. Moritz.",
+                         "Of the $1000 dummy and the $1250 dummy, one is from Herman and the other is going to Mexico City",
+                         "Sniffletoe sold for $1000"
+                     ], [
+                         noun([piece], [pieces]),
+                         noun([dummy], [dummies]),
+                         noun([puppet], [puppets]),
+                         pn([kelly]),
+                         pn([valencia]),
+                         pn([isabel]),
+                         pn([vancouver]),
+                         pn([waldarama]),
+                         pn([ypsilanti]),
+                         pn([tombawomba]),
+                         pn([lucas]),
+                         pn([mexico, city]),
+                         pn([nicole]),
+                         pn([st, moritz]),
+                         pn([herman]),
+                         pn([sniffletoe]),
+                         tv([cost], [cost]),
+                         %% copGap([going, to], []),
+                         tvPrep([go], [to], [go], [going]),
+                         tvPrep([sold], [for], [sell], [sold]),
+                         prep([from])
                      ])).

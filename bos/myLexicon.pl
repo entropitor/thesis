@@ -194,10 +194,12 @@ lexEntry(qnp, [symbol:question_thing, syntax:[what], mood:int, type:wh]).
     Comparison operators
 ========================================================================*/
 lexEntry(comp, [type:lower, syntax:[lower, than]]).
+lexEntry(comp, [type:lower, syntax:[less, than]]).
 lexEntry(comp, [type:lower, syntax:[below]]).
 lexEntry(comp, [type:lower, syntax:[before]]).
 
 lexEntry(comp, [type:higher, syntax:[higher, than]]).
+lexEntry(comp, [type:higher, syntax:[more, than]]).
 lexEntry(comp, [type:higher, syntax:[above]]).
 lexEntry(comp, [type:higher, syntax:[after]]).
 
