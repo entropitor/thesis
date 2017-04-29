@@ -129,6 +129,9 @@ printTheory(SentencePairs, voc(BaseTypes, _, Predicates)) :-
     format('    // Logigram synonym axioms:~n'),
     printSynonymAxioms(Predicates),
     nl,
+    format('    // Logigram transitive relation axioms:~n'),
+    printTransitiveRelationAxioms(Predicates),
+    nl,
     format('    // Logigram symmetry breaking axioms:~n'),
     include(=(baseType(_, fakeConstructed:_)), BaseTypes, FakeConstructedTypes),
     maplist(printSymmetryBreakersFakeConstructedTypes(Predicates, BaseTypes), FakeConstructedTypes),
@@ -145,11 +148,20 @@ printSynonymAxioms([predicate(Name, Type1, Type2) | Preds]) :-
     printSynonymAxioms(Preds).
 printSynonymAxioms(predicate(Name1, Type1, Type2), predicate(Name2, Type1, Type2)) :-
     format('    ! x [~p] y [~p]: ~p(x, y) <=> ~p(x, y).~n', [Type1, Type2, Name1, Name2]).
+printTransitiveRelationAxioms([]).
+printTransitiveRelationAxioms([Predicate | Preds]) :-
+    printTransitiveRelationAxioms(Predicate, Preds),
+    printTransitiveRelationAxioms(Preds).
+printTransitiveRelationAxioms(predicate(Name1, Type1, Type2), Preds) :-
+    member(predicate(Name2, Type1, Type3), Preds),
+    member(predicate(Name3, Type2, Type3), Preds),
+    format('    ! x [~p] y [~p] z [~p]: ~p(x, y) & ~p(x, z) => ~p(y, z).~n', [Type1, Type2, Type3, Name1, Name2, Name3]),
+    fail.
+printTransitiveRelationAxioms(_, _).
 printSymmetryBreakersFakeConstructedTypes(Predicates, BaseTypes, baseType(FakeConstructedType, fakeConstructed:DomainFake)) :-
     member(predicate(Name, FakeConstructedType, Type1), Predicates),
     member(baseType(Type1, constructed:DomainReal), BaseTypes),
     maplist(printPredicateFact(Name), DomainFake, DomainReal).
-printSymmetryBreakersFakeConstructedTypes(Predicates, BaseTypes, baseType(FakeConstructedType, fakeConstructed:DomainFake)).
 printPredicateFact(Name, Arg1, Arg2) :-
     format('    ~p(~p, ~p).~n', [Name, Arg1, Arg2]).
 

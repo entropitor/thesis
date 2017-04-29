@@ -1,0 +1,89 @@
+// Problem p18
+
+vocabulary V {
+    type type1 constructed from {the_other_type1, glendale, olema, evansdale, lakota}
+    type person constructed from {the_other_person, al_allen, kelly_kirby, bev_baird, ed_ewing}
+    type candidate constructed from {the_other_candidate, academic, teacher, writer, doctor}
+    type vote = {8500; 9000; 9500; 10000; 10500} isa int
+    type type2 = {-500; 500; -1000; 1000; -1500; 1500; -2000; 2000} isa int // differences between values of type vote
+
+    from(person, type1)
+    acts_as(person, candidate)
+    finished_with(person, vote)
+    received(candidate, vote)
+    ended_up_with(person, vote)
+}
+
+structure S : V {
+}
+
+theory T : V {
+    // Al allen is from glendale
+    from(al_allen,glendale).
+
+    // Kelly Kirby finished 1000 votes ahead of the person who acts as the academic
+    ?a [vote] b [person] c [vote]: acts_as(b,academic) & finished_with(b,a) & c = a+1000 & finished_with(kelly_kirby,c).
+
+    // The academic received 500 votes less than the teacher
+    ?d [vote] e [vote]: received(teacher,d) & e = d-500 & received(academic,e).
+
+    // The candidate who received 10500 votes isn't the writer
+    ?f [candidate]: received(f,10500) & ~ (writer = f).
+
+    // Kelly Kirby isn't from Olema
+    ~ from(kelly_kirby,olema).
+
+    // The glendale native finished somewhat ahead of the Olema native
+    ?g [person] h [type2] i [vote] j [person] k [vote]: h>0 & finished_with(j,i) & from(j,olema) & k = i+h & finished_with(g,k) & from(g,glendale).
+
+    // Bev Baird ended up with 8500 votes
+    ended_up_with(bev_baird,8500).
+
+    // Ed Ewing finished 500 votes ahead of the Evansdale native
+    ?l [vote] m [person] n [vote]: finished_with(m,l) & from(m,evansdale) & n = l+500 & finished_with(ed_ewing,n).
+
+    // The man who received 9500 votes isn't the doctor
+    ?o [candidate]: received(o,9500) & ~ (doctor = o).
+
+    // Of the person acting as academic and Al Allen, one ended up with 10000 votes and the other ended up with 8500
+    ?p [person]: acts_as(p,academic) & ~ (p = al_allen) & (ended_up_with(p,10000) & ended_up_with(al_allen,8500) | ended_up_with(al_allen,10000) & ended_up_with(p,8500)).
+
+    // The politician who finished with 10500 votes isn't from Lakota
+    ?q [person]: finished_with(q,10500) & ~ from(q,lakota).
+
+    // The person acting as doctor was either the politician who finished with 10000 votes or Kelly Kirby
+    ?r [person]: acts_as(r,doctor) & ((?s [person]: finished_with(s,10000) & s = r) | kelly_kirby = r).
+
+
+    // Logigram bijection axioms:
+    ! x [person]: ?=1 y [type1]: from(x, y).
+    ! x [type1]: ?=1 y [person]: from(y, x).
+
+    ! x [person]: ?=1 y [candidate]: acts_as(x, y).
+    ! x [candidate]: ?=1 y [person]: acts_as(y, x).
+
+    ! x [person]: ?=1 y [vote]: finished_with(x, y).
+    ! x [vote]: ?=1 y [person]: finished_with(y, x).
+
+    ! x [candidate]: ?=1 y [vote]: received(x, y).
+    ! x [vote]: ?=1 y [candidate]: received(y, x).
+
+    ! x [person]: ?=1 y [vote]: ended_up_with(x, y).
+    ! x [vote]: ?=1 y [person]: ended_up_with(y, x).
+
+    // Logigram synonym axioms:
+    ! x [person] y [vote]: finished_with(x, y) <=> ended_up_with(x, y).
+
+    // Logigram transitive relation axioms:
+    ! x [person] y [candidate] z [vote]: acts_as(x, y) & finished_with(x, z) => received(y, z).
+    ! x [person] y [candidate] z [vote]: acts_as(x, y) & ended_up_with(x, z) => received(y, z).
+
+    // Logigram symmetry breaking axioms:
+}
+
+procedure main() {
+    stdoptions.nbmodels = 10;
+    printmodels(modelexpand(T,S))
+    model = modelexpand(T,S)
+}
+

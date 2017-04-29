@@ -317,6 +317,53 @@ problem(p17, problem(5, 5, [
                          prep([of])
                      ])).
 
+% clue 2: ahead of the academic -> the person who is the academic
+% clue 6: an unknown number of votes -> somewhat
+% clue 10: one ended up with X and the other [ended up] with Y
+% received(profession, votes) <-> finished_with(name, votes)
+% Name or profession used for same type
+problem(p18, problem(4, 5, [
+                         "Al allen is from glendale",
+                         "Kelly Kirby finished 1000 votes ahead of the person who acts as the academic",
+                         "The academic received 500 votes less than the teacher",
+                         "The candidate who received 10500 votes isn't the writer",
+                         "Kelly Kirby isn't from Olema",
+                         "The glendale native finished somewhat ahead of the Olema native",
+                         "Bev Baird ended up with 8500 votes",
+                         "Ed Ewing finished 500 votes ahead of the Evansdale native",
+                         "The man who received 9500 votes isn't the doctor",
+                         "Of the person acting as academic and Al Allen, one ended up with 10000 votes and the other ended up with 8500",
+                         "The politician who finished with 10500 votes isn't from Lakota",
+                         "The person acting as doctor was either the politician who finished with 10000 votes or Kelly Kirby"
+
+                     ], [
+                         noun([vote], [votes]),
+                         noun([person], [people]),
+                         noun([native], [natives]),
+                         noun([politician], [politicians]),
+                         noun([candidate], [candidates]),
+                         noun([man], [men]),
+                         pn([al, allen]),
+                         pn([kelly, kirby]),
+                         pn([bev, baird]),
+                         pn([ed, ewing]),
+                         pn([academic]),
+                         pn([doctor]),
+                         pn([writer]),
+                         pn([teacher]),
+                         pn([glendale]),
+                         pn([olema]),
+                         pn([evansdale]),
+                         pn([lakota]),
+                         tvPrep([finished], [with], [finish], [finished]),
+                         tvPrep([ended, up], [with], [end, up], [ended, up]),
+                         tvPrep([acts], [as], [act], [acting]),
+                         tv([received], [receive]),
+                         comp(higher, [ahead, of]),
+                         comp(lower, [behind]),
+                         prep([from])
+                     ])).
+
 % "the one" -> the person
 % dropped "exactly"
 % "... fewer facebook friends than" -> "... facebook friends less than"
