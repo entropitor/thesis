@@ -131,3 +131,46 @@ problem(p13, problem(4, 5, [
                          tvPrep([sold], [for], [sell], [sold]),
                          prep([from])
                      ])).
+
+% 1 + 3) the one -> the shell
+% 11) monk's fin -> monk's fin shell
+% use "is in" because "is" doesn't work
+% use "discovered in" instead of "found in" for years (only 1 type per verb)
+problem(p14, problem(4, 5, [
+                         "The baby's ear shell was discovered 3 years before the shell from Jamaica",
+                         "The seashell found in Puerto Rico isn't in black and white",
+                         "The shell discovered in 1992 isn't in blue and white",
+                         "The blue and white shell, the shark eye shell and the shell found in Barbuda are three different specimens",
+                         "The piece found in Saint Lucia was discovered 6 years after the honey cerith shell",
+                         "Of the baby's ear shell and the black and white shell, one was discovered in 2004 and the other was found in Saint Lucia",
+                         "The monk's fin shell isn't in black and white",
+                         "The seashell discovered in 2001 is in brown and yellow",
+                         "The shell discovered in 1995 is in pink and yellow",
+                         "The baby's ear shell was discovered 3 years after the shell found in Aruba",
+                         "The shell discovered in 2001 is either the monk's fin shell or the coquina"
+                     ], [
+                         noun([shell], [shells]),
+                         noun([seashell], [seashells]),
+                         noun([specimen], [specimens]),
+                         noun([year], [years]),
+                         noun([piece], [pieces]),
+                         pn([baby, s, ear, shell]),
+                         pn([jamaica]),
+                         pn([seashell]),
+                         pn([puerto, rico]),
+                         pn([black, and, white]),
+                         pn([blue, and, white]),
+                         pn([shark, eye, shell]),
+                         pn([barbuda]),
+                         pn([saint, lucia]),
+                         pn([honey, cerith, shell]),
+                         pn([monk, s, fin, shell]),
+                         pn([brown, and, yellow]),
+                         pn([pink, and, yellow]),
+                         pn([coquina]),
+                         pn([aruba]),
+                         tvPrep([found], [in], [find], [found]),
+                         tvPrep([discovered], [in], [discover], [discovered]),
+                         prep([in]),
+                         prep([from])
+                     ])).
