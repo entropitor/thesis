@@ -236,3 +236,45 @@ problem(p15, problem(4, 5, [
                          tvPrep([gave, a, presentation], [on], [give, a, presentation], [given, a, presentation]),
                          prep([on])
                      ])).
+
+% 1, 7) the one -> juggler
+% 10) dropped "always"
+problem(p16, problem(4, 5, [
+                         "The juggler who went fourth was either the performer from Quasqueton or the juggler who used rings",
+                         "The juggler who used flashlights performed one spot after the person who used mobile phones",
+                         "The performer from Kingsburg performed one spot before Howard",
+                         "Otis wasn't from Carbon",
+                         "Of the performer who went second and the juggler who used rings, one was from Carbon and the other is Howard",
+                         "The performer who went third, Gerald and the person from Kingsburg are three different people",
+                         "Floyd was either the juggler who went second or the juggler from Quasqueton",
+                         "The person who went third used rings",
+                         "The juggler who went second wasn't from Nice",
+                         "Floyd juggles rubber balls"
+                     ], [
+                         noun([juggler], [jugglers]),
+                         noun([performer], [performers]),
+                         noun([person], [people]),
+                         noun([spot], [spots]),
+                         pn([quasqueton]),
+                         pn([rings]),
+                         pn([flashlights]),
+                         pn([mobile, phones]),
+                         pn([kingsburg]),
+                         pn([howard]),
+                         pn([otis]),
+                         pn([carbon]),
+                         pn([gerald]),
+                         pn([nice]),
+                         pn([floyd]),
+                         pn([rubber, balls]),
+                         pnn([second], 2),
+                         pnn([third], 3),
+                         pnn([fourth], 4),
+                         tv([went], [go]),
+                         tv([used], [use]),
+                         tv([performed], [perform]),
+                         tv([juggles], [juggle]),
+                         prep([from])
+                     ])).
+
+%% problem(foo, problem(4, 5, [], [])).

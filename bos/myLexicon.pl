@@ -30,7 +30,7 @@ lexEntry(det, [syntax:[the], mood:decl, num:sg, type:indef]).
 lexEntry(det, [syntax:[every], mood:decl, num:sg, type:uni]).
 lexEntry(det, [syntax:[a], mood:decl, num:sg, type:indef]).
 lexEntry(det, [syntax:[an], mood:decl, num:sg, type:indef]).
-lexEntry(det, [syntax:[one], mood:decl, num:sg, type:indef]).
+%% lexEntry(det, [syntax:[one], mood:decl, num:sg, type:indef]).
 lexEntry(det, [syntax:[some], mood:decl, num:sg, type:indef]).
 lexEntry(det, [syntax:[no], mood:decl, num:sg, type:neg]).
 lexEntry(det, [syntax:[the], mood:decl, num:sg, type:def]).

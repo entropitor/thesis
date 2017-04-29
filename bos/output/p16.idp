@@ -1,0 +1,77 @@
+// Problem p16
+
+vocabulary V {
+    type type1 constructed from {the_other_type1, rings, mobile_phones, flashlights, rubber_balls}
+    type juggler constructed from {the_other_juggler, howard, otis, gerald, floyd}
+    type type2 constructed from {the_other_type2, quasqueton, kingsburg, carbon, nice}
+    type spot = {1; 2; 3; 4; 5} isa int
+
+    used(juggler, type1)
+    from(juggler, type2)
+    went(juggler, spot)
+    performed(juggler, spot)
+    juggles(juggler, type1)
+}
+
+structure S : V {
+}
+
+theory T : V {
+    // The juggler who went fourth was either the performer from Quasqueton or the juggler who used rings
+    ?a [juggler]: went(a,4) & ((?b [juggler]: from(b,quasqueton) & b = a) | (?c [juggler]: used(c,rings) & c = a)).
+
+    // The juggler who used flashlights performed one spot after the person who used mobile phones
+    ?d [juggler] e [spot] f [juggler] g [spot]: used(d,flashlights) & used(f,mobile_phones) & performed(f,e) & g = e+1 & performed(d,g).
+
+    // The performer from Kingsburg performed one spot before Howard
+    ?h [juggler] i [spot] j [spot]: from(h,kingsburg) & performed(howard,i) & j = i-1 & performed(h,j).
+
+    // Otis wasn't from Carbon
+    ~ from(otis,carbon).
+
+    // Of the performer who went second and the juggler who used rings, one was from Carbon and the other is Howard
+    ?k [juggler] l [juggler]: went(k,2) & used(l,rings) & ~ (k = l) & (from(k,carbon) & howard = l | from(l,carbon) & howard = k).
+
+    // The performer who went third, Gerald and the person from Kingsburg are three different people
+    ?m [juggler] n [juggler]: ~ (m = gerald) & ~ (m = n) & ~ (gerald = n) & went(m,3) & from(n,kingsburg).
+
+    // Floyd was either the juggler who went second or the juggler from Quasqueton
+    (?o [juggler]: went(o,2) & o = floyd) | (?p [juggler]: from(p,quasqueton) & p = floyd).
+
+    // The person who went third used rings
+    ?q [juggler]: went(q,3) & used(q,rings).
+
+    // The juggler who went second wasn't from Nice
+    ?r [juggler]: went(r,2) & ~ from(r,nice).
+
+    // Floyd juggles rubber balls
+    juggles(floyd,rubber_balls).
+
+
+    // Logigram bijection axioms:
+    ! x [juggler]: ?=1 y [type1]: used(x, y).
+    ! x [type1]: ?=1 y [juggler]: used(y, x).
+
+    ! x [juggler]: ?=1 y [type2]: from(x, y).
+    ! x [type2]: ?=1 y [juggler]: from(y, x).
+
+    ! x [juggler]: ?=1 y [spot]: went(x, y).
+    ! x [spot]: ?=1 y [juggler]: went(y, x).
+
+    ! x [juggler]: ?=1 y [spot]: performed(x, y).
+    ! x [spot]: ?=1 y [juggler]: performed(y, x).
+
+    ! x [juggler]: ?=1 y [type1]: juggles(x, y).
+    ! x [type1]: ?=1 y [juggler]: juggles(y, x).
+
+    // Logigram synonym axioms:
+    ! x [juggler] y [type1]: used(x, y) <=> juggles(x, y).
+    ! x [juggler] y [spot]: went(x, y) <=> performed(x, y).
+}
+
+procedure main() {
+    stdoptions.nbmodels = 10;
+    printmodels(modelexpand(T,S))
+    model = modelexpand(T,S)
+}
+
