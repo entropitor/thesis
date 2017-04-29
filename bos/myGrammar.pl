@@ -317,7 +317,8 @@ vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
 
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
     cop([type:np, inf:Inf, num:Num, sem:Cop]),
-    np([coord:_, num:_, gap:[], ref:_, sem:NP, vType:Type]),
+    np([coord:NPCoord, num:_, gap:[], ref:_, sem:NP, vType:Type]),
+    { NPCoord \= comp },
     { combine(vp:VP, [cop:Cop, np:NP]) }.
 
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->

@@ -179,7 +179,7 @@ problem(p5, problem(4, 5, [
                         pn([zachary]),
                         pn([shaver, lake]),
                         tvPrep([lives], [in], [live], [lived]),
-                        tvGap([is], [old], [are]),
+                        copGap([], [old]),
                         prep([a, native, of]),
                         prep([from]),
                         comp(higher, [older, than]),
