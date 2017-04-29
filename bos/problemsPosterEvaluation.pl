@@ -174,3 +174,65 @@ problem(p14, problem(4, 5, [
                          prep([in]),
                          prep([from])
                      ])).
+
+% whoever -> the person who
+% clue 6: drop the also
+% clue 10: of the two presentation -> of the presentation on ... and the presentation on ...
+% clue 11,12: the one -> the presentation
+% clue 13: the lowest grade -> D
+%% % clue 11: got -> received (only 1 meaning per verb)
+
+% PROBLEM: intermediate type "presentation" can not be represented
+problem(p15, problem(4, 5, [
+                         "The student who got the B-minus talked about Augustus",
+                         "Johnnie, the student who gave the presentation on Augustus and the person who got the B-plus were three different students",
+                         "Gina didn't get the B-plus",
+                         "The student who spoke for 10 minutes didn't get the C-Minus",
+                         "Gina didn't talk about Galerius",
+                         "Yolanda didn't give a presentation on Galerius",
+                         "Yolanda, the student who gave the presentation on Caligula and the student who got the B-minus were three different children",
+                         "Gina didn't get the A",
+                         "The student who spoke for 8 minutes talked about Galerius",
+                         %% "Of the presentation on Augustus and the presentation on Caligula, one was given by Catherine and the other lasted for 10 minutes",
+                         %% "The presentation that received the A was 4 minutes shorter than the presentation on Caligula",
+                         %% "The B-minus presentation was 6 minutes longer than the presentation that got the D",
+                         %% "The talk on Nero was 2 minutes shorter than the presentation that got the D"
+                         "Of the person that talked about Augustus and the student that talked about Caligula, one was Catherine and the other spoke for 10 minutes",
+                         "The child that got the A spoke for 4 minutes shorter than the student on Caligula",
+                         "The B-minus student spoke 6 minutes more than the student that got the D",
+                         "The student on Nero spoke 2 minutes less than the child that got the D"
+                     ], [
+                         noun([student], [students]),
+                         noun([person], [persons]),
+                         noun([minute], [minutes]),
+                         noun([child], [children]),
+                         pn([augustus]),
+                         pn([caligula]),
+                         pn([galerius]),
+                         pn([nero]),
+                         pn([johnnie]),
+                         pn([gina]),
+                         pn([yolanda]),
+                         pn([catherine]),
+                         pn([a]),
+                         pn([bplus]),
+                         pn([bminus]),
+                         pn([cminus]),
+                         pn([d]),
+                         tv([got], [get]),
+                         tvPrep([talked], [about], [talk], [talked]),
+                         tvPrep([spoke], [for], [speak], [spoken]),
+                         tvPrep([given], [by], [give], [given]),
+                         tvPrep([lasted], [for], [last], [lasted]),
+                         copGap([], [long]),
+                         comp(lower, [shorter, than]),
+                         comp(higher, [longer, than]),
+                         %% noun([presentation], [presentations]),
+                         %% noun([talk], [talks]),
+                         %% tv([gave], [give]),
+                         %% tv([received], [receive]),
+                         %% prep([on])
+                         tvPrep([gave, the, presentation], [on], [give, the, presentation], [given, the, presentation]),
+                         tvPrep([gave, a, presentation], [on], [give, a, presentation], [given, a, presentation]),
+                         prep([on])
+                     ])).

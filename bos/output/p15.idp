@@ -1,0 +1,91 @@
+// Problem p15
+
+vocabulary V {
+    type type1 constructed from {the_other_type1, augustus, galerius, caligula, nero}
+    type student constructed from {the_other_student, johnnie, gina, yolanda, catherine}
+    type type2 constructed from {bminus, bplus, cminus, a, d}
+    type minute = {6; 8; 10; 12; 14} isa int
+
+    talked_about(student, type1)
+    got(student, type2)
+    gave_the_presentation_on(student, type1)
+    spoke_for(student, minute)
+    gave_a_presentation_on(student, type1)
+    on(student, type1)
+}
+
+structure S : V {
+}
+
+theory T : V {
+    // The student who got the B-minus talked about Augustus
+    ?a [student]: got(a,bminus) & talked_about(a,augustus).
+
+    // Johnnie, the student who gave the presentation on Augustus and the person who got the B-plus were three different students
+    ?b [student] c [student]: ~ (johnnie = b) & ~ (johnnie = c) & ~ (b = c) & gave_the_presentation_on(b,augustus) & got(c,bplus).
+
+    // Gina didn't get the B-plus
+    ~ got(gina,bplus).
+
+    // The student who spoke for 10 minutes didn't get the C-Minus
+    ?d [student]: spoke_for(d,10) & ~ got(d,cminus).
+
+    // Gina didn't talk about Galerius
+    ~ talked_about(gina,galerius).
+
+    // Yolanda didn't give a presentation on Galerius
+    ~ gave_a_presentation_on(yolanda,galerius).
+
+    // Yolanda, the student who gave the presentation on Caligula and the student who got the B-minus were three different children
+    ?e [student] f [student]: ~ (yolanda = e) & ~ (yolanda = f) & ~ (e = f) & gave_the_presentation_on(e,caligula) & got(f,bminus).
+
+    // Gina didn't get the A
+    ~ got(gina,a).
+
+    // The student who spoke for 8 minutes talked about Galerius
+    ?g [student]: spoke_for(g,8) & talked_about(g,galerius).
+
+    // Of the person that talked about Augustus and the student that talked about Caligula, one was Catherine and the other spoke for 10 minutes
+    ?h [student] i [student]: talked_about(h,augustus) & talked_about(i,caligula) & ~ (h = i) & (catherine = h & spoke_for(i,10) | catherine = i & spoke_for(h,10)).
+
+    // The child that got the A spoke for 4 minutes shorter than the student on Caligula
+    ?j [student] k [minute] l [student] m [minute]: got(j,a) & on(l,caligula) & spoke_for(l,k) & m = k-4 & spoke_for(j,m).
+
+    // The B-minus student spoke 6 minutes more than the student that got the D
+    ?n [student] o [minute] p [student] q [minute]: got(p,d) & spoke_for(p,o) & q = o+6 & spoke_for(n,q) & got(n,bminus).
+
+    // The student on Nero spoke 2 minutes less than the child that got the D
+    ?r [student] s [minute] t [student] u [minute]: on(r,nero) & got(t,d) & spoke_for(t,s) & u = s-2 & spoke_for(r,u).
+
+
+    // Logigram bijection axioms:
+    ! x [student]: ?=1 y [type1]: talked_about(x, y).
+    ! x [type1]: ?=1 y [student]: talked_about(y, x).
+
+    ! x [student]: ?=1 y [type2]: got(x, y).
+    ! x [type2]: ?=1 y [student]: got(y, x).
+
+    ! x [student]: ?=1 y [type1]: gave_the_presentation_on(x, y).
+    ! x [type1]: ?=1 y [student]: gave_the_presentation_on(y, x).
+
+    ! x [student]: ?=1 y [minute]: spoke_for(x, y).
+    ! x [minute]: ?=1 y [student]: spoke_for(y, x).
+
+    ! x [student]: ?=1 y [type1]: gave_a_presentation_on(x, y).
+    ! x [type1]: ?=1 y [student]: gave_a_presentation_on(y, x).
+
+    ! x [student]: ?=1 y [type1]: on(x, y).
+    ! x [type1]: ?=1 y [student]: on(y, x).
+
+    // Logigram synonym axioms:
+    ! x [student] y [type1]: talked_about(x, y) <=> gave_the_presentation_on(x, y).
+    ! x [student] y [type1]: gave_the_presentation_on(x, y) <=> gave_a_presentation_on(x, y).
+    ! x [student] y [type1]: gave_a_presentation_on(x, y) <=> on(x, y).
+}
+
+procedure main() {
+    stdoptions.nbmodels = 10;
+    printmodels(modelexpand(T,S))
+    model = modelexpand(T,S)
+}
+
