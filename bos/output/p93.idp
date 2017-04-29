@@ -1,0 +1,78 @@
+// Problem p93
+
+vocabulary V {
+    type linkedin_connection = {57; 59; 64; 68; 78} isa int
+    type person constructed from {opal, neil, rosie, arnold, georgia}
+    type facebook_friend = {120; 130; 140; 150; 160} isa int
+    type twitter_follower = {589; 707; 715; 789; 809} isa int
+    type type1 = {-10; 10; -20; 20; -30; 30; -40; 40} isa int // differences between values of type facebook_friend
+
+    connected_to(person, linkedin_connection)
+    with(person, facebook_friend)
+    followed_by(person, twitter_follower)
+    has(person, facebook_friend)
+}
+
+structure S : V {
+}
+
+theory T : V {
+    // Opal is connected to 64 LinkedIn connections
+    connected_to(opal,64).
+
+    // The person followed by 809 Twitter followers, the person with 140 facebook friends and the person connected to 78 linkedin connections are three different people
+    ?a [person] b [person] c [person]: ~ (a = b) & ~ (a = c) & ~ (b = c) & followed_by(a,809) & with(b,140) & connected_to(c,78).
+
+    // Of rosie and neil, one is connected to 68 linkedin connections and the other is followed by 789 twitter followers
+    ~ (rosie = neil) & (connected_to(rosie,68) & followed_by(neil,789) | connected_to(neil,68) & followed_by(rosie,789)).
+
+    // The person connected to 57 linkedin connections has 10 facebook friends less than the person followed by 715 twitter followers
+    ?d [person] e [facebook_friend] f [person] g [facebook_friend]: connected_to(d,57) & followed_by(f,715) & has(f,e) & g = e-10 & has(d,g).
+
+    // Arnold isn't followed by 589 twitter followers
+    ~ followed_by(arnold,589).
+
+    // The person followed by 809 twitter followers isn't connected to 68 linkedin connections
+    ?h [person]: followed_by(h,809) & ~ connected_to(h,68).
+
+    // Of the person connected to 57 linkedin connections and arnold, one has 140 facebook friends and the other is followed by 789 twitter followers
+    ?i [person]: connected_to(i,57) & ~ (i = arnold) & (has(i,140) & followed_by(arnold,789) | has(arnold,140) & followed_by(i,789)).
+
+    // opal doesn't have 150 facebook friends
+    ~ has(opal,150).
+
+    // the person connected to 57 linkedin connections has 10 facebook friends less than georgia
+    ?j [person] k [facebook_friend] l [facebook_friend]: connected_to(j,57) & has(georgia,k) & l = k-10 & has(j,l).
+
+    // The person with 130 facebook friends is either arnold or the person followed by 715 twitter followers
+    ?m [person]: with(m,130) & (arnold = m | (?n [person]: followed_by(n,715) & n = m)).
+
+    // the person followed by 789 twitter followers has somewhat less than rosie
+    ?o [person] p [type1] q [facebook_friend] r [facebook_friend]: followed_by(o,789) & p>0 & has(rosie,q) & r = q-p & has(o,r).
+
+
+    // Logigram bijection axioms:
+    ! x [person]: ?=1 y [linkedin_connection]: connected_to(x, y).
+    ! x [linkedin_connection]: ?=1 y [person]: connected_to(y, x).
+
+    ! x [person]: ?=1 y [facebook_friend]: with(x, y).
+    ! x [facebook_friend]: ?=1 y [person]: with(y, x).
+
+    ! x [person]: ?=1 y [twitter_follower]: followed_by(x, y).
+    ! x [twitter_follower]: ?=1 y [person]: followed_by(y, x).
+
+    ! x [person]: ?=1 y [facebook_friend]: has(x, y).
+    ! x [facebook_friend]: ?=1 y [person]: has(y, x).
+
+    // Logigram synonym axioms:
+    ! x [person] y [facebook_friend]: with(x, y) <=> has(x, y).
+
+    // Logigram symmetry breaking axioms:
+}
+
+procedure main() {
+    stdoptions.nbmodels = 10;
+    printmodels(modelexpand(T,S))
+    model = modelexpand(T,S)
+}
+

@@ -317,4 +317,36 @@ problem(p17, problem(5, 5, [
                          prep([of])
                      ])).
 
+% "the one" -> the person
+% dropped "exactly"
+% "... fewer facebook friends than" -> "... facebook friends less than"
+% use different verbs!!!
+problem(p93, problem(4, 5, [
+                         "Opal is connected to 64 LinkedIn connections",
+                         "The person followed by 809 Twitter followers, the person with 140 facebook friends and the person connected to 78 linkedin connections are three different people",
+                         "Of rosie and neil, one is connected to 68 linkedin connections and the other is followed by 789 twitter followers",
+                         "The person connected to 57 linkedin connections has 10 facebook friends less than the person followed by 715 twitter followers",
+                         "Arnold isn't followed by 589 twitter followers",
+                         "The person followed by 809 twitter followers isn't connected to 68 linkedin connections",
+                         "Of the person connected to 57 linkedin connections and arnold, one has 140 facebook friends and the other is followed by 789 twitter followers",
+                         "opal doesn't have 150 facebook friends",
+                         "the person connected to 57 linkedin connections has 10 facebook friends less than georgia",
+                         "The person with 130 facebook friends is either arnold or the person followed by 715 twitter followers",
+                         "the person followed by 789 twitter followers has somewhat less than rosie"
+                     ], [
+                         noun([linkedin, connection], [linkedin, connections]),
+                         noun([twitter, follower], [twitter, followers]),
+                         noun([facebook, friend], [facebook, friends]),
+                         noun([person], [people]),
+                         pn([opal]),
+                         pn([rosie]),
+                         pn([neil]),
+                         pn([arnold]),
+                         pn([georgia]),
+                         tvPrep([connected], [to], [connect], [connected]),
+                         tvPrep([followed], [by], [follow], [followed]),
+                         tv([has], [have]),
+                         prep([with])
+                     ])).
+
 %% problem(foo, problem(4, 5, [], [])).
