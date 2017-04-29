@@ -489,8 +489,8 @@ number([sem:Sem, vType:Type], [Number|T], T) :-
 number([sem:Sem, vType:Type])-->
     { lexEntry(number, [syntax:Word, number:Number]) },
     Word,
-    { semLex(number, [number:Number, sem:Sem, vType:Type]) },
-    { addType(number-Number, Type) }.
+    { semLex(number, [number:Number, sem:Sem, vType:Type]) }.
+    %% { addType(number-Number, Type) }.
 
 pn([num:Num, sem:Sem, vType:Type])-->
     { lexEntry(pn, [symbol:Sym, syntax:Word, num:Num, vType:Type]) },
