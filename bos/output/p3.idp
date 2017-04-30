@@ -64,6 +64,10 @@ theory T : V {
     // Logigram synonym axioms:
     ! x [team] y [type1]: wore(x, y) <=> in(x, y).
     ! x [team] y [point]: finished_with(x, y) <=> had_a_final_score_of(x, y).
+
+    // Logigram transitive relation axioms:
+
+    // Logigram symmetry breaking axioms:
 }
 
 procedure main() {

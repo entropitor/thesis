@@ -81,6 +81,10 @@ theory T : V {
     ! x [student] y [type1]: talked_about(x, y) <=> gave_the_presentation_on(x, y).
     ! x [student] y [type1]: gave_the_presentation_on(x, y) <=> gave_a_presentation_on(x, y).
     ! x [student] y [type1]: gave_a_presentation_on(x, y) <=> on(x, y).
+
+    // Logigram transitive relation axioms:
+
+    // Logigram symmetry breaking axioms:
 }
 
 procedure main() {

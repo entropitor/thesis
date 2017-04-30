@@ -66,6 +66,10 @@ theory T : V {
     ! x [person] y [type1]: with(x, y) <=> had(x, y).
     ! x [person] y [type1]: had(x, y) <=> drank(x, y).
     ! x [person] y [type1]: drank(x, y) <=> got(x, y).
+
+    // Logigram transitive relation axioms:
+
+    // Logigram symmetry breaking axioms:
 }
 
 procedure main() {

@@ -60,6 +60,8 @@ theory T : V {
 
     // Logigram synonym axioms:
 
+    // Logigram transitive relation axioms:
+
     // Logigram symmetry breaking axioms:
     start_at(tour_1, the_other_type1).
     start_at(tour_2, high_park).

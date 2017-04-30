@@ -64,6 +64,10 @@ theory T : V {
     // Logigram synonym axioms:
     ! x [design] y [minute]: printed_in(x, y) <=> took_to_print(x, y).
     ! x [design] y [minute]: took_to_print(x, y) <=> required_to_print(x, y).
+
+    // Logigram transitive relation axioms:
+
+    // Logigram symmetry breaking axioms:
 }
 
 procedure main() {

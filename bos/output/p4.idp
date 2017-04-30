@@ -62,6 +62,10 @@ theory T : V {
 
     // Logigram synonym axioms:
     ! x [graduate] y [type2]: plays_for(x, y) <=> with(x, y).
+
+    // Logigram transitive relation axioms:
+
+    // Logigram symmetry breaking axioms:
 }
 
 procedure main() {

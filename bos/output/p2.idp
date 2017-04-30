@@ -60,6 +60,10 @@ theory T : V {
 
     // Logigram synonym axioms:
     ! x [person] y [point]: scored(x, y) <=> finishes_with(x, y).
+
+    // Logigram transitive relation axioms:
+
+    // Logigram symmetry breaking axioms:
 }
 
 procedure main() {

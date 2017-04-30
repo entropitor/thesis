@@ -67,6 +67,10 @@ theory T : V {
     // Logigram synonym axioms:
     ! x [juggler] y [type1]: used(x, y) <=> juggles(x, y).
     ! x [juggler] y [spot]: went(x, y) <=> performed(x, y).
+
+    // Logigram transitive relation axioms:
+
+    // Logigram symmetry breaking axioms:
 }
 
 procedure main() {

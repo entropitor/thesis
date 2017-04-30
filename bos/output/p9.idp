@@ -49,6 +49,10 @@ theory T : V {
     ! x [type1]: ?=1 y [client]: is_being_trained_by(y, x).
 
     // Logigram synonym axioms:
+
+    // Logigram transitive relation axioms:
+
+    // Logigram symmetry breaking axioms:
 }
 
 procedure main() {

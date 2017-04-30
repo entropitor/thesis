@@ -65,6 +65,10 @@ theory T : V {
 
     // Logigram synonym axioms:
     ! x [shell] y [type1]: from(x, y) <=> found_in(x, y).
+
+    // Logigram transitive relation axioms:
+
+    // Logigram symmetry breaking axioms:
 }
 
 procedure main() {
