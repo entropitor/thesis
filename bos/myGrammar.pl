@@ -169,8 +169,8 @@ np([coord:conj, num:pl, gap:G, ref:Ref, sem:NP, vType:Type])-->
 np([coord:conj, num:pl, gap:G, ref:Ref, sem:NP, vType:Type])-->
     np([coord:no, num:sg, gap:G, ref:Ref, sem:NP1, vType:Type]),
     coord([type:conj, sem:C]),
-    np([coord:Coord, num:_, gap:G, ref:Ref, sem:NP2, vType:Type]),
     { member(Coord, [conj, no]) },
+    np([coord:Coord, num:_, gap:G, ref:Ref, sem:NP2, vType:Type]),
     { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
 
 np([coord:disj, num:sg, gap:G, ref:Ref, sem:NP, vType:Type])-->
@@ -183,8 +183,8 @@ np([coord:disj, num:sg, gap:G, ref:Ref, sem:NP, vType:Type])-->
     coordPrefix([type:disj]),
     np([coord:no, num:sg, gap:G, ref:Ref, sem:NP1, vType:Type]),
     coord([type:disj, sem:C]),
-    np([coord:Coord, num:sg, gap:G, ref:Ref, sem:NP2, vType:Type]),
     { member(Coord, [disj, no]) },
+    np([coord:Coord, num:sg, gap:G, ref:Ref, sem:NP2, vType:Type]),
     { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
 
 np([coord:yes, num:sg, gap:G, ref:Ref, sem:NP, vType:Type])-->
@@ -200,9 +200,9 @@ np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
     { combine(np:NP, [det:Det, n:N]) }.
 
 %TODO: fix plural vs singular
-np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
+np([coord:no, num:_Num, gap:[], ref:no, sem:NP, vType:Type])-->
     number([sem:Number, vType:Type]),
-    n([coord:_, num:Num, sem:N, vType:Type]),
+    n([coord:_, num:_, sem:N, vType:Type]),
     { addTypeAttribute(Type, countable) },
     { combine(np:NP, [number:Number, n:N]) }.
 

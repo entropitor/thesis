@@ -364,6 +364,45 @@ problem(p18, problem(4, 5, [
                          prep([from])
                      ])).
 
+% discovered_in vs discovered_by
+% 1, 2, 4, 6, 9, 11) comet Whitaker discovered -> comet discovered by Whitaker
+% Whitaker discovered his comet in 2010 -> The comet discovered by Whitaker was found in 2010
+% 3, 4, 6) the one -> the comet
+% 9) Whitaker's -> the comet discovered by Withtaker
+% year: orbital vs time -> orbital replace "year" with "times the earth"
+problem(p19, problem(4, 5, [
+                         "The comet discovered by Whitaker doesn't have an orbital period of 30 times the earth",
+                         "Gostroma was discovered 1 year after the comet discovered by Tillman",
+                         "Of the comet discovered by Underwood and the comet with an orbital period of 42 times the earth, one was found in 2009 and the other is Trosny",
+                         "The comet with an orbital period of 21 times the earth is either the comet discovered by Whitaker or Casputi",
+                         "The comet discovered in 2010 doesn't have an orbital period of 21 times the earth",
+                         "The comet discovered by Tillman, the comet discovered in 2011 and Casputi are three different comets",
+                         "Sporrin wasn't found in 2010",
+                         %% "Whitaker discovered his comet in 2010",
+                         "The comet discovered by Whitaker was found in 2010",
+                         "The comet discovered by Parks was discovered 1 year before the comet discovered by Whitaker",
+                         "The comet discovered in 2011 doesn't have an orbital period of 47 times the earth",
+                         "The comet discovered by Underwood has an orbital period of either 47 or 58 times the earth"
+                     ], [
+                         noun([comet], [comets]),
+                         noun([year], [years]),
+                         noun([time, the, earth], [times, the, earth]),
+                         pn([whitaker]),
+                         pn([gostroma]),
+                         pn([tillman]),
+                         pn([trosny]),
+                         pn([casputi]),
+                         pn([sporrin]),
+                         pn([parks]),
+                         pn([underwood]),
+                         %% tv([discovered], [discover]),
+                         tvPrep([discovered], [by], [discover], [discovered]),
+                         tvPrep([has, an, orbital, period], [of], [have, an, orbital, period], [having, an, orbital, period]),
+                         tvPrep([discovered], [in], [discover], [discovered]),
+                         tvPrep([found], [in], [find], [found]),
+                         prep([with, an, orbital, period, of])
+                     ])).
+
 % "the one" -> the person
 % dropped "exactly"
 % "... fewer facebook friends than" -> "... facebook friends less than"

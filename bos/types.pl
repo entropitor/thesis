@@ -5,7 +5,8 @@
               addTypeAttribute/2,
               addMissingType/2,
               nameTypes/1,
-              resolveMissingTypes/2
+              resolveMissingTypes/2,
+              getRealBaseTypeCandidates/2
           ]).
 :- use_module(questions, [askQuestion/3]).
 
@@ -140,12 +141,15 @@ nameDerivedTypesFromPairs([BaseType-DerivedType | Rest], Start, End) :-
     nameDerivedTypesFromPairs(Rest, Start1, End).
 
 combineTypesToMatrix(CombinedTypes, NbBaseTypes, _NbConceptsPerType, TypesForMatrix) :-
+    getRealBaseTypeCandidates(CombinedTypes, RealCandidates),
+    simplifyCandidates(CombinedTypes, NbBaseTypes, RealCandidates, TypesForMatrix).
+
+getRealBaseTypeCandidates(CombinedTypes, RealCandidates) :-
     getDerivedTypes(CombinedTypes, DerivedTypes),
     getBaseTypeCandidates(CombinedTypes, BaseTypeCandidates),
     list_to_ord_set(DerivedTypes, DerivedTypesSet),
     list_to_ord_set(BaseTypeCandidates, BaseTypeCandidatesSet),
-    ord_subtract(BaseTypeCandidatesSet, DerivedTypesSet, RealCandidates),
-    simplifyCandidates(CombinedTypes, NbBaseTypes, RealCandidates, TypesForMatrix).
+    ord_subtract(BaseTypeCandidatesSet, DerivedTypesSet, RealCandidates).
 
 getDerivedTypes([], []).
 getDerivedTypes([attr(DerivedType, derivedCountable(_)) | Rest], [DerivedType | Types]) :-
