@@ -7,64 +7,64 @@ vocabulary V {
     type type2 constructed from {the_other_type2, black_and_white, blue_and_white, brown_and_yellow, pink_and_yellow}
 
     from(shell, type1)
-    discovered_in(shell, year)
+    found_in(shell, year)
     in(shell, type2)
-    found_in(shell, type1)
+    discovered_in(shell, type1)
 }
 
 structure S : V {
 }
 
 theory T : V {
-    // The baby's ear shell was discovered 3 years before the shell from Jamaica
-    ?a [year] b [shell] c [year]: from(b,jamaica) & discovered_in(b,a) & c = a-3 & discovered_in(baby_s_ear_shell,c).
+    // The baby's ear shell was found 3 years before the shell from Jamaica
+    ?a [year] b [shell] c [year]: from(b,jamaica) & found_in(b,a) & c = a-3 & found_in(baby_s_ear_shell,c).
 
-    // The seashell found in Puerto Rico isn't in black and white
-    ?d [shell]: found_in(d,puerto_rico) & ~ in(d,black_and_white).
+    // The seashell discovered in Puerto Rico isn't in black and white
+    ?d [shell]: discovered_in(d,puerto_rico) & ~ in(d,black_and_white).
 
-    // The shell discovered in 1992 isn't in blue and white
-    ?e [shell]: discovered_in(e,1992) & ~ in(e,blue_and_white).
+    // The shell found in 1992 isn't in blue and white
+    ?e [shell]: found_in(e,1992) & ~ in(e,blue_and_white).
 
-    // The blue and white shell, the shark eye shell and the shell found in Barbuda are three different specimens
-    ?f [shell] g [shell]: ~ (f = shark_eye_shell) & ~ (f = g) & ~ (shark_eye_shell = g) & in(f,blue_and_white) & found_in(g,barbuda).
+    // The blue and white shell, the shark eye shell and the shell discovered in Barbuda are three different specimens
+    ?f [shell] g [shell]: ~ (f = shark_eye_shell) & ~ (f = g) & ~ (shark_eye_shell = g) & in(f,blue_and_white) & discovered_in(g,barbuda).
 
-    // The piece found in Saint Lucia was discovered 6 years after the honey cerith shell
-    ?h [shell] i [year] j [year]: found_in(h,saint_lucia) & discovered_in(honey_cerith_shell,i) & j = i+6 & discovered_in(h,j).
+    // The piece discovered in Saint Lucia was found 6 years after the honey cerith shell
+    ?h [shell] i [year] j [year]: discovered_in(h,saint_lucia) & found_in(honey_cerith_shell,i) & j = i+6 & found_in(h,j).
 
-    // Of the baby's ear shell and the black and white shell, one was discovered in 2004 and the other was found in Saint Lucia
-    ?k [shell]: ~ (baby_s_ear_shell = k) & (discovered_in(baby_s_ear_shell,2004) & found_in(k,saint_lucia) | discovered_in(k,2004) & found_in(baby_s_ear_shell,saint_lucia)) & in(k,black_and_white).
+    // Of the baby's ear shell and the black and white shell, one was found in 2004 and the other was discovered in Saint Lucia
+    ?k [shell]: ~ (baby_s_ear_shell = k) & (found_in(baby_s_ear_shell,2004) & discovered_in(k,saint_lucia) | found_in(k,2004) & discovered_in(baby_s_ear_shell,saint_lucia)) & in(k,black_and_white).
 
     // The monk's fin shell isn't in black and white
     ~ in(monk_s_fin_shell,black_and_white).
 
-    // The seashell discovered in 2001 is in brown and yellow
-    ?l [shell]: discovered_in(l,2001) & in(l,brown_and_yellow).
+    // The seashell found in 2001 is in brown and yellow
+    ?l [shell]: found_in(l,2001) & in(l,brown_and_yellow).
 
-    // The shell discovered in 1995 is in pink and yellow
-    ?m [shell]: discovered_in(m,1995) & in(m,pink_and_yellow).
+    // The shell found in 1995 is in pink and yellow
+    ?m [shell]: found_in(m,1995) & in(m,pink_and_yellow).
 
-    // The baby's ear shell was discovered 3 years after the shell found in Aruba
-    ?n [year] o [shell] p [year]: found_in(o,aruba) & discovered_in(o,n) & p = n+3 & discovered_in(baby_s_ear_shell,p).
+    // The baby's ear shell was found 3 years after the shell discovered in Aruba
+    ?n [year] o [shell] p [year]: discovered_in(o,aruba) & found_in(o,n) & p = n+3 & found_in(baby_s_ear_shell,p).
 
-    // The shell discovered in 2001 is either the monk's fin shell or the coquina
-    ?q [shell]: discovered_in(q,2001) & (monk_s_fin_shell = q | coquina = q).
+    // The shell found in 2001 is either the monk's fin shell or the coquina
+    ?q [shell]: found_in(q,2001) & (monk_s_fin_shell = q | coquina = q).
 
 
     // Logigram bijection axioms:
     ! x [shell]: ?=1 y [type1]: from(x, y).
     ! x [type1]: ?=1 y [shell]: from(y, x).
 
-    ! x [shell]: ?=1 y [year]: discovered_in(x, y).
-    ! x [year]: ?=1 y [shell]: discovered_in(y, x).
+    ! x [shell]: ?=1 y [year]: found_in(x, y).
+    ! x [year]: ?=1 y [shell]: found_in(y, x).
 
     ! x [shell]: ?=1 y [type2]: in(x, y).
     ! x [type2]: ?=1 y [shell]: in(y, x).
 
-    ! x [shell]: ?=1 y [type1]: found_in(x, y).
-    ! x [type1]: ?=1 y [shell]: found_in(y, x).
+    ! x [shell]: ?=1 y [type1]: discovered_in(x, y).
+    ! x [type1]: ?=1 y [shell]: discovered_in(y, x).
 
     // Logigram synonym axioms:
-    ! x [shell] y [type1]: from(x, y) <=> found_in(x, y).
+    ! x [shell] y [type1]: from(x, y) <=> discovered_in(x, y).
 
     // Logigram transitive relation axioms:
 

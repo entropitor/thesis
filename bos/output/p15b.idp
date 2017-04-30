@@ -1,0 +1,119 @@
+// Problem p15b
+
+vocabulary V {
+    type type1 constructed from {the_other_type1, augustus, galerius, caligula, nero}
+    type student constructed from {the_other_student, johnnie, gina, yolanda, catherine}
+    type type2 constructed from {bminus, bplus, cminus, a, d}
+    type presentation constructed from {presentation_1, presentation_2, presentation_3, presentation_4, presentation_5}
+    type minute = {6; 8; 10; 12; 14} isa int
+
+    talked_about(student, type1)
+    got(student, type2)
+    on(presentation, type1)
+    gave(student, presentation)
+    spoke_for(student, minute)
+    lasted_for(presentation, minute)
+    given_by(presentation, student)
+    is_long(presentation, minute)
+    received(presentation, type2)
+}
+
+structure S : V {
+}
+
+theory T : V {
+    // The student who got the B-minus talked about Augustus
+    ?a [student]: got(a,bminus) & talked_about(a,augustus).
+
+    // Johnnie, the student who gave the presentation on Augustus and the person who got the B-plus were three different students
+    ?b [student] c [presentation] d [student]: ~ (johnnie = b) & ~ (johnnie = d) & ~ (b = d) & on(c,augustus) & gave(b,c) & got(d,bplus).
+
+    // Gina didn't get the B-plus
+    ~ got(gina,bplus).
+
+    // The student who spoke for 10 minutes didn't get the C-Minus
+    ?e [student]: spoke_for(e,10) & ~ got(e,cminus).
+
+    // Gina didn't talk about Galerius
+    ~ talked_about(gina,galerius).
+
+    // Yolanda didn't give a presentation on Galerius
+    ~ (?f [presentation]: on(f,galerius) & gave(yolanda,f)).
+
+    // Yolanda, the student who gave the presentation on Caligula and the student who got the B-minus were three different children
+    ?g [student] h [presentation] i [student]: ~ (yolanda = g) & ~ (yolanda = i) & ~ (g = i) & on(h,caligula) & gave(g,h) & got(i,bminus).
+
+    // Gina didn't get the A
+    ~ got(gina,a).
+
+    // The student who spoke for 8 minutes talked about Galerius
+    ?j [student]: spoke_for(j,8) & talked_about(j,galerius).
+
+    // Of the presentation on Augustus and the presentation on Caligula, one was given by Catherine and the other lasted for 10 minutes
+    ?k [presentation] l [presentation]: on(k,augustus) & on(l,caligula) & ~ (k = l) & (given_by(k,catherine) & lasted_for(l,10) | given_by(l,catherine) & lasted_for(k,10)).
+
+    // The presentation that received the A was 4 minutes shorter than the presentation on Caligula
+    ?m [presentation] n [minute] o [presentation] p [minute]: received(m,a) & on(o,caligula) & is_long(o,n) & p = n-4 & is_long(m,p).
+
+    // The B-minus presentation was 6 minutes longer than the presentation that received the D
+    ?q [presentation] r [minute] s [presentation] t [minute]: received(s,d) & is_long(s,r) & t = r+6 & is_long(q,t) & received(q,bminus).
+
+    // The talk on Nero was 2 minutes shorter than the presentation that received the D
+    ?u [presentation] v [minute] w [presentation] x [minute]: on(u,nero) & received(w,d) & is_long(w,v) & x = v-2 & is_long(u,x).
+
+
+    // Logigram bijection axioms:
+    ! x [student]: ?=1 y [type1]: talked_about(x, y).
+    ! x [type1]: ?=1 y [student]: talked_about(y, x).
+
+    ! x [student]: ?=1 y [type2]: got(x, y).
+    ! x [type2]: ?=1 y [student]: got(y, x).
+
+    ! x [presentation]: ?=1 y [type1]: on(x, y).
+    ! x [type1]: ?=1 y [presentation]: on(y, x).
+
+    ! x [student]: ?=1 y [presentation]: gave(x, y).
+    ! x [presentation]: ?=1 y [student]: gave(y, x).
+
+    ! x [student]: ?=1 y [minute]: spoke_for(x, y).
+    ! x [minute]: ?=1 y [student]: spoke_for(y, x).
+
+    ! x [presentation]: ?=1 y [minute]: lasted_for(x, y).
+    ! x [minute]: ?=1 y [presentation]: lasted_for(y, x).
+
+    ! x [presentation]: ?=1 y [student]: given_by(x, y).
+    ! x [student]: ?=1 y [presentation]: given_by(y, x).
+
+    ! x [presentation]: ?=1 y [minute]: is_long(x, y).
+    ! x [minute]: ?=1 y [presentation]: is_long(y, x).
+
+    ! x [presentation]: ?=1 y [type2]: received(x, y).
+    ! x [type2]: ?=1 y [presentation]: received(y, x).
+
+    // Logigram synonym axioms:
+    ! x [presentation] y [minute]: lasted_for(x, y) <=> is_long(x, y).
+
+    // Logigram transitive relation axioms:
+    ! x [student] y [type1] z [presentation]: talked_about(x, y) & given_by(z, x) => on(z, y).
+    ! x [student] y [type2] z [presentation]: got(x, y) & given_by(z, x) => received(z, y).
+    ! x [student] y [presentation] z [minute]: gave(x, y) & spoke_for(x, z) => lasted_for(y, z).
+    ! x [student] y [presentation] z [minute]: gave(x, y) & spoke_for(x, z) => is_long(y, z).
+    ! x [student] y [minute] z [presentation]: spoke_for(x, y) & given_by(z, x) => lasted_for(z, y).
+    ! x [student] y [minute] z [presentation]: spoke_for(x, y) & given_by(z, x) => is_long(z, y).
+
+    // Logigram reflexive relation axioms:
+    ! x [student] y [presentation]: gave(x, y) <=> given_by(y, x).
+
+    // Logigram symmetry breaking axioms:
+    on(presentation_1, the_other_type1).
+    on(presentation_2, augustus).
+    on(presentation_3, galerius).
+    on(presentation_4, caligula).
+    on(presentation_5, nero).
+}
+
+procedure main() {
+    stdoptions.nbmodels = 10;
+    printmodels(modelexpand(T,S))
+}
+
