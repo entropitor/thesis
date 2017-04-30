@@ -1,0 +1,86 @@
+// Problem p20
+
+vocabulary V {
+    type month = {1; 2; 3; 4; 5} isa int
+    type home constructed from {the_other_home, hughenden, wolfenden, markmanor, barnhill}
+    type type1 constructed from {the_other_type1, circle_drive, bird_road, grant_place, fifth_avenue}
+    type type2 constructed from {the_other_type2, victor, lady_grey, brunhilde, abigail}
+    type type3 = {-1; 1; -2; 2; -3; 3; -4; 4} isa int // differences between values of type month
+
+    investigated_in(home, month)
+    on(home, type1)
+    visited_in(home, month)
+    haunted_by(home, type2)
+    located_on(home, type1)
+}
+
+structure S : V {
+}
+
+theory T : V {
+    // Hughenden wasn't investigated in march
+    ~ investigated_in(hughenden,3).
+
+    // The home on Circle Drive was investigated sometime before Wolfenden
+    ?a [home] b [type3] c [month] d [month]: on(a,circle_drive) & b>0 & investigated_in(wolfenden,c) & d = c-b & investigated_in(a,d).
+
+    // Of the building haunted by Lady Grey and the building haunted by Victor, one was Markmanor and the other was visited in January
+    ?e [home] f [home]: haunted_by(e,lady_grey) & haunted_by(f,victor) & ~ (e = f) & (markmanor = e & visited_in(f,1) | markmanor = f & visited_in(e,1)).
+
+    // The house haunted by Victor was visited 1 month after the house haunted by Lady Grey
+    ?g [home] h [month] i [home] j [month]: haunted_by(g,victor) & haunted_by(i,lady_grey) & visited_in(i,h) & j = h+1 & visited_in(g,j).
+
+    // Of the home on Bird Road and Barnhill, one was visited in January and the other was haunted by Brunhilde
+    ?k [home]: on(k,bird_road) & ~ (k = barnhill) & (visited_in(k,1) & haunted_by(barnhill,brunhilde) | visited_in(barnhill,1) & haunted_by(k,brunhilde)).
+
+    // Markmanor was visited 1 month after the home on Grant Place
+    ?l [month] m [home] n [month]: on(m,grant_place) & visited_in(m,l) & n = l+1 & visited_in(markmanor,n).
+
+    // The house visited in march wasn't located on Circle Drive
+    ?o [home]: visited_in(o,3) & ~ located_on(o,circle_drive).
+
+    // Hughenden wasn't haunted by Abigail
+    ~ haunted_by(hughenden,abigail).
+
+    // Wolfenden was haunted by Brunhilde
+    haunted_by(wolfenden,brunhilde).
+
+    // The building visited in May wasn't located on Fifth Avenue
+    ?p [home]: visited_in(p,5) & ~ located_on(p,fifth_avenue).
+
+    // The home visited in April was either Markmanor or the home haunted by Brunhilde
+    ?q [home]: visited_in(q,4) & (markmanor = q | (?r [home]: haunted_by(r,brunhilde) & r = q)).
+
+
+    // Logigram bijection axioms:
+    ! x [home]: ?=1 y [month]: investigated_in(x, y).
+    ! x [month]: ?=1 y [home]: investigated_in(y, x).
+
+    ! x [home]: ?=1 y [type1]: on(x, y).
+    ! x [type1]: ?=1 y [home]: on(y, x).
+
+    ! x [home]: ?=1 y [month]: visited_in(x, y).
+    ! x [month]: ?=1 y [home]: visited_in(y, x).
+
+    ! x [home]: ?=1 y [type2]: haunted_by(x, y).
+    ! x [type2]: ?=1 y [home]: haunted_by(y, x).
+
+    ! x [home]: ?=1 y [type1]: located_on(x, y).
+    ! x [type1]: ?=1 y [home]: located_on(y, x).
+
+    // Logigram synonym axioms:
+    ! x [home] y [month]: investigated_in(x, y) <=> visited_in(x, y).
+    ! x [home] y [type1]: on(x, y) <=> located_on(x, y).
+
+    // Logigram transitive relation axioms:
+
+    // Logigram reflexive relation axioms:
+
+    // Logigram symmetry breaking axioms:
+}
+
+procedure main() {
+    stdoptions.nbmodels = 10;
+    printmodels(modelexpand(T,S))
+}
+

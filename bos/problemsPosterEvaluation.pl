@@ -412,18 +412,48 @@ problem(p19, problem(4, 5, [
                      ])).
 
 
+% 3) the one -> the building
+% 5, 9) dropped: was [said to be] haunted by
+% 7, 10, 11) dropped: house [priscilla] visited in ...
 problem(p20, problem(4, 5, [
                          "Hughenden wasn't investigated in march",
                          "The home on Circle Drive was investigated sometime before Wolfenden",
-                         "Of the building haunted by Lady Grey and the one haunted by Victor, one was Markmanor and the other was visited in January",
+                         "Of the building haunted by Lady Grey and the building haunted by Victor, one was Markmanor and the other was visited in January",
                          "The house haunted by Victor was visited 1 month after the house haunted by Lady Grey",
-                         "Of the home on Bird Road and Barnhill, one was visited in January and the other was said to be haunted by Brunhilde",
+                         "Of the home on Bird Road and Barnhill, one was visited in January and the other was haunted by Brunhilde",
                          "Markmanor was visited 1 month after the home on Grant Place",
-                         "The house Priscilla visited in march wasn't located on Circle Drive",
-                         "Hughenden wasn't haunted by Brunhilde",
-                         "The building Priscilla visited in May wasn't located on Fifth Avenue",
-                         "The home Priscilla visited in April was either Markmanor or the home haunted by Brunhilde"
+                         "The house visited in march wasn't located on Circle Drive",
+                         "Hughenden wasn't haunted by Abigail",
+                         "Wolfenden was haunted by Brunhilde",
+                         "The building visited in May wasn't located on Fifth Avenue",
+                         "The home visited in April was either Markmanor or the home haunted by Brunhilde"
                      ], [
+                         noun([home], [homes]),
+                         noun([building], [buildings]),
+                         noun([house], [houses]),
+                         noun([month], [months]),
+                         pn([hughenden]),
+                         pn([circle, drive]),
+                         pn([wolfenden]),
+                         pn([lady, grey]),
+                         pn([victor]),
+                         pn([markmanor]),
+                         pn([bird, road]),
+                         pn([barnhill]),
+                         pn([brunhilde]),
+                         pn([grant, place]),
+                         pn([priscilla]),
+                         pn([fifth, avenue]),
+                         pn([abigail]),
+                         pnn([march], 3),
+                         pnn([january], 1),
+                         pnn([may], 5),
+                         pnn([april], 4),
+                         tvPrep([investigated], [in], [investigate], [investigated]),
+                         tvPrep([haunted], [by], [haunt], [haunted]),
+                         tvPrep([visited], [in], [visit], [visited]),
+                         tvPrep([located], [on], [locate], [located]),
+                         prep([on])
                      ])).
 
 % EXTRA, for fun
