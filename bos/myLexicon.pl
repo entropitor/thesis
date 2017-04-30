@@ -30,7 +30,7 @@ lexEntry(det, [syntax:[the], mood:decl, num:sg, type:indef]).
 lexEntry(det, [syntax:[every], mood:decl, num:sg, type:uni]).
 lexEntry(det, [syntax:[a], mood:decl, num:sg, type:indef]).
 lexEntry(det, [syntax:[an], mood:decl, num:sg, type:indef]).
-lexEntry(det, [syntax:[one], mood:decl, num:sg, type:indef]).
+%% lexEntry(det, [syntax:[one], mood:decl, num:sg, type:indef]).
 lexEntry(det, [syntax:[some], mood:decl, num:sg, type:indef]).
 lexEntry(det, [syntax:[no], mood:decl, num:sg, type:neg]).
 lexEntry(det, [syntax:[the], mood:decl, num:sg, type:def]).
@@ -131,6 +131,14 @@ lexEntry(av, [syntax:[was], inf:fin, num:sg, pol:pos]).
 lexEntry(av, [syntax:[was, not], inf:fin, num:sg, pol:neg]).
 lexEntry(av, [syntax:[wasn, t], inf:fin, num:sg, pol:neg]).
 
+lexEntry(av, [syntax:[will], inf:fin, num:sg, pol:pos]).
+lexEntry(av, [syntax:[will, not], inf:fin, num:sg, pol:neg]).
+lexEntry(av, [syntax:[won, t], inf:fin, num:sg, pol:neg]).
+
+lexEntry(av, [syntax:[will], inf:fin, num:pl, pol:pos]).
+lexEntry(av, [syntax:[will, not], inf:fin, num:pl, pol:neg]).
+lexEntry(av, [syntax:[won, t], inf:fin, num:pl, pol:neg]).
+
 /*========================================================================
     Nouns
 ========================================================================*/
@@ -194,10 +202,12 @@ lexEntry(qnp, [symbol:question_thing, syntax:[what], mood:int, type:wh]).
     Comparison operators
 ========================================================================*/
 lexEntry(comp, [type:lower, syntax:[lower, than]]).
+lexEntry(comp, [type:lower, syntax:[less, than]]).
 lexEntry(comp, [type:lower, syntax:[below]]).
 lexEntry(comp, [type:lower, syntax:[before]]).
 
 lexEntry(comp, [type:higher, syntax:[higher, than]]).
+lexEntry(comp, [type:higher, syntax:[more, than]]).
 lexEntry(comp, [type:higher, syntax:[above]]).
 lexEntry(comp, [type:higher, syntax:[after]]).
 

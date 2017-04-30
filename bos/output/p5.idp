@@ -62,11 +62,16 @@ theory T : V {
 
     // Logigram synonym axioms:
     ! x [person] y [type1]: a_native_of(x, y) <=> from(x, y).
+
+    // Logigram transitive relation axioms:
+
+    // Logigram reflexive relation axioms:
+
+    // Logigram symmetry breaking axioms:
 }
 
 procedure main() {
     stdoptions.nbmodels = 10;
     printmodels(modelexpand(T,S))
-    model = modelexpand(T,S)
 }
 

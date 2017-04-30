@@ -60,7 +60,11 @@ toBaseType(Types, _NbConceptsPerType, BaseType, baseType(BaseType, int:Range)) :
     getRepresentativeUseForBaseType(Types, BaseType, RepresentativeUse),
     format(string(Str), "What are the possible values for ~p ~w?", [BaseType, RepresentativeUse]),
     askQuestion(q(BaseType, intRange), Str,Range).
-toBaseType(_, _, Type, baseType(Type, unknown)).
+toBaseType(_, NbConceptsPerType, BaseType, baseType(BaseType, fakeConstructed:Symbols)) :-
+    atom_concat(BaseType, '_', BaseTypeU),
+    numlist(1, NbConceptsPerType, Nums),
+    maplist(atom_concat(BaseTypeU), Nums, Symbols).
+%% toBaseType(_, _, Type, baseType(Type, unknown)).
 
 getPNsForBaseType(BaseType, type(pn-Symbol, BaseType), Symbol) :-
     !.

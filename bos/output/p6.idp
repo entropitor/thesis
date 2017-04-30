@@ -66,11 +66,16 @@ theory T : V {
 
     // Logigram synonym axioms:
     ! x [dog] y [type2]: went_to(x, y) <=> sent_to(x, y).
+
+    // Logigram transitive relation axioms:
+
+    // Logigram reflexive relation axioms:
+
+    // Logigram symmetry breaking axioms:
 }
 
 procedure main() {
     stdoptions.nbmodels = 10;
     printmodels(modelexpand(T,S))
-    model = modelexpand(T,S)
 }
 

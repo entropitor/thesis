@@ -1,0 +1,84 @@
+// Problem p17
+
+vocabulary V {
+    type type1 constructed from {the_other_type1, high_park, casa_loma, yorkville, city_hall}
+    type tour constructed from {tour_1, tour_2, tour_3, tour_4, tour_5}
+    type am = {7; 8; 9; 10; 11} isa int
+    type type2 constructed from {the_other_type2, zachary, janice, oscar, whitney}
+    type person = {12; 15; 16; 17; 18} isa int
+
+    start_at(tour, type1)
+    begin_at(tour, am)
+    of(tour, person)
+    with(tour, person)
+    from(tour, type2)
+}
+
+structure S : V {
+}
+
+theory T : V {
+    // The 11 am tour won't start at high park
+    ?a [tour]: ~ start_at(a,high_park) & begin_at(a,11).
+
+    // Zachary's outing will begin 1 hour before the outing starting at Casa Loma
+    ?b [tour] c [am] d [tour] e [am]: start_at(d,casa_loma) & begin_at(d,c) & e = c-1 & begin_at(b,e) & from(b,zachary).
+
+    // The tour with 17 people will begin 3 hours before the group of 16
+    ?f [tour] g [am] h [tour] i [am]: with(f,17) & of(h,16) & begin_at(h,g) & i = g-3 & begin_at(f,i).
+
+    // The tour with 12 people will start at Yorkville
+    ?j [tour]: with(j,12) & start_at(j,yorkville).
+
+    // Zachary's trip will begin 3 hours before Janice's trip
+    ?k [tour] l [am] m [tour] n [am]: begin_at(m,l) & from(m,janice) & n = l-3 & begin_at(k,n) & from(k,zachary).
+
+    // Zachary's outing will begin 2 hours before the tour starting at Yorkville
+    ?o [tour] p [am] q [tour] r [am]: start_at(q,yorkville) & begin_at(q,p) & r = p-2 & begin_at(o,r) & from(o,zachary).
+
+    // Of the 7 am tour and Oscar's tour, one will start at Yorkville and the other will start at City Hall
+    ?s [tour] t [tour]: ~ (s = t) & (start_at(s,yorkville) & start_at(t,city_hall) | start_at(t,yorkville) & start_at(s,city_hall)) & from(t,oscar) & begin_at(s,7).
+
+    // The outing from Whitney isn't with 15 people
+    ?u [tour]: from(u,whitney) & ~ with(u,15).
+
+    // The Yorkville tour, the tour beginning at 9 am and the outing with 15 people are three different tours
+    ?v [tour] w [tour] x [tour]: ~ (v = w) & ~ (v = x) & ~ (w = x) & start_at(v,yorkville) & begin_at(w,9) & with(x,15).
+
+
+    // Logigram bijection axioms:
+    ! x [tour]: ?=1 y [type1]: start_at(x, y).
+    ! x [type1]: ?=1 y [tour]: start_at(y, x).
+
+    ! x [tour]: ?=1 y [am]: begin_at(x, y).
+    ! x [am]: ?=1 y [tour]: begin_at(y, x).
+
+    ! x [tour]: ?=1 y [person]: of(x, y).
+    ! x [person]: ?=1 y [tour]: of(y, x).
+
+    ! x [tour]: ?=1 y [person]: with(x, y).
+    ! x [person]: ?=1 y [tour]: with(y, x).
+
+    ! x [tour]: ?=1 y [type2]: from(x, y).
+    ! x [type2]: ?=1 y [tour]: from(y, x).
+
+    // Logigram synonym axioms:
+    ! x [tour] y [person]: of(x, y) <=> with(x, y).
+
+    // Logigram transitive relation axioms:
+
+    // Logigram reflexive relation axioms:
+
+    // Logigram symmetry breaking axioms:
+    start_at(tour_1, the_other_type1).
+    start_at(tour_2, high_park).
+    start_at(tour_3, casa_loma).
+    start_at(tour_4, yorkville).
+    start_at(tour_5, city_hall).
+}
+
+procedure main() {
+    stdoptions.nbmodels = 10;
+    printmodels(modelexpand(T,S))
+}
+

@@ -45,7 +45,7 @@ simplify(X, Y) :-
     betaConvert(X, X1),
     mergeDrs(X1, Y).
 
-:- use_module(types, [combineTypes/2, nameTypes/1]).
+:- use_module(types, [combineTypes/2, nameTypes/1, getRealBaseTypeCandidates/2]).
 
 :- use_module(myGrammar, [t/3]).
 
@@ -129,7 +129,15 @@ testp(ProblemName, [ProblemName, NbDRSes, NbResults], Solutions) :-
 
 filterResults(problem(_NbBaseTypes, _, _, _), Results, NewResults) :-
     findall(PossibleResult, (
-                maplist(memberIfMultiple, PossibleResult, Results)
+                maplist(memberIfMultiple, PossibleResult, Results),
+                pairs_keys_values(PossibleResult, _DRSs, Types),
+                flatten(Types, FlattenTypes),
+                combineTypes(FlattenTypes, CombinedTypes),
+                \+ (
+                    member(attr(TypeX, countable), CombinedTypes),
+                    member(attr(TypeY, qualified), CombinedTypes),
+                    TypeX == TypeY
+                )
                 %% pairs_keys_values(PossibleResult, _DRSs, Types),
                 %% flatten(Types, FlattenTypes),
                 %% combineTypes(FlattenTypes, NewTypes)

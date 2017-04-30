@@ -5,7 +5,8 @@
               addTypeAttribute/2,
               addMissingType/2,
               nameTypes/1,
-              resolveMissingTypes/2
+              resolveMissingTypes/2,
+              getRealBaseTypeCandidates/2
           ]).
 :- use_module(questions, [askQuestion/3]).
 
@@ -32,12 +33,29 @@ resolveMissingTypes(Types, Types) :-
     !.
 resolveMissingTypes(Types, TypesOut2) :-
     selectchk(missingType(X, Y), Types, TypesOut),
-    resolveMissingType(X, Y, Types),
-    resolveMissingTypes(TypesOut, TypesOut2).
-resolveMissingType(X, Y, Types) :-
-    member(type(_-X, Type), Types),
+    resolveMissingType(X, Y, TypesOut, TypesOut1),
+    resolveMissingTypes(TypesOut1, TypesOut2).
+resolveMissingType(X, Y, TypesIn, TypesIn) :-
+    member(type(_-X, Type), TypesIn),
     Type == Y,
     !.
+resolveMissingType(X, Y, TypesIn, TypesOut) :-
+    member(type(_-Name, Type), TypesIn),
+    nonvar(Type),
+    Type = pred(S, O),
+    Y == pred(O, S),
+    !,
+    TypesOut = [type(new-X, Y) | TypesIn],
+    format(atom(X), '~p_rev', [Name]).
+resolveMissingType(X, Y, TypesIn, TypesOut) :-
+    nonvar(Y),
+    Y = pred(S, O),
+    !,
+    format(atom(X), 'unknown_relation_~p_~p', [S, O]),
+    TypesOut = [type(new-X, Y) | TypesIn].
+resolveMissingType(_, _, _, _) :-
+    writeln("Couldn't resolve missingType"),
+    fail.
 
 combineTypes2([], []) :-
     !.
@@ -139,13 +157,24 @@ nameDerivedTypesFromPairs([BaseType-DerivedType | Rest], Start, End) :-
     atom_concat(BaseType, 'Difference', DerivedType),
     nameDerivedTypesFromPairs(Rest, Start1, End).
 
-combineTypesToMatrix(CombinedTypes, NbBaseTypes, _NbConceptsPerType, TypesForMatrix) :-
+combineTypesToMatrix(CombinedTypesDirty, NbBaseTypes, _NbConceptsPerType, TypesForMatrix) :-
+    filterGroupSizeTypes(CombinedTypesDirty, CombinedTypes),
+    getRealBaseTypeCandidates(CombinedTypes, RealCandidates),
+    simplifyCandidates(CombinedTypes, NbBaseTypes, RealCandidates, TypesForMatrix).
+
+filterGroupSizeTypes(CombinedTypesDirty, CombinedTypes) :-
+    select(type(number-_, Type), CombinedTypesDirty, Rest),
+    \+ (member(attr(Type1, countable), Rest), Type1 == Type),
+    !,
+    filterGroupSizeTypes(Rest, CombinedTypes).
+filterGroupSizeTypes(CombinedTypes, CombinedTypes).
+
+getRealBaseTypeCandidates(CombinedTypes, RealCandidates) :-
     getDerivedTypes(CombinedTypes, DerivedTypes),
     getBaseTypeCandidates(CombinedTypes, BaseTypeCandidates),
     list_to_ord_set(DerivedTypes, DerivedTypesSet),
     list_to_ord_set(BaseTypeCandidates, BaseTypeCandidatesSet),
-    ord_subtract(BaseTypeCandidatesSet, DerivedTypesSet, RealCandidates),
-    simplifyCandidates(CombinedTypes, NbBaseTypes, RealCandidates, TypesForMatrix).
+    ord_subtract(BaseTypeCandidatesSet, DerivedTypesSet, RealCandidates).
 
 getDerivedTypes([], []).
 getDerivedTypes([attr(DerivedType, derivedCountable(_)) | Rest], [DerivedType | Types]) :-
@@ -168,7 +197,9 @@ simplifyCandidates(CombinedTypes, NbBaseTypes, RealCandidates, TypesForMatrix) :
     !,
     include(\=(neq(_, _)), CombinedTypes, Temp),
     include(\=(eq(_, _)), Temp, Temp1),
-    include(\=(notObjectOf(_, _)), Temp1, RealCombinedTypes),
+    include(\=(notObjectOf(_, _)), Temp1, Temp2),
+    include(\=(neq_rev(_, _)), Temp2, Temp3),
+    include(\=(eq_rev(_, _)), Temp3, RealCombinedTypes),
     combineTypes(RealCombinedTypes, TypesForMatrix).
 simplifyCandidates(CombinedTypes, NbBaseTypes, RealCandidates, TypesForMatrix) :-
     length(RealCandidates, N),
@@ -196,11 +227,10 @@ askSimplificationQuestion(CombinedTypes, NewCombinedTypes) :-
     nonvar(Type1),
     Type1 = pred(S1, O1),
     member(type(_-Symbol2, Type2), CombinedTypes),
-    Symbol1 \= Symbol2,
+    Type1 \== Type2,
     nonvar(Type2),
     Type2 = pred(S2, O2),
     \+ \+ (S1 = S2, O1 = O2),
-    \+ (Type1 == Type2),
     \+ compared(Symbol1, Symbol2, CombinedTypes),
     format(string(Question), "Are '~p' and '~p' the same relation? [yes/no]", [Symbol1, Symbol2]),
     askQuestion(eq(Symbol1, Symbol2), Question, Answer),
@@ -212,6 +242,27 @@ askSimplificationQuestion(CombinedTypes, NewCombinedTypes) :-
         NewCombinedTypes = [eq(Symbol1, Symbol2) | CombinedTypes]
     ;
         NewCombinedTypes = [neq(Symbol1, Symbol2) | CombinedTypes]
+    ).
+askSimplificationQuestion(CombinedTypes, NewCombinedTypes) :-
+    member(type(_-Symbol1, Type1), CombinedTypes),
+    nonvar(Type1),
+    Type1 = pred(S1, O1),
+    member(type(_-Symbol2, Type2), CombinedTypes),
+    Type1 \== Type2,
+    nonvar(Type2),
+    Type2 = pred(S2, O2),
+    \+ \+ (S1 = O2, O1 = S2),
+    \+ compared_rev(Symbol1, Symbol2, CombinedTypes),
+    format(string(Question), "Are '~p' and '~p' each other reverse relation? [yes/no]", [Symbol1, Symbol2]),
+    askQuestion(eq_rev(Symbol1, Symbol2), Question, Answer),
+    (
+        Answer = yes
+    ->
+        S1 = O2,
+        O1 = S2,
+        NewCombinedTypes = [eq_rev(Symbol1, Symbol2) | CombinedTypes]
+    ;
+        NewCombinedTypes = [neq_rev(Symbol1, Symbol2) | CombinedTypes]
     ).
 askSimplificationQuestion(CombinedTypes, NewCombinedTypes) :-
     member(missingType(_, pred(_, Type1)), CombinedTypes),
@@ -269,3 +320,16 @@ neq(S1, S2, Types) :-
     member(neq(S1, S2), Types).
 neq(S1, S2, Types) :-
     member(neq(S2, S1), Types).
+
+compared_rev(S1, S2, Types) :-
+    eq_rev(S1, S2, Types).
+compared_rev(S1, S2, Types) :-
+    neq_rev(S1, S2, Types).
+eq_rev(S1, S2, Types) :-
+    member(eq_rev(S1, S2), Types).
+eq_rev(S1, S2, Types) :-
+    member(eq_rev(S2, S1), Types).
+neq_rev(S1, S2, Types) :-
+    member(neq_rev(S1, S2), Types).
+neq_rev(S1, S2, Types) :-
+    member(neq_rev(S2, S1), Types).

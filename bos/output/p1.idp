@@ -72,11 +72,16 @@ theory T : V {
     ! x [animal] y [type1]: lives_in(x, y) <=> from(x, y).
     ! x [animal] y [type2]: has_a_population_size_of(x, y) <=> with_a_population_size_of(x, y).
     ! x [animal] y [type2]: with_a_population_size_of(x, y) <=> has_a_surviving_population_size_of(x, y).
+
+    // Logigram transitive relation axioms:
+
+    // Logigram reflexive relation axioms:
+
+    // Logigram symmetry breaking axioms:
 }
 
 procedure main() {
     stdoptions.nbmodels = 10;
     printmodels(modelexpand(T,S))
-    model = modelexpand(T,S)
 }
 

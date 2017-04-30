@@ -1,0 +1,86 @@
+// Problem p12
+
+vocabulary V {
+    type type1 constructed from {the_other_type1, water, lemonade, iced_tea, orange_soda}
+    type order constructed from {the_other_order, homer, glen, wallace, oliver}
+    type type2 = {5; 6; 7; 8; 9} isa int
+    type type3 constructed from {the_other_type3, sloppy_joe, spaghetti, hamburger, turkey_plate}
+
+    with(order, type1)
+    cost(order, type2)
+    paid(order, type2)
+    ordered(order, type3)
+    had(order, type1)
+    drank(order, type1)
+    got(order, type1)
+}
+
+structure S : V {
+}
+
+theory T : V {
+    // The order with the lemonade cost $1 more than the order with the water
+    ?a [order] b [type2] c [order] d [type2]: with(a,lemonade) & with(c,water) & cost(c,b) & d = b+1 & cost(a,d).
+
+    // Homer paid $7
+    paid(homer,7).
+
+    // Glen paid $3 less than the person who ordered the sloppy joe
+    ?e [type2] f [order] g [type2]: ordered(f,sloppy_joe) & paid(f,e) & g = e-3 & paid(glen,g).
+
+    // Wallace didn't have the iced tea
+    ~ had(wallace,iced_tea).
+
+    // Of the diner who paid $6 and Homer, one ordered the spaghetti and the other drank the water
+    ?h [order]: paid(h,6) & ~ (h = homer) & (ordered(h,spaghetti) & drank(homer,water) | ordered(homer,spaghetti) & drank(h,water)).
+
+    // Oliver ordered the hamburger
+    ordered(oliver,hamburger).
+
+    // The five diners were the person who ordered the turkey plate, Oliver, Glen, the person who got the iced tea and the person who paid $5
+    ?i [order] j [order] k [order]: ~ (i = oliver) & ~ (i = glen) & ~ (i = j) & ~ (i = k) & ~ (oliver = glen) & ~ (oliver = j) & ~ (oliver = k) & ~ (glen = j) & ~ (glen = k) & ~ (j = k) & ordered(i,turkey_plate) & got(j,iced_tea) & paid(k,5).
+
+    // Glen didn't have the orange soda
+    ~ had(glen,orange_soda).
+
+
+    // Logigram bijection axioms:
+    ! x [order]: ?=1 y [type1]: with(x, y).
+    ! x [type1]: ?=1 y [order]: with(y, x).
+
+    ! x [order]: ?=1 y [type2]: cost(x, y).
+    ! x [type2]: ?=1 y [order]: cost(y, x).
+
+    ! x [order]: ?=1 y [type2]: paid(x, y).
+    ! x [type2]: ?=1 y [order]: paid(y, x).
+
+    ! x [order]: ?=1 y [type3]: ordered(x, y).
+    ! x [type3]: ?=1 y [order]: ordered(y, x).
+
+    ! x [order]: ?=1 y [type1]: had(x, y).
+    ! x [type1]: ?=1 y [order]: had(y, x).
+
+    ! x [order]: ?=1 y [type1]: drank(x, y).
+    ! x [type1]: ?=1 y [order]: drank(y, x).
+
+    ! x [order]: ?=1 y [type1]: got(x, y).
+    ! x [type1]: ?=1 y [order]: got(y, x).
+
+    // Logigram synonym axioms:
+    ! x [order] y [type1]: with(x, y) <=> had(x, y).
+    ! x [order] y [type2]: cost(x, y) <=> paid(x, y).
+    ! x [order] y [type1]: had(x, y) <=> drank(x, y).
+    ! x [order] y [type1]: drank(x, y) <=> got(x, y).
+
+    // Logigram transitive relation axioms:
+
+    // Logigram reflexive relation axioms:
+
+    // Logigram symmetry breaking axioms:
+}
+
+procedure main() {
+    stdoptions.nbmodels = 10;
+    printmodels(modelexpand(T,S))
+}
+

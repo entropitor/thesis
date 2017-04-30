@@ -1,0 +1,90 @@
+// Problem p11
+
+vocabulary V {
+    type position constructed from {qmz, gxtv, psto, jmo, kmpp}
+    type stock constructed from {utilities_stock, financial_stock, healthcare_stock, energy_stock, real_estate_stock}
+    type type1 constructed from {the_other_type1, geraldo, edith, abigail, heathcliff}
+    type per_share = {25; 26; 27; 28; 29} isa int
+    type type2 = {-1; 1; -2; 2; -3; 3; -4; 4} isa int // differences between values of type per_share
+
+    unknown_relation__912__1124_rev(position, stock)
+    unknown_relation__912__1124(stock, position)
+    purchased(type1, stock)
+    is_worth(stock, per_share)
+    sold_for(position, per_share)
+    bought(type1, position)
+}
+
+structure S : V {
+}
+
+theory T : V {
+    // The utilities stock was $1 per share less expensive than the stock that Geraldo purchased
+    ?a [per_share] b [stock] c [per_share]: purchased(geraldo,b) & is_worth(b,a) & c = a-1 & is_worth(utilities_stock,c).
+
+    // GXTV sold for $2 per share less than QMZ
+    ?d [per_share] e [per_share]: sold_for(qmz,d) & e = d-2 & sold_for(gxtv,e).
+
+    // Edith didn't purchase the financial stock
+    ~ purchased(edith,financial_stock).
+
+    // PSTO sold for $29 per share
+    sold_for(psto,29).
+
+    // The position that Abigail bought was either KMPP or JMO
+    ?f [position]: bought(abigail,f) & (kmpp = f | jmo = f).
+
+    // The health-care stock was $2 per share more expensive than the financial stock
+    ?g [per_share] h [per_share]: is_worth(financial_stock,g) & h = g+2 & is_worth(healthcare_stock,h).
+
+    // The energy stock was less expensive than the JMO stock
+    ?i [type2] j [per_share] k [stock] l [per_share]: i>0 & is_worth(k,j) & unknown_relation__912__1124(k,jmo) & l = j-i & is_worth(energy_stock,l).
+
+    // Heathcliff purchased the real estate stock
+    purchased(heathcliff,real_estate_stock).
+
+    // Of QMZ and GXTV, one sold for $26 per share and the other was the health-care stock position
+    ~ (qmz = gxtv) & ((?m [position]: sold_for(qmz,26) & m = gxtv & unknown_relation__912__1124_rev(m,healthcare_stock)) | (?n [position]: sold_for(gxtv,26) & n = qmz & unknown_relation__912__1124_rev(n,healthcare_stock))).
+
+    // Abigail didn't purchase the stock that was $25 per share worth
+    ~ (?o [stock]: is_worth(o,25) & purchased(abigail,o)).
+
+
+    // Logigram bijection axioms:
+    ! x [position]: ?=1 y [stock]: unknown_relation__912__1124_rev(x, y).
+    ! x [stock]: ?=1 y [position]: unknown_relation__912__1124_rev(y, x).
+
+    ! x [stock]: ?=1 y [position]: unknown_relation__912__1124(x, y).
+    ! x [position]: ?=1 y [stock]: unknown_relation__912__1124(y, x).
+
+    ! x [type1]: ?=1 y [stock]: purchased(x, y).
+    ! x [stock]: ?=1 y [type1]: purchased(y, x).
+
+    ! x [stock]: ?=1 y [per_share]: is_worth(x, y).
+    ! x [per_share]: ?=1 y [stock]: is_worth(y, x).
+
+    ! x [position]: ?=1 y [per_share]: sold_for(x, y).
+    ! x [per_share]: ?=1 y [position]: sold_for(y, x).
+
+    ! x [type1]: ?=1 y [position]: bought(x, y).
+    ! x [position]: ?=1 y [type1]: bought(y, x).
+
+    // Logigram synonym axioms:
+
+    // Logigram transitive relation axioms:
+    ! x [position] y [stock] z [per_share]: unknown_relation__912__1124_rev(x, y) & sold_for(x, z) => is_worth(y, z).
+    ! x [position] y [stock] z [type1]: unknown_relation__912__1124_rev(x, y) & bought(z, x) => purchased(z, y).
+    ! x [stock] y [position] z [per_share]: unknown_relation__912__1124(x, y) & is_worth(x, z) => sold_for(y, z).
+    ! x [stock] y [position] z [type1]: unknown_relation__912__1124(x, y) & purchased(z, x) => bought(z, y).
+
+    // Logigram reflexive relation axioms:
+    ! x [position] y [stock]: unknown_relation__912__1124_rev(x, y) <=> unknown_relation__912__1124(y, x).
+
+    // Logigram symmetry breaking axioms:
+}
+
+procedure main() {
+    stdoptions.nbmodels = 10;
+    printmodels(modelexpand(T,S))
+}
+
