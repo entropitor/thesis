@@ -132,6 +132,9 @@ printTheory(SentencePairs, voc(BaseTypes, _, Predicates)) :-
     format('    // Logigram transitive relation axioms:~n'),
     printTransitiveRelationAxioms(Predicates),
     nl,
+    format('    // Logigram reflexive relation axioms:~n'),
+    printReflexiveRelationAxioms(Predicates),
+    nl,
     format('    // Logigram symmetry breaking axioms:~n'),
     include(=(baseType(_, fakeConstructed:_)), BaseTypes, FakeConstructedTypes),
     maplist(printSymmetryBreakersFakeConstructedTypes(Predicates, BaseTypes), FakeConstructedTypes),
@@ -157,7 +160,21 @@ printTransitiveRelationAxioms(predicate(Name1, Type1, Type2), Preds) :-
     member(predicate(Name3, Type2, Type3), Preds),
     format('    ! x [~p] y [~p] z [~p]: ~p(x, y) & ~p(x, z) => ~p(y, z).~n', [Type1, Type2, Type3, Name1, Name2, Name3]),
     fail.
+printTransitiveRelationAxioms(predicate(Name1, Type1, Type2), Preds) :-
+    member(predicate(Name2, Type3, Type1), Preds),
+    member(predicate(Name3, Type3, Type2), Preds),
+    format('    ! x [~p] y [~p] z [~p]: ~p(x, y) & ~p(z, x) => ~p(z, y).~n', [Type1, Type2, Type3, Name1, Name2, Name3]),
+    fail.
 printTransitiveRelationAxioms(_, _).
+printReflexiveRelationAxioms([]).
+printReflexiveRelationAxioms([Predicate | Preds]) :-
+    printReflexiveRelationAxioms(Predicate, Preds),
+    printReflexiveRelationAxioms(Preds).
+printReflexiveRelationAxioms(predicate(Name1, Type1, Type2), Preds) :-
+    member(predicate(Name2, Type2, Type1), Preds),
+    format('    ! x [~p] y [~p]: ~p(x, y) <=> ~p(y, x).~n', [Type1, Type2, Name1, Name2]),
+    fail.
+printReflexiveRelationAxioms(_, _).
 printSymmetryBreakersFakeConstructedTypes(Predicates, BaseTypes, baseType(FakeConstructedType, fakeConstructed:DomainFake)) :-
     member(predicate(Name, FakeConstructedType, Type1), Predicates),
     member(baseType(Type1, constructed:DomainReal), BaseTypes),
@@ -170,7 +187,6 @@ printMain() :-
     writeln('procedure main() {'),
     writeln('    stdoptions.nbmodels = 10;'),
     writeln('    printmodels(modelexpand(T,S))'),
-    writeln('    model = modelexpand(T,S)'),
     writeln('}').
 
 

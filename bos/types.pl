@@ -33,12 +33,29 @@ resolveMissingTypes(Types, Types) :-
     !.
 resolveMissingTypes(Types, TypesOut2) :-
     selectchk(missingType(X, Y), Types, TypesOut),
-    resolveMissingType(X, Y, Types),
-    resolveMissingTypes(TypesOut, TypesOut2).
-resolveMissingType(X, Y, Types) :-
-    member(type(_-X, Type), Types),
+    resolveMissingType(X, Y, TypesOut, TypesOut1),
+    resolveMissingTypes(TypesOut1, TypesOut2).
+resolveMissingType(X, Y, TypesIn, TypesIn) :-
+    member(type(_-X, Type), TypesIn),
     Type == Y,
     !.
+resolveMissingType(X, Y, TypesIn, TypesOut) :-
+    member(type(_-Name, Type), TypesIn),
+    nonvar(Type),
+    Type = pred(S, O),
+    Y == pred(O, S),
+    !,
+    TypesOut = [type(new-X, Y) | TypesIn],
+    format(atom(X), '~p_rev', [Name]).
+resolveMissingType(X, Y, TypesIn, TypesOut) :-
+    nonvar(Y),
+    Y = pred(S, O),
+    !,
+    format(atom(X), 'unknown_relation_~p_~p', [S, O]),
+    TypesOut = [type(new-X, Y) | TypesIn].
+resolveMissingType(_, _, _, _) :-
+    writeln("Couldn't resolve missingType"),
+    fail.
 
 combineTypes2([], []) :-
     !.

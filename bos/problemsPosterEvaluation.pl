@@ -6,23 +6,32 @@
 % CLUE 5: added a [that]
 % CLUE 9: in the health-care sector -> the health-care stock
 % PROBLEM: Sector and name both refer to the same stock => flat types doesn't work
+% => sold for for name->price vs being expensive for sector->price
+
+% purchase(person, sector)
+% buy(person, name)
+% stock = sector
+% position = name
+% being_expensive(sector, price)
+% sold_for(name, price)
+% named(sector, name)
 problem(p11, problem(4, 5, [
-                         "The utilities stock was $1 per share less expensive than the stock that Geraldo bought",
-                         "GXTV was $2 per share less expensive than QMZ",
+                         "The utilities stock was $1 per share less expensive than the stock that Geraldo purchased",
+                         "GXTV sold for $2 per share less than QMZ",
                          %% "The financial stock wasn't purchased by Edith",
                          "Edith didn't purchase the financial stock",
                          "PSTO sold for $29 per share",
-                         %% "The stock Abigail bought was either KMPP or JMO",
-                         "The stock that Abigail bought was either KMPP or JMO",
+                         "The position that Abigail bought was either KMPP or JMO",
                          "The health-care stock was $2 per share more expensive than the financial stock",
-                         "The energy stock was less expensive than JMO",
-                         "Heathcliff bought the real estate stock",
+                         "The energy stock was less expensive than the JMO stock",
+                         "Heathcliff purchased the real estate stock",
                          %% "Of QMZ and GXTV, one sold for $26 per share and the other was in the health-care sector",
-                         "Of QMZ and GXTV, one sold for $26 per share and the other was the health-care stock",
-                         "Abigail didn't purchase the stock that sold for $25 per share"
+                         "Of QMZ and GXTV, one sold for $26 per share and the other was the health-care stock position",
+                         "Abigail didn't purchase the stock that was $25 per share worth"
                      ], [
                          noun([per, share], [per, shares]),
                          noun([stock], [stocks]),
+                         noun([position], [positions]),
                          pn([utilities, stock]),
                          pn([geraldo]),
                          pn([gxtv]),
@@ -39,12 +48,11 @@ problem(p11, problem(4, 5, [
                          pn([edith]),
                          tv([bought], [buy]),
                          tv([purchased], [purchase]),
-                         % does this work? (passive form)
                          tvPrep([sold], [for], [sell], [sold]),
-                         copGap([], [expensive]),
-                         % in the health-care sector vs the health-care stock
+                         copGap([], [worth]),
+                         prep([with, the, name]),
                          comp(lower, [less, expensive, than]),
-                         comp(lower, [more, expensive, than])
+                         comp(higher, [more, expensive, than])
                      ])).
 
 
