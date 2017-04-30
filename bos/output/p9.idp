@@ -52,12 +52,13 @@ theory T : V {
 
     // Logigram transitive relation axioms:
 
+    // Logigram reflexive relation axioms:
+
     // Logigram symmetry breaking axioms:
 }
 
 procedure main() {
     stdoptions.nbmodels = 10;
     printmodels(modelexpand(T,S))
-    model = modelexpand(T,S)
 }
 

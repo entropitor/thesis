@@ -62,6 +62,8 @@ theory T : V {
 
     // Logigram transitive relation axioms:
 
+    // Logigram reflexive relation axioms:
+
     // Logigram symmetry breaking axioms:
     start_at(tour_1, the_other_type1).
     start_at(tour_2, high_park).
@@ -73,6 +75,5 @@ theory T : V {
 procedure main() {
     stdoptions.nbmodels = 10;
     printmodels(modelexpand(T,S))
-    model = modelexpand(T,S)
 }
 

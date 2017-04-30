@@ -78,12 +78,13 @@ theory T : V {
     ! x [person] y [candidate] z [vote]: acts_as(x, y) & finished_with(x, z) => received(y, z).
     ! x [person] y [candidate] z [vote]: acts_as(x, y) & ended_up_with(x, z) => received(y, z).
 
+    // Logigram reflexive relation axioms:
+
     // Logigram symmetry breaking axioms:
 }
 
 procedure main() {
     stdoptions.nbmodels = 10;
     printmodels(modelexpand(T,S))
-    model = modelexpand(T,S)
 }
 
