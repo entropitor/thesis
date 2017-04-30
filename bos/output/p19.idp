@@ -1,35 +1,35 @@
 // Problem p19
 
 vocabulary V {
-    type time_the_earth = {21; 30; 42; 47; 58} isa int
+    type year = {21; 30; 42; 47; 58} isa int
     type comet constructed from {the_other_comet, gostroma, trosny, casputi, sporrin}
     type type1 constructed from {the_other_type1, whitaker, tillman, underwood, parks}
-    type year = {2008; 2009; 2010; 2011; 2012} isa int
+    type cycle = {2008; 2009; 2010; 2011; 2012} isa int
 
-    has_an_orbital_period_of(comet, time_the_earth)
+    has_an_orbital_period_of(comet, year)
     discovered_by(comet, type1)
-    discovered_in(comet, year)
-    found_in(comet, year)
-    with_an_orbital_period_of(comet, time_the_earth)
+    discovered_in(comet, cycle)
+    found_in(comet, cycle)
+    with_an_orbital_period_of(comet, year)
 }
 
 structure S : V {
 }
 
 theory T : V {
-    // The comet discovered by Whitaker doesn't have an orbital period of 30 times the earth
+    // The comet discovered by Whitaker doesn't have an orbital period of 30 years
     ?a [comet]: discovered_by(a,whitaker) & ~ has_an_orbital_period_of(a,30).
 
-    // Gostroma was discovered 1 year after the comet discovered by Tillman
-    ?b [year] c [comet] d [year]: discovered_by(c,tillman) & discovered_in(c,b) & d = b+1 & discovered_in(gostroma,d).
+    // Gostroma was discovered 1 cycle after the comet discovered by Tillman
+    ?b [cycle] c [comet] d [cycle]: discovered_by(c,tillman) & discovered_in(c,b) & d = b+1 & discovered_in(gostroma,d).
 
-    // Of the comet discovered by Underwood and the comet with an orbital period of 42 times the earth, one was found in 2009 and the other is Trosny
+    // Of the comet discovered by Underwood and the comet with an orbital period of 42 years, one was found in 2009 and the other is Trosny
     ?e [comet] f [comet]: discovered_by(e,underwood) & with_an_orbital_period_of(f,42) & ~ (e = f) & (found_in(e,2009) & trosny = f | found_in(f,2009) & trosny = e).
 
-    // The comet with an orbital period of 21 times the earth is either the comet discovered by Whitaker or Casputi
+    // The comet with an orbital period of 21 years is either the comet discovered by Whitaker or Casputi
     ?g [comet]: with_an_orbital_period_of(g,21) & ((?h [comet]: discovered_by(h,whitaker) & h = g) | casputi = g).
 
-    // The comet discovered in 2010 doesn't have an orbital period of 21 times the earth
+    // The comet discovered in 2010 doesn't have an orbital period of 21 years
     ?i [comet]: discovered_in(i,2010) & ~ has_an_orbital_period_of(i,21).
 
     // The comet discovered by Tillman, the comet discovered in 2011 and Casputi are three different comets
@@ -38,38 +38,38 @@ theory T : V {
     // Sporrin wasn't found in 2010
     ~ found_in(sporrin,2010).
 
-    // The comet discovered by Whitaker was found in 2010
-    ?l [comet]: discovered_by(l,whitaker) & found_in(l,2010).
+    // Whitaker's comet was discovered in 2010
+    ?l [comet]: discovered_in(l,2010) & discovered_by(l,whitaker).
 
-    // The comet discovered by Parks was discovered 1 year before the comet discovered by Whitaker
-    ?m [comet] n [year] o [comet] p [year]: discovered_by(m,parks) & discovered_by(o,whitaker) & discovered_in(o,n) & p = n-1 & discovered_in(m,p).
+    // The comet discovered by Parks was discovered 1 cycle before Whitaker's comet
+    ?m [comet] n [cycle] o [comet] p [cycle]: discovered_by(m,parks) & discovered_in(o,n) & discovered_by(o,whitaker) & p = n-1 & discovered_in(m,p).
 
-    // The comet discovered in 2011 doesn't have an orbital period of 47 times the earth
+    // The comet discovered in 2011 doesn't have an orbital period of 47 years
     ?q [comet]: discovered_in(q,2011) & ~ has_an_orbital_period_of(q,47).
 
-    // The comet discovered by Underwood has an orbital period of either 47 or 58 times the earth
+    // The comet discovered by Underwood has an orbital period of either 47 or 58 years
     ?r [comet]: discovered_by(r,underwood) & (has_an_orbital_period_of(r,47) | has_an_orbital_period_of(r,58)).
 
 
     // Logigram bijection axioms:
-    ! x [comet]: ?=1 y [time_the_earth]: has_an_orbital_period_of(x, y).
-    ! x [time_the_earth]: ?=1 y [comet]: has_an_orbital_period_of(y, x).
+    ! x [comet]: ?=1 y [year]: has_an_orbital_period_of(x, y).
+    ! x [year]: ?=1 y [comet]: has_an_orbital_period_of(y, x).
 
     ! x [comet]: ?=1 y [type1]: discovered_by(x, y).
     ! x [type1]: ?=1 y [comet]: discovered_by(y, x).
 
-    ! x [comet]: ?=1 y [year]: discovered_in(x, y).
-    ! x [year]: ?=1 y [comet]: discovered_in(y, x).
+    ! x [comet]: ?=1 y [cycle]: discovered_in(x, y).
+    ! x [cycle]: ?=1 y [comet]: discovered_in(y, x).
 
-    ! x [comet]: ?=1 y [year]: found_in(x, y).
-    ! x [year]: ?=1 y [comet]: found_in(y, x).
+    ! x [comet]: ?=1 y [cycle]: found_in(x, y).
+    ! x [cycle]: ?=1 y [comet]: found_in(y, x).
 
-    ! x [comet]: ?=1 y [time_the_earth]: with_an_orbital_period_of(x, y).
-    ! x [time_the_earth]: ?=1 y [comet]: with_an_orbital_period_of(y, x).
+    ! x [comet]: ?=1 y [year]: with_an_orbital_period_of(x, y).
+    ! x [year]: ?=1 y [comet]: with_an_orbital_period_of(y, x).
 
     // Logigram synonym axioms:
-    ! x [comet] y [time_the_earth]: has_an_orbital_period_of(x, y) <=> with_an_orbital_period_of(x, y).
-    ! x [comet] y [year]: discovered_in(x, y) <=> found_in(x, y).
+    ! x [comet] y [year]: has_an_orbital_period_of(x, y) <=> with_an_orbital_period_of(x, y).
+    ! x [comet] y [cycle]: discovered_in(x, y) <=> found_in(x, y).
 
     // Logigram transitive relation axioms:
 

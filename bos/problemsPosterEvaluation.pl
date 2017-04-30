@@ -244,6 +244,13 @@ problem(p15, problem(4, 5, [
                      ])).
 
 
+% whoever -> the person who
+% clue 6: drop the also
+% clue 10: of the two presentation -> of the presentation on ... and the presentation on ...
+% clue 11,12: the one -> the presentation
+% clue 13: the lowest grade -> D
+% clue 11,12,13: got -> received (only 1 meaning per verb)
+
 % got(student, grade)
 % talked_about(student, topic)
 % on(presentation, topic)
@@ -267,10 +274,6 @@ problem(p15b, problem(5, 5, [
                          "The presentation that received the A was 4 minutes shorter than the presentation on Caligula",
                          "The B-minus presentation was 6 minutes longer than the presentation that received the D",
                          "The talk on Nero was 2 minutes shorter than the presentation that received the D"
-                         %% "Of the person that talked about Augustus and the student that talked about Caligula, one was Catherine and the other spoke for 10 minutes",
-                         %% "The child that got the A spoke for 4 minutes shorter than the student on Caligula",
-                         %% "The B-minus student spoke 6 minutes more than the student that got the D",
-                         %% "The student on Nero spoke 2 minutes less than the child that got the D"
                      ], [
                          noun([student], [students]),
                          noun([person], [persons]),
@@ -348,20 +351,20 @@ problem(p16, problem(4, 5, [
                      ])).
 
 % 2, 9) the one -> the outing
-% 5, 7) Oscar's -> the tour from Oscar
+% 5, 7) add "trip" to ...'s
+% 9) starting at -> beginning at (type)
 
 % begin is for time, start for place
-% remove group: group of 6 -> tour with 6
 % add 10 to group sizes: they overlap!!!
 % Add extra type!!!
 problem(p17, problem(5, 5, [
                          "The 11 am tour won't start at high park",
                          "Zachary's outing will begin 1 hour before the outing starting at Casa Loma",
-                         "The tour with 17 people will begin 3 hours before the tour with 16",
+                         "The tour with 17 people will begin 3 hours before the group of 16",
                          "The tour with 12 people will start at Yorkville",
-                         "Zachary's trip will begin 3 hours before the trip from Janice",
+                         "Zachary's trip will begin 3 hours before Janice's trip",
                          "Zachary's outing will begin 2 hours before the tour starting at Yorkville",
-                         "Of the 7 am tour and the tour from Oscar, one will start at Yorkville and the other will start at City Hall",
+                         "Of the 7 am tour and Oscar's tour, one will start at Yorkville and the other will start at City Hall",
                          "The outing from Whitney isn't with 15 people",
                          "The Yorkville tour, the tour beginning at 9 am and the outing with 15 people are three different tours"
                      ], [
@@ -370,7 +373,7 @@ problem(p17, problem(5, 5, [
                          noun([outing], [outings]),
                          noun([person], [people]),
                          noun([hour], [hours]),
-                         %% noun([group], [groups]),
+                         noun([group], [groups]),
                          noun([trip], [trips]),
                          pn([high, park]),
                          pn([casa, loma]),
@@ -438,25 +441,25 @@ problem(p18, problem(4, 5, [
 % 1, 2, 4, 6, 9, 11) comet Whitaker discovered -> comet discovered by Whitaker
 % Whitaker discovered his comet in 2010 -> The comet discovered by Whitaker was found in 2010
 % 3, 4, 6) the one -> the comet
-% 9) Whitaker's -> the comet discovered by Withtaker
-% year: orbital vs time -> orbital replace "year" with "times the earth"
+% 9) Whitaker's [comet]
+% year: orbital vs time -> time replace "year" with "cycle"
 problem(p19, problem(4, 5, [
-                         "The comet discovered by Whitaker doesn't have an orbital period of 30 times the earth",
-                         "Gostroma was discovered 1 year after the comet discovered by Tillman",
-                         "Of the comet discovered by Underwood and the comet with an orbital period of 42 times the earth, one was found in 2009 and the other is Trosny",
-                         "The comet with an orbital period of 21 times the earth is either the comet discovered by Whitaker or Casputi",
-                         "The comet discovered in 2010 doesn't have an orbital period of 21 times the earth",
+                         "The comet discovered by Whitaker doesn't have an orbital period of 30 years",
+                         "Gostroma was discovered 1 cycle after the comet discovered by Tillman",
+                         "Of the comet discovered by Underwood and the comet with an orbital period of 42 years, one was found in 2009 and the other is Trosny",
+                         "The comet with an orbital period of 21 years is either the comet discovered by Whitaker or Casputi",
+                         "The comet discovered in 2010 doesn't have an orbital period of 21 years",
                          "The comet discovered by Tillman, the comet discovered in 2011 and Casputi are three different comets",
                          "Sporrin wasn't found in 2010",
                          %% "Whitaker discovered his comet in 2010",
-                         "The comet discovered by Whitaker was found in 2010",
-                         "The comet discovered by Parks was discovered 1 year before the comet discovered by Whitaker",
-                         "The comet discovered in 2011 doesn't have an orbital period of 47 times the earth",
-                         "The comet discovered by Underwood has an orbital period of either 47 or 58 times the earth"
+                         "Whitaker's comet was discovered in 2010",
+                         "The comet discovered by Parks was discovered 1 cycle before Whitaker's comet",
+                         "The comet discovered in 2011 doesn't have an orbital period of 47 years",
+                         "The comet discovered by Underwood has an orbital period of either 47 or 58 years"
                      ], [
                          noun([comet], [comets]),
                          noun([year], [years]),
-                         noun([time, the, earth], [times, the, earth]),
+                         noun([cycle], [cycles]),
                          pn([whitaker]),
                          pn([gostroma]),
                          pn([tillman]),
