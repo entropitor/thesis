@@ -411,6 +411,22 @@ problem(p19, problem(4, 5, [
                          prep([with, an, orbital, period, of])
                      ])).
 
+
+problem(p20, problem(4, 5, [
+                         "Hughenden wasn't investigated in march",
+                         "The home on Circle Drive was investigated sometime before Wolfenden",
+                         "Of the building haunted by Lady Grey and the one haunted by Victor, one was Markmanor and the other was visited in January",
+                         "The house haunted by Victor was visited 1 month after the house haunted by Lady Grey",
+                         "Of the home on Bird Road and Barnhill, one was visited in January and the other was said to be haunted by Brunhilde",
+                         "Markmanor was visited 1 month after the home on Grant Place",
+                         "The house Priscilla visited in march wasn't located on Circle Drive",
+                         "Hughenden wasn't haunted by Brunhilde",
+                         "The building Priscilla visited in May wasn't located on Fifth Avenue",
+                         "The home Priscilla visited in April was either Markmanor or the home haunted by Brunhilde"
+                     ], [
+                     ])).
+
+% EXTRA, for fun
 % "the one" -> the person
 % dropped "exactly"
 % "... fewer facebook friends than" -> "... facebook friends less than"
@@ -442,5 +458,3 @@ problem(p93, problem(4, 5, [
                          tv([has], [have]),
                          prep([with])
                      ])).
-
-%% problem(foo, problem(4, 5, [], [])).
