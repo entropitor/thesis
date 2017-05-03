@@ -35,8 +35,8 @@ function parseLine (line) {
 }
 
 function addToGroups ([a, b], groups) {
-  let ia = groups.findIndex(g => g.indexOf(a) !== -1)
-  let ib = groups.findIndex(g => g.indexOf(b) !== -1)
+  let ia = isNaN(a) ? groups.findIndex(g => g.indexOf(a) !== -1) : -1
+  let ib = isNaN(b) ? groups.findIndex(g => g.indexOf(b) !== -1) : -1
 
   if (ia === -1 && ib === -1) {
     return [

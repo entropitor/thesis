@@ -1,0 +1,86 @@
+// Problem p25
+
+vocabulary V {
+    type month = {3; 4; 5; 6; 7} isa int
+    type application constructed from {the_other_application, flowcarts, vitalinks, bubble_boms, angry_ants}
+    type type1 constructed from {the_other_type1, vortia, apptastic, gadingo, digibits}
+    type download = {2300000; 4200000; 5500000; 6800000; 8900000} isa int
+
+    released_in(application, month)
+    made_by(application, type1)
+    with(application, download)
+    developed_by(application, type1)
+    has(application, download)
+    released_by(application, type1)
+    came_out_in(application, month)
+}
+
+structure S : V {
+}
+
+theory T : V {
+    // Of Flowcarts and the application with 5500000 downloads, one was made by Vortia and the other was released in May
+    ?a [application]: with(a,5500000) & ~ (flowcarts = a) & (made_by(flowcarts,vortia) & released_in(a,5) | made_by(a,vortia) & released_in(flowcarts,5)).
+
+    // The app released in July, the app developed by Apptastic and Vitalinks are three different games
+    ?b [application] c [application]: ~ (b = c) & ~ (b = vitalinks) & ~ (c = vitalinks) & released_in(b,7) & developed_by(c,apptastic).
+
+    // Neither the game released by Gadingo nor the apptastic app has 2300000 downloads
+    ~ (?d [application]: released_by(d,gadingo) & has(d,2300000)) & ~ (?e [application]: has(e,2300000) & made_by(e,apptastic)).
+
+    // The five apps are Bubble Boms, the app released in April, the app released in July, the application released by Apptastic and the app released by Digibits
+    ?f [application] g [application] h [application] i [application]: ~ (bubble_boms = f) & ~ (bubble_boms = g) & ~ (bubble_boms = h) & ~ (bubble_boms = i) & ~ (f = g) & ~ (f = h) & ~ (f = i) & ~ (g = h) & ~ (g = i) & ~ (h = i) & released_in(f,4) & released_in(g,7) & released_by(h,apptastic) & released_by(i,digibits).
+
+    // Vortia's app came out in march
+    ?j [application]: came_out_in(j,3) & made_by(j,vortia).
+
+    // Angry Ants was released 2 months earlier than the app with 6800000 downloads
+    ?k [month] l [application] m [month]: with(l,6800000) & released_in(l,k) & m = k-2 & released_in(angry_ants,m).
+
+    // Flowcarts doesn't have 4200000 downloads
+    ~ has(flowcarts,4200000).
+
+    // The game released in July is either the game with 6800000 downloads or the app released by Gadingo
+    ?n [application]: released_in(n,7) & ((?o [application]: with(o,6800000) & o = n) | (?p [application]: released_by(p,gadingo) & p = n)).
+
+
+    // Logigram bijection axioms:
+    ! x [application]: ?=1 y [month]: released_in(x, y).
+    ! x [month]: ?=1 y [application]: released_in(y, x).
+
+    ! x [application]: ?=1 y [type1]: made_by(x, y).
+    ! x [type1]: ?=1 y [application]: made_by(y, x).
+
+    ! x [application]: ?=1 y [download]: with(x, y).
+    ! x [download]: ?=1 y [application]: with(y, x).
+
+    ! x [application]: ?=1 y [type1]: developed_by(x, y).
+    ! x [type1]: ?=1 y [application]: developed_by(y, x).
+
+    ! x [application]: ?=1 y [download]: has(x, y).
+    ! x [download]: ?=1 y [application]: has(y, x).
+
+    ! x [application]: ?=1 y [type1]: released_by(x, y).
+    ! x [type1]: ?=1 y [application]: released_by(y, x).
+
+    ! x [application]: ?=1 y [month]: came_out_in(x, y).
+    ! x [month]: ?=1 y [application]: came_out_in(y, x).
+
+    // Logigram synonym axioms:
+    ! x [application] y [month]: released_in(x, y) <=> came_out_in(x, y).
+    ! x [application] y [type1]: made_by(x, y) <=> developed_by(x, y).
+    ! x [application] y [download]: with(x, y) <=> has(x, y).
+    ! x [application] y [type1]: developed_by(x, y) <=> released_by(x, y).
+
+    // Logigram transitive relation axioms:
+
+    // Logigram reflexive relation axioms:
+
+    // Logigram symmetry breaking axioms:
+}
+
+procedure main() {
+    stdoptions.nbmodels = 10;
+    printmodels(modelexpand(T,S))
+}
+

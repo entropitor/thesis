@@ -5,7 +5,7 @@ vocabulary V {
     type tour constructed from {tour_1, tour_2, tour_3, tour_4, tour_5}
     type am = {7; 8; 9; 10; 11} isa int
     type type2 constructed from {the_other_type2, zachary, janice, oscar, whitney}
-    type person = {12; 15; 16; 17; 18} isa int
+    type person = {2; 5; 6; 7; 8} isa int
 
     start_at(tour, type1)
     begin_at(tour, am)
@@ -24,11 +24,11 @@ theory T : V {
     // Zachary's outing will begin 1 hour before the outing starting at Casa Loma
     ?b [tour] c [am] d [tour] e [am]: start_at(d,casa_loma) & begin_at(d,c) & e = c-1 & begin_at(b,e) & from(b,zachary).
 
-    // The tour with 17 people will begin 3 hours before the group of 16
-    ?f [tour] g [am] h [tour] i [am]: with(f,17) & of(h,16) & begin_at(h,g) & i = g-3 & begin_at(f,i).
+    // The tour with 7 people will begin 3 hours before the group of 6
+    ?f [tour] g [am] h [tour] i [am]: with(f,7) & of(h,6) & begin_at(h,g) & i = g-3 & begin_at(f,i).
 
-    // The tour with 12 people will start at Yorkville
-    ?j [tour]: with(j,12) & start_at(j,yorkville).
+    // The tour with 2 people will start at Yorkville
+    ?j [tour]: with(j,2) & start_at(j,yorkville).
 
     // Zachary's trip will begin 3 hours before Janice's trip
     ?k [tour] l [am] m [tour] n [am]: begin_at(m,l) & from(m,janice) & n = l-3 & begin_at(k,n) & from(k,zachary).
@@ -39,11 +39,11 @@ theory T : V {
     // Of the 7 am tour and Oscar's tour, one will start at Yorkville and the other will start at City Hall
     ?s [tour] t [tour]: ~ (s = t) & (start_at(s,yorkville) & start_at(t,city_hall) | start_at(t,yorkville) & start_at(s,city_hall)) & from(t,oscar) & begin_at(s,7).
 
-    // The outing from Whitney isn't with 15 people
-    ?u [tour]: from(u,whitney) & ~ with(u,15).
+    // The outing from Whitney isn't with 5 people
+    ?u [tour]: from(u,whitney) & ~ with(u,5).
 
-    // The Yorkville tour, the tour beginning at 9 am and the outing with 15 people are three different tours
-    ?v [tour] w [tour] x [tour]: ~ (v = w) & ~ (v = x) & ~ (w = x) & start_at(v,yorkville) & begin_at(w,9) & with(x,15).
+    // The Yorkville tour, the tour beginning at 9 am and the outing with 5 people are three different tours
+    ?v [tour] w [tour] x [tour]: ~ (v = w) & ~ (v = x) & ~ (w = x) & start_at(v,yorkville) & begin_at(w,9) & with(x,5).
 
 
     // Logigram bijection axioms:

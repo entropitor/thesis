@@ -60,6 +60,7 @@ resolveMissingType(_, _, _, _) :-
 combineTypes2([], []) :-
     !.
 combineTypes2([type(Var, Type) | In], Out) :-
+    Var \= number-_,
     selectchk(type(Var, Type2), In, RestIn),
     !,
     matchType(Var, Type, Type2),

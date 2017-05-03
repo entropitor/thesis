@@ -360,13 +360,13 @@ problem(p16, problem(4, 5, [
 problem(p17, problem(5, 5, [
                          "The 11 am tour won't start at high park",
                          "Zachary's outing will begin 1 hour before the outing starting at Casa Loma",
-                         "The tour with 17 people will begin 3 hours before the group of 16",
-                         "The tour with 12 people will start at Yorkville",
+                         "The tour with 7 people will begin 3 hours before the group of 6",
+                         "The tour with 2 people will start at Yorkville",
                          "Zachary's trip will begin 3 hours before Janice's trip",
                          "Zachary's outing will begin 2 hours before the tour starting at Yorkville",
                          "Of the 7 am tour and Oscar's tour, one will start at Yorkville and the other will start at City Hall",
-                         "The outing from Whitney isn't with 15 people",
-                         "The Yorkville tour, the tour beginning at 9 am and the outing with 15 people are three different tours"
+                         "The outing from Whitney isn't with 5 people",
+                         "The Yorkville tour, the tour beginning at 9 am and the outing with 5 people are three different tours"
                      ], [
                          noun([am], [ams]),
                          noun([tour], [tours]),
@@ -552,4 +552,41 @@ problem(p93, problem(4, 5, [
                          tvPrep([followed], [by], [follow], [followed]),
                          tv([has], [have]),
                          prep([with])
+                     ])).
+
+problem(p25, problem(4, 5, [
+                         "Of Flowcarts and the application with 5500000 downloads, one was made by Vortia and the other was released in May",
+                         "The app released in July, the app developed by Apptastic and Vitalinks are three different games",
+                         "Neither the game released by Gadingo nor the apptastic app has 2300000 downloads",
+                         "The five apps are Bubble Boms, the app released in April, the app released in July, the application released by Apptastic and the app released by Digibits",
+                         "Vortia's app came out in march",
+                         "Angry Ants was released 2 months earlier than the app with 6800000 downloads",
+                         "Flowcarts doesn't have 4200000 downloads",
+                         "The game released in July is either the game with 6800000 downloads or the app released by Gadingo"
+                     ], [
+                         noun([application], [applications]),
+                         noun([app], [apps]),
+                         noun([download], [downloads]),
+                         noun([game], [games]),
+                         noun([month], [months]),
+                         pn([flowcarts]),
+                         pn([vortia]),
+                         pn([apptastic]),
+                         pn([vitalinks]),
+                         pn([gadingo]),
+                         pn([bubble, boms]),
+                         pn([digibits]),
+                         pn([angry, ants]),
+                         pnn([may], 5),
+                         pnn([july], 7),
+                         pnn([april], 4),
+                         pnn([march], 3),
+                         tv([has], [have]),
+                         tvPrep([made], [by], [make], [made]),
+                         tvPrep([developed], [by], [develop], [developed]),
+                         tvPrep([released], [in], [release], [released]),
+                         tvPrep([released], [by], [release], [released]),
+                         tvPrep([came, out], [in], [come, out], [came, out]),
+                         prep([with]),
+                         comp(lower, [earlier, than])
                      ])).
