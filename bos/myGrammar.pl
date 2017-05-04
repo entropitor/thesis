@@ -267,10 +267,6 @@ n([coord:no, num:Num, sem:N, vType:Type])-->
     noun([num:Num, sem:Noun, vType:Type]),
     { combine(n:N, [noun:Noun]) }.
 
-%% n([coord:no, num:_, sem:N, vType:Type])-->
-%%     cn([sem:CN, vType:Type]),
-%%     { combine(n:N, [cn:CN]) }.
-
 nmod([num:_, sem:N, vType:Type])-->
     pp([type:n, sem:PP, vType:Type]),
     { combine(nmod:N, [pp:PP]) }.
@@ -314,7 +310,7 @@ vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
     cop([type:adj, inf:Inf, num:Num, sem:Cop]),
     pp([type:n, sem:PP, vType:Type]),
-    { combine(vp:VP, [cop:Cop, pp:PP]) }.
+    { combine(vp:VP, [cop:Cop, adj:PP]) }.
 
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
     cop([type:np, inf:Inf, num:Num, sem:Cop]),
@@ -420,10 +416,10 @@ rc([num:Num, sem:RC, vType:TypeSubj])-->
     Lexical Rules
 ========================================================================*/
 
-iv([inf:Inf, num:Num, sem:Sem, vType:Type])-->
-    { lexEntry(iv, [symbol:Sym, syntax:Word, inf:Inf, num:Num, vType:Type]) },
-    Word,
-    { semLex(iv, [symbol:Sym, sem:Sem]) }.
+%% iv([inf:Inf, num:Num, sem:Sem, vType:Type])-->
+%%     { lexEntry(iv, [symbol:Sym, syntax:Word, inf:Inf, num:Num, vType:Type]) },
+%%     Word,
+%%     { semLex(iv, [symbol:Sym, sem:Sem]) }.
 
 %% ivpp([inf:Inf, num:Num, pp:PP, sem:Sem, vType:Type])-->
 %%     { lexEntry(ivpp, [symbol:Sym, syntax:Word, pp:PP, inf:Inf, num:Num, vType:Type]) },
@@ -462,11 +458,6 @@ det([mood:M, type:Type, num:Num, sem:Det, vType:VType])-->
     Word,
     { semLex(det, [type:Type, num:Num, sem:Det, vType:VType]) }.
 
-%% cn([sem:Sem, vType:Type])-->
-%%     { lexEntry(cn, [symbol:Sym, syntax:Word, vType:Type]) },
-%%     Word,
-%%     { semLex(cn, [symbol:Sym, sem:Sem, vType:Type]) }.
-
 number([sem:Sem, vType:Type], [Number|T], T) :-
     integer(Number),
     semLex(number, [number:Number, sem:Sem, vType:Type]),
@@ -498,10 +489,10 @@ prep([type:Type, syntax:Word, sem:Sem, vType:VType])-->
     Word,
     { semLex(prep, [symbol:Sym, type:Type, sem:Sem]) }.
 
-adj([sem:Sem, vType:Type])-->
-    { lexEntry(adj, [symbol:Sym, syntax:Word, vType:Type]) },
-    Word,
-    { semLex(adj, [symbol:Sym, sem:Sem]) }.
+%% adj([sem:Sem, vType:Type])-->
+%%     { lexEntry(adj, [symbol:Sym, syntax:Word, vType:Type]) },
+%%     Word,
+%%     { semLex(adj, [symbol:Sym, sem:Sem]) }.
 
 %adv([sem:Sem])-->
 %    { lexEntry(adv, [symbol:Sym, syntax:Word]) },
@@ -525,10 +516,10 @@ coord([type:Type, sem:Sem])-->
 noCoord([type:Type, sem:Sem])-->
     { semLex(coord, [type:Type, sem:Sem]) }.
 
-qnp([mood:M, sem:NP, vType:_VType])-->
-    { lexEntry(qnp, [symbol:Symbol, syntax:Word, mood:M, type:Type]) },
-    Word,
-    { semLex(qnp, [type:Type, symbol:Symbol, sem:NP]) }.
+%% qnp([mood:M, sem:NP, vType:_VType])-->
+%%     { lexEntry(qnp, [symbol:Symbol, syntax:Word, mood:M, type:Type]) },
+%%     Word,
+%%     { semLex(qnp, [type:Type, symbol:Symbol, sem:NP]) }.
 
 noun([num:Num, sem:Sem, vType:Type])-->
     { lexEntry(noun, [symbol:Sym, num:Num, syntax:Word, vType:Type]) },
