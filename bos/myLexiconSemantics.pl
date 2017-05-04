@@ -58,9 +58,9 @@ semLex(noun, M) :-
     M = [symbol:_Sym,
          sem:lam(_X, drs([], []))].
 
-semLex(iv, M) :-
-    M = [symbol:Sym,
-         sem:lam(N, app(N, lam(X, drs([], [pred(Sym, X)]))))].
+%% semLex(iv, M) :-
+%%     M = [symbol:Sym,
+%%          sem:lam(N, app(N, lam(X, drs([], [pred(Sym, X)]))))].
 
 semLex(tv, M) :-
     M = [symbol:Sym,
