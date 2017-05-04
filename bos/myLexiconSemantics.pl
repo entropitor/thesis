@@ -115,7 +115,7 @@ semLex(av, M) :-
     M = [pol:pos,
          sem:lam(P, lam(X, app(P, X)))].
 
-% We use Collective reading
+% We use distributive reading
 % Mia and Vincent do love a building. Distributive vs collective reading -> Different building or the same!!!
 semLex(coord, M) :-
     M = [type:conj,
