@@ -306,15 +306,15 @@ vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
     { NPCoord \= comp },
     { combine(vp:VP, [cop:Cop, np:NP]) }.
 
-vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
-    cop([type:adj, inf:Inf, num:Num, sem:Cop]),
-    adj([sem:Adj, vType:adj(Type)]),
-    { combine(vp:VP, [cop:Cop, adj:Adj]) }.
+%% vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
+%%     cop([type:adj, inf:Inf, num:Num, sem:Cop]),
+%%     adj([sem:Adj, vType:adj(Type)]),
+%%     { combine(vp:VP, [cop:Cop, adj:Adj]) }.
 
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
     cop([type:adj, inf:Inf, num:Num, sem:Cop]),
     pp([type:n, sem:PP, vType:Type]),
-    { combine(vp:VP, [cop:Cop, adj:PP]) }.
+    { combine(vp:VP, [cop:Cop, pp:PP]) }.
 
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
     cop([type:np, inf:Inf, num:Num, sem:Cop]),
@@ -323,9 +323,9 @@ vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
     n([coord:_, num:Num, sem:_N, vType:Type]),
     { combine(vp:VP, [cop:Cop, alldifferent]) }.
 
-vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
-    iv([inf:Inf, num:Num, sem:IV, vType:Type]),
-    { combine(vp:VP, [iv:IV]) }.
+%% vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type])-->
+%%     iv([inf:Inf, num:Num, sem:IV, vType:Type]),
+%%     { combine(vp:VP, [iv:IV]) }.
 
 %vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP])-->
 %    iv([inf:Inf, num:Num, sem:IV]),
