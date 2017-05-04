@@ -1,22 +1,22 @@
 \chapter{Lexicon voor logigrammen}
-In dit hoofdstuk bespreken we de gebruikte lexicale categorieën. We beperken de categorieën tot een set die het makkelijk maakt voor de vertaling van logigrammen naar DRS-structuren. We bespreken zowel de categorieën zelf alsook hun vertaling naar deze DRS-structuren. Tabel~\ref{tbl:lexiconCategories} geeft een overzicht van de gebruikte lexicale categorieën.
+In dit hoofdstuk bespreken we de gebruikte lexicale categorieën. We beperken de categorieën tot een set die het makkelijk maakt voor de vertaling van logigrammen naar DRS-structuren. We bespreken zowel de categorieën zelf alsook hun vertaling naar deze DRS-structuren. Er wordt een onderscheid gemaakt tussen open en gesloten lexicale categorieën. De open categorieën zijn open voor uitbreiding, er kunnen dus woorden aan worden toegevoegd specifiek voor een bepaalde logigram. De gesloten categorieën bevatten woorden die gemeenschappelijk zijn voor alle logigrammen. Tabel~\ref{tbl:lexiconCategories} geeft een overzicht van de gebruikte lexicale categorieën.
 
 \begin{table}[t]
   \centering
   \begin{tabular}{llll}
     \toprule
-    \textbf{Categorie} & \textbf{Afkorting} & \textbf{Voorbeeld}  \\ \midrule
-    Determinator       & det                & a, an, the \\
-    Getal              & number             & three, 5      \\
-    Eigennaam          & pn                 & John, ``the black darts'' \\
-    Substantief        & n                  & man, year, \\
-    Transitief werkwoord & tv               & loves, ``has a surviving population size of'' \\
-    Koppelwerkwoord    & cop                & is, ``is not'' \\
-    Hulpwerkwoord      & av                 & does, ``doesn't'' \\
-    Betrekkelijk voornaamwoord & relpro     & who, which, that \\
-    Voorzetsel         & prep               & in, to \\
-    Voegwoord          & coord              & and, or, ``neither ... nor ...'' \\
-    Comparatief        & comp               & above, ``less than'', ``older than'' \\
+    \textbf{Categorie} & \textbf{Afkorting} & \textbf{Open?} & \textbf{Voorbeeld}  \\ \midrule
+    Determinator       & det                & gesloten & a, an, the \\
+    Hoofdtelwoord      & number             & gesloten & three, 5      \\
+    Eigennaam          & pn                 & open     & John, ``the black darts'' \\
+    Substantief        & n                  & open     & man, year, \\
+    Transitief werkwoord & tv               & open     & loves, ``had a final score of'' \\
+    Koppelwerkwoord    & cop                & gesloten & is, ``is not'' \\
+    Hulpwerkwoord      & av                 & gesloten & does, ``doesn't'' \\
+    Betrekkelijk voornaamwoord & relpro     & gesloten & who, which, that \\
+    Voorzetsel         & prep               & open     & in, to \\
+    Voegwoord          & coord              & gesloten & and, or, ``neither ... nor ...'' \\
+    Comparatief        & comp               & open     & above, ``older than'' \\
     \bottomrule
   \end{tabular}
   \caption{Een overzicht van de lexicale categorieën}
@@ -24,18 +24,136 @@ In dit hoofdstuk bespreken we de gebruikte lexicale categorieën. We beperken de
 \end{table}
 
 \section{Determinator}
-Een determinator kan zowel een lidwoord als een kwantor zijn. In het geval van logigrammen volstaan de lidwoorden ``a'', ``an'' en ``the''. Deze drie determinatoren krijgen alle drie de vertaling van de existentiële determinator uit het vorige hoofdstuk $$\sem{det_{existentieel}} = \lambdaf{R}{\lambdaf{S}{\left( \drs{x}{} \oplus \app{R}{x} \oplus \app{S}{x} \right)}}$$ Er is dus geen nood aan een universele of negatieve determinator. Bij logigrammen zijn we namelijk op zoek naar de waarde van bijecties. Er is dus altijd exact één iemand die een bepaalde drank drinkt of een bepaald huisdier heeft. ``Every man who drinks vodka, ...'' klinkt daarom onnatuurlijker dan ``The man who drinks vodka, ...''. Men kan ook nooit gebruik maken van de negatieve determinator (bv. ``No man drinks vodka'') aangezien er altijd één iemand moet zijn die vodka drinkt.
+Een determinator kan zowel een lidwoord als een kwantor zijn. In het geval van logigrammen volstaan de lidwoorden ``a'', ``an'' en ``the''. Deze drie determinatoren krijgen alle drie de vertaling van de existentiële determinator uit het vorige hoofdstuk $$\sem{det} = \sem{det_{existentieel}} = \lambdaf{R}{\lambdaf{S}{\left( \drs{x}{} \oplus \app{R}{x} \oplus \app{S}{x} \right)}}$$ Er is dus geen nood aan een universele of negatieve determinator. Bij logigrammen zijn we namelijk op zoek naar de waarde van bijecties. Er is dus altijd exact één iemand die een bepaalde drank drinkt of een bepaald huisdier heeft. ``Every man who drinks vodka, ...'' klinkt daarom onnatuurlijker dan ``The man who drinks vodka, ...''. Men kan ook nooit gebruik maken van de negatieve determinator (bv. ``No man drinks vodka'') aangezien er altijd één iemand moet zijn die vodka drinkt.
+
+\section{Hoofdtelwoord}
+Hoofdtelwoorden kunnen gebruikt worden als determinatoren die een aantal uitdrukken. In deze thesis krijgen hoofdtelwoorden echter een eigen lexicale categorie omdat op sommige plaatsen enkel een hoofdtelwoord past en geen andere determinatoren (bijvoorbeeld de ``five'' in de zin ``The five different people are ...''). De hoofdtelwoorden mogen in cijfers voorkomen maar ook in letters \footnote{In de code zitten enkel de eerste 15 getallen uitgeschreven in het lexicon, men kan dit aantal makkelijk verhogen}.
+
+De signatuur van een hoofdtelwoord is gelijk aan die van een determinator. Er zijn twee mogelijke lezingen voor een hoofdtelwoord: de collectieve en de distributieve lezing. We verduidelijken aan de hand van de voorbeeldzin ``Twee mannen gaan naar zee''. In de collectieve lezing vormen de ``twee mannen'' één geheel. Ze gaan dus samen naar zee. In de distributieve lezing zijn er twee mannen die elk naar zee gaan. In logigrammen komt enkel de collectieve lezing aan bod. Meestal gaat het immers om een numerieke eigenschap van iets of iemand. Bijvoorbeeld ``John is 10 years old'' of ``John is 3 years younger than Mary''.
+
+$$\sem{number} = \lambdaf{R}{\lambdaf{S}{\drsMerge{\app{R}{Number}}{\app{S}{Number}}}}$$
 
 \section{Eigennaam}
+Een eigennaam is een open lexicale categorie. Dat wil zeggen dat de eigennamen verschillend zijn per logigram. De semantiek is identiek aan die in het vorige hoofdstuk. $$\sem{pn} = \lambdaf{P}{\app{P}{\textit{Symbool}}}$$ We staan vanaf nu echter wel toe dat woordgroepen die taalkundig geen eigennaam zijn, toch gebruikt kunnen worden als een eigennaam. Zo kan ``the black darts'' (wat normaal een determinator + adjectief + substantief is) aanzien worden als een eigennaam. Dit maakt het vertalen van de zinnen makkelijker maar tegelijkertijd wordt het opstellen van het lexicon voor een logigram moeilijker. Het lexicon is niet meer enkel afhankelijk van taalkundige informatie. Alle niet-numeriek instanties van concepten uit de logigram moeten namelijk als een eigennaam aangegeven worden. Deze zullen later vertaald worden naar een constante uit een constructed type (zie ook hoofdstuk \ref{ch:types}). Daarmee is het lexicon dus een mengeling tussen een taalkundig en een formeel vocabularium.
+
+Een logigram kan 3 soorten eigennamen hebben: een eigennaam in het enkelvoud (bv. ``John''), een eigennaam in het meervoud (bv. ``The Turkey Rolls'') en een \textit{numerieke eigennaam}. Die laatste wordt gebruikt om woorden om te zetten in getallen. Zo kan ``March'' bijvoorbeeld omgezet worden in 3. Op die manier wordt het zinvol om te spreken over ``1 maand na maart''. Voor een \textit{numeriek eigennaam} wordt het symbool (de numerieke waarde) apart meegegeven in het lexicon. Deze eigennamen zullen geen aanleiding geven tot constanten in constructed types. Het is wel een andere voorbeeld van hoe de vertaling van de logigram in het lexicon kruipt.
+
 \section{Substantief}
-\section{Getallen}
+Ook substantieven zijn een open categorie. Hun semantiek nemen we voorlopig over van het vorige hoofdstuk. $$\sem{n} = \lambdaf{x}{\drs{}{\textit{Symbool}(x)}}$$ In hoofdstuk~\ref{ch:types} over types zullen we DRS uitbreiden met types en zal het predicaat op x verdwijnen en vervangen worden door een echte type-constraint in DRS.
+
+
+% addRule(noun(SyntaxSg, SyntaxPl)) :-
+%     syntax_symbol(SyntaxSg, Symbol),
+%     assertz(pLexEntry(noun, [symbol:Symbol, num:sg, syntax:SyntaxSg, vType:Type]) :- addType(noun-Symbol, Type)),
+%     assertz(pLexEntry(noun, [symbol:Symbol, num:pl, syntax:SyntaxPl, vType:Type]) :- addType(noun-Symbol, Type)).
+
+\section{Koppelwerkwoord}
+
+% lexEntry(cop, [pol:pos, syntax:[is], inf:fin, num:sg]).
+% lexEntry(cop, [pol:neg, syntax:[isn, t], inf:fin, num:sg]).
+% lexEntry(cop, [pol:neg, syntax:[is, not], inf:fin, num:sg]).
+
+% lexEntry(cop, [pol:pos, syntax:[was], inf:fin, num:sg]).
+% lexEntry(cop, [pol:neg, syntax:[was, not], inf:fin, num:sg]).
+% lexEntry(cop, [pol:neg, syntax:[wasn, t], inf:fin, num:sg]).
+
+% lexEntry(cop, [pol:pos, syntax:[are], inf:fin, num:pl]).
+% lexEntry(cop, [pol:neg, syntax:[are, not], inf:fin, num:pl]).
+
+% lexEntry(cop, [pol:pos, syntax:[were], inf:fin, num:pl]).
+% lexEntry(cop, [pol:neg, syntax:[were, not], inf:fin, num:pl]).
+% lexEntry(cop, [pol:neg, syntax:[weren, t], inf:fin, num:pl]).
+\section{Hulpwerkwoord}
+
+% lexEntry(av, [syntax:[does], inf:fin, num:sg, pol:pos]).
+% lexEntry(av, [syntax:[does, not], inf:fin, num:sg, pol:neg]).
+% lexEntry(av, [syntax:[doesn, t], inf:fin, num:sg, pol:neg]).
+
+% lexEntry(av, [syntax:[do], inf:fin, num:pl, pol:pos]).
+% lexEntry(av, [syntax:[do, not], inf:fin, num:pl, pol:neg]).
+% lexEntry(av, [syntax:[don, t], inf:fin, num:pl, pol:neg]).
+
+% lexEntry(av, [syntax:[did], inf:fin, num:sg, pol:pos]).
+% lexEntry(av, [syntax:[did, not], inf:fin, num:sg, pol:neg]).
+% lexEntry(av, [syntax:[didn, t], inf:fin, num:sg, pol:neg]).
+
+% lexEntry(av, [syntax:[did], inf:fin, num:pl, pol:pos]).
+% lexEntry(av, [syntax:[did, not], inf:fin, num:pl, pol:neg]).
+% lexEntry(av, [syntax:[didn, t], inf:fin, num:pl, pol:neg]).
+
+% lexEntry(av, [syntax:[is], inf:fin, num:sg, pol:pos]).
+% lexEntry(av, [syntax:[is, not], inf:fin, num:sg, pol:neg]).
+% lexEntry(av, [syntax:[isn, t], inf:fin, num:sg, pol:neg]).
+
+% lexEntry(av, [syntax:[was], inf:fin, num:sg, pol:pos]).
+% lexEntry(av, [syntax:[was, not], inf:fin, num:sg, pol:neg]).
+% lexEntry(av, [syntax:[wasn, t], inf:fin, num:sg, pol:neg]).
+
+% lexEntry(av, [syntax:[will], inf:fin, num:sg, pol:pos]).
+% lexEntry(av, [syntax:[will, not], inf:fin, num:sg, pol:neg]).
+% lexEntry(av, [syntax:[won, t], inf:fin, num:sg, pol:neg]).
+
+% lexEntry(av, [syntax:[will], inf:fin, num:pl, pol:pos]).
+% lexEntry(av, [syntax:[will, not], inf:fin, num:pl, pol:neg]).
+% lexEntry(av, [syntax:[won, t], inf:fin, num:pl, pol:neg]).
 \section{Transitief werkwoord}
 \subsection{ivpp}
 \subsection{tvPrep}
-\section{Koppelwerkwoord}
-\section{Hulpwerkwoord}
+
+
+% addRule(tv(SyntaxSg, SyntaxInf)) :-
+%     syntax_symbol(SyntaxSg, Symbol),
+%     assertz(pLexEntry(tv, [symbol:Symbol, syntax:SyntaxSg, inf:fin, num:sg, vType:Type]) :- addType(tv-Symbol, Type)),
+%     assertz(pLexEntry(tv, [symbol:Symbol, syntax:SyntaxInf, inf:inf, num:sg, vType:Type]) :- addType(tv-Symbol, Type)).
+% addRule(tvPrep(SyntaxSg, PP, SyntaxInf, SyntaxPart)) :-
+%     Type = pred(SubjType, ObjType),
+%     append(SyntaxSg, PP, WordForm),
+%     syntax_symbol(WordForm, Symbol),
+%     assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxSg, pp:PP, inf:fin, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)),
+%     assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxInf, pp:PP, inf:inf, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)),
+%     assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxPart, pp:PP, inf:part, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)),
+%     assertz(pLexEntry(prep, [symbol:Symbol, syntax:PP, type:v, vType:pred(SubjType, ObjType)])).
+% addRule(tvGap(SyntaxSg, Gap, SyntaxInf)) :-
+%     append(SyntaxSg, Gap, WordForm),
+%     syntax_symbol(WordForm, Symbol),
+%     assertz(pLexEntry(tvgap, [symbol:Symbol, syntax:SyntaxSg, gap:Gap, inf:fin, num:sg, vType:Type]) :- addType(tvgap-Symbol, Type)),
+%     assertz(pLexEntry(tvgap, [symbol:Symbol, syntax:SyntaxInf, gap:Gap, inf:inf, num:sg, vType:Type]) :- addType(tvgap-Symbol, Type)).
+% addRule(copGap(Syntax, Gap)) :-
+%     append([is], Syntax, SyntaxSg),
+%     append(SyntaxSg, Gap, WordForm),
+%     syntax_symbol(WordForm, Symbol),
+%     assertz(pLexEntry(copgap, [symbol:Symbol, syntax:Syntax, gap:Gap, vType:Type]) :- addType(copgap-Symbol, Type)).
 \section{Betrekkelijk voornaamwoord}
+% lexEntry(relpro, [syntax:[who]]).
+% lexEntry(relpro, [syntax:[which]]).
+% lexEntry(relpro, [syntax:[that]]).
+% %% lexEntry(relpro, [syntax:[]]).
 \section{Voorzetsel}
+
+% addRule(prep(Syntax)) :-
+%     syntax_symbol(Syntax, Symbol),
+%     assertz(pLexEntry(prep, [symbol:Symbol, syntax:Syntax, type:n, vType:Type]) :- addType(prep-Symbol, Type)).
 \section{Voegwoord}
 Distributief reading!
+
+% lexEntry(coord, [syntax:[and], type:conj]).
+% lexEntry(coord, [syntax:[or], type:disj]).
+% lexEntry(coord, [syntax:[nor], type:neg]).
+
+% lexEntry(coordPrefix, [syntax:[either], type:disj]).
+% lexEntry(coordPrefix, [syntax:[neither], type:neg]).
 \section{Comparatief}
+% addRule(comp(Type, Syntax)) :-
+%     assertz(pLexEntry(comp, [type:Type, syntax:Syntax])).
+% lexEntry(comp, [type:lower, syntax:[lower, than]]).
+% lexEntry(comp, [type:lower, syntax:[less, than]]).
+% lexEntry(comp, [type:lower, syntax:[below]]).
+% lexEntry(comp, [type:lower, syntax:[before]]).
+
+% lexEntry(comp, [type:higher, syntax:[higher, than]]).
+% lexEntry(comp, [type:higher, syntax:[more, than]]).
+% lexEntry(comp, [type:higher, syntax:[above]]).
+% lexEntry(comp, [type:higher, syntax:[after]]).
+
+% lexEntry(somePhrase, [syntax:[sometime]]).
+% lexEntry(somePhrase, [syntax:[somewhat]]).
