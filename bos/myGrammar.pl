@@ -400,11 +400,11 @@ rc([num:Num, sem:RC, vType:Type])-->
     vp([coord:no, inf:fin, num:Num, gap:[], sem:VP, vType:Type]),
     { combine(rc:RC, [relpro:RP, vp:VP]) }.
 
-rc([num:Num, sem:RC, vType:Type])-->
-    prep([type:v, syntax:PP, sem:_, vType:_]),
-    relpro([sem:RP]),
-    vp([coord:no, inf:fin, num:Num, gap:[pp:PP], sem:VP, vType:Type]),
-    { combine(rc:RC, [relpro:RP, vp:VP]) }.
+%% rc([num:Num, sem:RC, vType:Type])-->
+%%     prep([type:v, syntax:PP, sem:_, vType:_]),
+%%     relpro([sem:RP]),
+%%     vp([coord:no, inf:fin, num:Num, gap:[pp:PP], sem:VP, vType:Type]),
+%%     { combine(rc:RC, [relpro:RP, vp:VP]) }.
 
 % For performance reasons only (could add [] as relpro as well)
 rc([num:Num, sem:RC, vType:TypeSubj])-->
