@@ -1,0 +1,41 @@
+\chapter{Lexicon voor logigrammen}
+In dit hoofdstuk bespreken we de gebruikte lexicale categorieën. We beperken de categorieën tot een set die het makkelijk maakt voor de vertaling van logigrammen naar DRS-structuren. We bespreken zowel de categorieën zelf alsook hun vertaling naar deze DRS-structuren. Tabel~\ref{tbl:lexiconCategories} geeft een overzicht van de gebruikte lexicale categorieën.
+
+\begin{table}[t]
+  \centering
+  \begin{tabular}{llll}
+    \toprule
+    \textbf{Categorie} & \textbf{Afkorting} & \textbf{Voorbeeld}  \\ \midrule
+    Determinator       & det                & a, an, the \\
+    Getal              & number             & three, 5      \\
+    Eigennaam          & pn                 & John, ``the black darts'' \\
+    Substantief        & n                  & man, year, \\
+    Transitief werkwoord & tv               & loves, ``has a surviving population size of'' \\
+    Koppelwerkwoord    & cop                & is, ``is not'' \\
+    Hulpwerkwoord      & av                 & does, ``doesn't'' \\
+    Betrekkelijk voornaamwoord & relpro     & who, which, that \\
+    Voorzetsel         & prep               & in, to \\
+    Voegwoord          & coord              & and, or, ``neither ... nor ...'' \\
+    Comparatief        & comp               & above, ``less than'', ``older than'' \\
+    \bottomrule
+  \end{tabular}
+  \caption{Een overzicht van de lexicale categorieën}
+  \label{tbl:lexiconCategories}
+\end{table}
+
+\section{Determinator}
+Een determinator kan zowel een lidwoord als een kwantor zijn. In het geval van logigrammen volstaan de lidwoorden ``a'', ``an'' en ``the''. Deze drie determinatoren krijgen alle drie de vertaling van de existentiële determinator uit het vorige hoofdstuk $$\sem{det_{existentieel}} = \lambdaf{R}{\lambdaf{S}{\left( \drs{x}{} \oplus \app{R}{x} \oplus \app{S}{x} \right)}}$$ Er is dus geen nood aan een universele of negatieve determinator. Bij logigrammen zijn we namelijk op zoek naar de waarde van bijecties. Er is dus altijd exact één iemand die een bepaalde drank drinkt of een bepaald huisdier heeft. ``Every man who drinks vodka, ...'' klinkt daarom onnatuurlijker dan ``The man who drinks vodka, ...''. Men kan ook nooit gebruik maken van de negatieve determinator (bv. ``No man drinks vodka'') aangezien er altijd één iemand moet zijn die vodka drinkt.
+
+\section{Eigennaam}
+\section{Substantief}
+\section{Getallen}
+\section{Transitief werkwoord}
+\subsection{ivpp}
+\subsection{tvPrep}
+\section{Koppelwerkwoord}
+\section{Hulpwerkwoord}
+\section{Betrekkelijk voornaamwoord}
+\section{Voorzetsel}
+\section{Voegwoord}
+Distributief reading!
+\section{Comparatief}
