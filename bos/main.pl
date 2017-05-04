@@ -29,7 +29,8 @@
                  infix/0,
                  prefix/0,
                  useLexicon/1,
-                 solvep/1
+                 solvep/1,
+                 solveAll/0
                 ]).
 
 :- use_module(readLine, [readLine/1,
@@ -47,7 +48,7 @@ simplify(X, Y) :-
 
 :- use_module(types, [combineTypes/2, nameTypes/1, getRealBaseTypeCandidates/2]).
 
-:- use_module(myGrammar, [t/3]).
+:- use_module(myGrammar, [s/3]).
 
 :- use_module(problems, [problem/2]).
 :- use_module(problemLexiconRules, [useLexicon/1]).
@@ -104,6 +105,8 @@ typesToSetOfVariables(Types, FixedTypes, TypesPerVariable) :-
                 term_variables(X, [])
             ), FixedTypes).
 
+solveAll :-
+    maplist(solvep, [p1, p2, p3, p4, p5, p6, p8b, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20]).
 solvep(ProblemName) :-
     testp(ProblemName, _, Sols),
     Sols = [Solution],
@@ -213,7 +216,7 @@ test(String, DRSs, Types) :-
 lambdaDRT(Discourse, Old, Sems, Types) :-
      b_setval(types, []),
      findall(Sem-Types, (
-                     t([sem:Drs], Discourse, []),
+                     s([coord:no, sem:Drs], Discourse, []),
                      (
                          simplify(merge(Old, Drs), Sem)
                      ->

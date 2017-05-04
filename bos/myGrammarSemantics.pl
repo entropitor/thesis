@@ -29,26 +29,23 @@
     Semantic Rules
 ========================================================================*/
 
-combine(t:Sem, [s:Sem]).
-combine(t:merge(S, T), [s:S, t:T]).
-combine(t:Sem, [q:Sem]).
-
 combine(s:app(B, A), [np:A, vp:B]).
-combine(s:app(app(A, B), lam(_, drs([], []))), [det:A, n:B]).
-combine(s:app(A, B), [s:A, s:B]).
-combine(s:lam(B, drs([], [imp(S, B)])), [if:S]).
-combine(s:lam(B, drs([], [or(S, B)])), [either:S]).
-combine(s:S, [then:S]).
-combine(s:S, [or:S]).
-combine(s:drs([], [not(S)]), [not:S]).
-combine(s:S, [question:S]).
 combine(s:app(NP1, lam(X1, app(NP2, lam(X2, merge(drs([], [not(drs([], [eq(X1, X2)]))]),drs([], [or(merge(app(VP1, lam(N, app(N, X1))), app(VP2, lam(N, app(N, X2)))), merge(app(VP1, lam(N, app(N, X2))), app(VP2, lam(N, app(N, X1)))))])))))), [np1:NP1, np2:NP2, vp1:VP1, vp2:VP2]).
 combine(s:app(NP, lam(X, drs([], [alldifferent(X)]))), [cop:_, np:NP, alldifferent]).
 
-combine(sinv:app(app(A, C), B), [av:A, np:B, vp:C]).
+%% combine(s:app(app(A, B), lam(_, drs([], []))), [det:A, n:B]).
+%% combine(s:app(A, B), [s:A, s:B]).
+%% combine(s:lam(B, drs([], [imp(S, B)])), [if:S]).
+%% combine(s:lam(B, drs([], [or(S, B)])), [either:S]).
+%% combine(s:S, [then:S]).
+%% combine(s:S, [or:S]).
+%% combine(s:drs([], [not(S)]), [not:S]).
+%% combine(s:S, [question:S]).
 
-combine(q:app(B, A), [whnp:A, vp:B]).
-combine(q:A, [sinv:A]).
+%% combine(sinv:app(app(A, C), B), [av:A, np:B, vp:C]).
+
+%% combine(q:app(B, A), [whnp:A, vp:B]).
+%% combine(q:A, [sinv:A]).
 
 combine(np:app(app(B, A), C), [np:A, coord:B, np:C]).
 combine(np:app(A, B), [det:A, n:B]).

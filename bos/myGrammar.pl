@@ -21,7 +21,7 @@
 
 *************************************************************************/
 
-:- module(myGrammar, [t/3]).
+:- module(myGrammar, [s/3]).
 
 :- use_module(comsemPredicates, [memberList/2]).
 :- use_module(problemLexiconRules, [lexEntry/2]).
@@ -29,21 +29,6 @@
 :- use_module(myGrammarSemantics, [combine/2]).
 
 :- use_module(types, [addType/2, addTypeAttribute/2]).
-
-/*========================================================================
-    Texts
-========================================================================*/
-
-t([sem:T])-->
-    { memberList(C, [yes, no, question]) },
-    s([coord:C, sem:S]),
-    { combine(t:T, [s:S]) }.
-
-%% t([sem:T])-->
-%%     { memberList(C, [yes, no, question]) },
-%%     s([coord:C, sem:S1]),
-%%     t([sem:S2]),
-%%     { combine(t:T, [s:S1, t:S2]) }.
 
 /*========================================================================
     Sentences
@@ -54,49 +39,49 @@ s([coord:no, sem:Sem])-->
     vp([coord:_, inf:fin, num:Num, gap:[], sem:VP, vType:SubjType]),
     { combine(s:Sem, [np:NP, vp:VP]) }.
 
-s([coord:no, sem:Sem])-->
-    [there, is],
-    det([mood:decl, type:indef, num:sg, sem:Det, vType:Type]),
-    n([coord:_, num:sg, sem:N, vType:Type]),
-    { combine(s:Sem, [det:Det, n:N]) }.
+%% s([coord:no, sem:Sem])-->
+%%     [there, is],
+%%     det([mood:decl, type:indef, num:sg, sem:Det, vType:Type]),
+%%     n([coord:_, num:sg, sem:N, vType:Type]),
+%%     { combine(s:Sem, [det:Det, n:N]) }.
 
-s([coord:yes, sem:Sem])-->
-    s([coord:ant, sem:S1]),
-    s([coord:con, sem:S2]),
-    { combine(s:Sem, [s:S1, s:S2]) }.
+%% s([coord:yes, sem:Sem])-->
+%%     s([coord:ant, sem:S1]),
+%%     s([coord:con, sem:S2]),
+%%     { combine(s:Sem, [s:S1, s:S2]) }.
 
-s([coord:yes, sem:Sem])-->
-    s([coord:either, sem:S1]),
-    s([coord:or, sem:S2]),
-    { combine(s:Sem, [s:S1, s:S2]) }.
+%% s([coord:yes, sem:Sem])-->
+%%     s([coord:either, sem:S1]),
+%%     s([coord:or, sem:S2]),
+%%     { combine(s:Sem, [s:S1, s:S2]) }.
 
-s([coord:ant, sem:Sem])-->
-    [if],
-    s([coord:no, sem:S]),
-    { combine(s:Sem, [if:S]) }.
+%% s([coord:ant, sem:Sem])-->
+%%     [if],
+%%     s([coord:no, sem:S]),
+%%     { combine(s:Sem, [if:S]) }.
 
-s([coord:either, sem:Sem])-->
-    [either],
-    s([coord:no, sem:S]),
-    { combine(s:Sem, [either:S]) }.
+%% s([coord:either, sem:Sem])-->
+%%     [either],
+%%     s([coord:no, sem:S]),
+%%     { combine(s:Sem, [either:S]) }.
 
-s([coord:con, sem:Sem])-->
-    [then],
-    s([coord:no, sem:S]),
-    { combine(s:Sem, [then:S]) }.
+%% s([coord:con, sem:Sem])-->
+%%     [then],
+%%     s([coord:no, sem:S]),
+%%     { combine(s:Sem, [then:S]) }.
 
-s([coord:con, sem:Sem])-->
-    s([coord:no, sem:S]),
-    { combine(s:Sem, [then:S]) }.
+%% s([coord:con, sem:Sem])-->
+%%     s([coord:no, sem:S]),
+%%     { combine(s:Sem, [then:S]) }.
 
-s([coord:or, sem:Sem])-->
-    [or],
-    s([coord:no, sem:S]),
-    { combine(s:Sem, [or:S]) }.
+%% s([coord:or, sem:Sem])-->
+%%     [or],
+%%     s([coord:no, sem:S]),
+%%     { combine(s:Sem, [or:S]) }.
 
-s([coord:question, sem:Sem])-->
-    q([sem:Q]),
-    { combine(s:Sem, [question:Q]) }.
+%% s([coord:question, sem:Sem])-->
+%%     q([sem:Q]),
+%%     { combine(s:Sem, [question:Q]) }.
 
 %s([coord:C, sem:Sem])-->
 %    [it, is, not, the, case, that],
@@ -122,25 +107,25 @@ s([coord:no, sem:Sem])-->
     np([coord:conj, num:_, gap:[], ref:no, sem:NP, vType:Type]),
     { combine(s:Sem, [cop:Cop, np:NP, alldifferent])}.
 
-sinv([gap:G, sem:S])-->
-    av([inf:fin, num:Num, sem:Sem]),
-    np([coord:_, num:Num, gap:[], ref:no, sem:NP, vType:SubjType]),
-    vp([coord:_, inf:inf, num:Num, gap:G, sem:VP, vType:SubjType]),
-    { combine(sinv:S, [av:Sem, np:NP, vp:VP]) }.
+%% sinv([gap:G, sem:S])-->
+%%     av([inf:fin, num:Num, sem:Sem]),
+%%     np([coord:_, num:Num, gap:[], ref:no, sem:NP, vType:SubjType]),
+%%     vp([coord:_, inf:inf, num:Num, gap:G, sem:VP, vType:SubjType]),
+%%     { combine(sinv:S, [av:Sem, np:NP, vp:VP]) }.
 
 /*========================================================================
     Questions
 ========================================================================*/
 
-q([sem:Sem])-->
-    whnp([num:Num, sem:NP, vType:Type]),
-    vp([coord:_, inf:fin, num:Num, gap:[], sem:VP, vType:Type]),
-    { combine(q:Sem, [whnp:NP, vp:VP]) }.
+%% q([sem:Sem])-->
+%%     whnp([num:Num, sem:NP, vType:Type]),
+%%     vp([coord:_, inf:fin, num:Num, gap:[], sem:VP, vType:Type]),
+%%     { combine(q:Sem, [whnp:NP, vp:VP]) }.
 
-q([sem:Sem])-->
-    whnp([num:_, sem:NP, vType:Type]),
-    sinv([gap:[np:NP-Type], sem:S]),
-    { combine(q:Sem, [sinv:S]) }.
+%% q([sem:Sem])-->
+%%     whnp([num:_, sem:NP, vType:Type]),
+%%     sinv([gap:[np:NP-Type], sem:S]),
+%%     { combine(q:Sem, [sinv:S]) }.
 
 
 /*========================================================================
