@@ -153,8 +153,8 @@ lexEntry(av, [syntax:[won, t], inf:fin, num:pl, pol:neg]).
 /*========================================================================
     Quantified Noun Phrases
 ========================================================================*/
-lexEntry(qnp, [symbol:question_person, syntax:[who], mood:int, type:wh]).
-lexEntry(qnp, [symbol:question_thing, syntax:[what], mood:int, type:wh]).
+%% lexEntry(qnp, [symbol:question_person, syntax:[who], mood:int, type:wh]).
+%% lexEntry(qnp, [symbol:question_thing, syntax:[what], mood:int, type:wh]).
 
 /*========================================================================
     Intransitive Verbs

@@ -43,7 +43,8 @@ solution2idp(solution(Sentences, DRSs, TypesIn), ProblemName, Problem) :-
     handleIDPOutput(IDPOutput).
 
 handleIDPOutput(models(0, [])) :-
-    format("Couldn't find any models. Something went wrong~n", []).
+    format("Couldn't find any models. Something went wrong~n", []),
+    fail.
 handleIDPOutput(models(1, [Model])) :-
     !,
     format("Succes! Solution: ~n", []),
@@ -51,7 +52,8 @@ handleIDPOutput(models(1, [Model])) :-
 handleIDPOutput(models(N, Models)) :-
     N > 1,
     format("Found too many models. Something went wrong~n", []),
-    maplist(printModel, Models).
+    maplist(printModel, Models),
+    fail.
 printModel(model(_, Groups)) :-
     sortGroups(Groups, Sorted),
     printTable(Sorted).

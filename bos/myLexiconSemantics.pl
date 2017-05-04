@@ -23,6 +23,8 @@
 
 :- module(myLexiconSemantics, [semLex/2]).
 
+:- use_module(types, [addTypeAttribute/2]).
+
 semLex(det, M) :-
     M = [type:uni,
          num:sg,
@@ -51,11 +53,6 @@ semLex(number, M) :-
 semLex(pn, M) :-
     M = [symbol:Sym,
          sem:lam(P, app(P, Sym))].
-
-semLex(cn, M) :-
-    M = [symbol:Sym,
-         sem:lam(X, drs([], [pred(Sym, X)])),
-         vType:_].
 
 semLex(noun, M) :-
     M = [symbol:_Sym,
@@ -88,9 +85,7 @@ semLex(cop, M) :-
          sem:lam(Adj, lam(N, app(N, lam(X, drs([], [not(app(app(Adj, lam(_, drs([], []))), X))])))))];
     M = [pol:neg,
          type:tv,
-         %% sem:lam(P, lam(N1, lam(N2, app(N, lam(X, drs([], [not(app(P, lam(Y, app(Y, X))))])))))];
          sem:lam(T, lam(N1, lam(N2, app(N2, lam(X2, app(N1, lam(X1, drs([], [not(app(app(T, lam(P1, app(P1, X1))), lam(P2, app(P2, X2))))]))))))))];
-         %% sem:lam(P, lam(N1, lam(N2, app(N, lam(X, drs([], [not(app(P, lam(Y, app(Y, X))))])))))];
     M = [pol:pos,
          type:tv,
          sem:lam(P, P)].
@@ -106,9 +101,9 @@ semLex(prep, M) :-
     %%      type:vp,
     %%      sem:lam(K, lam(V, lam(N, lam(E, app(app(V, N), lam(X, merge(app(K, lam(Y, drs([], [rel(Sym, X, Y)]))), app(E, X))))))))].
 
-semLex(adj, M) :-
-    M = [symbol:Sym,
-         sem:lam(P, lam(X, merge(drs([], [pred(Sym, X)]), app(P, X))))].
+%% semLex(adj, M) :-
+%%     M = [symbol:Sym,
+%%          sem:lam(P, lam(X, merge(drs([], [pred(Sym, X)]), app(P, X))))].
 
 %% semLex(adv, M) :-
 %%     M = [symbol:Sym,
@@ -120,7 +115,8 @@ semLex(av, M) :-
     M = [pol:pos,
          sem:lam(P, lam(X, app(P, X)))].
 
-% TODO: Mia and Vincent do love a building. Distributive vs collective reading -> Different building or the same!!!
+% We use Collective reading
+% Mia and Vincent do love a building. Distributive vs collective reading -> Different building or the same!!!
 semLex(coord, M) :-
     M = [type:conj,
          sem:lam(X, lam(Y, lam(P, merge(app(X, P), app(Y, P)))))];
@@ -129,10 +125,10 @@ semLex(coord, M) :-
     M = [type:neg,
         sem:lam(X, lam(Y, lam(P, merge(drs([], [not(app(X, P))]), drs([], [not(app(Y, P))])))))].
 
-semLex(qnp,M) :-
-    M = [type:wh,
-         symbol:_Sym,
-         sem:lam(Q, merge(drs([variable(X, _Type, int)], []), app(Q,X)))].
+%% semLex(qnp,M) :-
+%%     M = [type:wh,
+%%          symbol:_Sym,
+%%          sem:lam(Q, merge(drs([variable(X, _Type, int)], []), app(Q,X)))].
 
 
 semLex(comp, M) :-
@@ -142,3 +138,8 @@ semLex(comp, M) :-
     M = [type:higher,
          sem:lam(N1, lam(N2, lam(V, app(N1, lam(Y, app(N2, lam(Z, merge(drs([variable(X, Type, decl)], [eq(X, Z+Y)]), app(V, X))))))))),
          vType:Type].
+
+semLex(somePhrase, M) :-
+    addTypeAttribute(Type1, derivedCountable(Type)),
+    M = [sem:lam(N, merge(drs([variable(X, Type1, decl)], [eq(X > 0)]), app(N, X))),
+         type:Type].

@@ -29,26 +29,23 @@
     Semantic Rules
 ========================================================================*/
 
-combine(t:Sem, [s:Sem]).
-combine(t:merge(S, T), [s:S, t:T]).
-combine(t:Sem, [q:Sem]).
-
 combine(s:app(B, A), [np:A, vp:B]).
-combine(s:app(app(A, B), lam(_, drs([], []))), [det:A, n:B]).
-combine(s:app(A, B), [s:A, s:B]).
-combine(s:lam(B, drs([], [imp(S, B)])), [if:S]).
-combine(s:lam(B, drs([], [or(S, B)])), [either:S]).
-combine(s:S, [then:S]).
-combine(s:S, [or:S]).
-combine(s:drs([], [not(S)]), [not:S]).
-combine(s:S, [question:S]).
 combine(s:app(NP1, lam(X1, app(NP2, lam(X2, merge(drs([], [not(drs([], [eq(X1, X2)]))]),drs([], [or(merge(app(VP1, lam(N, app(N, X1))), app(VP2, lam(N, app(N, X2)))), merge(app(VP1, lam(N, app(N, X2))), app(VP2, lam(N, app(N, X1)))))])))))), [np1:NP1, np2:NP2, vp1:VP1, vp2:VP2]).
 combine(s:app(NP, lam(X, drs([], [alldifferent(X)]))), [cop:_, np:NP, alldifferent]).
 
-combine(sinv:app(app(A, C), B), [av:A, np:B, vp:C]).
+%% combine(s:app(app(A, B), lam(_, drs([], []))), [det:A, n:B]).
+%% combine(s:app(A, B), [s:A, s:B]).
+%% combine(s:lam(B, drs([], [imp(S, B)])), [if:S]).
+%% combine(s:lam(B, drs([], [or(S, B)])), [either:S]).
+%% combine(s:S, [then:S]).
+%% combine(s:S, [or:S]).
+%% combine(s:drs([], [not(S)]), [not:S]).
+%% combine(s:S, [question:S]).
 
-combine(q:app(B, A), [whnp:A, vp:B]).
-combine(q:A, [sinv:A]).
+%% combine(sinv:app(app(A, C), B), [av:A, np:B, vp:C]).
+
+%% combine(q:app(B, A), [whnp:A, vp:B]).
+%% combine(q:A, [sinv:A]).
 
 combine(np:app(app(B, A), C), [np:A, coord:B, np:C]).
 combine(np:app(A, B), [det:A, n:B]).
@@ -58,18 +55,17 @@ combine(np:A, [pn:A]).
 combine(np:A, [qnp:A]).
 combine(np:app(app(B, A), C), [np: A, comp:B, np:C, vType1:Type, vType2:Type]).
 %% combine(np:app(app(B, A), lam(P, app(C, lam(Y, merge(drs([variable(Z, Type, decl)], [rel(X, Y, Z)]), app(P, Z)))))), [np: A, comp:B, np:C, vType1:Type, vType2:OtherType]) :- addType(_-X, pred(OtherType, Type)).
-combine(np:lam(N, merge(drs([variable(X, Type1, decl)], [eq(X > 0)]), app(N, X))), [npGap:Type]) :- addTypeAttribute(Type1, derivedCountable(Type)).
+combine(np:A, [somePhrase:A]).
 combine(np:lam(P, merge(merge(drs([variable(Z, Type, decl)], []), app(app(B, lam(N, app(N, Z))), A)), app(P, Z))), [np: A, tv:B, vType:Type]).
 combine(np:lam(P, app(app(A, C), lam(X, app(B, lam(Y, merge(app(P, X), drs([], [rel(R, X, Y)]))))))), [det:A, np:B, n:C, vType1:Type1, vType2:Type2]) :- addMissingType(R, pred(Type1, Type2)).
 combine(np:lam(P, app(app(A, C), lam(X, app(B, lam(Y, merge(app(P, X), drs([], [rel(R, X, Y)]))))))), [np:B, s:s, n:C, vType1:Type1, vType2:Type2]) :- addMissingType(R, pred(Type1, Type2)), semLex(det, [type:indef, num:sg, sem:A, vType:Type1]).
 
-combine(whnp:app(A, B), [det:A, n:B]).
-combine(whnp:A, [qnp:A]).
+%% combine(whnp:app(A, B), [det:A, n:B]).
+%% combine(whnp:A, [qnp:A]).
 
 combine(n:app(app(B, A), C), [n:A, coord:B, n:C]).
-combine(n:app(A, B), [adj:A, n:B]).
+%% combine(n:app(A, B), [adj:A, n:B]).
 combine(n:A, [noun:A]).
-combine(n:A, [cn:A]).
 combine(n:app(B, A), [noun:A, nmod:B]).
 
 combine(nmod:A, [pp:A]).
@@ -81,8 +77,8 @@ combine(vp:app(A, B), [av:A, vp:B]).
 combine(vp:app(A, B), [cop:A, np:B]).
 combine(vp:app(A, B), [cop:A, adj:B]).
 combine(vp:lam(N, app(N, lam(X, drs([], [alldifferent(X)])))), [cop:_, alldifferent]).
-combine(vp:A, [iv:A]).
-combine(vp:app(PP, A), [iv:A, adv:PP]).
+%% combine(vp:A, [iv:A]).
+%% combine(vp:app(PP, A), [iv:A, adv:PP]).
 combine(vp:app(A, B), [tv:A, np:B]).
 combine(vp:lam(N1, app(app(B, N1), A)), [np:A, tv:B]).
 combine(vp:lam(Obj, app(app(A, Obj), B)), [tv:A, npSubj:B]).
