@@ -233,9 +233,9 @@ np([coord:yes, num:Num, gap:[], ref:no, sem:NP, vType:Type])-->
     WH Noun Phrases
 ========================================================================*/
 
-whnp([num:sg, sem:NP, vType:Type])-->
-   qnp([mood:int, sem:QNP, vType:Type]),
-   { combine(whnp:NP, [qnp:QNP]) }.
+%% whnp([num:sg, sem:NP, vType:Type])-->
+%%    qnp([mood:int, sem:QNP, vType:Type]),
+%%    { combine(whnp:NP, [qnp:QNP]) }.
 
 %whnp([num:sg, sem:NP])-->
 %    det([mood:int, type:_, num:_, sem:Det]),
@@ -258,10 +258,10 @@ n([coord:no, num:Num, sem:Sem, vType:Type])-->
 %%     n([coord:_, num:Num, sem:N2, vType:Type]),
 %%     { combine(n:N, [n:N1, coord:C, n:N2]) }.
 
-n([coord:C, num:Num, sem:Sem, vType:Type])-->
-    adj([sem:A, vType:adj(Type)]),
-    n([coord:C, num:Num, sem:N, vType:Type]),
-    { combine(n:Sem, [adj:A, n:N]) }.
+%% n([coord:C, num:Num, sem:Sem, vType:Type])-->
+%%     adj([sem:A, vType:adj(Type)]),
+%%     n([coord:C, num:Num, sem:N, vType:Type]),
+%%     { combine(n:Sem, [adj:A, n:N]) }.
 
 n([coord:no, num:Num, sem:N, vType:Type])-->
     noun([num:Num, sem:Noun, vType:Type]),

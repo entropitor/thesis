@@ -60,13 +60,12 @@ combine(np:lam(P, merge(merge(drs([variable(Z, Type, decl)], []), app(app(B, lam
 combine(np:lam(P, app(app(A, C), lam(X, app(B, lam(Y, merge(app(P, X), drs([], [rel(R, X, Y)]))))))), [det:A, np:B, n:C, vType1:Type1, vType2:Type2]) :- addMissingType(R, pred(Type1, Type2)).
 combine(np:lam(P, app(app(A, C), lam(X, app(B, lam(Y, merge(app(P, X), drs([], [rel(R, X, Y)]))))))), [np:B, s:s, n:C, vType1:Type1, vType2:Type2]) :- addMissingType(R, pred(Type1, Type2)), semLex(det, [type:indef, num:sg, sem:A, vType:Type1]).
 
-combine(whnp:app(A, B), [det:A, n:B]).
-combine(whnp:A, [qnp:A]).
+%% combine(whnp:app(A, B), [det:A, n:B]).
+%% combine(whnp:A, [qnp:A]).
 
 combine(n:app(app(B, A), C), [n:A, coord:B, n:C]).
-combine(n:app(A, B), [adj:A, n:B]).
+%% combine(n:app(A, B), [adj:A, n:B]).
 combine(n:A, [noun:A]).
-combine(n:A, [cn:A]).
 combine(n:app(B, A), [noun:A, nmod:B]).
 
 combine(nmod:A, [pp:A]).
