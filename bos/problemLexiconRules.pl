@@ -44,13 +44,13 @@ addRule(tv(SyntaxSg, SyntaxInf)) :-
     assertz(pLexEntry(tv, [symbol:Symbol, syntax:SyntaxSg, inf:fin, num:sg, vType:Type]) :- addType(tv-Symbol, Type)),
     assertz(pLexEntry(tv, [symbol:Symbol, syntax:SyntaxInf, inf:inf, num:sg, vType:Type]) :- addType(tv-Symbol, Type)).
 addRule(tvPrep(SyntaxSg, PP, SyntaxInf, SyntaxPart)) :-
-    Type = pred(SubjType, ObjType),
+    %% Type = pred(SubjType, ObjType),
     append(SyntaxSg, PP, WordForm),
     syntax_symbol(WordForm, Symbol),
     assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxSg, pp:PP, inf:fin, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)),
     assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxInf, pp:PP, inf:inf, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)),
-    assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxPart, pp:PP, inf:part, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)),
-    assertz(pLexEntry(prep, [symbol:Symbol, syntax:PP, type:v, vType:pred(SubjType, ObjType)])).
+    assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxPart, pp:PP, inf:part, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)).
+    %% assertz(pLexEntry(prep, [symbol:Symbol, syntax:PP, type:v, vType:pred(SubjType, ObjType)])).
 addRule(tvGap(SyntaxSg, Gap, SyntaxInf)) :-
     append(SyntaxSg, Gap, WordForm),
     syntax_symbol(WordForm, Symbol),
