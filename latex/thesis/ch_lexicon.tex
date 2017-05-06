@@ -4,6 +4,9 @@ In dit hoofdstuk bespreken we de gebruikte lexicale categorieën. We beperken de
 \todo{Leg nog eens de belangrijkste dingen ivm lexicon, lexicon signatuur en lexicon semantics uit vorige hoofdstuk uit}
 \todo{duidelijker verschil tussen algemeen lexicon en probleem-specifiek lexicon}
 \todo{Duidelijker wat voor info er juist in het lexicon staat}
+\todo{negeren moet ``negatie van'' worden}
+\todo{box aanmaken -> iets om entiteit in vast te zetten ??? WAT IS NU JUIST DE BOX???}
+\todo{uitleggen met de box metafoor: $\lambda P.P(x)$ = een box met een functie (P) om een entiteit in te stoppen waarna die entiteit erin gestopt wordt}
 
 \todo{is kolom ``Open?'' wel degelijk nodig?}
 \begin{table}[t]
@@ -104,11 +107,14 @@ De comparatief is een open lexicale categorie. Elke logigram heeft eigen compara
 \paragraph{} De onbepaalde woorden hebben dezelfde signatuur als een naamwoordgroep $\tau(some) = \tau(np) = (e \rightarrow t) \rightarrow t$. We kunnen het zien als een box rond een existentiële kwantor. Meer concreet hebben we $$\sem{some} = \lambdaf{P}{\drsMerge{\drs{x}{x > 0}}{\app{P}{x}}}$$ We maken een box aan ($\lambda P$). Vervolgens maken we een entiteit $x$ aan dat een positief getal ($x > 0$) voorstelt. (Het getal moet strikt positief zijn want anders kan $x=x2-x1$ ook hoger dan $x2$ uitkomen bij een comparatief met als betekenis ``lager dan''). Ten slotte stoppen we de entiteit in de box ($\app{P}{x}$).
 
 \section{Voegwoord}
-Distributief reading!
+Een voegwoord is een woord dat twee woordgroepen van dezelfde categorie verbindt. Voorbeelden zijn ``and'', ``or'' and ``nor''. Een voegwoorden kan twee zinnen verbinden maar ook twee nominale constituenten. Binnen logigrammen zijn de voegwoorden nevenschikkend. Dat wil zeggen dat beide woordgroepen even belangrijk zijn \footnote{In tegenstelling tot een onderschikkend voegwoord. Zo'n voegwoord verbindt bijvoorbeeld een hoofdzin met een bijzin. Daarbij is de bijzin minder belangrijk dan de hoofdzin.}. Er komen drie soorten voegwoorden voor, elk met een eigen vertaling: een conjunctief voegwoord (``A and B''), een disjunctief voegwoord (``(either) A or B'') en een negatief voegwoord (``(neither) A nor B'').
 
-% lexEntry(coord, [syntax:[and], type:conj]).
-% lexEntry(coord, [syntax:[or], type:disj]).
-% lexEntry(coord, [syntax:[nor], type:neg]).
+De vertaling van het voegwoord is onafhankelijk van de categorie van de woordgroepen die worden verbonden. Belangrijk is wel dat de signatuur van die woordgroepen een functie met als resultaat iets van type $t$ is ($\tau(woordgroep) = \alpha \rightarrow t$). Een signatuur van het voegwoord is dan $\tau(coord) = (\alpha \rightarrow t) \rightarrow (\alpha \rightarrow t) \rightarrow (\alpha \rightarrow t)$. De betekenis van een voegwoord bestaat er telkens uit door het derde argument (van type $\alpha$) door te geven aan de eerste twee argumenten en de resultaten op de juiste manier terug te combineren
 
-% lexEntry(coordPrefix, [syntax:[either], type:disj]).
-% lexEntry(coordPrefix, [syntax:[neither], type:neg]).
+$$\sem{coord_{conjunctief}} = \lambdaf{A}{\lambdaf{B}{\left( \lambdaf{C}{\drsMerge{\app{A}{C}}}{\app{B}{C}} \right)}}$$
+$$\sem{coord_{disjunctief}} = \lambdaf{A}{\lambdaf{B}{\left( \lambdaf{C}{\drs{}{\app{A}{C} \lor \app{B}{C}}} \right)}}$$
+$$\sem{coord_{negatief}} = \lambdaf{A}{\lambdaf{B}{\left( \lambdaf{C}{\drsMerge{\drsNot{\app{A}{C}}}}{\drsNot{\app{B}{C}}} \right)}}$$
+
+Deze vertaling is echter niet de enigste mogelijke vertaling. In het geval van een disjunctie kan men ook naar een exclusieve or vertalen (zeker voor de constructie ``either ... or ...''). Omwille van de bijecties bij logigrammen maakt dit echter geen verschil. Er is immers altijd maar exact één iemand die eraan voldoet dus er is in praktijk geen verschil tussen een inclusieve en exclusieve disjunctie.
+
+Echter ook voor de conjunctie is een andere vertaling mogelijk, meer bepaald voor de conjunctie van twee naamwoordgroepen. Zo heeft de zin ``John and Mary went to the sea'' twee mogelijke vertalingen. De bovenstaande vertaling wordt de distributieve lezing genoemd en komt overeen met dat beiden (apart) naar de zee zijn gegaan. In de andere vertaling, de collectieve lezing, zijn John en Mary samen naar de zee gegaan. Binnen logigrammen komt de collectieve lezing bijna niet aan bod. De enigste plaats waar dat wel gebeurt, is in een soort van \textit{alldifferent}-constraint. Bijvoorbeeld ``John, Bob and Charles are three different politicians''.
