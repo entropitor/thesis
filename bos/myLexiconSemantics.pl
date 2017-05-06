@@ -97,12 +97,12 @@ semLex(cop, M) :-
          symbol:Sym].
 
 semLex(relpro, M) :-
-    M = [sem:lam(P, lam(Q, lam(X, merge(app(P, lam(R, app(R, X))), app(Q, X)))))].
+    M = [sem:lam(P, lam(Q, lam(X, merge(app(Q, X), app(P, lam(R, app(R, X)))))))].
 
 semLex(prep, M) :-
     M = [symbol:Sym,
          type:n,
-         sem:lam(K, lam(P, lam(Y, merge(app(K, lam(X, drs([], [rel(Sym, Y, X)]))), app(P, Y)))))].
+         sem:lam(K, lam(P, lam(Y, merge(app(P, Y), app(K, lam(X, drs([], [rel(Sym, Y, X)])))))))].
     %% M = [symbol:Sym,
     %%      type:vp,
     %%      sem:lam(K, lam(V, lam(N, lam(E, app(app(V, N), lam(X, merge(app(K, lam(Y, drs([], [rel(Sym, X, Y)]))), app(E, X))))))))].
