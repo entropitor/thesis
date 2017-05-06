@@ -53,6 +53,7 @@
 \newfloat{drsFloat}{thp}{lodrs}[chapter]
 \floatname{drsFloat}{DRS}
 \def\drsFloatautorefname{DRS}
+
 \newcommand{\drs}[2]{
   \begin{tabular}{|>{$}l<{$}|}
     \hline
@@ -61,6 +62,13 @@
     #2 \\
     \hline
   \end{tabular}
+}
+\newcommand{\drsNot}[1]{
+  \drs{}{
+    \\
+    \lnot \left[ #1 \right]
+    \\
+  }
 }
 \newcommand{\drsMerge}[2]{
   \left( #1 \oplus #2 \right)

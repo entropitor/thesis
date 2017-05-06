@@ -39,30 +39,42 @@ Een eigennaam is een open lexicale categorie. Dat wil zeggen dat de eigennamen v
 Een logigram kan 3 soorten eigennamen hebben: een eigennaam in het enkelvoud (bv. ``John''), een eigennaam in het meervoud (bv. ``The Turkey Rolls'') en een \textit{numerieke eigennaam}. Die laatste wordt gebruikt om woorden om te zetten in getallen. Zo kan ``March'' bijvoorbeeld omgezet worden in 3. Op die manier wordt het zinvol om te spreken over ``1 maand na maart''. Voor een \textit{numeriek eigennaam} wordt het symbool (de numerieke waarde) apart meegegeven in het lexicon. Deze eigennamen zullen geen aanleiding geven tot constanten in constructed types. Het is wel een andere voorbeeld van hoe de vertaling van de logigram in het lexicon kruipt.
 
 \section{Substantief}
-Ook substantieven zijn een open categorie. Hun semantiek nemen we voorlopig over van het vorige hoofdstuk. $$\sem{n} = \lambdaf{x}{\drs{}{\textit{Symbool}(x)}}$$ In hoofdstuk~\ref{ch:types} over types zullen we DRS uitbreiden met types en zal het predicaat op x verdwijnen en vervangen worden door een echte type-constraint in DRS.
+Ook substantieven zijn een open categorie. Hun semantiek nemen we voorlopig over van het vorige hoofdstuk. $$\sem{n} = \lambdaf{x}{\drs{}{\textit{Symbool}(x)}}$$ In hoofdstuk~\ref{ch:types} (over types) zullen we DRS uitbreiden met types en zal het predicaat op x verdwijnen en vervangen worden door een echte type-constraint in DRS.
+%Een substantief in het lexicon moet ingegeven worden met haar vorm in het enkelvoud en in het meervoud.
+
+\section{Voorzetsel}
+
+% addRule(prep(Syntax)) :-
+%     syntax_symbol(Syntax, Symbol),
+%     assertz(pLexEntry(prep, [symbol:Symbol, syntax:Syntax, type:n, vType:Type]) :- addType(prep-Symbol, Type)).
+\section{Transitief werkwoord}
+\subsection{ivpp}
+\subsection{tvPrep}
 
 
-% addRule(noun(SyntaxSg, SyntaxPl)) :-
+% addRule(tv(SyntaxSg, SyntaxInf)) :-
 %     syntax_symbol(SyntaxSg, Symbol),
-%     assertz(pLexEntry(noun, [symbol:Symbol, num:sg, syntax:SyntaxSg, vType:Type]) :- addType(noun-Symbol, Type)),
-%     assertz(pLexEntry(noun, [symbol:Symbol, num:pl, syntax:SyntaxPl, vType:Type]) :- addType(noun-Symbol, Type)).
+%     assertz(pLexEntry(tv, [symbol:Symbol, syntax:SyntaxSg, inf:fin, num:sg, vType:Type]) :- addType(tv-Symbol, Type)),
+%     assertz(pLexEntry(tv, [symbol:Symbol, syntax:SyntaxInf, inf:inf, num:sg, vType:Type]) :- addType(tv-Symbol, Type)).
+% addRule(tvPrep(SyntaxSg, PP, SyntaxInf, SyntaxPart)) :-
+%     Type = pred(SubjType, ObjType),
+%     append(SyntaxSg, PP, WordForm),
+%     syntax_symbol(WordForm, Symbol),
+%     assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxSg, pp:PP, inf:fin, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)),
+%     assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxInf, pp:PP, inf:inf, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)),
+%     assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxPart, pp:PP, inf:part, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)),
+%     assertz(pLexEntry(prep, [symbol:Symbol, syntax:PP, type:v, vType:pred(SubjType, ObjType)])).
+% addRule(tvGap(SyntaxSg, Gap, SyntaxInf)) :-
+%     append(SyntaxSg, Gap, WordForm),
+%     syntax_symbol(WordForm, Symbol),
+%     assertz(pLexEntry(tvgap, [symbol:Symbol, syntax:SyntaxSg, gap:Gap, inf:fin, num:sg, vType:Type]) :- addType(tvgap-Symbol, Type)),
+%     assertz(pLexEntry(tvgap, [symbol:Symbol, syntax:SyntaxInf, gap:Gap, inf:inf, num:sg, vType:Type]) :- addType(tvgap-Symbol, Type)).
+% addRule(copGap(Syntax, Gap)) :-
+%     append([is], Syntax, SyntaxSg),
+%     append(SyntaxSg, Gap, WordForm),
+%     syntax_symbol(WordForm, Symbol),
+%     assertz(pLexEntry(copgap, [symbol:Symbol, syntax:Syntax, gap:Gap, vType:Type]) :- addType(copgap-Symbol, Type)).
 
-\section{Koppelwerkwoord}
-
-% lexEntry(cop, [pol:pos, syntax:[is], inf:fin, num:sg]).
-% lexEntry(cop, [pol:neg, syntax:[isn, t], inf:fin, num:sg]).
-% lexEntry(cop, [pol:neg, syntax:[is, not], inf:fin, num:sg]).
-
-% lexEntry(cop, [pol:pos, syntax:[was], inf:fin, num:sg]).
-% lexEntry(cop, [pol:neg, syntax:[was, not], inf:fin, num:sg]).
-% lexEntry(cop, [pol:neg, syntax:[wasn, t], inf:fin, num:sg]).
-
-% lexEntry(cop, [pol:pos, syntax:[are], inf:fin, num:pl]).
-% lexEntry(cop, [pol:neg, syntax:[are, not], inf:fin, num:pl]).
-
-% lexEntry(cop, [pol:pos, syntax:[were], inf:fin, num:pl]).
-% lexEntry(cop, [pol:neg, syntax:[were, not], inf:fin, num:pl]).
-% lexEntry(cop, [pol:neg, syntax:[weren, t], inf:fin, num:pl]).
 \section{Hulpwerkwoord}
 
 % lexEntry(av, [syntax:[does], inf:fin, num:sg, pol:pos]).
@@ -96,43 +108,25 @@ Ook substantieven zijn een open categorie. Hun semantiek nemen we voorlopig over
 % lexEntry(av, [syntax:[will], inf:fin, num:pl, pol:pos]).
 % lexEntry(av, [syntax:[will, not], inf:fin, num:pl, pol:neg]).
 % lexEntry(av, [syntax:[won, t], inf:fin, num:pl, pol:neg]).
-\section{Transitief werkwoord}
-\subsection{ivpp}
-\subsection{tvPrep}
+\section{Koppelwerkwoord}
+Een koppelwerkwoord is een gesloten lexicale categorie. Ze bestaat uit verschillende vormen van het werkwoord ``to be'' (bv. is, isn't, is not, was, are, were, ...). Er is een enkelvoud- en meervoudsvorm. Bovendien is er sprake van een positieve of negatieve polariteit. Deze hebben elk een licht andere semantiek. Ten slotte kan een koppelwerkwoord ook op drie verschillende manieren gebruikt worden in een zin van een logigram:
 
+\begin{itemize}
+  \item Samen met een \texttt{nominale constituent} (\texttt{noun phrase} of \texttt{np}): Bijvoorbeeld ``John is a man''. Dit type van gebruik heeft dezelfde signatuur als een overgankelijk werkwoord. De semantiek zegt dat de twee referenties die in de box van het onderwerp en het lijdend voorwerp zitten, gelijk zijn.
+  $$\sem{cop_{np, pos}} = \lambdaf{N1}{\lambdaf{N2}{\app{N2}{\lambdaf{x}{\app{N1}{\lambdaf{y}{\drs{}{x = y}}}}}}}$$
+  In negatie wordt dit een ongelijkheid. De negatie bevindt zich echter al voor het ``uitpakken'' van de box van het lijdend voorwerp. Zodanig dat de kwantoren juist worden genegeerd. In de zin ``Mary is not a man'' is het belangrijk dat er geen enkele man is die gelijk is aan Mary. De existentiële kwantor moet dus genegeerd worden.
+  $$\sem{cop_{np, neg}} = \lambdaf{N1}{\lambdaf{N2}{\app{N2}{\lambdaf{x}{\drsNot{\app{N1}{\lambdaf{y}{\drs{}{x = y}}}}}}}}$$
+  \item Samen met een \texttt{adjectiefconstituent} (\texttt{adjective phrase} of \texttt{ap}): Bijvoorbeeld ``John is 30 years old''. De vertaling die wij gebruiken ligt echter vrij ver van de taalkundige structuur. Zo wordt het koppelwerkwoord + adjectief gezien als een soort van transitief werkwoord. De betekenis is gelijkaardig aan die van het koppelwerkwoord met een nominale constituent. De adjectieven die gebruikt kunnen worden, moeten meegegeven worden via het lexicon van een logigram.
+  $$\sem{cop_{ap, pos}} = \sem{tv} = \lambdaf{N1}{\lambdaf{N2}{\app{N2}{\lambdaf{x2}{\app{N1}{\lambdaf{x1}{\drs{}{\textit{Symbool}(x2, x1)}}}}}}}$$
+  $$\sem{cop_{ap, neg}} = \lambdaf{N1}{\lambdaf{N2}{\app{N2}{\lambdaf{x2}{\drsNot{\app{N1}{\lambdaf{x1}{\drs{}{\textit{Symbool}(x2, x1)}}}}}}}}$$
+  \item Samen met een \texttt{voorzetselconstituent} (\texttt{prepositional phrase} of \texttt{pp}): Bijvoorbeeld ``John is from France''. Dit kan aanzien worden als een ellips van ``a person'': ``John is a person from France''. De signatuur is $ \tau(cop_{pp}) = \tau(pp) \rightarrow \tau(np) \rightarrow t = [(e \rightarrow t) \rightarrow e \rightarrow t] \rightarrow [(e \rightarrow t) \rightarrow t] \rightarrow t$. De voorzetselconstituent neemt als eerste argument een lambda-functie die een beperking oplegt vanuit het substantief waarbij het hoort. In dit geval is er echter geen substantief en dus geen beperking. Dit vertaalt zich in een lege DRS-structuur. Het tweede argument, de entiteit die beperkt wordt door de voorzetselconstituent, is de entiteit uit het onderwerp. We krijgen $$\sem{cop_{pp, pos}} = \lambdaf{Q}{\lambdaf{N}{\app{N}{\lambdaf{x}{\app{\app{Q}{\lambdaf{y}{\drs{}{}}}}{x}}}}}$$ De betekenis van de negatieve vorm is $$\sem{cop_{pp, neg}} = \lambdaf{Q}{\lambdaf{N}{\app{N}{\lambdaf{x}{\drsNot{\app{\app{Q}{\lambdaf{y}{\drs{}{}}}}{x}}}}}}$$
+\end{itemize}
 
-% addRule(tv(SyntaxSg, SyntaxInf)) :-
-%     syntax_symbol(SyntaxSg, Symbol),
-%     assertz(pLexEntry(tv, [symbol:Symbol, syntax:SyntaxSg, inf:fin, num:sg, vType:Type]) :- addType(tv-Symbol, Type)),
-%     assertz(pLexEntry(tv, [symbol:Symbol, syntax:SyntaxInf, inf:inf, num:sg, vType:Type]) :- addType(tv-Symbol, Type)).
-% addRule(tvPrep(SyntaxSg, PP, SyntaxInf, SyntaxPart)) :-
-%     Type = pred(SubjType, ObjType),
-%     append(SyntaxSg, PP, WordForm),
-%     syntax_symbol(WordForm, Symbol),
-%     assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxSg, pp:PP, inf:fin, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)),
-%     assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxInf, pp:PP, inf:inf, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)),
-%     assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxPart, pp:PP, inf:part, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)),
-%     assertz(pLexEntry(prep, [symbol:Symbol, syntax:PP, type:v, vType:pred(SubjType, ObjType)])).
-% addRule(tvGap(SyntaxSg, Gap, SyntaxInf)) :-
-%     append(SyntaxSg, Gap, WordForm),
-%     syntax_symbol(WordForm, Symbol),
-%     assertz(pLexEntry(tvgap, [symbol:Symbol, syntax:SyntaxSg, gap:Gap, inf:fin, num:sg, vType:Type]) :- addType(tvgap-Symbol, Type)),
-%     assertz(pLexEntry(tvgap, [symbol:Symbol, syntax:SyntaxInf, gap:Gap, inf:inf, num:sg, vType:Type]) :- addType(tvgap-Symbol, Type)).
-% addRule(copGap(Syntax, Gap)) :-
-%     append([is], Syntax, SyntaxSg),
-%     append(SyntaxSg, Gap, WordForm),
-%     syntax_symbol(WordForm, Symbol),
-%     assertz(pLexEntry(copgap, [symbol:Symbol, syntax:Syntax, gap:Gap, vType:Type]) :- addType(copgap-Symbol, Type)).
 \section{Betrekkelijk voornaamwoord}
 % lexEntry(relpro, [syntax:[who]]).
 % lexEntry(relpro, [syntax:[which]]).
 % lexEntry(relpro, [syntax:[that]]).
 % %% lexEntry(relpro, [syntax:[]]).
-\section{Voorzetsel}
-
-% addRule(prep(Syntax)) :-
-%     syntax_symbol(Syntax, Symbol),
-%     assertz(pLexEntry(prep, [symbol:Symbol, syntax:Syntax, type:n, vType:Type]) :- addType(prep-Symbol, Type)).
 \section{Voegwoord}
 Distributief reading!
 
