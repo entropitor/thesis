@@ -119,7 +119,7 @@ semLex(av, M) :-
     M = [pol:neg,
          sem:lam(P, lam(N, app(N, lam(X, drs([], [not(app(P, lam(Y, app(Y, X))))])))))];
     M = [pol:pos,
-         sem:lam(P, lam(X, app(P, X)))].
+         sem:lam(P, P)].
 
 % We use distributive reading
 % Mia and Vincent do love a building. Distributive vs collective reading -> Different building or the same!!!
