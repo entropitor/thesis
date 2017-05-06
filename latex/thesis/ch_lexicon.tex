@@ -1,6 +1,8 @@
 \chapter{Lexicon voor logigrammen}
 In dit hoofdstuk bespreken we de gebruikte lexicale categorieën. We beperken de categorieën tot een set die het makkelijk maakt voor de vertaling van logigrammen naar DRS-structuren. We bespreken zowel de categorieën zelf alsook hun vertaling naar deze DRS-structuren. Er wordt een onderscheid gemaakt tussen open en gesloten lexicale categorieën. De open categorieën zijn open voor uitbreiding, er kunnen dus woorden aan worden toegevoegd specifiek voor een bepaalde logigram. De gesloten categorieën bevatten woorden die gemeenschappelijk zijn voor alle logigrammen. Tabel~\ref{tbl:lexiconCategories} geeft een overzicht van de gebruikte lexicale categorieën.
 
+\todo{Leg nog eens de belangrijkste dingen ivm lexicon, lexicon signatuur en lexicon semantics uit vorige hoofdstuk uit}
+
 \begin{table}[t]
   \centering
   \begin{tabular}{llll}
@@ -14,7 +16,7 @@ In dit hoofdstuk bespreken we de gebruikte lexicale categorieën. We beperken de
     Koppelwerkwoord    & cop                & gesloten & is, ``is not'' \\
     Hulpwerkwoord      & av                 & gesloten & does, ``doesn't'' \\
     Betrekkelijk voornaamwoord & relpro     & gesloten & who, which, that \\
-    Voorzetsel         & prep               & open     & in, to \\
+    Voorzetsel         & prep               & gesloten & in, to \\
     Voegwoord          & coord              & gesloten & and, or, ``neither ... nor ...'' \\
     Comparatief        & comp               & open     & above, ``older than'' \\
     \bottomrule
@@ -43,10 +45,13 @@ Ook substantieven zijn een open categorie. Hun semantiek nemen we voorlopig over
 %Een substantief in het lexicon moet ingegeven worden met haar vorm in het enkelvoud en in het meervoud.
 
 \section{Voorzetsel}
+Een voorzetsel (in het Engels \texttt{preposition} of \texttt{prep}) komt voor op twee manieren binnen de zinnen van een logigram. Enerzijds bij een werkwoord. Dan staat het vlak voor het lijdend voorwerp. Bijvoorbeeld de ``with'' in ``to finish with 500 points''. Anderzijds als belangrijkste woord in een voorzetselconstituent (ook wel \texttt{prepositional phrase} of \texttt{pp} genoemd). Bijvoorbeeld de ``from'' in ``the man from France''. Het voorzetsel dat bij een werkwoord hoort, zien we als deel van het werkwoord in het lexicon. In dat geval heeft het voorzetsel geen vertaling.
 
-% addRule(prep(Syntax)) :-
-%     syntax_symbol(Syntax, Symbol),
-%     assertz(pLexEntry(prep, [symbol:Symbol, syntax:Syntax, type:n, vType:Type]) :- addType(prep-Symbol, Type)).
+In het geval van een voorzetselconstituent is er wel een vertaling. We kunnen zo'n voorzetselconstituent zien als een extra beperking op een substantief. Of een transformatie van een substantief naar een nieuw substantief ($\tau(pp) = \tau(n) \rightarrow \tau(n)$). Een voorzetsel is het belangrijkste woord in zo'n voorzetselconstituent. Men kan het dus zien als een functie van een naamwoordgroep (\texttt{noun phrase} of \texttt{np}) naar een voorzetselconstituent. Of in formulevorm $\tau(prep) = \tau(np) \rightarrow \tau(pp) = \tau(np) \rightarrow \tau(n) \rightarrow \tau(n) = [(e \rightarrow t) \rightarrow t] \rightarrow (e \rightarrow t) \rightarrow (e \rightarrow t)$. De betekenis ziet er uit als
+$$\sem{prep} = \lambdaf{N}{\lambdaf{P}{\lambdaf{y}{\drsMerge{\app{N}{\lambdaf{x}{\drs{}{\textit{Symbool}(y, x)}}}}{\app{P}{y}}}}}$$
+
+Een voorzetsel neemt dus een naamwoordgroep ($N$), een substantief ($P$) en een entiteit ($y$) als argument. Bovenop de beperking van het substantief op de entiteit ($\app{P}{y}$), voegt het nog een beperking toe die de entiteit $y$ linkt met de entiteit $x$ uit de box van de naamwoordgroep via een predicaat met de naam van het voorzetsel.
+
 \section{Transitief werkwoord}
 \subsection{ivpp}
 \subsection{tvPrep}
