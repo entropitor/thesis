@@ -2,7 +2,10 @@
 In dit hoofdstuk bespreken we de gebruikte lexicale categorieën. We beperken de categorieën tot een set die het makkelijk maakt voor de vertaling van logigrammen naar DRS-structuren. We bespreken zowel de categorieën zelf alsook hun vertaling naar deze DRS-structuren. Er wordt een onderscheid gemaakt tussen open en gesloten lexicale categorieën. De open categorieën zijn open voor uitbreiding, er kunnen dus woorden aan worden toegevoegd specifiek voor een bepaalde logigram. De gesloten categorieën bevatten woorden die gemeenschappelijk zijn voor alle logigrammen. Tabel~\ref{tbl:lexiconCategories} geeft een overzicht van de gebruikte lexicale categorieën.
 
 \todo{Leg nog eens de belangrijkste dingen ivm lexicon, lexicon signatuur en lexicon semantics uit vorige hoofdstuk uit}
+\todo{duidelijker verschil tussen algemeen lexicon en probleem-specifiek lexicon}
+\todo{Duidelijker wat voor info er juist in het lexicon staat}
 
+\todo{is kolom ``Open?'' wel degelijk nodig?}
 \begin{table}[t]
   \centering
   \begin{tabular}{llll}
@@ -12,13 +15,14 @@ In dit hoofdstuk bespreken we de gebruikte lexicale categorieën. We beperken de
     Hoofdtelwoord      & number             & gesloten & three, 5      \\
     Eigennaam          & pn                 & open     & John, ``the black darts'' \\
     Substantief        & n                  & open     & man, year, \\
-    Transitief werkwoord & tv               & open     & loves, ``had a final score of'' \\
-    Koppelwerkwoord    & cop                & gesloten & is, ``is not'' \\
-    Hulpwerkwoord      & av                 & gesloten & does, ``doesn't'' \\
-    Betrekkelijk voornaamwoord & relpro     & gesloten & who, which, that \\
     Voorzetsel         & prep               & gesloten & in, to \\
+    Betrekkelijk voornaamwoord & relpro     & gesloten & who, which, that \\
+    Transitief werkwoord & tv               & open     & loves, ``had a final score of'' \\
+    Hulpwerkwoord      & av                 & gesloten & does, ``doesn't'' \\
+    Koppelwerkwoord    & cop                & gesloten & is, ``is not'' \\
+    Comparatief        & comp               & open     & below, ``older than'' \\
+    Onbepaalde woorden & some               & open     & somewhat, sometime \\
     Voegwoord          & coord              & gesloten & and, or, ``neither ... nor ...'' \\
-    Comparatief        & comp               & open     & above, ``older than'' \\
     \bottomrule
   \end{tabular}
   \caption{Een overzicht van de lexicale categorieën}
@@ -48,9 +52,16 @@ Ook substantieven zijn een open categorie. Hun semantiek nemen we voorlopig over
 Een voorzetsel (in het Engels \texttt{preposition} of \texttt{prep}) komt voor op twee manieren binnen de zinnen van een logigram. Enerzijds bij een werkwoord. Dan staat het vlak voor het lijdend voorwerp. Bijvoorbeeld de ``with'' in ``to finish with 500 points''. Anderzijds als belangrijkste woord in een voorzetselconstituent (ook wel \texttt{prepositional phrase} of \texttt{pp} genoemd). Bijvoorbeeld de ``from'' in ``the man from France''. Het voorzetsel dat bij een werkwoord hoort, zien we als deel van het werkwoord in het lexicon. In dat geval heeft het voorzetsel geen vertaling.
 
 In het geval van een voorzetselconstituent is er wel een vertaling. We kunnen zo'n voorzetselconstituent zien als een extra beperking op een substantief. Of een transformatie van een substantief naar een nieuw substantief ($\tau(pp) = \tau(n) \rightarrow \tau(n)$). Een voorzetsel is het belangrijkste woord in zo'n voorzetselconstituent. Men kan het dus zien als een functie van een naamwoordgroep (\texttt{noun phrase} of \texttt{np}) naar een voorzetselconstituent. Of in formulevorm $\tau(prep) = \tau(np) \rightarrow \tau(pp) = \tau(np) \rightarrow \tau(n) \rightarrow \tau(n) = [(e \rightarrow t) \rightarrow t] \rightarrow (e \rightarrow t) \rightarrow (e \rightarrow t)$. De betekenis ziet er uit als
-$$\sem{prep} = \lambdaf{N}{\lambdaf{P}{\lambdaf{y}{\drsMerge{\app{N}{\lambdaf{x}{\drs{}{\textit{Symbool}(y, x)}}}}{\app{P}{y}}}}}$$
+$$\sem{prep} = \lambdaf{N}{\lambdaf{P}{\lambdaf{y}{\drsMerge{\app{P}{y}}{\app{N}{\lambdaf{x}{\drs{}{\textit{Symbool}(y, x)}}}}}}}$$
 
-Een voorzetsel neemt dus een naamwoordgroep ($N$), een substantief ($P$) en een entiteit ($y$) als argument. Bovenop de beperking van het substantief op de entiteit ($\app{P}{y}$), voegt het nog een beperking toe die de entiteit $y$ linkt met de entiteit $x$ uit de box van de naamwoordgroep via een predicaat met de naam van het voorzetsel.
+Een voorzetsel neemt dus een naamwoordgroep $N$, een substantief $P$ en een entiteit $y$ als argument. De beperking op y bestaat enerzijds uit de beperkingen van het substantief zelf $\app{P}{y}$. Anderzijds voegt het voorzetsel zelf ook nog een beperking toe. Hiervoor haalt hij de entiteit $x$ uit de box van de naamwoordgroep en linkt de entiteiten $x$ en $y$ via een binair predicaat met dezelfde naam als het voorzetsel in kwestie.
+% Bovenop de beperking van het substantief op y ($\app{P}{y}$), voegt het nog een beperking toe die de entiteit $y$ linkt met de entiteit $x$ uit de box van de naamwoordgroep. Hiervoor wordt een binair predicaat met de naam van het voorzetsel gebruikt.
+
+\section{Betrekkelijk voornaamwoord}
+Een betrekkelijk voornaamwoord (\texttt{relative pronoun} of \texttt{relpro}) is een woord aan het begin van een betrekkelijke bijzin. Voorbeelden zijn ``that'', ``which'' en ``who''. Zo'n betrekkelijke bijzin (ook wel \texttt{relative clause} of \texttt{rc}) staat bij een substantief, net zoals een voorzetselconstituent. Zo'n relative clause legt ook een extra beperking op aan het substantief.
+
+$$\sem{relpro} = \lambdaf{V}{\lambdaf{P}{\lambdaf{x}{\drsMerge{\app{P}{x}}{\app{V}{\lambdaf{R}{\app{R}{x}}}}}}}$$
+Een betrekkelijk voornaamwoord neemt een verbale constituent $V$, een substantief $P$ en een entiteit $x$ als argument. De beperkingen op $x$ bestaan enerzijds uit de beperkingen door het substantief $P$ (namelijk $\app{P}{x}$) en anderzijds uit de beperkingen van de verbale constituent. De verbale constituent heeft $x$ als onderwerp dus $V$ krijgt als argument een lege box rond $x$ mee ($\lambdaf{R}{\app{R}{x}}$)
 
 \section{Transitief werkwoord}
 Een transitief werkwoord is een werkwoord met een lijdend voorwerp. Een logigram heeft enkel transitieve werkwoorden. Er zijn geen intransitieve (zonder lijdend voorwerp) of ditransitieve werkwoorden (met een meewerkend voorwerp). De vertaling van een transitief werkwoord is gelijk aan die van het vorige hoofdstuk $$\sem{tv} = \lambdaf{N1}{\lambdaf{N2}{\app{N2}{\lambdaf{x2}{\app{N1}{\lambdaf{x1}{\drs{}{\textit{Symbool}(x2, x1)}}}}}}}$$ Het lijdend voorwerp ($N1$) en het onderwerp ($N2$) zijn de argumenten van het werkwoord. Eerst wordt de box van het onderwerp uitgepakt. Daarbinnen de box van het lijdende voorwerp. De kwantor van het onderwerp komt dus altijd voor die van het lijdend voorwerp (met deze vertaling). Ten slotte worden de entiteiten van het onderwerp ($x2$) en het lijdend voorwerp ($x1$) gebonden via een predicaat met het symbool van het werkwoord.
@@ -78,11 +89,20 @@ De categorie van koppelwerkwoorden is een gesloten lexicale categorie. Ze bestaa
   \item Samen met een \texttt{voorzetselconstituent} (\texttt{prepositional phrase} of \texttt{pp}): Bijvoorbeeld ``John is from France''. Dit kan aanzien worden als een ellips van ``a person'': ``John is a person from France''. De signatuur is $ \tau(cop_{pp}) = \tau(pp) \rightarrow \tau(np) \rightarrow t = [(e \rightarrow t) \rightarrow e \rightarrow t] \rightarrow [(e \rightarrow t) \rightarrow t] \rightarrow t$. De voorzetselconstituent neemt als eerste argument een lambda-functie die een beperking oplegt vanuit het substantief waarbij het hoort. In dit geval is er echter geen substantief en dus geen beperking. Dit vertaalt zich in een lege DRS-structuur. Het tweede argument, de entiteit die beperkt wordt door de voorzetselconstituent, is de entiteit uit het onderwerp. We krijgen $$\sem{cop_{pp, pos}} = \lambdaf{Q}{\lambdaf{N}{\app{N}{\lambdaf{x}{\app{\app{Q}{\lambdaf{y}{\drs{}{}}}}{x}}}}}$$ De betekenis van de negatieve vorm is $$\sem{cop_{pp, neg}} = \lambdaf{Q}{\lambdaf{N}{\app{N}{\lambdaf{x}{\drsNot{\app{\app{Q}{\lambdaf{y}{\drs{}{}}}}{x}}}}}}$$
 \end{itemize}
 
-\section{Betrekkelijk voornaamwoord}
-% lexEntry(relpro, [syntax:[who]]).
-% lexEntry(relpro, [syntax:[which]]).
-% lexEntry(relpro, [syntax:[that]]).
-% %% lexEntry(relpro, [syntax:[]]).
+\section{Comparatief en onbepaalde woorden}
+Binnen een logigram is er altijd minstens één concept van numeriek aard. Vaak is er dan ook een zin die uitdrukt dat iemand een hogere of lagere numerieke waarde heeft dan iemand anders. Bijvoorbeeld ``John scored 15 points less than Mary'' of ``Mary finished sometime after Tom''. De woordgroepen ``less than'' en ``after'' zijn deel van de lexicale categorie \texttt{comparatief}. ``sometime'' is dan weer een voorbeeld van een onbepaald woord. Wat op het eerste zicht niet opvalt aan deze zinnen is dat ze een belangrijke ellips bevatten. Tom is namelijk geen tijdstip maar een persoon. De tweede zin is voluit ``Mary finished sometime after Tom finished''. Deze ellips zal opgelost worden in de grammatica.
+
+%Een comparatief is een functie die twee naamwoordgroepen als argument neemt en een nieuwe naamwoordgroep maakt die als lijdend voorwerp kan dienen. $\tau(comp) = \tau(np) \rightarrow \tau(np) \rightarrow \tau(np) = [(e \rightarrow t) \rightarrow t] \rightarrow [(e \rightarrow t) \rightarrow t] \rightarrow [(e \rightarrow t) \rightarrow t]$. 
+\paragraph{} Er zijn opnieuw 2 betekenissen afhankelijk van het woord: één voor ``hoger'' (bv. ``after'') en één voor ``lager'' (bv. ``less than'')
+$$\sem{comp_{lager}} = \lambdaf{N1}{\lambdaf{N2}{\left( \lambdaf{P}{\app{N1}{\lambdaf{x1}{\app{N2}{\lambdaf{x2}{\drsMerge{\drs{x}{x = x2 - x1}}{\app{P}{x}}}}}}} \right)}}$$
+Een comparatief neemt twee naamwoordgroepen ($N1$ en $N2$) als argument. Het resultaat is een nieuwe naamwoordgroep die kan dienen als lijdend voorwerp. Een naamwoordgroep is van type $(e \rightarrow t) \rightarrow t$ en dus krijgen we nog een argument $P$ van type $e \rightarrow t$ mee. We kunnen $\lambda P$ ook zien als het aanmaken van een box waar we later een nieuwe entiteit kunnen insteken. Daarna kunnen we de naamwoordgroepen uitpakken. We doen dit in volgorde van het voorkomen in de zin (dus eerst $N1$ en dan $N2$). Vervolgens maken we een nieuwe entiteit $x$ aan. Deze is gelijk aan het verschil $x2-x1$ (bijvoorbeeld de score van Mary - 15). Ten slotte stoppen we de nieuwe entiteit $x$ in de box van onze resulterende naamwoordgroep.
+
+De andere betekenis van de comparatief, die voor ``hoger'', is gelijkaardig aan de eerste met dat verschil dat $x = x2+x1$ i.p.v. $x = x2-x1$.
+
+De comparatief is een open lexicale categorie. Elke logigram heeft eigen comparatieven. In het logigram-specifiek lexicon bevindt zich naast de woordvorm ook telkens het type (``hoger'' of ``lager'').
+
+\paragraph{} De onbepaalde woorden hebben dezelfde signatuur als een naamwoordgroep $\tau(some) = \tau(np) = (e \rightarrow t) \rightarrow t$. We kunnen het zien als een box rond een existentiële kwantor. Meer concreet hebben we $$\sem{some} = \lambdaf{P}{\drsMerge{\drs{x}{x > 0}}{\app{P}{x}}}$$ We maken een box aan ($\lambda P$). Vervolgens maken we een entiteit $x$ aan dat een positief getal ($x > 0$) voorstelt. (Het getal moet strikt positief zijn want anders kan $x=x2-x1$ ook hoger dan $x2$ uitkomen bij een comparatief met als betekenis ``lager dan''). Ten slotte stoppen we de entiteit in de box ($\app{P}{x}$).
+
 \section{Voegwoord}
 Distributief reading!
 
@@ -92,18 +112,3 @@ Distributief reading!
 
 % lexEntry(coordPrefix, [syntax:[either], type:disj]).
 % lexEntry(coordPrefix, [syntax:[neither], type:neg]).
-\section{Comparatief}
-% addRule(comp(Type, Syntax)) :-
-%     assertz(pLexEntry(comp, [type:Type, syntax:Syntax])).
-% lexEntry(comp, [type:lower, syntax:[lower, than]]).
-% lexEntry(comp, [type:lower, syntax:[less, than]]).
-% lexEntry(comp, [type:lower, syntax:[below]]).
-% lexEntry(comp, [type:lower, syntax:[before]]).
-
-% lexEntry(comp, [type:higher, syntax:[higher, than]]).
-% lexEntry(comp, [type:higher, syntax:[more, than]]).
-% lexEntry(comp, [type:higher, syntax:[above]]).
-% lexEntry(comp, [type:higher, syntax:[after]]).
-
-% lexEntry(somePhrase, [syntax:[sometime]]).
-% lexEntry(somePhrase, [syntax:[somewhat]]).
