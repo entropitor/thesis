@@ -442,16 +442,16 @@ tv([inf:Inf, num:Num, ref:_, gap:[]-Gap, sem:Sem, vType:Type])-->
     { semLex(tv, [symbol:Sym, sem:Sem]) }.
 
 tv([inf:Inf, num:Num, ref:_, gap:[]-Gap, sem:Sem, vType:Type])-->
-    cop([type:tv, inf:Inf, num:Num, sem:Cop]),
+    cop([type:tv, inf:Inf, num:Num, sem:Sem, symbol:Sym]),
     { lexEntry(copgap, [symbol:Sym, syntax:Word, gap:Gap, vType:Type]) },
-    Word,
-    { semLex(tv, [symbol:Sym, sem:SemTV]) },
-    { combine(tv:Sem, [cop:Cop, tv:SemTV]) }.
+    Word.
 
 cop([type:Type, inf:Inf, num:Num, sem:Sem])-->
+    cop([type:Type, inf:Inf, num:Num, sem:Sem, symbol:_]).
+cop([type:Type, inf:Inf, num:Num, sem:Sem, symbol:Sym])-->
     { lexEntry(cop, [pol:Pol, syntax:Word, inf:Inf, num:Num]) },
     Word,
-    { semLex(cop, [pol:Pol, type:Type, sem:Sem]) }.
+    { semLex(cop, [pol:Pol, type:Type, sem:Sem, symbol:Sym]) }.
 
 det([mood:M, type:Type, num:Num, sem:Det, vType:VType])-->
     { lexEntry(det, [syntax:Word, mood:M, num:Num, type:Type]) },
