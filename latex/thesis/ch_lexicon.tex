@@ -53,68 +53,19 @@ $$\sem{prep} = \lambdaf{N}{\lambdaf{P}{\lambdaf{y}{\drsMerge{\app{N}{\lambdaf{x}
 Een voorzetsel neemt dus een naamwoordgroep ($N$), een substantief ($P$) en een entiteit ($y$) als argument. Bovenop de beperking van het substantief op de entiteit ($\app{P}{y}$), voegt het nog een beperking toe die de entiteit $y$ linkt met de entiteit $x$ uit de box van de naamwoordgroep via een predicaat met de naam van het voorzetsel.
 
 \section{Transitief werkwoord}
-\subsection{ivpp}
-\subsection{tvPrep}
+Een transitief werkwoord is een werkwoord met een lijdend voorwerp. Een logigram heeft enkel transitieve werkwoorden. Er zijn geen intransitieve (zonder lijdend voorwerp) of ditransitieve werkwoorden (met een meewerkend voorwerp). De vertaling van een transitief werkwoord is gelijk aan die van het vorige hoofdstuk $$\sem{tv} = \lambdaf{N1}{\lambdaf{N2}{\app{N2}{\lambdaf{x2}{\app{N1}{\lambdaf{x1}{\drs{}{\textit{Symbool}(x2, x1)}}}}}}}$$ Het lijdend voorwerp ($N1$) en het onderwerp ($N2$) zijn de argumenten van het werkwoord. Eerst wordt de box van het onderwerp uitgepakt. Daarbinnen de box van het lijdende voorwerp. De kwantor van het onderwerp komt dus altijd voor die van het lijdend voorwerp (met deze vertaling). Ten slotte worden de entiteiten van het onderwerp ($x2$) en het lijdend voorwerp ($x1$) gebonden via een predicaat met het symbool van het werkwoord.
 
-
-% addRule(tv(SyntaxSg, SyntaxInf)) :-
-%     syntax_symbol(SyntaxSg, Symbol),
-%     assertz(pLexEntry(tv, [symbol:Symbol, syntax:SyntaxSg, inf:fin, num:sg, vType:Type]) :- addType(tv-Symbol, Type)),
-%     assertz(pLexEntry(tv, [symbol:Symbol, syntax:SyntaxInf, inf:inf, num:sg, vType:Type]) :- addType(tv-Symbol, Type)).
-% addRule(tvPrep(SyntaxSg, PP, SyntaxInf, SyntaxPart)) :-
-%     Type = pred(SubjType, ObjType),
-%     append(SyntaxSg, PP, WordForm),
-%     syntax_symbol(WordForm, Symbol),
-%     assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxSg, pp:PP, inf:fin, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)),
-%     assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxInf, pp:PP, inf:inf, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)),
-%     assertz(pLexEntry(ivpp, [symbol:Symbol, syntax:SyntaxPart, pp:PP, inf:part, num:sg, vType:Type]) :- addType(ivpp-Symbol, Type)),
-%     assertz(pLexEntry(prep, [symbol:Symbol, syntax:PP, type:v, vType:pred(SubjType, ObjType)])).
-% addRule(tvGap(SyntaxSg, Gap, SyntaxInf)) :-
-%     append(SyntaxSg, Gap, WordForm),
-%     syntax_symbol(WordForm, Symbol),
-%     assertz(pLexEntry(tvgap, [symbol:Symbol, syntax:SyntaxSg, gap:Gap, inf:fin, num:sg, vType:Type]) :- addType(tvgap-Symbol, Type)),
-%     assertz(pLexEntry(tvgap, [symbol:Symbol, syntax:SyntaxInf, gap:Gap, inf:inf, num:sg, vType:Type]) :- addType(tvgap-Symbol, Type)).
-% addRule(copGap(Syntax, Gap)) :-
-%     append([is], Syntax, SyntaxSg),
-%     append(SyntaxSg, Gap, WordForm),
-%     syntax_symbol(WordForm, Symbol),
-%     assertz(pLexEntry(copgap, [symbol:Symbol, syntax:Syntax, gap:Gap, vType:Type]) :- addType(copgap-Symbol, Type)).
+\paragraph{}Een transitief werkwoord is een open lexicale categorie. Dat wil zeggen dat de woorden verschillend zijn per logigram. In het logigram-specifiek lexicon staat de infinitief, de werkwoordsvorm in de derde persoon enkelvoud alsook een voltooid of onvoltooid deelwoord. De enkelvoudsvorm kan zowel in de verleden tijd als de tegenwoordige tijd zijn, afhankelijk van hoe het werkwoord gebruikt wordt in de logigram. Ten slotte wordt ook nog het voorzetsel gegeven dat voor het lijdend voorwerp wordt gezet (indien van toepassing) en eventueel een achtervoegsel aan het einde van de zin (bv. ``to print'' in ``The design took 8 minutes to print''). Het symbool van het werkwoord (en dus ook de naam van het predicaat) wordt afgeleid uit de enkelvoudsvorm.
 
 \section{Hulpwerkwoord}
+De woordklasse van hulpwerkwoorden is een gesloten woordklasse. Binnen de logigrammen zijn het de werkwoordsvormen van ``to do'' en ``to be'' die deel uitmaken van deze klasse. Alsook het hulpwerkwoord voor de toekomst ``will''. Naast de woordvorm bevat het lexicon ook informatie over de polariteit van die woordvorm: positief of negatief. ``does'' is positief, ``doesn't'' is negatief. De beide polariteiten hebben elk een andere betekenis. Een hulpwerkwoord is een woord dat een verbale constituent (\texttt{verb phrase} of \texttt{vp}) omvormt tot een nieuwe verbale constituent. Voor een hulpwerkwoord met positieve polariteit is dit de identieke transformatie \footnote{Merk op dat de tijd niet uitmaakt voor een logigram en ``will'' dus niet vertaald moet worden}. $$\sem{av_{pos}} = \lambdaf{V}{V}$$ Voor een hulpwerkwoord met een negatieve polariteit bestaat de transformatie uit een negatie van de verbale constituent. Merk op dat er dus geen negatie is van het onderwerp. Hiermee wordt de vertaling van ``Everyone doesn't work'' in logica $\forall x \cdot \lnot work(x)$ en niet $\lnot \forall x \cdot work(x)$
 
-% lexEntry(av, [syntax:[does], inf:fin, num:sg, pol:pos]).
-% lexEntry(av, [syntax:[does, not], inf:fin, num:sg, pol:neg]).
-% lexEntry(av, [syntax:[doesn, t], inf:fin, num:sg, pol:neg]).
+$$\sem{av_{neg}} = \lambdaf{V}{\lambdaf{N}{\app{N}{\lambdaf{x}{\drsNot{\app{V}{\lambdaf{P}{\app{P}{x}}}}}}}}$$
 
-% lexEntry(av, [syntax:[do], inf:fin, num:pl, pol:pos]).
-% lexEntry(av, [syntax:[do, not], inf:fin, num:pl, pol:neg]).
-% lexEntry(av, [syntax:[don, t], inf:fin, num:pl, pol:neg]).
+Het hulpwerkwoord krijgt een verbale constituent ($V$) en een onderwerp ($N$) als argument. Het haalt de entiteit van het onderwerp uit de box en geeft dan een negatie van de verbale constituent. Die verbale constituent krijgt een lege doos met enkel de entiteit in ($\lambdaf{P}{\app{P}{x}}$) mee als ``onderwerp''.
 
-% lexEntry(av, [syntax:[did], inf:fin, num:sg, pol:pos]).
-% lexEntry(av, [syntax:[did, not], inf:fin, num:sg, pol:neg]).
-% lexEntry(av, [syntax:[didn, t], inf:fin, num:sg, pol:neg]).
-
-% lexEntry(av, [syntax:[did], inf:fin, num:pl, pol:pos]).
-% lexEntry(av, [syntax:[did, not], inf:fin, num:pl, pol:neg]).
-% lexEntry(av, [syntax:[didn, t], inf:fin, num:pl, pol:neg]).
-
-% lexEntry(av, [syntax:[is], inf:fin, num:sg, pol:pos]).
-% lexEntry(av, [syntax:[is, not], inf:fin, num:sg, pol:neg]).
-% lexEntry(av, [syntax:[isn, t], inf:fin, num:sg, pol:neg]).
-
-% lexEntry(av, [syntax:[was], inf:fin, num:sg, pol:pos]).
-% lexEntry(av, [syntax:[was, not], inf:fin, num:sg, pol:neg]).
-% lexEntry(av, [syntax:[wasn, t], inf:fin, num:sg, pol:neg]).
-
-% lexEntry(av, [syntax:[will], inf:fin, num:sg, pol:pos]).
-% lexEntry(av, [syntax:[will, not], inf:fin, num:sg, pol:neg]).
-% lexEntry(av, [syntax:[won, t], inf:fin, num:sg, pol:neg]).
-
-% lexEntry(av, [syntax:[will], inf:fin, num:pl, pol:pos]).
-% lexEntry(av, [syntax:[will, not], inf:fin, num:pl, pol:neg]).
-% lexEntry(av, [syntax:[won, t], inf:fin, num:pl, pol:neg]).
 \section{Koppelwerkwoord}
-Een koppelwerkwoord is een gesloten lexicale categorie. Ze bestaat uit verschillende vormen van het werkwoord ``to be'' (bv. is, isn't, is not, was, are, were, ...). Er is een enkelvoud- en meervoudsvorm. Bovendien is er sprake van een positieve of negatieve polariteit. Deze hebben elk een licht andere semantiek. Ten slotte kan een koppelwerkwoord ook op drie verschillende manieren gebruikt worden in een zin van een logigram:
+De categorie van koppelwerkwoorden is een gesloten lexicale categorie. Ze bestaat uit verschillende vormen van het werkwoord ``to be'' (bv. is, isn't, is not, was, are, were, ...). Er is een enkelvoud- en meervoudsvorm. Bovendien is er sprake van een positieve of negatieve polariteit. Deze hebben elk een licht andere semantiek. Ten slotte kan een koppelwerkwoord ook op drie verschillende manieren gebruikt worden in een zin van een logigram:
 
 \begin{itemize}
   \item Samen met een \texttt{nominale constituent} (\texttt{noun phrase} of \texttt{np}): Bijvoorbeeld ``John is a man''. Dit type van gebruik heeft dezelfde signatuur als een overgankelijk werkwoord. De semantiek zegt dat de twee referenties die in de box van het onderwerp en het lijdend voorwerp zitten, gelijk zijn.
