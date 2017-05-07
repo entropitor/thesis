@@ -443,7 +443,7 @@ problem(p18, problem(4, 5, [
 % 3, 4, 6) the one -> the comet
 % 9) Whitaker's [comet]
 % year: orbital vs time -> time replace "year" with "cycle"
-problem(p19, problem(4, 5, [
+problem(p19, problem(5, 5, [
                          "The comet discovered by Whitaker doesn't have an orbital period of 30 years",
                          "Gostroma was discovered 1 cycle after the comet discovered by Tillman",
                          "Of the comet discovered by Underwood and the comet with an orbital period of 42 years, one was found in 2009 and the other is Trosny",
@@ -460,6 +460,7 @@ problem(p19, problem(4, 5, [
                          noun([comet], [comets]),
                          noun([year], [years]),
                          noun([cycle], [cycles]),
+                         noun([orbital, period], [orbital, periods]),
                          pn([whitaker]),
                          pn([gostroma]),
                          pn([tillman]),
@@ -469,11 +470,14 @@ problem(p19, problem(4, 5, [
                          pn([parks]),
                          pn([underwood]),
                          %% tv([discovered], [discover]),
+                         tv([has], [have]),
                          tvPrep([discovered], [by], [discover], [discovered]),
-                         tvPrep([has, an, orbital, period], [of], [have, an, orbital, period], [having, an, orbital, period]),
+                         %% tvPrep([has, an, orbital, period], [of], [have, an, orbital, period], [having, an, orbital, period]),
                          tvPrep([discovered], [in], [discover], [discovered]),
                          tvPrep([found], [in], [find], [found]),
-                         prep([with, an, orbital, period, of])
+                         prep([with]),
+                         prep([of])
+                         %% prep([with, an, orbital, period, of])
                      ])).
 
 

@@ -36,6 +36,39 @@ problem(p1, problem(4,5, [
                         prep([from]),
                         prep([with, a, population, size, of])
         ])).
+problem(p1b, problem(5,5, [
+                        "The perens pig lives in Slovakia and was recognized as endangered in 2009",
+                        "The eldar elk has a population size of 210",
+                        "The byengo bat doesn't live in Ghana",
+                        "The animal that lives in Slovakia was listed sometime before the animal from Russia",
+                        "Of the species with a population size of 490 and the eldar elk, one lives in Poland and the other was recognized as endangered in 2009",
+                        "Neither the nibner newt nor the byengo bat has a surviving population size of 525",
+                        "The species that lives in Ghana was listed 2 years after the nibner newt",
+                        "The animal that lives in Russia doesn't have a surviving population size of 315"
+        ], [
+                        noun([species], [species]),
+                        noun([animal], [animals]),
+                        noun([year], [years]),
+                        noun([population, size], [population, sizes]),
+                        noun([surviving, population, size], [surviving, population, sizes]),
+                        pn([the, perens, pig]),
+                        pn([the, byengo, bat]),
+                        pn([the, nibner, newt]),
+                        pn([the, eldar, elk]),
+                        pn([the, osbele, oryx]),
+                        pn([ghana]),
+                        pn([honduras]),
+                        pn([poland]),
+                        pn([russia]),
+                        pn([slovakia]),
+                        tv([has], [have]),
+                        tvPrep([lives], [in], [live], [lived]),
+                        tvPrep([recognized, as, endangered], [in], [recognize, as, endangered], [recognized, as, endangered]),
+                        tvPrep([listed], [in], [list], [listed]),
+                        prep([from]),
+                        prep([with]),
+                        prep([of])
+        ])).
 
 problem(p2, problem(4,5, [
                         "Of the contestant who scored 41 points and the person who threw the white darts, one was from Worthington and the other was Ira",
@@ -180,7 +213,7 @@ problem(p5, problem(4, 5, [
                         pn([shaver, lake]),
                         tvPrep([lives], [in], [live], [lived]),
                         copGap([], [old]),
-                        prep([a, native, of]),
+                        prep([of]),
                         prep([from]),
                         comp(higher, [older, than]),
                         comp(lower, [younger, than])
@@ -304,8 +337,7 @@ problem(p8, problem(4, 5, [
                         tvPrep([printed], [in], [print], [printed]),
                         tvGap([took], [to, print], [take]),
                         tvGap([required], [to, print], [require]),
-                        comp(lower, [fewer, than]),
-                        comp(higher, [more, than])
+                        comp(lower, [fewer, than])
         ])).
 
 % p8 with extra prep's to fix problem of too little predicates

@@ -2,14 +2,14 @@
 
 vocabulary V {
     type year = {109; 110; 111; 112; 113} isa int
-    type person constructed from {the_other_person, mattie, ernesto, roxanne, zachary}
+    type native constructed from {the_other_native, mattie, ernesto, roxanne, zachary}
     type type1 constructed from {the_other_type1, oregon, kansas, washington, alaska}
     type type2 constructed from {the_other_type2, tehama, zearing, plymouth, shaver_lake}
 
-    is_old(person, year)
-    a_native_of(person, type1)
-    lives_in(person, type2)
-    from(person, type1)
+    is_old(native, year)
+    of(native, type1)
+    lives_in(native, type2)
+    from(native, type1)
 }
 
 structure S : V {
@@ -20,48 +20,48 @@ theory T : V {
     is_old(mattie,113).
 
     // The person who lives in Tehama is a native of either Kansas or Oregon
-    ?a [person]: lives_in(a,tehama) & (a_native_of(a,kansas) | a_native_of(a,oregon)).
+    ?a [native] b [native]: lives_in(a,tehama) & (of(b,kansas) | of(b,oregon)) & b = a.
 
     // The Washington native is 1 year older than Ernesto
-    ?b [person] c [year] d [year]: is_old(ernesto,c) & d = c+1 & is_old(b,d) & a_native_of(b,washington).
+    ?c [native] d [year] e [year]: is_old(ernesto,d) & e = d+1 & is_old(c,e) & of(c,washington).
 
     // Roxanne is 2 years younger than the Kansas native
-    ?e [year] f [person] g [year]: is_old(f,e) & a_native_of(f,kansas) & g = e-2 & is_old(roxanne,g).
+    ?f [year] g [native] h [year]: is_old(g,f) & of(g,kansas) & h = f-2 & is_old(roxanne,h).
 
     // The person who lives in Zearing isn't a native of Alaska
-    ?h [person]: lives_in(h,zearing) & ~ a_native_of(h,alaska).
+    ?i [native]: lives_in(i,zearing) & ~ (?j [native]: of(j,alaska) & j = i).
 
     // The person who is 111 years old doesn't live in Plymouth
-    ?i [person]: is_old(i,111) & ~ lives_in(i,plymouth).
+    ?k [native]: is_old(k,111) & ~ lives_in(k,plymouth).
 
     // The Oregon native is either Zachary or the person who lives in Tehama
-    ?j [person]: (zachary = j | (?k [person]: lives_in(k,tehama) & k = j)) & a_native_of(j,oregon).
+    ?l [native]: (zachary = l | (?m [native]: lives_in(m,tehama) & m = l)) & of(l,oregon).
 
     // The person who lives in Shaver Lake is 1 year younger than Roxanne
-    ?l [person] m [year] n [year]: lives_in(l,shaver_lake) & is_old(roxanne,m) & n = m-1 & is_old(l,n).
+    ?n [native] o [year] p [year]: lives_in(n,shaver_lake) & is_old(roxanne,o) & p = o-1 & is_old(n,p).
 
     // The centenarian who lives in Plymouth isn't a native of Alaska
-    ?o [person]: lives_in(o,plymouth) & ~ a_native_of(o,alaska).
+    ?q [native]: lives_in(q,plymouth) & ~ (?r [native]: of(r,alaska) & r = q).
 
     // Of the person who lives in Tehama and Mattie, one is a native of Alaska and the other is from Kansas
-    ?p [person]: lives_in(p,tehama) & ~ (p = mattie) & (a_native_of(p,alaska) & from(mattie,kansas) | a_native_of(mattie,alaska) & from(p,kansas)).
+    ?s [native]: lives_in(s,tehama) & ~ (s = mattie) & ((?t [native]: of(t,alaska) & t = s & from(mattie,kansas)) | (?u [native]: of(u,alaska) & u = mattie & from(s,kansas))).
 
 
     // Logigram bijection axioms:
-    ! x [person]: ?=1 y [year]: is_old(x, y).
-    ! x [year]: ?=1 y [person]: is_old(y, x).
+    ! x [native]: ?=1 y [year]: is_old(x, y).
+    ! x [year]: ?=1 y [native]: is_old(y, x).
 
-    ! x [person]: ?=1 y [type1]: a_native_of(x, y).
-    ! x [type1]: ?=1 y [person]: a_native_of(y, x).
+    ! x [native]: ?=1 y [type1]: of(x, y).
+    ! x [type1]: ?=1 y [native]: of(y, x).
 
-    ! x [person]: ?=1 y [type2]: lives_in(x, y).
-    ! x [type2]: ?=1 y [person]: lives_in(y, x).
+    ! x [native]: ?=1 y [type2]: lives_in(x, y).
+    ! x [type2]: ?=1 y [native]: lives_in(y, x).
 
-    ! x [person]: ?=1 y [type1]: from(x, y).
-    ! x [type1]: ?=1 y [person]: from(y, x).
+    ! x [native]: ?=1 y [type1]: from(x, y).
+    ! x [type1]: ?=1 y [native]: from(y, x).
 
     // Logigram synonym axioms:
-    ! x [person] y [type1]: a_native_of(x, y) <=> from(x, y).
+    ! x [native] y [type1]: of(x, y) <=> from(x, y).
 
     // Logigram transitive relation axioms:
 
