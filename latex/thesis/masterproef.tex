@@ -72,7 +72,10 @@
   }
 }
 \newcommand{\drsMerge}[2]{
-  \left( #1 \oplus #2 \right)
+  \left\{ #1 \oplus #2 \right\}
+}
+\newcommand{\drsTriMerge}[3]{
+  \left\{ #1 \oplus #2 \oplus #3 \right\}
 }
 \newcommand{\drsImpl}[2]{
   \begin{tabular}{@{}l}
@@ -90,8 +93,11 @@
 \newcommand{\appB}[2]{
   \app{#1}{\left( #2 \right)}
 }
+\newcommand{\appH}[2]{
+  \app{\left( #1 \right)}{#2}
+}
 \newcommand{\app}[2]{
-  #1 @ #2
+  #1 \left( #2 \right)
 }
 
 % Tenslotte wordt hyperref gebruikt voor pdf bestanden.
