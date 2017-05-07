@@ -72,7 +72,7 @@ Het lexicon bepaalt welke woorden gebruikt mogen worden, de grammatica hoe deze 
 
 \subsection{Semantiek van de grammaticale regels}
 \paragraph{Een getypeerde lambda-calcalus}
-Voor de betekenis van de taal zullen we gebruiken maken van een getypeerde lambda-calcalus. We gebruiken het symbool \texttt{@} voor de applicatie uit de lambda-calcalus, naar analogie met Blackburn en Bos. Er zijn drie types in onze lambda-calcalus \texttt{e} voor entiteiten, \texttt{t} voor \textit{truth values} en ten slotte het functie-type die we noteren met $\rightarrow$. Zo is $\lambda x. man(x)$ een lambda-expressie van type $e \rightarrow t$. Elk woord zal een lambda-formule als betekenis krijgen. Deze formules zullen gecombineerd worden tot één formule voor de zin die geen lambda's meer bevat. Die formule vormt de betekenis van de zin. De betekenis van een zin is dus van type $t$.
+Voor de betekenis van de taal zullen we gebruiken maken van een getypeerde lambda-calcalus. Er zijn drie types in onze lambda-calcalus \texttt{e} voor entiteiten, \texttt{t} voor \textit{truth values} en ten slotte het functie-type die we noteren met $\rightarrow$. Zo is $\lambda x. man(x)$ een lambda-expressie van type $e \rightarrow t$. Elk woord zal een lambda-formule als betekenis krijgen. Deze formules zullen gecombineerd worden tot één formule voor de zin die geen lambda's meer bevat. Die formule vormt de betekenis van de zin. De betekenis van een zin is dus van type $t$.
 
 \paragraph{Frege's compositionality principe} Voor de betekenis van de grammatica berusten we op Frege's compositionality principe: De betekenis van een woordgroep bestaat uit een combinatie van de betekenissen van de woorden of woordgroepen waaruit ze bestaat en de manier waarop deze woorden gecombineerd worden. Op deze manier propageren we de semantiek van de woorden (die de bladeren in de boom vormen) naar boven toe om zo de betekenis van de zin te verkrijgen. We hernemen bovenstaande grammaticale regels nu en voegen de semantiek toe. Later zullen we aantonen dat deze simpele combinatieregels tot een zinnig resultaat leiden.
 %We gebruiken de uitgebreide notatie van de feature structures voor de leesbaarheid.
@@ -82,10 +82,10 @@ Voor de betekenis van de taal zullen we gebruiken maken van een getypeerde lambd
     \hline
     \textbf{Grammaticale regel} & \textbf{Semantiek} \\
     \hline
-    \texttt{s ---> np([num:Num]), vp([num:Num]).}              & $\sem{s} = \sem{vp}@\sem{np}$ \\
+    \texttt{s ---> np([num:Num]), vp([num:Num]).}              & $\sem{s} = \app{\sem{vp}}{\sem{np}}$ \\
     \texttt{s ---> [if], s, s.}                                & $\sem{s} = \drs{}{\sem{s1} \Rightarrow \sem{s2}}$ \\
     \texttt{np([num:sg]) ---> pn.}                             & $\sem{np} = \sem{pn}$ \\
-    \texttt{np([num:Num]) ---> det([num:Num]), n([num:Num]).}  & $\sem{np} = \sem{det}@\sem{n}$ \\
+    \texttt{np([num:Num]) ---> det([num:Num]), n([num:Num]).}  & $\sem{np} = \app{\sem{det}}{\sem{n}}$ \\
     \texttt{vp([num:Num]) ---> iv([num:Num]).}                 & $\sem{vp} = \sem{iv}$ \\
     \texttt{vp([num:Num]) ---> tv([num:Num]), np([num:\_]).}   & $\sem{vp} = \app{\sem{tv}}{\sem{np}}$\\
     \hline
