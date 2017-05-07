@@ -73,30 +73,36 @@ semLex(ivpp, M) :-
 semLex(cop, M) :-
     M = [pol:pos,
          type:np,
-         sem:lam(N1, lam(N2, app(N2, lam(X, app(N1, lam(Y, drs([], [eq(Y, X)])))))))];
+         sem:lam(N1, lam(N2, app(N2, lam(X, app(N1, lam(Y, drs([], [eq(Y, X)]))))))),
+         symbol:_];
     M = [pol:neg,
          type:np,
-         sem:lam(N1, lam(N2, app(N2, lam(X, drs([], [not(app(N1, lam(Y, drs([], [eq(Y, X)]))))])))))];
+         sem:lam(N1, lam(N2, app(N2, lam(X, drs([], [not(app(N1, lam(Y, drs([], [eq(Y, X)]))))]))))),
+         symbol:_];
     M = [pol:pos,
          type:adj,
-         sem:lam(Adj, lam(N, app(N, lam(X, app(app(Adj, lam(_, drs([], []))), X)))))];
+         sem:lam(Adj, lam(N, app(N, lam(X, app(app(Adj, lam(_, drs([], []))), X))))),
+         symbol:_];
     M = [pol:neg,
          type:adj,
-         sem:lam(Adj, lam(N, app(N, lam(X, drs([], [not(app(app(Adj, lam(_, drs([], []))), X))])))))];
+         sem:lam(Adj, lam(N, app(N, lam(X, drs([], [not(app(app(Adj, lam(_, drs([], []))), X))]))))),
+         symbol:_];
     M = [pol:neg,
          type:tv,
-         sem:lam(T, lam(N1, lam(N2, app(N2, lam(X2, app(N1, lam(X1, drs([], [not(app(app(T, lam(P1, app(P1, X1))), lam(P2, app(P2, X2))))]))))))))];
+         sem:lam(N1, lam(N2, app(N2, lam(X, drs([], [not(app(N1, lam(Y, drs([], [rel(Sym, X, Y)]))))]))))),
+         symbol:Sym];
     M = [pol:pos,
          type:tv,
-         sem:lam(P, P)].
+         sem:lam(N1, lam(N2, app(N2, lam(X, app(N1, lam(Y, drs([], [rel(Sym, X, Y)]))))))),
+         symbol:Sym].
 
 semLex(relpro, M) :-
-    M = [sem:lam(P, lam(Q, lam(X, merge(app(P, lam(R, app(R, X))), app(Q, X)))))].
+    M = [sem:lam(P, lam(Q, lam(X, merge(app(Q, X), app(P, lam(R, app(R, X)))))))].
 
 semLex(prep, M) :-
     M = [symbol:Sym,
          type:n,
-         sem:lam(K, lam(P, lam(Y, merge(app(K, lam(X, drs([], [rel(Sym, Y, X)]))), app(P, Y)))))].
+         sem:lam(K, lam(P, lam(Y, merge(app(P, Y), app(K, lam(X, drs([], [rel(Sym, Y, X)])))))))].
     %% M = [symbol:Sym,
     %%      type:vp,
     %%      sem:lam(K, lam(V, lam(N, lam(E, app(app(V, N), lam(X, merge(app(K, lam(Y, drs([], [rel(Sym, X, Y)]))), app(E, X))))))))].
@@ -113,7 +119,7 @@ semLex(av, M) :-
     M = [pol:neg,
          sem:lam(P, lam(N, app(N, lam(X, drs([], [not(app(P, lam(Y, app(Y, X))))])))))];
     M = [pol:pos,
-         sem:lam(P, lam(X, app(P, X)))].
+         sem:lam(P, P)].
 
 % We use distributive reading
 % Mia and Vincent do love a building. Distributive vs collective reading -> Different building or the same!!!

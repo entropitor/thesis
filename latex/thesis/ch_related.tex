@@ -98,7 +98,7 @@ Concreet bevat een DRS-structuur een lijst van \textit{discourse referents} (woo
 \label{sec:ASP}
 In het domein van kennisrepresentatie hebben Baral et al.\ \cite{Baral2008} natuurlijke taal reeds vertaald naar Answer Set Programs (ASP). Ze maken hiervoor gebruik van Combinatorische Categorische Grammatica (CCG) en $\lambda$-calcalus. Een CCG bestaat uit een aantal basiscategorie\"en zoals \texttt{s} (zin) en \texttt{np} (naamwoordgroep) en afgeleide categorie\"en zoals \texttt{s/np} \footnote{een \texttt{S/NP} is een woordgroep die indien gecombineerd met een \texttt{np} langs links een zin vormt} en \texttt{(s/np)$\backslash$np} \footnote{een \texttt{(S/NP)$\backslash$NP} is een woordgroep die indien met een \texttt{np} gecombineerd langs links en langs rechts een zin vormt} \cite{Baral2008}. Zo wordt een onovergankelijk werkwoord voorgesteld als een \texttt{s$\backslash$np}. Verder bevat een CCG een aantal regels die bepalen wat de categorie is van een combintatie van woordgroepen. Zo is er een regel die zegt dat $\alpha\beta$ van categorie \texttt{B} is als $\alpha$ categorie \texttt{A} heeft en $\beta$ categorie \texttt{B$\backslash$A} \cite{Baral2008}. Dankzij deze regel kunnen we afleiden dat als we een onovergankelijk werkwoord (\texttt{s$\backslash$np}) langs links combineren met een naamwoordgroep (\texttt{np}), we dan een zin krijgen. Op deze manier kunnen we een parse tree opstellen waarbij we telkens 2 woordgroepen combineren totdat de zin uiteindelijk categorie \texttt{s} krijgt.
 
-Naast een categorie heeft elk woord ook een betekenis uitgedrukt in een uitbreiding op de $\lambda$-calcalus. In deze uitbreiding kunnen ook ASP-expressies voorkomen. De betekenis van een woordgroep is de combinatie van de betekenis van de woorden. Hierbij gebruiken we de CCG parse tree om de volgorde te bepalen. We verduidelijken met een voorbeeld (grotendeels overgenomen uit Baral et al.\ \cite{Baral2008}). We beschouwen het lexicon zoals weergegeven in tabel \ref{table:CCG} voor de zin \example{Birds fly}. Hierin stelt de \texttt{@} de applicatie voor uit de lambda-calcalus. De combinatie van de woorden \textit{birds} en \textit{fly}, is van de categorie \texttt{s} zoals hierboven reeds uitgelegd. De overeenkomstige lamda-expressies moeten nu op een gelijkaardige manier gecombineerd worden: $\lambda_{birds\ fly}=\lambda_{fly}@\lambda_{birds}$.
+Naast een categorie heeft elk woord ook een betekenis uitgedrukt in een uitbreiding op de $\lambda$-calcalus. In deze uitbreiding kunnen ook ASP-expressies voorkomen. De betekenis van een woordgroep is de combinatie van de betekenis van de woorden. Hierbij gebruiken we de CCG parse tree om de volgorde te bepalen. We verduidelijken met een voorbeeld (grotendeels overgenomen uit Baral et al.\ \cite{Baral2008}). We beschouwen het lexicon zoals weergegeven in tabel \ref{table:CCG} voor de zin \example{Birds fly}. De combinatie van de woorden \textit{birds} en \textit{fly}, is van de categorie \texttt{s} zoals hierboven reeds uitgelegd. De overeenkomstige lamda-expressies moeten nu op een gelijkaardige manier gecombineerd worden: $\lambda_{birds\ fly}=\app{\lambda_{fly}}{\lambda_{birds}}$.
 
 \begin{table}
   \centering
@@ -108,7 +108,7 @@ Naast een categorie heeft elk woord ook een betekenis uitgedrukt in een uitbreid
     \hline
     \hline
     Birds & np & $\lambda x.bird(x)$ \\
-    Fly & s$\backslash$np & $\lambda x.fly(X) \leftarrow x@X$ \\
+    Fly & s$\backslash$np & $\lambda x.fly(X) \leftarrow \app{x}{X}$ \\
     \hline
   \end{tabular}
   \caption{Een lexicon voor de woorden birds en fly in een CCG grammatica (uit \cite{Baral2008})}
@@ -118,9 +118,9 @@ Naast een categorie heeft elk woord ook een betekenis uitgedrukt in een uitbreid
 \begin{equation}
   \label{eq:lambda}
   \begin{aligned}
-  \lambda_{birds\ fly} &= \lambda_{fly}@\lambda_{birds} \\
-          &= (\lambda x.fly(X) \leftarrow x@X)@(\lambda x.bird(x)) \\
-          &= fly(X) \leftarrow (\lambda x.bird(x))@X \\
+  \lambda_{birds\ fly} &= \app{\lambda_{fly}}{\lambda_{birds}} \\
+          &= \app{(\lambda x.fly(X) \leftarrow \app{x}{X})}{\lambda x.bird(x)} \\
+          &= fly(X) \leftarrow \app{(\lambda x.bird(x))}{X} \\
           &= fly(X) \leftarrow bird(X)
   \end{aligned}
 \end{equation}

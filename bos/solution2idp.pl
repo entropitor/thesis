@@ -179,7 +179,7 @@ printReflexiveRelationAxioms(predicate(Name1, Type1, Type2), Preds) :-
 printReflexiveRelationAxioms(_, _).
 printSymmetryBreakersFakeConstructedTypes(Predicates, BaseTypes, baseType(FakeConstructedType, fakeConstructed:DomainFake)) :-
     member(predicate(Name, FakeConstructedType, Type1), Predicates),
-    member(baseType(Type1, constructed:DomainReal), BaseTypes),
+    member(baseType(Type1, _:DomainReal), BaseTypes),
     maplist(printPredicateFact(Name), DomainFake, DomainReal).
 printPredicateFact(Name, Arg1, Arg2) :-
     format('    ~p(~p, ~p).~n', [Name, Arg1, Arg2]).

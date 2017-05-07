@@ -86,5 +86,3 @@ combine(vp:lam(Obj, app(app(A, Obj), B)), [tv:A, npSubj:B]).
 combine(pp:app(A, B), [prep:A, np:B]).
 
 combine(rc:app(A, B), [relpro:A, vp:B]).
-
-combine(tv:app(A, B), [cop:A, tv:B]).
