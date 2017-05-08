@@ -535,6 +535,6 @@ comp([sem:Sem, vType:VType]) -->
 some([sem:Sem, vType:Type]) -->
     { lexEntry(some, [syntax:Word]) },
     Word,
-    { semLex(some, [sem:Sem, type:Type]) }.
+    { semLex(some, [sem:Sem, vType:Type]) }.
 some([sem:Sem, vType:Type]) -->
-    { semLex(some, [sem:Sem, type:Type]) }.
+    { semLex(some, [sem:Sem, vType:Type]) }.

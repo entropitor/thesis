@@ -148,4 +148,4 @@ semLex(comp, M) :-
 semLex(some, M) :-
     addTypeAttribute(Type1, derivedCountable(Type)),
     M = [sem:lam(N, merge(drs([variable(X, Type1, decl)], [eq(X > 0)]), app(N, X))),
-         type:Type].
+         vType:Type].
