@@ -285,7 +285,7 @@ nmod([num:Num, sem:N, vType:Type]) -->
 ========================================================================*/
 
 pp([sem:PP, vType:SubjType]) -->
-  prep([syntax:_, sem:Prep, vType:pred(SubjType, ObjType)]),
+  prep([sem:Prep, vType:pred(SubjType, ObjType)]),
   np([coord:_, num:_, gap:[], sem:NP, vType:ObjType]),
   { combine(pp:PP, [prep:Prep, np:NP]) }.
 
@@ -484,7 +484,7 @@ relpro([sem:Sem]) -->
   Word,
   { semLex(relpro, [sem:Sem]) }.
 
-prep([syntax:Word, sem:Sem, vType:VType]) -->
+prep([sem:Sem, vType:VType]) -->
   { lexEntry(prep, [symbol:Sym, syntax:Word, type:_, vType:VType]) },
   Word,
   { semLex(prep, [symbol:Sym, type:n, sem:Sem]) }.
