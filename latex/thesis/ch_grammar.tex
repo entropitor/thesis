@@ -1,8 +1,62 @@
 \chapter{Een grammatica voor logigrammen}
 
-In dit hoofdstuk overlopen we de gebruikte grammaticale categorieën en de grammaticale regels die erbij horen samen met hun semantiek. We beginnen bij de categorieën die bestaan uit lexicale categorieën en werken naar boven toe richting de categorie van een zin.
+In dit hoofdstuk overlopen we de gebruikte grammaticale categorieën en de grammaticale regels die erbij horen samen met hun semantiek. We beginnen bij de categorieën die bestaan uit lexicale categorieën en werken naar boven toe richting de categorie van een zin. We gebruiken de DCG-notatie uit hoofdstuk~\ref{sec:DCG}.
 
 \section{Lexicale categorieën}
+\subsection{Een mapping naar het lexicon} De meeste van de grammaticale categorieën die de link vormen met het lexicon volgend de structuur uit grammatica~\ref{dcg:lexcat}. Hierbij staat \textit{cat} voor de categorie in kwestie. Ze bestaan uit het opzoeken van een woord met de juiste features (bijvoorbeeld getal) in het lexicon; controleren dat het woord uit het lexicon het volgende woord in de zin is; en tenslotte het opzoeken van de betekenis van het woord.
+
+\begin{dcg}{Een grammaticale regel voor een lexicale categorie \textit{cat}}{dcg:lexcat}
+cat([feature1:Feature1, type:Type, sem:Sem]) -->
+  { lexEntry(cat, [feature1:Feature1, type:Type, syntax:Word]) },
+  Word,
+  { semLex(cat, [feature1:Feature1, type:Type, sem:Sem]) }.
+\end{dcg}
+
+De categorieën die deze structuur volgen zijn determinatoren (\texttt{det}), hoofdtelwoorden (\texttt{number}), substantieven (\texttt{noun}), voorzetsels (\texttt{prep}), betrekkelijke voornaamwoorden (\texttt{relpro}), hulpwerkwoorden (\texttt{av}), koppelwerkwoorden (\texttt{cop}) en comparatieven (\texttt{comp}).
+
+\paragraph{}Bijvoorbeeld voor een substantief wordt dit grammatica~\ref{dcg:noun}. Het getal van de grammaticale categorie komt overeen met het getal uit het lexicon. Het symbool dat wordt gebruikt in de betekenis van een woord komt ook uit het lexicon.
+\begin{dcg}{De grammaticale regel voor een substantief}{dcg:noun}
+noun([num:Num, sem:Sem])-->
+  { lexEntry(noun, [symbol:Sym, num:Num, syntax:Word]) },
+  Word,
+  { semLex(noun, [symbol:Sym, sem:Sem]) }.
+\end{dcg}
+
+\subsection{Eigennaam}
+Grammatica~\ref{dcg:pn} geeft de grammaticale regel voor een eigennaam weer. Dit lijkt zeer sterk op de algemene mapping van de grammatica naar het lexicon buiten de optionele ``the''. Deze is nodig omdat in sommige puzzels een bepaalde term zowel met als zonder ``the'' voorkomt. Indien we deze twee verschillende termen allebei apart in het lexicon zouden ingeven, zouden deze worden vertaald naar verschillende symbolen. Dit zouden we graag vermijden \footnote{Een alternatief was om de twee vormen met hetzelfde symbool in het lexicon op te nemen. Dat is equivalent aan onderstaande grammatica}.
+
+\begin{dcg}{De grammaticale regel voor een eigennaam}{dcg:pn}
+pn([num:Num, sem:Sem])-->
+  { lexEntry(pn, [symbol:Sym, syntax:Word, num:Num]) },
+  optional([the]),
+  Word,
+  { semLex(pn, [symbol:Sym, sem:Sem]) }.
+optional(X) -->
+  X.
+optional(X) -->
+  [].
+\end{dcg}
+
+\subsection{Transitief werkwoord}
+Er zijn twee grammaticale regels voor een transitief werkwoord (grammatica~\ref{dcg:tv}). Enerzijds is er de standaard mapping van grammatica naar lexicon. De voorzetsels en achtervoegsels uit het lexicon worden als feature meegegeven aan de grammaticale woordgroep. Het getal (\texttt{num}) en de vorm (\texttt{inf}) van de grammaticale woordgroep moet ook overeenkomen met die uit het lexicon.
+
+Anderzijds wordt de combinatie koppelwerkwoord + adjectief ook als een transitief werkwoord gezien. Hierbij is het adjectief het achtervoegsel. De semantiek van deze combinatie is die van het koppelwerkwoord ($\sem{cop_{ap}}$) zoals we die hebben afgeleid in hoofdstuk~\ref{sec:lex-koppelwerkwoord}.
+\begin{dcg}{De grammaticale regels voor een transitief werkwoord}{dcg:tv}
+tv([inf:Inf, num:Num, positions:Pre-Post, sem:Sem])-->
+  { lexEntry(tv, [symbol:Sym, syntax:Word-Pre-Post, inf:Inf, num:Num]) },
+  Word,
+  { semLex(tv, [symbol:Sym, sem:Sem]) }.
+
+tv([inf:Inf, num:Num, positions:[]-Post, sem:Sem])-->
+  cop([type:ap, inf:Inf, num:Num, sem:Sem, symbol:Sym]),
+  { lexEntry(copAdj, [symbol:Sym, adj:Post]) }.
+\end{dcg}
+
+\begin{itemize}
+  \item SOMEPHRASE + ellipsis(somePhrase)
+  \item CoordPrefix, Coord
+  \item CoordEllipsis
+\end{itemize}
 
 \section{Substantieven}
 \section{Transformaties van substantieven}
