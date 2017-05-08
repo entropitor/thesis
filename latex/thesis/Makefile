@@ -1,43 +1,20 @@
-filename=masterproef
+# LaTeX Makefile -- LaTeX only
 
-# You want latexmk to *always* run, because make does not have all the info.
-# Also, include non-file targets in .PHONY so they are run regardless of any
-# file of the given name existing.
-.PHONY: masterproef.pdf all clean
+# set the path to your TeX file here
+FILENAME=masterproef
 
-# The first rule in a Makefile is the one executed by default ("make"). It
-# should always be the "all" rule, so that "make" and "make all" are identical.
+PAPER=$(FILENAME).tex
+SHELL=/bin/zsh          # for the while loop below
+
 all: main
+main:  ## Compile paper
+	rubber --pdf $(PAPER)
 
-# CUSTOM BUILD RULES
-
-# In case you didn't know, '$@' is a variable holding the name of the target,
-# and '$<' is a variable holding the (first) dependency of a rule.
-# "raw2tex" and "dat2tex" are just placeholders for whatever custom steps
-# you might have.
-
-%.tex: %.raw
-	./raw2tex $< > $@
-
-%.tex: %.dat
-	./dat2tex $< > $@
-
-# MAIN LATEXMK RULE
-
-# -pdf tells latexmk to generate PDF directly (instead of DVI).
-# -pdflatex="" tells latexmk to call a specific backend with specific options.
-# -use-make tells latexmk to call make for generating missing files.
-
-# -interaction=nonstopmode keeps the pdflatex backend from stopping at a
-# missing file reference and interactively asking you for an alternative.
-
-main: $(filename).tex
-	latexmk -pdf $(PREVIEW_CONTINUOUSLY) -bibtex -pdflatex="pdflatex -interaction=nonstopmode" -use-make $(filename).tex
-watch: PREVIEW_CONTINUOUSLY=-pvc
-watch: main
 open: main
-	xdg-open $(filename).pdf &
+	xdg-open $(FILENAME).pdf &
 
-clean:
-	latexmk -CA
+clean:  ## Clean output files
+	rubber --clean $(PAPER)
 
+watch:  ## Recompile on updates to the source file
+	@while [ 1 ]; do; inotifywait *.tex; sleep 0.01; make all; done
