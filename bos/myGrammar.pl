@@ -268,7 +268,7 @@ n([coord:no, num:Num, sem:N, vType:Type]) -->
   { combine(n:N, [noun:Noun]) }.
 
 nmod([num:_, sem:N, vType:Type]) -->
-  pp([type:n, sem:PP, vType:Type]),
+  pp([sem:PP, vType:Type]),
   { combine(nmod:N, [pp:PP]) }.
 
 nmod([num:Num, sem:N, vType:Type]) -->
@@ -279,6 +279,40 @@ nmod([num:Num, sem:N, vType:Type]) -->
 %%   pp([type:n, sem:PP, vType:Type]),
 %%   nmod([num:Num, sem:NMod, vType:Type]),
 %%   { combine(nmod:Sem, [pp:PP, nmod:NMod]) }.
+
+/*========================================================================
+  Prepositional Phrases
+========================================================================*/
+
+pp([sem:PP, vType:SubjType]) -->
+  prep([syntax:_, sem:Prep, vType:pred(SubjType, ObjType)]),
+  np([coord:_, num:_, gap:[], sem:NP, vType:ObjType]),
+  { combine(pp:PP, [prep:Prep, np:NP]) }.
+
+
+/*========================================================================
+  Relative Clauses
+========================================================================*/
+
+rc([num:Num, sem:RC, vType:Type]) -->
+  relpro([sem:RP]),
+  vp([coord:no, inf:fin, num:Num, gap:[], sem:VP, vType:Type]),
+  { combine(rc:RC, [relpro:RP, vp:VP]) }.
+
+%% rc([num:Num, sem:RC, vType:Type]) -->
+%%   prep([type:v, syntax:PP, sem:_, vType:_]),
+%%   relpro([sem:RP]),
+%%   vp([coord:no, inf:fin, num:Num, gap:[pp:PP], sem:VP, vType:Type]),
+%%   { combine(rc:RC, [relpro:RP, vp:VP]) }.
+
+% For performance reasons only (could add [] as relpro as well)
+rc([num:Num, sem:RC, vType:TypeSubj]) -->
+  { semLex(relpro, [sem:RP]) },
+  tv([inf:part, num:Num, gap:GapBefore-GapAfter, sem:TV, vType:pred(TypeSubj, TypeObj)]),
+  GapBefore,
+  np([coord:no, num:_, gap:[], sem:NP, vType:TypeObj]),
+  GapAfter,
+  { combine(rc:RC, [relpro:RP, vp:app(TV, NP)]) }.
 
 /*========================================================================
   Verb Phrases
@@ -309,7 +343,7 @@ vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type]) -->
 
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type]) -->
   cop([type:adj, inf:Inf, num:Num, sem:Cop]),
-  pp([type:n, sem:PP, vType:Type]),
+  pp([sem:PP, vType:Type]),
   { combine(vp:VP, [cop:Cop, adj:PP]) }.
 
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type]) -->
@@ -376,41 +410,6 @@ numberOrAll-->
   number([sem:_, vType:_]).
 debug(X, X) :-
   writeln(X).
-
-/*========================================================================
-  Prepositional Phrases
-========================================================================*/
-
-pp([type:Type, sem:PP, vType:SubjType]) -->
-  prep([type:Type, syntax:_, sem:Prep, vType:pred(SubjType, ObjType)]),
-  np([coord:_, num:_, gap:[], sem:NP, vType:ObjType]),
-  { combine(pp:PP, [prep:Prep, np:NP]) }.
-
-
-/*========================================================================
-  Relative Clauses
-========================================================================*/
-
-rc([num:Num, sem:RC, vType:Type]) -->
-  relpro([sem:RP]),
-  vp([coord:no, inf:fin, num:Num, gap:[], sem:VP, vType:Type]),
-  { combine(rc:RC, [relpro:RP, vp:VP]) }.
-
-%% rc([num:Num, sem:RC, vType:Type]) -->
-%%   prep([type:v, syntax:PP, sem:_, vType:_]),
-%%   relpro([sem:RP]),
-%%   vp([coord:no, inf:fin, num:Num, gap:[pp:PP], sem:VP, vType:Type]),
-%%   { combine(rc:RC, [relpro:RP, vp:VP]) }.
-
-% For performance reasons only (could add [] as relpro as well)
-rc([num:Num, sem:RC, vType:TypeSubj]) -->
-  { semLex(relpro, [sem:RP]) },
-  tv([inf:part, num:Num, gap:GapBefore-GapAfter, sem:TV, vType:pred(TypeSubj, TypeObj)]),
-  GapBefore,
-  np([coord:no, num:_, gap:[], sem:NP, vType:TypeObj]),
-  GapAfter,
-  { combine(rc:RC, [relpro:RP, vp:app(TV, NP)]) }.
-
 
 /*========================================================================
   Lexical Rules
@@ -485,10 +484,10 @@ relpro([sem:Sem]) -->
   Word,
   { semLex(relpro, [sem:Sem]) }.
 
-prep([type:Type, syntax:Word, sem:Sem, vType:VType]) -->
-  { lexEntry(prep, [symbol:Sym, syntax:Word, type:Type, vType:VType]) },
+prep([syntax:Word, sem:Sem, vType:VType]) -->
+  { lexEntry(prep, [symbol:Sym, syntax:Word, type:_, vType:VType]) },
   Word,
-  { semLex(prep, [symbol:Sym, type:Type, sem:Sem]) }.
+  { semLex(prep, [symbol:Sym, type:n, sem:Sem]) }.
 
 %% adj([sem:Sem, vType:Type]) -->
 %%   { lexEntry(adj, [symbol:Sym, syntax:Word, vType:Type]) },
