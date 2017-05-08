@@ -214,5 +214,5 @@ lexEntry(comp, [type:higher, syntax:[after]]).
 /*========================================================================
     Some phrase
 ========================================================================*/
-lexEntry(somePhrase, [syntax:[sometime]]).
-lexEntry(somePhrase, [syntax:[somewhat]]).
+lexEntry(some, [syntax:[sometime]]).
+lexEntry(some, [syntax:[somewhat]]).

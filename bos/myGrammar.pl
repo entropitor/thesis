@@ -135,8 +135,8 @@ s([coord:no, sem:Sem])-->
 np([coord:no, num:sg, gap:[np:NP-Type], ref:no, sem:NP, vType:Type])--> [].
 
 np([coord:no, num:_Num, gap:[number:Type], ref:no, sem:NP, vType:Type])-->
-    somePhrase([sem:SP, vType:Type]),
-    { combine(np:NP, [somePhrase:SP]) }.
+    some([sem:SP, vType:Type]),
+    { combine(np:NP, [some:SP]) }.
 np([coord:no, num:Num, gap:[number:Type], ref:no, sem:NP, vType:Type])-->
     np([coord:no, num:Num, gap:[], ref:no, sem:NP, vType:Type]).
 
@@ -532,9 +532,9 @@ comp([sem:Sem, vType:VType])-->
     Word,
     { semLex(comp, [type:Type, sem:Sem, vType:VType]) }.
 
-somePhrase([sem:Sem, vType:Type])-->
-    { lexEntry(somePhrase, [syntax:Word]) },
+some([sem:Sem, vType:Type])-->
+    { lexEntry(some, [syntax:Word]) },
     Word,
-    { semLex(somePhrase, [sem:Sem, type:Type]) }.
-somePhrase([sem:Sem, vType:Type])-->
-    { semLex(somePhrase, [sem:Sem, type:Type]) }.
+    { semLex(some, [sem:Sem, type:Type]) }.
+some([sem:Sem, vType:Type])-->
+    { semLex(some, [sem:Sem, type:Type]) }.
