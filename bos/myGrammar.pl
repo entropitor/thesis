@@ -458,10 +458,11 @@ det([mood:M, type:Type, num:Num, sem:Det, vType:VType])-->
     Word,
     { semLex(det, [type:Type, num:Num, sem:Det, vType:VType]) }.
 
-number([sem:Sem, vType:Type], [Number|T], T) :-
-    integer(Number),
-    semLex(number, [number:Number, sem:Sem, vType:Type]),
-    addType(number-Number, Type).
+number([sem:Sem, vType:Type])-->
+    [Number],
+    { integer(Number) },
+    { semLex(number, [number:Number, sem:Sem, vType:Type]) },
+    { addType(number-Number, Type) }.
 number([sem:Sem, vType:Type])-->
     { lexEntry(number, [syntax:Word, number:Number]) },
     Word,
