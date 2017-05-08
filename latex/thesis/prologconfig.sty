@@ -161,15 +161,28 @@
 }
 
 % global settings
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \lstset
 {
   captionpos = below,
   frame      = single,
   columns    = fullflexible,
   basicstyle = \ttfamily,
+  numbers    = left,
+  % stepnumber = 4,
+  firstnumber = 1,
+  numberfirstline = true,
+  numberstyle = \small\color{mygray},
 }
 
 \lstnewenvironment{dcg}[2]
-  {\renewcommand\lstlistingname{Grammatica}\lstset{style=Prolog-pygsty}\lstset{caption=#1}\lstset{label=#2}}
+  {
+    \renewcommand\lstlistingname{Grammatica}
+    \lstset{
+      style=Prolog-pygsty,
+      caption=#1,
+      label=#2,
+    }
+  }
   {}
 \endinput

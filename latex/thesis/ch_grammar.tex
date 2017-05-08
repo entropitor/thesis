@@ -1,11 +1,12 @@
 \chapter{Een grammatica voor logigrammen}
+\label{ch:grammatica}
 
-In dit hoofdstuk overlopen we de gebruikte grammaticale categorieën en de grammaticale regels die erbij horen samen met hun semantiek. We beginnen bij de categorieën die bestaan uit lexicale categorieën en werken naar boven toe richting de categorie van een zin. We gebruiken de DCG-notatie uit hoofdstuk~\ref{sec:DCG}.
+In dit hoofdstuk overlopen we de gebruikte grammaticale categorieën en de grammaticale regels die erbij horen, samen met hun semantiek. We beginnen bij de categorieën die bestaan uit lexicale categorieën en werken naar boven toe richting de categorie van een zin. We gebruiken de DCG-notatie uit hoofdstuk~\ref{sec:DCG}. De feature \texttt{sem} geeft de semantiek van die woordgroep.
 
 \section{Lexicale categorieën}
 \subsection{Een mapping naar het lexicon}
 \label{sec:lexgram}
-De meeste van de grammaticale categorieën die de link vormen met het lexicon volgend de structuur uit grammatica~\ref{dcg:lexcat}. Hierbij staat \textit{cat} voor de categorie in kwestie. Ze bestaan uit het opzoeken van een woord met de juiste features (bijvoorbeeld getal) in het lexicon; controleren dat het woord uit het lexicon het volgende woord in de zin is; en tenslotte het opzoeken van de betekenis van het woord.
+De meeste van de grammaticale categorieën die de link vormen met het lexicon volgend de structuur uit grammatica~\ref{dcg:lexcat}. Hierbij staat \textit{cat} voor de categorie in kwestie. De grammaticale regel bestaat uit het opzoeken van een woord in het lexicon (m.b.v. de functie \texttt{lexEntry}). Hierbij kijken we niet alleen naar de lexicale categorie maar ook naar andere features zoals getal; controleren dat het woord uit het lexicon het volgende woord is in de zin (lijn 3); en tenslotte het opzoeken van de betekenis van het woord (m.b.v. de functie \texttt{semLex}). Dit resulteert in de formules van hoofdstuk~\ref{ch:lexicon}.
 
 \begin{dcg}{Een grammaticale regel voor een lexicale categorie \textit{cat}}{dcg:lexcat}
 cat([feature1:Feature1, type:Type, sem:Sem]) -->
@@ -86,10 +87,46 @@ noCoord([type:Type, sem:Sem]) -->
   { semLex(coord, [type:Type, sem:Sem]) }.
 \end{dcg} 
 
-\section{Substantieven}
-\section{Transformaties van substantieven}
-\subsection{Betrekkelijke bijzin}
-\subsection{Voorzetselconstituent}
+\section{(Getransformeerde) Substantieven}
+Grammatica~\ref{dcg:n} geeft een overzicht van de grammatica regels i.v.m. substantieven en transformaties op die substantieven. De eerste 2 regels zeggen dat een getransformeerd substantief (hiervoor gebruiken we de categorie \texttt{n}) kan bestaan uit een gewoon substantief (\texttt{noun}) al dan niet gevolgd door een transformatie op dat substantief (\texttt{nmod} naar \texttt{noun modifier}). In het geval van een transformatie is de betekenis van het getransformeerde substantief gelijk aan de applicatie van de transformatie op dat van het echte substantief of $\sem{n} = \app{\sem{nmod}}{\sem{noun}}$.
+
+Lijnen 9 t.e.m. 14 van grammatica~\ref{dcg:n} definiëren de mogelijke transformaties: ofwel gaat het om een voorzetselconstituent (\texttt{pp}), ofwel om een betrekkelijke bijzin (\texttt{rc}). In het laatste geval moet het getal van het substantief en het werkwoord uit de bijzin overeenkomen.
+
+\begin{dcg}{De grammaticale regels i.v.m. substantieven}{dcg:n}
+n([coord:no, num:Num, sem:Sem]) -->
+  noun([num:Num, sem:Noun]),
+  { Sem = Noun }.
+n([coord:no, num:Num, sem:Sem]) -->
+  noun([num:Num, sem:Noun]),
+  nmod([num:Num, sem:NMod]),
+  { Sem = app(NMod, Noun) }.
+
+nmod([num:_, sem:Sem]) -->
+  pp([sem:PP]),
+  { Sem = PP }.
+nmod([num:Num, sem:Sem]) -->
+  rc([num:Num, sem:RC]),
+  { Sem = RC }.
+
+pp([sem:Sem]) -->
+  prep([sem:Prep]),
+  np([coord:_, num:_, gap:[], sem:NP]),
+  { Sem = app(Prep, NP) }.
+
+rc([num:Num, sem:Sem]) -->
+  relpro([sem:RelPro]),
+  vp([coord:no, inf:fin, num:Num, gap:[], sem:VP]),
+  { Sem = app(RelPro, VP) }.
+\end{dcg}
+
+\paragraph{} Lijnen 16 t.e.m. 19 beschrijven de voorzetselconstituent (\texttt{pp}) zoals ``from France''. Deze constituent bestaat namelijk uit een voorzetsel (\texttt{prep}) gevolgd door een nominale constituent (\texttt{np}). De feature \texttt{gap} van de nominale constituent heeft te maken met ellipsen die kunnen voorkomen in die constituent. De lege lijst wilt zeggen dat er geen ellipsen mogelijk zijn.
+
+De betekenis van een voorzetselconstituent bestaat uit een simpele lambda-applicatie ($\sem{pp} = \app{\sem{prep}}{\sem{np}}$).
+
+\paragraph{} Lijnen 21 t.e.m. 24 beschrijven de betrekkelijke bijzin (\texttt{rc}). Zo'n betrekkelijke bijzin bestaat uit een betrekkelijk voornaamwoord (\texttt{relpro}) gevolgd door een verbale constituent. Een voorbeeld van zo'n betrekkelijke bijzin is ``that loves Mary''. De verbale constituent moet simpel zijn (\texttt{coord:no}). Dat wil zeggen dat er geen voegwoorden mogen in voorkomen. Bovendien moet het werkwoord vervoegd zijn (\texttt{inf:fin}) en dus niet in de infinitief voorkomen. Ten slotte moet het getal overeenkomen met dat van het substantief.
+
+De betekenis bestaat opnieuw uit één lambda-applicatie, namelijk $\sem{rc} = \app{\sem{relpro}}{\sem{vp}}$.
+
 \section{Nominale constituent}
 
 \section{Verbale constituent}
