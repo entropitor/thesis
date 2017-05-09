@@ -1,7 +1,9 @@
 \chapter{Een grammatica voor logigrammen}
 \label{ch:grammatica}
 
-In dit hoofdstuk overlopen we de gebruikte grammaticale categorieën en de grammaticale regels die erbij horen, samen met hun semantiek. We beginnen bij de categorieën die bestaan uit lexicale categorieën en werken naar boven toe richting de categorie van een zin. We gebruiken de DCG-notatie uit hoofdstuk~\ref{sec:DCG}. De feature \texttt{sem} geeft de semantiek van die woordgroep.
+In dit hoofdstuk overlopen we de gebruikte grammaticale categorieën en de grammaticale regels die erbij horen, samen met hun semantiek. We beginnen bij de categorieën die bestaan uit lexicale categorieën en werken naar boven toe richting de categorie van een zin. We gebruiken de DCG-notatie uit hoofdstuk~\ref{sec:DCG}. De feature \texttt{sem} staat voor de semantiek van een woordgroep.
+
+\paragraph{}De grammatica is opgesteld vertrekkend van code van Blackburn en Bos \cite{Blackburn2006} en op basis van de eerste 10 logigrammen uit Puzzle Baron's Logic Puzzles Volume 3 \cite{logigrammen}. De grammatica regels van Blackburn en Bos die niet van toepassing zijn voor logigrammen zijn verwijderd.
 
 \section{Lexicale categorieën}
 \subsection{Een mapping naar het lexicon}
@@ -15,7 +17,7 @@ cat([feature1:Feature1, type:Type, sem:Sem]) -->
   { semLex(cat, [feature1:Feature1, type:Type, sem:Sem]) }.
 \end{dcg}
 
-De categorieën die deze structuur volgen zijn determinatoren (\texttt{det}), hoofdtelwoorden (\texttt{number}), substantieven (\texttt{noun}), voorzetsels (\texttt{prep}), betrekkelijke voornaamwoorden (\texttt{relpro}), hulpwerkwoorden (\texttt{av}), koppelwerkwoorden (\texttt{cop}) en comparatieven (\texttt{comp}).
+De categorieën die deze structuur volgen zijn determinatoren (\texttt{det}), hoofdtelwoorden (\texttt{number}), substantieven (\texttt{noun}), voorzetsels (\texttt{prep}), hulpwerkwoorden (\texttt{av}), koppelwerkwoorden (\texttt{cop}) en comparatieven (\texttt{comp}).
 
 \paragraph{}Bijvoorbeeld voor een substantief wordt dit grammatica~\ref{dcg:noun}. Het getal van de grammaticale categorie komt overeen met het getal uit het lexicon. Het symbool dat wordt gebruikt in de betekenis van een woord komt ook uit het lexicon.
 \begin{dcg}{De grammaticale regel voor een substantief}{dcg:noun}
@@ -55,16 +57,23 @@ tv([inf:Inf, num:Num, positions:[]-Post, sem:Sem]) -->
   { lexEntry(copAdj, [symbol:Sym, adj:Post]) }.
 \end{dcg}
 
-\subsection{Onbepaalde woorden}
-Het is mogelijk om een onbepaald woord te verzwijgen, bijvoorbeeld ``John finished [sometime] before Mia''. Daarom is er een extra regel die zegt dat het woord niet per se hoeft voor te komen in de zin.
+\subsection{Onbepaalde woorden en betrekkelijke voornaamwoorden}
+Het is mogelijk om een onbepaald woord te verzwijgen, bijvoorbeeld ``John finished [sometime] before Mia''. Daarom is er een extra regel die zegt dat het woord niet per se hoeft voor te komen in de zin (lijn 5 en 6). Hetzelfde geldt voor betrekkelijke voornaamwoorden.
 
-\begin{dcg}{De grammaticale regels voor een onbepaald woord}{dcg:some}
+\begin{dcg}{De grammaticale regels voor onbepaalde woorden en betrekkelijke voornaamwoorden}{dcg:someAndRelpro}
 some([sem:Sem]) -->
   { lexEntry(some, [syntax:Word]) },
   Word,
   { semLex(some, [sem:Sem]) }.
 some([sem:Sem]) -->
   { semLex(some, [sem:Sem]) }.
+
+relpro([sem:Sem]) -->
+  { lexEntry(relpro, [syntax:Word]) },
+  Word,
+  { semLex(relpro, [sem:Sem]) }.
+relpro([sem:Sem]) -->
+  { semLex(relpro, [sem:Sem]) }.
 \end{dcg}
 
 \subsection{Voegwoord}
