@@ -132,6 +132,10 @@ s([coord:no, sem:Sem]) -->
   Noun Phrases
 ========================================================================*/
 
+npCoordNum(conj, pl).
+npCoordNum(disj, sg).
+npCoordNum(neg, sg).
+
 np([coord:no, num:sg, gap:[np:NP-Type], sem:NP, vType:Type]) --> [].
 
 np([coord:no, num:_Num, gap:[number:Type], sem:NP, vType:Type]) -->
@@ -146,38 +150,54 @@ np([coord:no, num:Num, gap:[useTVGap, tv:TV-pred(TypeSubj, TypeObj) | G], sem:NP
   np([coord:_, num:Num, gap:G, sem:NP1, vType:TypeSubj]),
   { combine(np:NP, [np:NP1, tv:TV, vType:TypeObj])}.
 
-np([coord:conj, num:pl, gap:G, sem:NP, vType:Type]) -->
+np([coord:CoordType, num:CoordNum, gap:G, sem:NP, vType:Type]) -->
+  { npCoordNum(CoordType, CoordNum) },
+  coordPrefix([type:CoordType]),
   np([coord:no, num:sg, gap:G, sem:NP1, vType:Type]),
-  noCoord([type:conj, sem:C]),
-  np([coord:conj, num:_, gap:G, sem:NP2, vType:Type]),
+  noCoord([type:CoordType, sem:C]),
+  np([coord:CoordType, num:_, gap:G, sem:NP2, vType:Type]),
   { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
-np([coord:conj, num:pl, gap:G, sem:NP, vType:Type]) -->
+np([coord:CoordType, num:CoordNum, gap:G, sem:NP, vType:Type]) -->
+  { npCoordNum(CoordType, CoordNum) },
+  coordPrefix([type:CoordType]),
   np([coord:no, num:sg, gap:G, sem:NP1, vType:Type]),
-  coord([type:conj, sem:C]),
-  { member(Coord, [conj, no]) },
+  coord([type:CoordType, sem:C]),
+  { member(Coord, [CoordType, no]) },
   np([coord:Coord, num:_, gap:G, sem:NP2, vType:Type]),
   { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
 
-np([coord:disj, num:sg, gap:G, sem:NP, vType:Type]) -->
-  coordPrefix([type:disj]),
-  np([coord:no, num:sg, gap:G, sem:NP1, vType:Type]),
-  noCoord([type:disj, sem:C]),
-  np([coord:disj, num:sg, gap:G, sem:NP2, vType:Type]),
-  { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
-np([coord:disj, num:sg, gap:G, sem:NP, vType:Type]) -->
-  coordPrefix([type:disj]),
-  np([coord:no, num:sg, gap:G, sem:NP1, vType:Type]),
-  coord([type:disj, sem:C]),
-  { member(Coord, [disj, no]) },
-  np([coord:Coord, num:sg, gap:G, sem:NP2, vType:Type]),
-  { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
+%% np([coord:conj, num:pl, gap:G, sem:NP, vType:Type]) -->
+%%   np([coord:no, num:sg, gap:G, sem:NP1, vType:Type]),
+%%   noCoord([type:conj, sem:C]),
+%%   np([coord:conj, num:_, gap:G, sem:NP2, vType:Type]),
+%%   { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
+%% np([coord:conj, num:pl, gap:G, sem:NP, vType:Type]) -->
+%%   np([coord:no, num:sg, gap:G, sem:NP1, vType:Type]),
+%%   coord([type:conj, sem:C]),
+%%   { member(Coord, [conj, no]) },
+%%   np([coord:Coord, num:_, gap:G, sem:NP2, vType:Type]),
+%%   { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
 
-np([coord:yes, num:sg, gap:G, sem:NP, vType:Type]) -->
-  coordPrefix([type:neg]),
-  np([coord:no, num:sg, gap:G, sem:NP1, vType:Type]),
-  coord([type:neg, sem:C]),
-  np([coord:no, num:sg, gap:G, sem:NP2, vType:Type]),
-  { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
+%% np([coord:disj, num:sg, gap:G, sem:NP, vType:Type]) -->
+%%   coordPrefix([type:disj]),
+%%   np([coord:no, num:sg, gap:G, sem:NP1, vType:Type]),
+%%   noCoord([type:disj, sem:C]),
+%%   np([coord:disj, num:sg, gap:G, sem:NP2, vType:Type]),
+%%   { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
+%% np([coord:disj, num:sg, gap:G, sem:NP, vType:Type]) -->
+%%   coordPrefix([type:disj]),
+%%   np([coord:no, num:sg, gap:G, sem:NP1, vType:Type]),
+%%   coord([type:disj, sem:C]),
+%%   { member(Coord, [disj, no]) },
+%%   np([coord:Coord, num:sg, gap:G, sem:NP2, vType:Type]),
+%%   { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
+
+%% np([coord:yes, num:sg, gap:G, sem:NP, vType:Type]) -->
+%%   coordPrefix([type:neg]),
+%%   np([coord:no, num:sg, gap:G, sem:NP1, vType:Type]),
+%%   coord([type:neg, sem:C]),
+%%   np([coord:no, num:sg, gap:G, sem:NP2, vType:Type]),
+%%   { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
 
 np([coord:no, num:Num, gap:[], sem:NP, vType:Type]) -->
   det([mood:decl, type:_, num:Num, sem:Det, vType:Type]),
@@ -348,7 +368,7 @@ vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type]) -->
 
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP, vType:Type]) -->
   cop([type:np, inf:Inf, num:Num, sem:Cop]),
-  numberOrAll,
+  (number([sem:_, vType:_]) ; [all]),
   [different],
   n([coord:_, num:Num, sem:_N, vType:Type]),
   { combine(vp:VP, [cop:Cop, alldifferent]) }.
@@ -377,8 +397,8 @@ vp([coord:no, inf:I, num:Num, gap:G, sem:VP, vType:TypeSubj]) -->
   optional(GapBefore, UsedGapBefore),
   np([coord:NPCoord, num:_, gap:[tv:TV-pred(TypeSubj, TypeObj) | G], sem:NP, vType:TypeObj]),
   optional(GapAfter, UsedGapAfter),
-  { UsedGapBefore \= true -> NPCoord == comp ; true },
-  { UsedGapAfter \= true -> NPCoord == comp ; true },
+  { UsedGapBefore = true -> true ; NPCoord == comp },
+  { UsedGapAfter = true -> true ; NPCoord == comp },
   { combine(vp:VP, [tv:TV, np:NP]) }.
 
 %% vp([coord:no, inf:I, num:Num, gap:G, sem:VP, vType:TypeSubj]) -->
