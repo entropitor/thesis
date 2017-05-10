@@ -147,16 +147,18 @@ np([coord:no, num:Num, gap:[useTVGap, tv:TV-pred(TypeSubj, TypeObj) | G], sem:NP
 np([coord:CoordType, num:CoordNum, gap:G, sem:NP, vType:Type]) -->
   { npCoordNum(CoordType, CoordNum) },
   coordPrefix([type:CoordType]),
-  np([coord:no, num:sg, gap:G, sem:NP1, vType:Type]),
+  { Coord1 = no ; Coord1 = np },
+  np([coord:Coord1, num:sg, gap:G, sem:NP1, vType:Type]),
   noCoord([type:CoordType, sem:C]),
   np([coord:CoordType, num:_, gap:G, sem:NP2, vType:Type]),
   { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
 np([coord:CoordType, num:CoordNum, gap:G, sem:NP, vType:Type]) -->
   { npCoordNum(CoordType, CoordNum) },
   coordPrefix([type:CoordType]),
-  np([coord:no, num:sg, gap:G, sem:NP1, vType:Type]),
+  { Coord1 = no ; Coord1 = np },
+  np([coord:Coord1, num:sg, gap:G, sem:NP1, vType:Type]),
   coord([type:CoordType, sem:C]),
-  { member(Coord, [CoordType, no]) },
+  { member(Coord, [CoordType, no, np]) },
   np([coord:Coord, num:_, gap:G, sem:NP2, vType:Type]),
   { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
 
@@ -199,9 +201,9 @@ np([coord:no, num:Num, gap:[], sem:NP, vType:Type]) -->
   { combine(np:NP, [det:Det, n:N]) }.
 
 %TODO: fix plural vs singular
-np([coord:no, num:_Num, gap:[], sem:NP, vType:Type]) -->
+np([coord:no, num:Num, gap:[], sem:NP, vType:Type]) -->
   number([sem:Number, vType:Type]),
-  n([coord:_, num:_, sem:N, vType:Type]),
+  n([coord:_, num:Num, sem:N, vType:Type]),
   { addTypeAttribute(Type, countable) },
   { combine(np:NP, [number:Number, n:N]) }.
 
@@ -222,13 +224,13 @@ np([coord:no, num:Num, gap:[], sem:NP, vType:Type]) -->
   pn([num:Num, sem:PN, vType:Type]),
   { combine(np:NP, [pn:PN]) }.
 
-np([coord:no, num:Num, gap:[], sem:NP, vType:Type]) -->
+np([coord:np, num:Num, gap:[], sem:NP, vType:Type]) -->
   det([mood:decl, type:_, num:Num, sem:Det, vType:Type]),
   np([coord:no, num:_, gap:[], sem:NP2, vType:Type2]),
   n([coord:_, num:Num, sem:N, vType:Type]),
   { combine(np:NP, [det:Det, np:NP2, n:N, vType1:Type, vType2:Type2]) }.
 
-np([coord:yes, num:Num, gap:[], sem:NP, vType:Type]) -->
+np([coord:np, num:Num, gap:[], sem:NP, vType:Type]) -->
   np([coord:no, num:_, gap:[], sem:NP2, vType:Type2]),
   [s],
   n([coord:_, num:Num, sem:N, vType:Type]),

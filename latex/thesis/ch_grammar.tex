@@ -137,24 +137,67 @@ De betekenis van een voorzetselconstituent bestaat uit een simpele lambda-applic
 De betekenis bestaat opnieuw uit één lambda-applicatie, namelijk $\sem{rc} = \app{\sem{relpro}}{\sem{vp}}$.
 
 \section{Nominale constituent}
+Een naamwoordgroep (\texttt{np}) is een woordgroep waarin het naamwoord het belangrijkste woord is en die een entiteit aanduidt. Deze woordgroepen kunnen dienen als onderwerp of als lijdend voorwerp van een werkwoord.
+
+De grammaticale categorie heeft 4 mogelijke features: De feature \texttt{coord} duidt aan of het gaat om een simpele naamgroep (\texttt{coord:no}) of een complexere naamgroep. Zo heeft een naamwoordgroep met een vergelijking de waarde \texttt{comp} voor deze feature. De feature \texttt{num} duidt het getal van de woordgroep aan (enkelvoud \texttt{sg} of meervoud \texttt{pl}). De feature \texttt{gap} geeft aan welke woorden gebruikt zijn in een ellips binnen deze woordgroep. De waarde \texttt{[]} voor deze feature wilt dan weer zeggen dat er geen ellips zit in deze naamwoordgroep. Zoals altijd zit de semantiek in de feature \texttt{sem}.
+
+\paragraph{} Grammatica~\ref{dcg:np1} geeft de eenvoudige naamwoordgroepen weer. De eerste grammaticale regel stelt dat een naamwoordgroep kan bestaan uit een eigennaam (\texttt{pn}) met hetzelfde getal. In dit geval is de semantiek gelijk aan die van de naamwoordgroep.
+
+Daarnaast kan een naamwoordgroep ook bestaan uit een lidwoord (of meer algemeen, een determinator \texttt{det}) en een zelfstandig naamwoord. We gebruiken hier de categorie \texttt{n} i.p.v. \texttt{noun} zodat ook een zelfstandig naamwoord met een bijzin mogelijk is. De semantiek bestaat uit een simpele lambda-applicatie $\sem{np} = \app{\sem{det}}{\sem{n}}$.
+
+Zoals we ook in sectie~\ref{sec:lex-number} besproken hebben, kan een hoofdtelwoord ook aanzien worden als een determinator. We krijgen dus nog een gelijkaardige regel als de vorige maar nu met een hoofdtelwoord i.p.v. een determinator.
+
+Ten slotte kan een getal ook op zichzelf staan zonder zelfstandig naamwoord, bijvoorbeeld als jaartal. De grammaticale regel van lijn 15 t.e.m. 17 dekt dit geval. De semantiek is vergelijkbaar met de vorige grammaticale regel maar er is geen extra restrictie op het getal. Vandaar de lege DRS-structuur in $\sem{np} = \app{\sem{number}}{\lambdaf{x}{\drs{}{}}}$.
+
+\begin{dcg}{De grammaticale regels voor een simpele naamwoordgroep}{dcg:np1}
+np([coord:no, num:Num, gap:[], sem:Sem]) -->
+  pn([num:Num, sem:PN]),
+  { Sem = PN }.
+
+np([coord:no, num:Num, gap:[], sem:Sem]) -->
+  det([num:Num, sem:Det]),
+  n([num:Num, sem:N]),
+  { Sem = app(Det, N) }.
+
+np([coord:no, num:Num, gap:[], sem:Sem]) -->
+  number([sem:Number]),
+  n([num:Num, sem:N]),
+  { Sem = app(Number, N) }.
+
+np([coord:no, num:_, gap:[], sem:Sem]) -->
+  number([sem:Number]),
+  { Sem = app(A, lam(_, drs([], []))) }.
+\end{dcg}
+
+\paragraph{} Grammatica~\ref{dcg:np2} beschrijft twee grammaticale regels met dezelfde semantiek en gelijkaardige structuur. Het gaat om naamwoordgroepen respectievelijk zoals ``the Arkansas native'' en ``John's dog''. Ze bestaan allebei uit een simpele naamwoordgroep (\texttt{np} met \texttt{coord:no}) en een substantief~(\texttt{n}). Er is telkens een link tussen de entiteit van het substantief en dat van de simpele naamwoordgroep maar er is geen kennis over welke link dit juist is. Voor nu laten we het dus nog open. In hoofdstuk~\ref{ch:types} zullen we met behulp van types afleiden welk predicaat nodig is. De entiteit van de substantief is het belangrijkste en is ook de entiteit van de naamwoordgroep als geheel. Als resultaat krijgen we $$\sem{np} = \lambdaf{P}{\appH{\app{\sem{det}}{\sem{n}}}{\lambdaf{x}{\app{\sem{np}}{\lambdaf{y}{\drsMerge{\drs{}{???(x, y)}}{\app{P}{x}}}}}}}$$
+
+Het is een naamwoordgroep en dus een box ($\lambda P$). Daarbinnen pakken we de woordgroep die bestaat uit het lidwoord en het substantief uit naar de entiteit $x$. Vervolgens pakken we de naamdwoordgroep uit naar $y$. Er is een relatie tussen $x$ en $y$ maar deze is voorlopig nog onbekend. Ten slotte stoppen we $x$ in de box van het gehele naamwoordgroep want $x$ is de entiteit waar de naamwoordgroep als geheel naar verwijst.
+
+\paragraph{}Bij de tweede grammaticale regel is er geen expliciet lidwoord aanwezig maar de betekenis hiervan is wel nog steeds nodig om een scope te geven aan het zelfstandig naamwoord. Er wordt dus gebruik gemaakt van dezelfde betekenis alsof er wel een lidwoord had gestaan (lijn 10).
+
+Beiden naamwoordgroepen krijgen de waarde \texttt{np} voor de feature \texttt{coord} naar de extra naamwoordgroep die zich in deze naamwoordgroep bevindt.
+
+\begin{dcg}{De grammaticale regels voor een naamwoordgroep met een onbekende relatie}{dcg:np2}
+np([coord:np, num:Num, gap:[], sem:Sem]) -->
+  det([num:Num, sem:Det]),
+  np([coord:no, num:_, gap:[], sem:NP]),
+  n([num:Num, sem:N]),
+  { Sem = lam(P, app(app(Det, N), lam(X, app(NP, lam(Y, merge(
+    drs([], [rel(_, X, Y)]),
+    app(P, X))))))) }.
+
+np([coord:np, num:Num, gap:[], sem:Sem]) -->
+  { semLex(det, [num:sg, sem:Det]) },
+  np([coord:no, num:_, gap:[], sem:NP]),
+  [s],
+  n([coord:_, num:Num, sem:N]),
+  { Sem = lam(P, app(app(Det, N), lam(X, app(NP, lam(Y, merge(
+    drs([], [rel(_, X, Y)]),
+    app(P, X))))))) }.
+\end{dcg}
+
 
 \begin{dcg}{De grammaticale regels voor een nominale constituent}{dcg:np}
-np([coord:no, num:Num, gap:[], sem:NP]) -->
-  det([num:Num, sem:Det]),
-  n([coord:_, num:Num, sem:N]),
-  { combine(np:NP, [det:Det, n:N]) }.
-
-np([coord:no, num:_Num, gap:[], sem:NP]) -->
-  number([sem:Number]),
-  n([num:_, sem:N]),
-  { addTypeAttribute(Type, countable) },
-  { combine(np:NP, [number:Number, n:N]) }.
-
-np([coord:no, num:_Num, gap:[], sem:NP]) -->
-  number([sem:Number]),
-  { addTypeAttribute(Type, countable) },
-  { combine(np:NP, [number:Number]) }.
-
 np([coord:comp, num:Num, gap:G, sem:NP]) -->
   sp([num:Num, gap:[], sem:NP1]),
   comp([sem:Comp]),
@@ -168,22 +211,6 @@ sp([num:_Num, gap:[], sem:NP]) -->
 sp([num:Num, gap:[], sem:NP]) -->
   np([coord:no, num:Num, gap:[], sem:NP]).
 
-np([coord:no, num:Num, gap:[], sem:NP]) -->
-  pn([num:Num, sem:PN]),
-  { combine(np:NP, [pn:PN]) }.
-
-np([coord:no, num:Num, gap:[], sem:NP]) -->
-  det([num:Num, sem:Det]),
-  np([coord:no, num:_, gap:[], sem:NP2]),
-  n([num:Num, sem:N]),
-  { combine(np:NP, [det:Det, np:NP2, n:N, vType1:Type, vType2:Type2]) }.
-
-np([coord:yes, num:Num, gap:[], sem:NP]) -->
-  np([coord:no, num:_, gap:[], sem:NP2]),
-  [s],
-  n([coord:_, num:Num, sem:N]),
-  { combine(np:NP, [np:NP2, s:s, n:N, vType1:Type, vType2:Type2]) }.
-
 np([coord:no, num:sg, gap:[np:NP-Type], sem:NP].
 
 np([coord:no, num:Num, gap:[tv:_TV | G], sem:NP]) -->
@@ -195,16 +222,18 @@ np([coord:no, num:Num, gap:[useTVGap, tv:TV | G], sem:NP]) -->
 np([coord:CoordType, num:CoordNum, gap:G, sem:NP, vType:Type]) -->
   { npCoordNum(CoordType, CoordNum) },
   coordPrefix([type:CoordType]),
-  np([coord:no, num:sg, gap:G, sem:NP1, vType:Type]),
+  { Coord1 = no ; Coord1 = np},
+  np([coord:Coord1, num:sg, gap:G, sem:NP1, vType:Type]),
   noCoord([type:CoordType, sem:C]),
   np([coord:CoordType, num:_, gap:G, sem:NP2, vType:Type]),
   { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
 np([coord:CoordType, num:CoordNum, gap:G, sem:NP, vType:Type]) -->
   { npCoordNum(CoordType, CoordNum) },
   coordPrefix([type:CoordType]),
-  np([coord:no, num:sg, gap:G, sem:NP1, vType:Type]),
+  { Coord1 = no ; Coord1 = np},
+  np([coord:Coord1, num:sg, gap:G, sem:NP1, vType:Type]),
   coord([type:CoordType, sem:C]),
-  { member(Coord, [CoordType, no]) },
+  { member(Coord, [CoordType, no, np]) },
   np([coord:Coord, num:_, gap:G, sem:NP2, vType:Type]),
   { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
 npCoordNum(conj, pl).
