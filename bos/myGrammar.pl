@@ -136,7 +136,7 @@ npCoordNum(conj, pl).
 npCoordNum(disj, sg).
 npCoordNum(neg, sg).
 
-np([coord:no, num:sg, gap:[np:NP-Type], sem:NP, vType:Type]) --> [].
+%% np([coord:no, num:sg, gap:[np:NP-Type], sem:NP, vType:Type]) --> [].
 
 np([coord:no, num:Num, gap:[tv:_TV-pred(_TypeSubj, TypeObj) | G], sem:NP, vType:TypeObj]) -->
   np([coord:no, num:Num, gap:G, sem:NP, vType:TypeObj]).
