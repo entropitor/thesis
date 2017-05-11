@@ -31,6 +31,7 @@
 
 combine(s:app(B, A), [np:A, vp:B]).
 combine(s:app(NP1, lam(X1, app(NP2, lam(X2, merge(drs([], [not(drs([], [eq(X1, X2)]))]),drs([], [or(merge(app(VP1, lam(N, app(N, X1))), app(VP2, lam(N, app(N, X2)))), merge(app(VP1, lam(N, app(N, X2))), app(VP2, lam(N, app(N, X1)))))])))))), [np1:NP1, np2:NP2, vp1:VP1, vp2:VP2]).
+%% combine(s:merge(app(NP1, lam(X1, app(NP2, lam(X2, drs([], [not(drs([], [eq(X1, X2)]))]))))),drs([], [or(merge(app(VP1, NP1), app(VP2, NP2)), merge(app(VP1, NP2), app(VP2, NP1)))])), [np1:NP1, np2:NP2, vp1:VP1, vp2:VP2]).
 combine(s:app(NP, lam(X, drs([], [alldifferent(X)]))), [cop:_, np:NP, alldifferent]).
 
 %% combine(s:app(app(A, B), lam(_, drs([], []))), [det:A, n:B]).
@@ -72,8 +73,8 @@ combine(nmod:A, [pp:A]).
 combine(nmod:A, [rc:A]).
 combine(nmod:lam(P, app(A, app(B, P))), [pp:A, nmod:B]).
 
-%% combine(vp:lam(N, app(N, lam(X, app(app(app(B, A), C), lam(P, app(P, X)))))), [vp:A, coord:B, vp:C]).
-combine(vp:app(app(B, A), C), [vp:A, coord:B, vp:C]).
+combine(vp:lam(N, app(N, lam(X, app(app(app(B, A), C), lam(P, app(P, X)))))), [vp:A, coord:B, vp:C]).
+%% combine(vp:app(app(B, A), C), [vp:A, coord:B, vp:C]).
 combine(vp:app(A, B), [av:A, vp:B]).
 combine(vp:app(A, B), [cop:A, np:B]).
 combine(vp:app(A, B), [cop:A, adj:B]).

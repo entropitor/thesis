@@ -308,6 +308,7 @@ vp([coord:no, inf:Inf, num:Num, gap:[], sem:Sem]) -->
 \end{dcg}
 
 \subsection{Een verbale constituent met koppelwerkwoord}
+\label{sec:gram-koppelwerkwoord}
 Sectie~\ref{sec:lex-koppelwerkwoord} maakte een onderscheid tussen drie betekenissen van een koppelwerkwoord afhankelijk van de categorie van het \textit{argument} van dat werkwoord. Grammatica~\ref{dcg:vp2} beschrijft de grammatica voor een koppelwerkwoord met een nominale of voorzetselconstituent. Sectie~\ref{sec:gramm-tv} beschreef reeds het geval waarbij een adjectiefzin het argument is.
 
 De eerste twee grammaticale regels van grammatica~\ref{dcg:vp2} zeggen dat een verbale constituent kan bestaan uit een koppelwerkwoord met een nominale constituent of met een voorzetselconstituent. Het getal en de vorm van de verbale constituent komen overeen met die van het werkwoord. De betekenis is voor beide regels een simpele lambda-applicatie.
@@ -364,6 +365,12 @@ numberOrAll() -->
 \end{dcg}
 
 \subsection{Een verbale constituent met voegwoord}
+Een gecoördineerde verbale constituent is gelijkaardig aan die van een nominale constituent. Er is echter één klein verschil in de betekenis ervan. Een simpele lambda-applicatie volstaat hier niet altijd. Indien het onderwerp een kwantor bevat, dan valt de verbale constituent namelijk onder de scope van deze kwantor. We willen dus ook dat de vertaling van het voegwoord binnen de scope van de kwantor valt. Als we $\sem{vp} = \app{\app{\sem{coord}}{\sem{vp_1}}}{\sem{vp_2}}$ als vertaling nemen, dan valt de vertaling van het voegwoord buiten de scope van het onderwerp. De juiste betekenis is
+
+$$\sem{vp} = \lambdaf{N}{\app{N}{\lambdaf{x}{\appH{\app{\app{\sem{coord}}{\sem{vp_1}}}{\sem{vp_2}}}{\lambdaf{P}{\app{P}{x}}}}}}$$ We halen de entiteit $x$ eerst uit het onderwerp en binnen de scope van de naamwoordgroep geven we x (in een lege box) terug aan de gecoördineerde verbale constituent.
+
+Voor logigrammen resulteren beide betekenissen echter tot een correct resultaat. Het onderwerp zal namelijk altijd volledig gespecifieerd zijn. Er is maar één entiteit die aan de omschrijving voldoet. Daardoor maakt het niet uit dat er twee kantoren zijn die gecombineerd worden met het voegwoord in kwestie i.p.v. dat het voegwoord zich bevindt in de scope van de kwantor. Dit voorbeeld toont echter nog eens aan dat het opstellen van de formules niet altijd triviaal is.
+
 \begin{dcg}{De grammaticale regels voor een verbale constituent met een voegwoord}{dcg:vp3}
 vp([coord:yes, inf:Inf, num:Num, gap:[], sem:Sem]) -->
   vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP1]),
@@ -374,3 +381,47 @@ vp([coord:yes, inf:Inf, num:Num, gap:[], sem:Sem]) -->
 \end{dcg}
 
 \section{Zin}
+Er zijn drie soorten zinnen binnen logigrammen. Een normale zin bestaat uit een nominale en een verbale constituent die overeenkomen in getal. Dat is de eerste grammaticale regel van grammatica~\ref{dcg:s}. De betekenis is een simpele lambda-applicatie $\sem{s} = \app{\sem{vp}}{\sem{np}}$.
+
+\paragraph{} Een tweede soort zin is een andere vorm voor een alldifferent constraint en wordt gebruikt om alle domeinelement van een bepaald domein op te sommen. Een voorbeeldzin is ``The four players are John, Mary, the person who plays with cards and the man from France''. Zo'n zin bestaat uit het woordje ``the'', een getal (het aantal domeinelementen), een substantief, een koppelwerkwoord en ten slotte een gecoördineerde naamwoordgroep. De betekenis is gelijk aan die uit sectie~\ref{sec:gram-koppelwerkwoord}
+
+\paragraph{} Een laatste soort zin is van de vorm ``Of John and Mary, one is from France and the other plays with cards''. De zin bestaat dus uit twee nominale en twee verbale constituenten. De twee entiteiten van de nominale constituenten zijn verschillend en bovendien is elk het onderwerp van één van de twee verbale constituenten. 
+
+$$\sem{s} = \app{\sem{np_1}}{\lambdaf{x1}{\app{\sem{np_2}}{\lambdaf{x2}{\\ \drsMerge{\drs{}{x1 \neq x2}}{\drsOr{\drsMerge{\app{\sem{vp_1}}{\lambdaf{P}{\app{P}{x1}}}}{\app{\sem{vp_2}}{\lambdaf{P}{\app{P}{x2}}}}}{\drsMerge{\app{\sem{vp_1}}{\lambdaf{P}{\app{P}{x2}}}}{\app{\sem{vp_2}}{\lambdaf{P}{\app{P}{x1}}}}}}}}}}$$
+
+We halen de entiteiten $x1$ en $x2$ uit hun box. We stellen dat ze verschillend zijn. Bovendien is (een lege box rond) entiteit $x1$ het onderwerp van de verbale constituent 1 en $x2$ het onderwerp van verbale constituent 2 of omgekeerd.
+
+\begin{dcg}{De grammaticale regels voor een zin}{dcg:s}
+s([coord:no, sem:Sem]) -->
+  np([coord:_, num:Num, gap:[], sem:NP]),
+  vp([coord:_, inf:fin, num:Num, gap:[], sem:VP]),
+  { Sem = app(VP, NP) }.
+
+s([coord:no, sem:Sem]) -->
+  [the],
+  number([sem:_, vType:_]),
+  n([coord:_, num:pl, sem:_]),
+  cop([type:np, inf:fin, num:pl, sem:_]),
+  np([coord:conj, num:_, gap:[], sem:NP]),
+  { Sem = app(NP, lam(X, drs([], [alldifferent(X)]))) }.
+
+s([coord:no, sem:Sem]) -->
+  [of],
+  np([coord:_, num:sg, gap:[], sem:NP1]),
+  [and],
+  np([coord:_, num:sg, gap:[], sem:NP2]),
+  [one],
+  vp([coord:no, inf:fin, num:sg, gap:[], sem:VP1]),
+  [and, the, other],
+  vp([coord:no, inf:fin, num:sg, gap:[], sem:VP2]),
+  { Sem = app(NP1, lam(X1, app(NP2, lam(X2, 
+      merge(
+        drs([], [not(drs([], [eq(X1, X2)]))]),
+        drs([], [or(
+          merge(
+            app(VP1, lam(N, app(N, X1))), 
+            app(VP2, lam(N, app(N, X2)))), 
+          merge(
+            app(VP1, lam(N, app(N, X2))),
+            app(VP2, lam(N, app(N, X1)))))])))))) }.
+\end{dcg}
