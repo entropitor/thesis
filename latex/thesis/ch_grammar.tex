@@ -167,10 +167,10 @@ np([coord:no, num:Num, gap:[], sem:Sem]) -->
 
 np([coord:no, num:_, gap:[], sem:Sem]) -->
   number([sem:Number]),
-  { Sem = app(A, lam(_, drs([], []))) }.
+  { Sem = app(Number, lam(_, drs([], []))) }.
 \end{dcg}
 
-\subsection{Een naamwoordgroep met een extra naamwoordgroep}
+\subsection{Een naamwoordgroep met onbekende relatie}
 Grammatica~\ref{dcg:np2} beschrijft twee grammaticale regels met dezelfde semantiek en gelijkaardige structuur. Het gaat om naamwoordgroepen respectievelijk zoals ``the Arkansas native'' en ``John's dog''. Ze bestaan allebei uit een simpele naamwoordgroep (\texttt{np} met \texttt{coord:no}) en een substantief~(\texttt{n}). Er is telkens een link tussen de entiteit van het substantief en dat van de simpele naamwoordgroep maar er is geen kennis over welke link dit juist is. Voor nu laten we het dus nog open. In hoofdstuk~\ref{ch:types} zullen we met behulp van types afleiden welk predicaat nodig is. De entiteit van de substantief is het belangrijkste en is ook de entiteit van de naamwoordgroep als geheel. Als resultaat krijgen we $$\sem{np} = \lambdaf{P}{\appH{\app{\sem{det}}{\sem{n}}}{\lambdaf{x}{\app{\sem{np}}{\lambdaf{y}{\drsMerge{\drs{}{\textit{unknown}(x, y)}}{\app{P}{x}}}}}}}$$
 
 Het is een naamwoordgroep en dus een box ($\lambda P$). Daarbinnen pakken we de woordgroep die bestaat uit het lidwoord en het substantief uit naar de entiteit $x$. Vervolgens pakken we de naamdwoordgroep uit naar $y$. Er is een relatie tussen $x$ en $y$ maar deze is voorlopig nog onbekend. Ten slotte stoppen we $x$ in de box van het gehele naamwoordgroep want $x$ is de entiteit waar de naamwoordgroep als geheel naar verwijst.
@@ -234,24 +234,33 @@ np([coord:no, num:Num, gap:[useTVGap, tv:TV | G], sem:Sem]) -->
 \end{dcg}
 
 \subsection{Een naamwoordgroep met een voegwoord}
+Ten slotte is er nog een naamwoordgroep met een voegwoord in of ook wel gecoördineerde naamwoodgroep genoemd. Grammatica~\ref{dcg:np4} geeft de twee grammaticale regels die dit soort naamwoordgroepen beschrijven. De eerste regel zegt dat een gecoördineerde naamwoordgroep kan bestaat uit een eventuele prefix van een voegwoord, een naamwoordgroep (een simpele of ééntje met een onbekende relatie), een voegwoord en opnieuw een naamwoordgroep (een simpele, ééntje met een onbekende relatie of een naamwoordgroep met een voegwoord van het zelfde type als het voegwoord van deze naamwoordgroep).
+
+De tweede grammaticale regel is gelijkaardig maar behandelt het geval dat het voegwoord is verzwegen, zoals in ``John, Pete and Mary''. De naamwoordgroep ``John, Pete'' bevat geen voegwoord. De grammaticale regel is vrij gelijkaardig. De enigste andere verandering is dat de tweede naamwoordgroep sowieso opnieuw gecoördineerd moet zijn. Het type van voegwoord in die tweede naamwoordgroep is ook het type van het voegwoord dat is verzwegen.
+
+\paragraph{} Het getal van een gecoördineerde naamwoordgroep is afhankelijk van het type van het voegwoord (lijn 2, 12 en 20-22). Een conjunctief voegwoord (``and'') resulteert in een naamwoordgroep in het meervoud. De andere twee types resulteren in een naamwoordgroep in het enkelvoud.
+
+De betekenis bestaat zoals bij zo vele grammaticale regels uit twee lambda-applicaties. $$\sem{np} = \app{\app{\sem{coord}}{\sem{np_1}}}{\sem{np_2}}$$
+
 \begin{dcg}{De grammaticale regels voor een naamwoordgroep met een voegwoord}{dcg:np4}
+np([coord:CoordType, num:CoordNum, gap:G, sem:Sem]) -->
+  { npCoordNum(CoordType, CoordNum) },
+  coordPrefix([type:CoordType]),
+  { Coord1 = no ; Coord1 = np},
+  np([coord:Coord1, num:sg, gap:G, sem:NP1]),
+  coord([type:CoordType, sem:Coord]),
+  { Coord2 = CoordType ; Coord2 = no ; Coord2 = np },
+  np([coord:Coord2, num:_, gap:G, sem:NP2]),
+  { Sem = app(app(Coord, NP1), NP2) }.
+
 np([coord:CoordType, num:CoordNum, gap:G, sem:NP, vType:Type]) -->
   { npCoordNum(CoordType, CoordNum) },
   coordPrefix([type:CoordType]),
   { Coord1 = no ; Coord1 = np},
   np([coord:Coord1, num:sg, gap:G, sem:NP1, vType:Type]),
-  noCoord([type:CoordType, sem:C]),
+  noCoord([type:CoordType, sem:Coord]),
   np([coord:CoordType, num:_, gap:G, sem:NP2, vType:Type]),
-  { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
-np([coord:CoordType, num:CoordNum, gap:G, sem:NP, vType:Type]) -->
-  { npCoordNum(CoordType, CoordNum) },
-  coordPrefix([type:CoordType]),
-  { Coord1 = no ; Coord1 = np},
-  np([coord:Coord1, num:sg, gap:G, sem:NP1, vType:Type]),
-  coord([type:CoordType, sem:C]),
-  { member(Coord, [CoordType, no, np]) },
-  np([coord:Coord, num:_, gap:G, sem:NP2, vType:Type]),
-  { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
+  { Sem = app(app(Coord, NP1), NP2) }.
 
 npCoordNum(conj, pl).
 npCoordNum(disj, sg).
