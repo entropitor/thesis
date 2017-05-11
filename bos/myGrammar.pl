@@ -394,11 +394,11 @@ vp([coord:no, inf:I, num:Num, gap:[], sem:VP, vType:TypeObj]) -->
   { combine(vp:VP, [np:NP, tv:TV]) }.
 
 vp([coord:no, inf:I, num:Num, gap:G, sem:VP, vType:TypeSubj]) -->
-    tv([inf:I, num:Num, gap:Pre-Post, sem:TV, vType:pred(TypeSubj, TypeObj)]),
-    optional(Pre),
-    np([coord:comp, num:_, gap:[tv:TV-pred(TypeSubj, TypeObj) | G], sem:NP, vType:TypeObj]),
-    optional(Post),
-    { combine(vp:VP, [tv:TV, np:NP]) }.
+  tv([inf:I, num:Num, gap:Pre-Post, sem:TV, vType:pred(TypeSubj, TypeObj)]),
+  optional(Pre),
+  np([coord:comp, num:_, gap:[tv:TV-pred(TypeSubj, TypeObj) | G], sem:NP, vType:TypeObj]),
+  optional(Post),
+  { combine(vp:VP, [tv:TV, np:NP]) }.
 
 vp([coord:no, inf:I, num:Num, gap:G, sem:VP, vType:TypeSubj]) -->
   tv([inf:I, num:Num, gap:GapBefore-GapAfter, sem:TV, vType:pred(TypeSubj, TypeObj)]),

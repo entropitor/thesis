@@ -269,17 +269,16 @@ npCoordNum(neg, sg).
 
 \section{Verbale constituent}
 
-\todo{np.Gap fixen!!!}
-
 \begin{dcg}{De grammaticale regels voor een verbale constituent}{dcg:vp}
-
+vp([coord:no, inf:I, num:Num, gap:[], sem:Sem]) -->
+  np([coord:_, num:_, gap:[], sem:NP]),
+  tv([inf:I, num:Num, gap:_-[], sem:TV]),
+  { Sem = app(TV, NP) }.
 vp([coord:no, inf:I, num:Num, gap:G, sem:Sem]) -->
-  tv([inf:I, num:Num, gap:Prep-Post, sem:TV]),
-  optional(Prep, PrepPresent),
-  np([coord:NPCoord, num:_, gap:[tv:TV | G], sem:NP]),
-  optional(Post, PostPresent),
-  { PrepPresent = present -> true ; NPCoord == comp },
-  { PostPresent = present -> true ; NPCoord == comp },
+  tv([inf:I, num:Num, gap:Pre-Post, sem:TV]),
+  optional(Pre),
+  np([coord:comp, num:_, gap:[tv:TV | G], sem:NP]),
+  optional(Post),
   { Sem = app(TV, NP) }.
 
 vp([coord:no, inf:I, num:Num, gap:[], sem:Sem]) -->
@@ -304,13 +303,6 @@ vp([coord:no, inf:Inf, num:Num, gap:[], sem:Sem]) -->
   pp([sem:PP]),
   { Sem = app(Cop, PP) }.
 
-vp([coord:yes, inf:Inf, num:Num, gap:[], sem:Sem]) -->
-  vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP1]),
-  coord([type:_, sem:Coord]),
-  vp([coord:_, inf:Inf, num:Num, gap:[], sem:VP2]),
-  { CoordinatedVP = app(app(Coord, VP1), VP2) },
-  { Sem = lam(N, app(N, lam(X, app(CoordinatedVP, lam(P, app(P, X)))))) }.
-
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:Sem]) -->
   cop([type:np, inf:Inf, num:Num, sem:_]),
   numberOrAll(),
@@ -318,15 +310,12 @@ vp([coord:no, inf:Inf, num:Num, gap:[], sem:Sem]) -->
   n([coord:_, num:Num, sem:_N]),
   { Sem = lam(N, app(N, lam(X, drs([], [alldifferent(X)])))) }.
 
-
-optional([], _) -->
-  [].
-optional(X, present) -->
-  { X \= [] },
-  X.
-optional(X, absent) -->
-  { X \= [] },
-  [].
+vp([coord:yes, inf:Inf, num:Num, gap:[], sem:Sem]) -->
+  vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP1]),
+  coord([type:_, sem:Coord]),
+  vp([coord:_, inf:Inf, num:Num, gap:[], sem:VP2]),
+  { CoordinatedVP = app(app(Coord, VP1), VP2) },
+  { Sem = lam(N, app(N, lam(X, app(CoordinatedVP, lam(P, app(P, X)))))) }.
 
 numberOrAll() -->
   number([sem:_]).
