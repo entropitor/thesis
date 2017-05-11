@@ -199,6 +199,7 @@ np([coord:np, num:Num, gap:[], sem:Sem]) -->
 \end{dcg}
 
 \subsection{Een vergelijkende naamwoordgroep}
+\label{sec:gramNpComp}
 Grammatica~\ref{dcg:np3} geeft de grammaticale regels voor een vergelijkende naamwoordgroep, zoals ``3 years after John''. Zo'n naamwoordgroep bestaat uit een hoeveelheid (\texttt{quantity}), een comparatief (\texttt{comp}) en een andere naamwoordgroep (\texttt{np}). De betekenis bestaat uit twee simpele lambda-applicaties $\sem{np} = \appH{\app{\sem{comp}}{\sem{np_1}}}{\sem{np_2}}$
 
 Zo'n hoeveelheid kan onbepaald zijn (lijn 8-10) zoals ``sometime'' of een simpele naamwoordgroep (lijn 10-12) zoals ``2 years''.
@@ -268,14 +269,26 @@ npCoordNum(neg, sg).
 \end{dcg}
 
 \section{Verbale constituent}
+\subsection{Een simpele verbale constituent}
+Grammatica~\ref{dcg:vp1} geeft de grammaticale regels voor een aantal simpele verbale constituent.
 
-\begin{dcg}{De grammaticale regels voor een verbale constituent}{dcg:vp}
-vp([coord:no, inf:I, num:Num, gap:[], sem:Sem]) -->
-  np([coord:_, num:_, gap:[], sem:NP]),
-  tv([inf:I, num:Num, gap:_-[], sem:TV]),
+De eenvoudigste verbale constituent bestaat uit een transitief werkwoord, gevolgd door haar prefix en een naamwoordgroep (als lijdend voorwerp) en ten slotte het achtervoegsel van het werkwoord. Het getal van het werkwoord is ook deze van de verbale constituent. De betekenis is een lambda-applicatie $\sem{vp} = \app{\sem{tv}}{{\sem{np}}}$.
+
+De tweede grammaticale regel drukt iets gelijkaardigs uit maar nu in het geval het lijdend voorwerp een vergelijking is (\texttt{coord:comp}). In dat geval zijn het voor- en achtervoegsel optioneel. Neem bijvoorbeeld de zinnen ``John won in 2008'' en ``Mary won 2 years after John''. Het voorvoegsel ``in'' verdwijnt in het geval van een vergelijkende naamwoordgroep. Bovendien is er een ellips van het werkwoord in de naamwoordgroep (zie ook sectie~\ref{sec:gramNpComp}). Dit reflecteert zich in de feature \texttt{gap} van de naamwoordgroep.
+
+\paragraph{} In bijzinnen kan het ook soms voorkomen dat er een naamwoordgroep voor het werkwoord komt te staan, bijvoorbeeld ``The horse that Mary won, ...''. In dat geval is de naamwoordgroep van de verbale constituent het onderwerp en de naamwoordgroep waar de bijzin bijstaat het lijdend voorwerp. De derde grammaticale regel (lijn 14-17) drukt dit uit. De semantiek is $$\sem{vp} = \lambdaf{N1}{\app{\app{\sem{tv}}{N1}}{\sem{np}}}$$
+
+Een verbale constituent kan ook een hulpwerkwoord bevatten. In dat geval komt het getal en de vorm (infinitief, deelwoord, ...) van de constituent overeen met dat van het hulpwerkwoord. Het hoofdwerkwoord moet in zo'n constituent voorkomen als infinitief (\texttt{inf}) of als deelwoord (\texttt{part}). De semantiek is nogmaals een lambda-appliatie $$\sem{vp} = \app{\sem{av}}{\sem{vp_1}}$$
+
+\begin{dcg}{De grammaticale regels voor een simpele verbale constituent}{dcg:vp1}
+vp([coord:no, inf:I, num:Num, gap:G, sem:Sem]) -->
+  tv([inf:I, num:Num, positions:Pre-Post, sem:TV]),
+  Pre,
+  np([coord:_, num:_, gap:G, sem:NP]),
+  Post,
   { Sem = app(TV, NP) }.
 vp([coord:no, inf:I, num:Num, gap:G, sem:Sem]) -->
-  tv([inf:I, num:Num, gap:Pre-Post, sem:TV]),
+  tv([inf:I, num:Num, positions:Pre-Post, sem:TV]),
   optional(Pre),
   np([coord:comp, num:_, gap:[tv:TV | G], sem:NP]),
   optional(Post),
@@ -283,7 +296,7 @@ vp([coord:no, inf:I, num:Num, gap:G, sem:Sem]) -->
 
 vp([coord:no, inf:I, num:Num, gap:[], sem:Sem]) -->
   np([coord:_, num:_, gap:[], sem:NP]),
-  tv([inf:I, num:Num, gap:_-[], sem:TV]),
+  tv([inf:I, num:Num, positions:_-[], sem:TV]),
   { Sem = lam(N1, app(app(TV, N1), NP))}.
 
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:Sem]) -->
@@ -291,11 +304,13 @@ vp([coord:no, inf:Inf, num:Num, gap:[], sem:Sem]) -->
   { Inf2 = inf ; Inf2 = part },
   vp([coord:_, inf:Inf2, num:_, gap:[], sem:VP]),
   { Sem = app(AV, VP) }.
+\end{dcg}
 
+\subsection{Een verbale constituent met koppelwerkwoord}
+\begin{dcg}{De grammaticale regels voor een verbale constituent met een koppelwerkwoord}{dcg:vp2}
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:Sem]) -->
   cop([type:np, inf:Inf, num:Num, sem:Cop]),
   np([coord:NPCoord, num:_, gap:[], sem:NP]),
-  { NPCoord \= comp },
   { Sem = app(Cop, NP) }.
 
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:Sem]) -->
@@ -310,17 +325,20 @@ vp([coord:no, inf:Inf, num:Num, gap:[], sem:Sem]) -->
   n([coord:_, num:Num, sem:_N]),
   { Sem = lam(N, app(N, lam(X, drs([], [alldifferent(X)])))) }.
 
+numberOrAll() -->
+  number([sem:_]).
+numberOrAll() -->
+  [all].
+\end{dcg}
+
+\subsection{Een verbale constituent met voegwoord}
+\begin{dcg}{De grammaticale regels voor een verbale constituent met een voegwoord}{dcg:vp3}
 vp([coord:yes, inf:Inf, num:Num, gap:[], sem:Sem]) -->
   vp([coord:no, inf:Inf, num:Num, gap:[], sem:VP1]),
   coord([type:_, sem:Coord]),
   vp([coord:_, inf:Inf, num:Num, gap:[], sem:VP2]),
   { CoordinatedVP = app(app(Coord, VP1), VP2) },
   { Sem = lam(N, app(N, lam(X, app(CoordinatedVP, lam(P, app(P, X)))))) }.
-
-numberOrAll() -->
-  number([sem:_]).
-numberOrAll() -->
-  [all].
 \end{dcg}
 
 \section{Zin}
