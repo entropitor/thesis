@@ -43,6 +43,7 @@ optional(X) -->
 \end{dcg}
 
 \subsection{Transitief werkwoord}
+\label{sec:gramm-tv}
 Er zijn twee grammaticale regels voor een transitief werkwoord (grammatica~\ref{dcg:tv}). Enerzijds is er de standaard mapping van grammatica naar lexicon. De voorzetsels en achtervoegsels uit het lexicon worden als feature meegegeven aan de grammaticale woordgroep. Het getal (\texttt{num}) en de vorm (\texttt{inf}) van de grammaticale woordgroep moet ook overeenkomen met die uit het lexicon.
 
 Anderzijds wordt de combinatie koppelwerkwoord + adjectief ook als een transitief werkwoord gezien. Hierbij is het adjectief het achtervoegsel. De semantiek van deze combinatie is die van het koppelwerkwoord ($\sem{cop_{ap}}$) zoals we die hebben afgeleid in hoofdstuk~\ref{sec:lex-koppelwerkwoord}.
@@ -274,7 +275,7 @@ Grammatica~\ref{dcg:vp1} geeft de grammaticale regels voor een aantal simpele ve
 
 De eenvoudigste verbale constituent bestaat uit een transitief werkwoord, gevolgd door haar prefix en een naamwoordgroep (als lijdend voorwerp) en ten slotte het achtervoegsel van het werkwoord. Het getal van het werkwoord is ook deze van de verbale constituent. De betekenis is een lambda-applicatie $\sem{vp} = \app{\sem{tv}}{{\sem{np}}}$.
 
-De tweede grammaticale regel drukt iets gelijkaardigs uit maar nu in het geval het lijdend voorwerp een vergelijking is (\texttt{coord:comp}). In dat geval zijn het voor- en achtervoegsel optioneel. Neem bijvoorbeeld de zinnen ``John won in 2008'' en ``Mary won 2 years after John''. Het voorvoegsel ``in'' verdwijnt in het geval van een vergelijkende naamwoordgroep. Bovendien is er een ellips van het werkwoord in de naamwoordgroep (zie ook sectie~\ref{sec:gramNpComp}). Dit reflecteert zich in de feature \texttt{gap} van de naamwoordgroep.
+De tweede grammaticale regel drukt iets gelijkaardigs uit maar nu in het geval het lijdend voorwerp een vergelijking is (\texttt{coord:comp}). In dat geval zijn het voor- en achtervoegsel optioneel. Neem bijvoorbeeld de zinnen ``John won in 2008'' en ``Mary won 2 years after John''. Het voorvoegsel ``in'' verdwijnt in het geval van een vergelijkende naamwoordgroep. Bovendien is er een ellips van het werkwoord in de naamwoordgroep (zie ook sectie~\ref{sec:gramNpComp}). Dit reflecteert zich in de feature \texttt{gap} van de naamwoordgroep. 
 
 \paragraph{} In bijzinnen kan het ook soms voorkomen dat er een naamwoordgroep voor het werkwoord komt te staan, bijvoorbeeld ``The horse that Mary won, ...''. In dat geval is de naamwoordgroep van de verbale constituent het onderwerp en de naamwoordgroep waar de bijzin bijstaat het lijdend voorwerp. De derde grammaticale regel (lijn 14-17) drukt dit uit. De semantiek is $$\sem{vp} = \lambdaf{N1}{\app{\app{\sem{tv}}{N1}}{\sem{np}}}$$
 
@@ -307,10 +308,41 @@ vp([coord:no, inf:Inf, num:Num, gap:[], sem:Sem]) -->
 \end{dcg}
 
 \subsection{Een verbale constituent met koppelwerkwoord}
+Sectie~\ref{sec:lex-koppelwerkwoord} maakte een onderscheid tussen drie betekenissen van een koppelwerkwoord afhankelijk van de categorie van het \textit{argument} van dat werkwoord. Grammatica~\ref{dcg:vp2} beschrijft de grammatica voor een koppelwerkwoord met een nominale of voorzetselconstituent. Sectie~\ref{sec:gramm-tv} beschreef reeds het geval waarbij een adjectiefzin het argument is.
+
+De eerste twee grammaticale regels van grammatica~\ref{dcg:vp2} zeggen dat een verbale constituent kan bestaan uit een koppelwerkwoord met een nominale constituent of met een voorzetselconstituent. Het getal en de vorm van de verbale constituent komen overeen met die van het werkwoord. De betekenis is voor beide regels een simpele lambda-applicatie.
+
+\paragraph{} De derde grammaticale regel drukt een \textit{alldifferent}-constraint uit. Deze is van toepassing voor zinnen als ``John and Mary are two different persons'' of ``John, the person with the horse and the man from France are all different people''. Deze verbale constituent bestaat uit een koppelwerkwoord; een getal of het woordje ``all''; het woord ``different''; en tenslotte en substantief. De betekenis is $$\sem{vp} = \lambdaf{N}{\app{N}{\lambdaf{x}{\drs{}{alldifferent(x)}}}}$$ Dit drukt uit dat de entiteit van het onderwerp deel is van een alldifferent constraint. Zoals we in sectie~\ref{sec:lex-coord} reeds aanhaalden is er geen collectieve lezing voor een naamwoordgroep. Een alldifferent constraint drukt echter uit dat er binnen het collectief van het onderwerp geen twee dezelfde entiteiten bevinden. We passen echter de vertaling van DRS-structuren naar eerste-orde-logica lichtjes aan om dit te omzeilen.
+
+\[
+  \left(\ \drs{x_1, \ldots, x_n}{
+      \gamma_1 \\
+      \ldots \\
+      \gamma_m \\
+      alldifferent(y_1) \\
+     \ldots \\
+      alldifferent(y_k)
+    }\ \right)^{fo} = \left(\ \drs{x_1, \ldots, x_n}{
+      \gamma_1 \\
+      \ldots \\
+      \gamma_m \\
+      y_1 \neq y_2 \\
+      \ldots \\
+      y_1 \neq y_k \\
+      alldifferent(y_2) \\
+      \ldots \\
+      alldifferent(y_k)
+    }\ \right)^{fo} 
+\]
+
+M.a.w. alle alldifferent constraints die zich binnen één DRS-structuur bevinden, behoren tot één groep van entiteiten die allemaal verschillend zijn. Men kan dit ook schalen naar meerdere groepen door de groep te reïficeren binnen de alldifferent constraint (i.e. $alldifferent(g_i, x_j)$ i.p.v. $alldifferent(x_j)$).
+
+Er wordt geen rekening gehouden met de betekenis van het getal of het koppelwerkwoord. ``John and Mary are three different persons.'' is dus een geldige zin, alhoewel de ``three'' niet overeenkomt met het aantal entiteiten in het onderwerp.
+
 \begin{dcg}{De grammaticale regels voor een verbale constituent met een koppelwerkwoord}{dcg:vp2}
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:Sem]) -->
   cop([type:np, inf:Inf, num:Num, sem:Cop]),
-  np([coord:NPCoord, num:_, gap:[], sem:NP]),
+  np([coord:_, num:_, gap:[], sem:NP]),
   { Sem = app(Cop, NP) }.
 
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:Sem]) -->
@@ -322,7 +354,7 @@ vp([coord:no, inf:Inf, num:Num, gap:[], sem:Sem]) -->
   cop([type:np, inf:Inf, num:Num, sem:_]),
   numberOrAll(),
   [different],
-  n([coord:_, num:Num, sem:_N]),
+  n([coord:_, num:Num, sem:_]),
   { Sem = lam(N, app(N, lam(X, drs([], [alldifferent(X)])))) }.
 
 numberOrAll() -->
