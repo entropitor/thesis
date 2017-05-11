@@ -137,11 +137,12 @@ De betekenis van een voorzetselconstituent bestaat uit een simpele lambda-applic
 De betekenis bestaat opnieuw uit één lambda-applicatie, namelijk $\sem{rc} = \app{\sem{relpro}}{\sem{vp}}$.
 
 \section{Nominale constituent}
-Een naamwoordgroep (\texttt{np}) is een woordgroep waarin het naamwoord het belangrijkste woord is en die een entiteit aanduidt. Deze woordgroepen kunnen dienen als onderwerp of als lijdend voorwerp van een werkwoord.
+Een nominale constituent of naamwoordgroep (\texttt{np}) is een woordgroep waarin het naamwoord het belangrijkste woord is en die een entiteit aanduidt. Deze woordgroepen kunnen dienen als onderwerp of als lijdend voorwerp van een werkwoord.
 
 De grammaticale categorie heeft 4 mogelijke features: De feature \texttt{coord} duidt aan of het gaat om een simpele naamgroep (\texttt{coord:no}) of een complexere naamgroep. Zo heeft een naamwoordgroep met een vergelijking de waarde \texttt{comp} voor deze feature. De feature \texttt{num} duidt het getal van de woordgroep aan (enkelvoud \texttt{sg} of meervoud \texttt{pl}). De feature \texttt{gap} geeft aan welke woorden gebruikt zijn in een ellips binnen deze woordgroep. De waarde \texttt{[]} voor deze feature wilt dan weer zeggen dat er geen ellips zit in deze naamwoordgroep. Zoals altijd zit de semantiek in de feature \texttt{sem}.
 
-\paragraph{} Grammatica~\ref{dcg:np1} geeft de eenvoudige naamwoordgroepen weer. De eerste grammaticale regel stelt dat een naamwoordgroep kan bestaan uit een eigennaam (\texttt{pn}) met hetzelfde getal. In dit geval is de semantiek gelijk aan die van de naamwoordgroep.
+\subsection{Een eenvoudige naamwoordgroep}
+Grammatica~\ref{dcg:np1} geeft de eenvoudige naamwoordgroepen weer. De eerste grammaticale regel stelt dat een naamwoordgroep kan bestaan uit een eigennaam (\texttt{pn}) met hetzelfde getal. In dit geval is de semantiek gelijk aan die van de naamwoordgroep.
 
 Daarnaast kan een naamwoordgroep ook bestaan uit een lidwoord (of meer algemeen, een determinator \texttt{det}) en een zelfstandig naamwoord. We gebruiken hier de categorie \texttt{n} i.p.v. \texttt{noun} zodat ook een zelfstandig naamwoord met een bijzin mogelijk is. De semantiek bestaat uit een simpele lambda-applicatie $\sem{np} = \app{\sem{det}}{\sem{n}}$.
 
@@ -169,7 +170,8 @@ np([coord:no, num:_, gap:[], sem:Sem]) -->
   { Sem = app(A, lam(_, drs([], []))) }.
 \end{dcg}
 
-\paragraph{} Grammatica~\ref{dcg:np2} beschrijft twee grammaticale regels met dezelfde semantiek en gelijkaardige structuur. Het gaat om naamwoordgroepen respectievelijk zoals ``the Arkansas native'' en ``John's dog''. Ze bestaan allebei uit een simpele naamwoordgroep (\texttt{np} met \texttt{coord:no}) en een substantief~(\texttt{n}). Er is telkens een link tussen de entiteit van het substantief en dat van de simpele naamwoordgroep maar er is geen kennis over welke link dit juist is. Voor nu laten we het dus nog open. In hoofdstuk~\ref{ch:types} zullen we met behulp van types afleiden welk predicaat nodig is. De entiteit van de substantief is het belangrijkste en is ook de entiteit van de naamwoordgroep als geheel. Als resultaat krijgen we $$\sem{np} = \lambdaf{P}{\appH{\app{\sem{det}}{\sem{n}}}{\lambdaf{x}{\app{\sem{np}}{\lambdaf{y}{\drsMerge{\drs{}{???(x, y)}}{\app{P}{x}}}}}}}$$
+\subsection{Een naamwoordgroep met een extra naamwoordgroep}
+Grammatica~\ref{dcg:np2} beschrijft twee grammaticale regels met dezelfde semantiek en gelijkaardige structuur. Het gaat om naamwoordgroepen respectievelijk zoals ``the Arkansas native'' en ``John's dog''. Ze bestaan allebei uit een simpele naamwoordgroep (\texttt{np} met \texttt{coord:no}) en een substantief~(\texttt{n}). Er is telkens een link tussen de entiteit van het substantief en dat van de simpele naamwoordgroep maar er is geen kennis over welke link dit juist is. Voor nu laten we het dus nog open. In hoofdstuk~\ref{ch:types} zullen we met behulp van types afleiden welk predicaat nodig is. De entiteit van de substantief is het belangrijkste en is ook de entiteit van de naamwoordgroep als geheel. Als resultaat krijgen we $$\sem{np} = \lambdaf{P}{\appH{\app{\sem{det}}{\sem{n}}}{\lambdaf{x}{\app{\sem{np}}{\lambdaf{y}{\drsMerge{\drs{}{\textit{unknown}(x, y)}}{\app{P}{x}}}}}}}$$
 
 Het is een naamwoordgroep en dus een box ($\lambda P$). Daarbinnen pakken we de woordgroep die bestaat uit het lidwoord en het substantief uit naar de entiteit $x$. Vervolgens pakken we de naamdwoordgroep uit naar $y$. Er is een relatie tussen $x$ en $y$ maar deze is voorlopig nog onbekend. Ten slotte stoppen we $x$ in de box van het gehele naamwoordgroep want $x$ is de entiteit waar de naamwoordgroep als geheel naar verwijst.
 
@@ -196,29 +198,43 @@ np([coord:np, num:Num, gap:[], sem:Sem]) -->
     app(P, X))))))) }.
 \end{dcg}
 
+\subsection{Een vergelijkende naamwoordgroep}
+Grammatica~\ref{dcg:np3} geeft de grammaticale regels voor een vergelijkende naamwoordgroep, zoals ``3 years after John''. Zo'n naamwoordgroep bestaat uit een hoeveelheid (\texttt{quantity}), een comparatief (\texttt{comp}) en een andere naamwoordgroep (\texttt{np}). De betekenis bestaat uit twee simpele lambda-applicaties $\sem{np} = \appH{\app{\sem{comp}}{\sem{np_1}}}{\sem{np_2}}$
 
-\begin{dcg}{De grammaticale regels voor een nominale constituent}{dcg:np}
-np([coord:comp, num:Num, gap:G, sem:NP]) -->
-  sp([num:Num, gap:[], sem:NP1]),
+Zo'n hoeveelheid kan onbepaald zijn (lijn 8-10) zoals ``sometime'' of een simpele naamwoordgroep (lijn 10-12) zoals ``2 years''.
+
+\paragraph{} Deze naamwoordgroep heeft de waarde \texttt{comp} voor de feature \texttt{coord}. Die feature is nodig om niet in een oneindige lus te geraken. Een vergelijkende naamwoordgroep kan namelijk starten met een simpele naamwoordgroep (lijn 2 en 10-12). Zonder de feature \texttt{coord} zou een vergelijkende naamwoordgroep ook kunnen starten met een vergelijkende naamwoordgroep. Bij het zoeken of de volgende woorden een vergelijkende naamwoordgroep kan zijn, moeten we dus eerst kijken of ze een vergelijkende naamwoordgroep zijn. Bij het gebruik van een andere parser zou dit niet per se nodig zijn.
+
+\paragraph{} Binnen logigrammen zit er ook altijd een ellips in zo'n vergelijkende naamwoordgroep, namelijk die van het hoofdwerkwoord binnen de naamwoordgroep waarmee vergeleken wordt. In de zin ``John finished after Mary'' ontbreekt het woord ``finished'' op het einde van de zin: ``John finished after Mary [finished]''. Lijn 1 en 5 zeggen dat de hele naamwoordgroep een ellips heeft a.s.a. de naamwoordgroep waarmee vergeleken wordt een ellips heeft.
+
+Lijn 14 t.e.m. 20 geven dan weer de betekenis van zo'n naamwoordgroep met een ellips. In formulevorm wordt dit $$\sem{np} = \lambdaf{P}{\drsTriMerge{\drs{z}{}}{\appH{\app{\sem{tv}}{\lambdaf{P}{\app{P2}{z}}}}{\sem{np_1}}}{\app{P}{z}}}$$
+De betekenis is een nieuwe entiteit $z$ in een box. Bovendien is er de conditie dat (een lege box rond) $z$ het lijdend voorwerp vormt van het (verzwegen) werkwoord en de onderliggende naamwoordgroep het onderwerp.
+
+\begin{dcg}{De grammaticale regels i.v.m. een vergelijkende naamwoordgroep}{dcg:np3}
+np([coord:comp, num:Num, gap:G, sem:Sem]) -->
+  quantity([num:Num, sem:NP1]),
   comp([sem:Comp]),
-  { G = [tv:_ | _] -> Gap = [useTVGap | G] ; Gap = G},
-  np([coord:_, num:_, gap:Gap, sem:NP2]),
-  { addTypeAttribute(Type, countable) },
-  { combine(np:NP, [np:NP1, comp:Comp, np:NP2, vType1:Type, vType2:Type2]) }.
-sp([num:_Num, gap:[], sem:NP]) -->
-  some([sem:SP]),
-  { combine(np:NP, [some:SP]) }.
-sp([num:Num, gap:[], sem:NP]) -->
-  np([coord:no, num:Num, gap:[], sem:NP]).
+  np([coord:_, num:_, gap:G, sem:NP2]),
+  { Sem = app(app(Comp, NP1), NP2) }.
 
-np([coord:no, num:sg, gap:[np:NP-Type], sem:NP].
+quantitity([num:_, sem:S]) -->
+  some([sem:S]),
+  { Sem = S }.
+quantity([num:Num, sem:Sem]) -->
+  np([coord:no, num:Num, gap:[], sem:NP]),
+  { Sem = NP}.
 
-np([coord:no, num:Num, gap:[tv:_TV | G], sem:NP]) -->
-  np([coord:no, num:Num, gap:G, sem:NP]).
-np([coord:no, num:Num, gap:[useTVGap, tv:TV | G], sem:NP]) -->
-  np([coord:_, num:Num, gap:G, sem:NP1]),
-  { combine(np:NP, [np:NP1, tv:TV])}.
+np([coord:no, num:Num, gap:[useTVGap, tv:TV | G], sem:Sem]) -->
+  np([coord:_, num:Num, gap:G, sem:NP]),
+  { Sem = lam(P, merge(
+      merge(
+        drs([Z], []),
+        app(app(TV, lam(N, app(N, Z))), NP)),
+      app(P, Z))) }.
+\end{dcg}
 
+\subsection{Een naamwoordgroep met een voegwoord}
+\begin{dcg}{De grammaticale regels voor een naamwoordgroep met een voegwoord}{dcg:np4}
 np([coord:CoordType, num:CoordNum, gap:G, sem:NP, vType:Type]) -->
   { npCoordNum(CoordType, CoordNum) },
   coordPrefix([type:CoordType]),
@@ -236,12 +252,15 @@ np([coord:CoordType, num:CoordNum, gap:G, sem:NP, vType:Type]) -->
   { member(Coord, [CoordType, no, np]) },
   np([coord:Coord, num:_, gap:G, sem:NP2, vType:Type]),
   { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
+
 npCoordNum(conj, pl).
 npCoordNum(disj, sg).
 npCoordNum(neg, sg).
 \end{dcg}
 
 \section{Verbale constituent}
+
+\todo{np.Gap fixen!!!}
 
 \begin{dcg}{De grammaticale regels voor een verbale constituent}{dcg:vp}
 
