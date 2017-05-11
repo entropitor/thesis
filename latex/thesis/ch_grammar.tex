@@ -277,6 +277,8 @@ De eenvoudigste verbale constituent bestaat uit een transitief werkwoord, gevolg
 
 De tweede grammaticale regel drukt iets gelijkaardigs uit maar nu in het geval het lijdend voorwerp een vergelijking is (\texttt{coord:comp}). In dat geval zijn het voor- en achtervoegsel optioneel. Neem bijvoorbeeld de zinnen ``John won in 2008'' en ``Mary won 2 years after John''. Het voorvoegsel ``in'' verdwijnt in het geval van een vergelijkende naamwoordgroep. Bovendien is er een ellips van het werkwoord in de naamwoordgroep (zie ook sectie~\ref{sec:gramNpComp}). Dit reflecteert zich in de feature \texttt{gap} van de naamwoordgroep. 
 
+Merk op dat we in de eerste grammaticale regel niet toestaan dat er een ellips is van het werkwoord binnen het lijdende voorwerp. Dit zou kunnen lijden tot extra betekenissen die niet nuttig zijn binnen een logigram.
+
 \paragraph{} In bijzinnen kan het ook soms voorkomen dat er een naamwoordgroep voor het werkwoord komt te staan, bijvoorbeeld ``The horse that Mary won, ...''. In dat geval is de naamwoordgroep van de verbale constituent het onderwerp en de naamwoordgroep waar de bijzin bijstaat het lijdend voorwerp. De derde grammaticale regel (lijn 14-17) drukt dit uit. De semantiek is $$\sem{vp} = \lambdaf{N1}{\app{\app{\sem{tv}}{N1}}{\sem{np}}}$$
 
 Een verbale constituent kan ook een hulpwerkwoord bevatten. In dat geval komt het getal en de vorm (infinitief, deelwoord, ...) van de constituent overeen met dat van het hulpwerkwoord. Het hoofdwerkwoord moet in zo'n constituent voorkomen als infinitief (\texttt{inf}) of als deelwoord (\texttt{part}). De semantiek is nogmaals een lambda-appliatie $$\sem{vp} = \app{\sem{av}}{\sem{vp_1}}$$
@@ -425,3 +427,8 @@ s([coord:no, sem:Sem]) -->
             app(VP1, lam(N, app(N, X2))),
             app(VP2, lam(N, app(N, X1)))))])))))) }.
 \end{dcg}
+
+\section{Conclusie}
+Een grammatica voor logigrammen is redelijk beperkt. De betekenis van een grammaticale regel komt vaak neer op een simpele lambda-applicatie maar soms zijn ook complexere formules nodig om de scope van de kwantoren correct te krijgen.
+
+Sommige grammaticale regels zijn specifiek voor logigrammen. Andere zijn dan weer algemeen bruikbaar. Het is soms wel moeilijk om maar 1 vertaling toe te staan. Zo laten we enkel voor een vergelijkende naamwoordgroep een ellips van het werkwoord toe. Dit is namelijk de enigste plaats waar dit gebeurt in logigrammen. Als we deze grammatica willen uitbreiden naar andere specificaties moeten we dus meerdere betekenissen toelaten of bijvoorbeeld het gebruik van ellipsen verbieden.
