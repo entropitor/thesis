@@ -145,7 +145,7 @@ semLex(comp, M) :-
          sem:lam(N1, lam(N2, lam(V, app(N1, lam(Y, app(N2, lam(Z, merge(drs([variable(X, Type, decl)], [eq(X, Z+Y)]), app(V, X))))))))),
          vType:Type].
 
-semLex(somePhrase, M) :-
+semLex(some, M) :-
     addTypeAttribute(Type1, derivedCountable(Type)),
     M = [sem:lam(N, merge(drs([variable(X, Type1, decl)], [eq(X > 0)]), app(N, X))),
-         type:Type].
+         vType:Type].

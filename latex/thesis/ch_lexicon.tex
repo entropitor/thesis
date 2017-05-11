@@ -1,4 +1,5 @@
 \chapter{Een lexicon voor logigrammen}
+\label{ch:lexicon}
 In dit hoofdstuk bespreken we de gebruikte lexicale categorieën. We beperken ons tot een set die het makkelijk maakt voor de vertaling van logigrammen naar DRS-structuren. We bespreken zowel de categorieën zelf alsook hun vertaling naar deze DRS-structuren. Er wordt een onderscheid gemaakt tussen open en gesloten lexicale categorieën. De open categorieën zijn open voor uitbreiding. De woorden uit die categorie zijn verschillend per logigram. De gesloten categorieën bevatten woorden die gemeenschappelijk zijn voor alle logigrammen. Tabel~\ref{tbl:lexiconCategories} geeft een overzicht van de gebruikte lexicale categorieën.
 
 \begin{table}[t]
@@ -9,7 +10,7 @@ In dit hoofdstuk bespreken we de gebruikte lexicale categorieën. We beperken on
     Determinator       & det                & gesloten & a, an, the \\
     Hoofdtelwoord      & number             & gesloten & three, 5      \\
     Eigennaam          & pn                 & open     & John, ``the black darts'' \\
-    Substantief        & n                  & open     & man, year, \\
+    Substantief        & noun               & open     & man, year, \\
     Voorzetsel         & prep               & gesloten & in, to \\
     Betrekkelijk voornaamwoord & relpro     & gesloten & who, which, that \\
     Transitief werkwoord & tv               & open     & loves, ``had a final score of'' \\
@@ -28,6 +29,7 @@ In dit hoofdstuk bespreken we de gebruikte lexicale categorieën. We beperken on
 Een determinator kan zowel een lidwoord als een kwantor zijn. In het geval van logigrammen volstaan de lidwoorden ``a'', ``an'' en ``the''. Deze drie determinatoren krijgen alle drie de vertaling van de existentiële determinator uit het vorige hoofdstuk $$\sem{det} = \sem{det_{existentieel}} = \lambdaf{R}{\lambdaf{S}{\left( \drs{x}{} \oplus \app{R}{x} \oplus \app{S}{x} \right)}}$$ Er is dus geen nood aan een universele of negatieve determinator. Bij logigrammen zijn we namelijk op zoek naar de waarde van bijecties. Er is dus altijd exact één iemand die een bepaalde drank drinkt of een bepaald huisdier heeft. Er is nooit sprake van ``Every man who drinks vodka, ...'' maar altijd van ``The man who drinks vodka, ...''. Men kan ook nooit gebruik maken van de negatieve determinator (bv. ``No man drinks vodka'') aangezien er altijd één iemand moet zijn die vodka drinkt.
 
 \section{Hoofdtelwoord}
+\label{sec:lex-number}
 Hoofdtelwoorden kunnen gebruikt worden als determinatoren die een aantal uitdrukken. In deze thesis krijgen hoofdtelwoorden echter een eigen lexicale categorie omdat op sommige plaatsen enkel een hoofdtelwoord past en geen andere determinatoren (bijvoorbeeld ``five'' in de zin ``The five different people are ...''). De hoofdtelwoorden mogen in cijfers voorkomen maar ook in woorden \footnote{In de praktijk zitten enkel de eerste 15 getallen in woorden in het lexicon}.
 
 De signatuur van een hoofdtelwoord is gelijk aan die van een determinator. Er zijn twee mogelijke lezingen voor een hoofdtelwoord: de collectieve en de distributieve lezing. We verduidelijken aan de hand van de voorbeeldzin ``Twee mannen gaan naar zee''. In de collectieve lezing vormen de ``twee mannen'' één geheel. Ze gaan dus samen naar zee. In de distributieve lezing zijn er twee mannen die elk naar zee gaan. In logigrammen komt enkel de collectieve lezing aan bod. Meestal gaat het immers om een numerieke eigenschap van iets of iemand. Bijvoorbeeld ``John is 10 years old'' of ``John is 3 years younger than Mary''.
@@ -74,6 +76,7 @@ $$\sem{av_{neg}} = \lambdaf{V}{\lambdaf{N}{\app{N}{\lambdaf{x}{\drsNot{\app{V}{\
 Het hulpwerkwoord krijgt een verbale constituent ($V$) en een onderwerp ($N$) als argument. Het haalt de entiteit van het onderwerp uit de box en geeft dan een negatie van de verbale constituent terug. Die verbale constituent krijgt een lege doos met enkel de entiteit in ($\lambdaf{P}{\app{P}{x}}$) mee als ``onderwerp''.
 
 \section{Koppelwerkwoord}
+\label{sec:lex-koppelwerkwoord}
 De categorie van koppelwerkwoorden is een gesloten lexicale categorie. Ze bestaat uit verschillende vormen van het werkwoord ``to be'' (bv. is, isn't, is not, was, are, were, ...). Er is een enkelvoud- en meervoudsvorm. Bovendien is er sprake van een positieve of negatieve polariteit. Deze hebben elk een licht andere semantiek. Ten slotte kan een koppelwerkwoord ook op drie verschillende manieren gebruikt worden in een zin van een logigram:
 
 \begin{itemize}
@@ -107,7 +110,8 @@ De comparatief is een open lexicale categorie. Elke logigram heeft eigen compara
 \paragraph{} De onbepaalde woorden hebben dezelfde signatuur als een naamwoordgroep $\tau(some) = \tau(np) = (e \rightarrow t) \rightarrow t$. We kunnen het zien als een box rond een existentiële kwantor voor een natuurlijk getal \footnote{Het getal moet strikt positief zijn want anders kan $x=x2-x1$ ook hoger dan $x2$ uitkomen bij een comparatief met als betekenis ``lager dan''}. Meer concreet hebben we $$\sem{some} = \lambdaf{P}{\drsMerge{\drs{x}{x > 0}}{\app{P}{x}}}$$ %We maken een box aan ($\lambda P$). Vervolgens maken we een entiteit $x$ aan dat een positief getal ($x > 0$) voorstelt. (Het getal moet strikt positief zijn want anders kan $x=x2-x1$ ook hoger dan $x2$ uitkomen bij een comparatief met als betekenis ``lager dan''). Ten slotte stoppen we de entiteit in de box ($\app{P}{x}$).
 
 \section{Voegwoord}
-Een voegwoord is een woord dat twee woordgroepen van dezelfde categorie verbindt. Voorbeelden zijn ``and'', ``or'' and ``nor''. Een voegwoorden kan twee zinnen verbinden maar ook twee nominale constituenten. Binnen logigrammen zijn de voegwoorden nevenschikkend. Dat wil zeggen dat beide woordgroepen even belangrijk zijn \footnote{In tegenstelling tot een onderschikkend voegwoord. Zo'n voegwoord verbindt bijvoorbeeld een hoofdzin met een bijzin. Daarbij is de bijzin minder belangrijk dan de hoofdzin.}. Er komen drie soorten voegwoorden voor, elk met een eigen vertaling: een conjunctief voegwoord (``A and B''), een disjunctief voegwoord (``(either) A or B'') en een negatief voegwoord (``(neither) A nor B'').
+\label{sec:lex-coord}
+Een voegwoord is een woord dat twee woordgroepen van dezelfde categorie verbindt. Voorbeelden zijn ``and'', ``or'' and ``nor''. Een voegwoorden kan twee zinnen verbinden maar ook twee nominale constituenten. Binnen logigrammen zijn de voegwoorden nevenschikkend. Dat wil zeggen dat beide woordgroepen even belangrijk zijn \footnote{In tegenstelling tot een onderschikkend voegwoord. Zo'n voegwoord verbindt bijvoorbeeld een hoofdzin met een bijzin. Daarbij is de bijzin minder belangrijk dan de hoofdzin.}. Er komen drie soorten voegwoorden voor, elk met een eigen vertaling: een conjunctief voegwoord (``A and B''), een disjunctief voegwoord (``A or B'') en een negatief voegwoord (``A nor B''). Een voegwoord kan uit twee delen bestaan (bv. ``either ... or'' en ``neither ... nor''). Daarom bestaan er twee lexicale categorieën: \texttt{coord} voor het voegwoord zelf (bv. ``or'') en \texttt{coordPrefix} voor de eventuele prefix (bv. ``either'').
 
 De vertaling van het voegwoord is onafhankelijk van de categorie van de woordgroepen die worden verbonden. Belangrijk is wel dat de signatuur van die woordgroepen een functie met als resultaat iets van type $t$ is ($\tau(woordgroep) = \alpha \rightarrow t$). Een signatuur van het voegwoord is dan $\tau(coord) = (\alpha \rightarrow t) \rightarrow (\alpha \rightarrow t) \rightarrow (\alpha \rightarrow t) = (\alpha \rightarrow t) \rightarrow (\alpha \rightarrow t) \rightarrow \alpha \rightarrow t $. De betekenis van een voegwoord bestaat er telkens uit door het derde argument (van type $\alpha$) door te geven aan de eerste twee argumenten en de resultaten op de juiste manier terug te combineren
 

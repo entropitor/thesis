@@ -162,21 +162,21 @@ Voor het vertalen van natuurlijke taal naar logica zouden we graag gebruik maken
 Ze suggereren Discourse Representation Structures als alternatief. Deze structuren bestaan uit een lijst van \textit{discourse referents} (woordgroepen waarnaar andere woordgroepen kunnen verwijzen) en een lijst van condities i.v.m. die referenties \cite{Bos2011}. Blackburn en Bos \cite{Blackburn2006} geven o.a. een vertaling van deze DRS-structuren naar eerste-orde-logica. DRS-structuren hebben dus ook een formele betekenis, zoals we verder zullen aantonen, zijn ze echter beter geschikt als doeltaal. Van hieruit kan dan verder vertaald worden naar eerste-orde-logica volgens de vertaling van Blackburn en Bos. Wij hernemen hier hun vertaling als verdere introductie tot deze structuren:
 
 \[
-  \Bigg(\drs{x_1, \ldots, x_n}{
+  \left(\ \drs{x_1, \ldots, x_n}{
       \gamma_1 \\
       \ldots \\
       \gamma_m
-    }\Bigg)^{fo} = \exists x_{1} \ldots \exists x_n\Big((\gamma_{1})^{fo} \land \ldots \land (\gamma_m)^{fo}\Big)
+    }\ \right)^{fo} = \exists x_{1} \ldots \exists x_n\left((\gamma_{1})^{fo} \land \ldots \land (\gamma_m)^{fo}\right)
 \]
 
 En de vertaling van alle mogelijke condities $\gamma$:
 
 \[\Big(R(x_1, ..., x_n)\Big)^{fo} = R(x_1, ..., x_n)\]
 \[\Big(\tau_1 = \tau_2\Big)^{fo} = \Big(\tau_1 = \tau_2\Big)\]
-\[\Big(\lnot B)^{fo} = \lnot\Big(B\Big)^{fo}\]
-\[\Big(B_1 \lor B_2)^{fo} = \Big(B_1\Big)^{fo} \lor \Big(B_2\Big)^{fo}\]
+\[\Big(\lnot B\Big)^{fo} = \lnot\Big(B\Big)^{fo}\]
+\[\Big(B_1 \lor B_2\Big)^{fo} = \Big(B_1\Big)^{fo} \lor \Big(B_2\Big)^{fo}\]
 
-\[\Big(\drs{x_1, ..., x_n}{\gamma_1 \\ ... \\ \gamma_m} \Rightarrow B\Big)^{fo} =  \forall x_1...\forall x_n\Bigg(\Big((\gamma_1)^{fo} \land ... \land (\gamma_m)^{fo}\Big) \Rightarrow \Big(B\Big)^{fo} \Bigg)\]
+\[\left(\ \drs{x_1, ..., x_n}{\gamma_1 \\ ... \\ \gamma_m} \Rightarrow B\right)^{fo} =  \forall x_1...\forall x_n\Bigg(\Big((\gamma_1)^{fo} \land ... \land (\gamma_m)^{fo}\Big) \Rightarrow \Big(B\Big)^{fo} \Bigg)\]
 
 Ten slotte kan men twee DRS-structuren samenvoegen door de referenties en de condities samen te voegen:
 
