@@ -66,12 +66,17 @@ We hebben dus nood aan extra informatie.
 
 Voor de rest hebben we extra informatie nodig van de gebruiker. We beperken onszelf opnieuw tot taalkundige informatie. Dit doen we door ja-nee-vragen te stellen aan de gebruiker. Er zijn 3 soorten vragen: ``Zijn A en B dezelfde relatie (synoniemen)?'', ``Zijn A en B een omgekeerde relatie?'' en ``Is A een mogelijk lijdend voorwerp van B?''. Al deze vragen zouden herschreven kunnen worden in de vorm ``Is ... een geldige zin?''. Deze vragen worden gesteld totdat er genoeg types geünificeerd zijn. En enkel als er iets uit geleerd kan worden. Als twee werkwoorden bijvoorbeeld al exact hetzelfde type hebben, dan weten we dat het sowieso synoniemen zijn. Er is namelijk maar één bijectie tussen elke twee domeinen in een logigram.
 
-\section{Het juiste predicaat}
-- Resolve predicates on missing types
 \section{Een formeel vocabularium}
+\paragraph{} Op basis van de types kunnen we een aantal inferenties doen. 
 - benoemen van types
 - wat vertaalt naar wat? (pn -> constructed types, countable -> domein, derivedCountable -> ..., intermediate noun -> ...)
 - ``the_other_...''
+
+\section{Het juiste predicaat}
+\paragraph{} Een tweede inferentie bestaat eruit om ontbrekende predicaten uit sectie~\ref{sec:npMissingRelation} (Een naamwoordgroep met onbekende relatie) te achterhalen. Dit zal gebeuren voor we vertalen naar het formele vocabularium.
+
+We weten het type van $x$ en $y$ en dus het domein. Bovendien is er binnen logigrammen altijd maar één functie tussen twee domeinen, namelijk de bijectie die we zoeken. We zoeken dus het werkwoord of voorzetsel met het juiste type-paar. Indien er één bestaat kunnen we het predicaat dat overeenkomt met dat woord kiezen. Dit verhoogt de leesbaarheid van de formele vertaling. Het kan echter zijn dat er zo geen woord bestaat. In dat geval introduceren we een nieuw predicaat met de juiste types.
+
 \section{Een correcte theorie}
 - Extra axioma's based on types
 

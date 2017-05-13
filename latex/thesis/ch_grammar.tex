@@ -172,6 +172,7 @@ np([coord:no, num:_, gap:[], sem:Sem]) -->
 \end{dcg}
 
 \subsection{Een naamwoordgroep met onbekende relatie}
+\label{sec:npMissingRelation}
 Grammatica~\ref{dcg:np2} beschrijft twee grammaticale regels met dezelfde semantiek en gelijkaardige structuur. Het gaat om naamwoordgroepen respectievelijk zoals ``the Arkansas native'' en ``John's dog''. Ze bestaan allebei uit een simpele naamwoordgroep (\texttt{np} met \texttt{coord:no}) en een substantief~(\texttt{n}). Er is telkens een link tussen de entiteit van het substantief en dat van de simpele naamwoordgroep maar er is geen kennis over welke link dit juist is. Voor nu laten we het dus nog open. In hoofdstuk~\ref{ch:types} zullen we met behulp van types afleiden welk predicaat nodig is. De entiteit van de substantief is het belangrijkste en is ook de entiteit van de naamwoordgroep als geheel. Als resultaat krijgen we $$\sem{np} = \lambdaf{P}{\appH{\app{\sem{det}}{\sem{n}}}{\lambdaf{x}{\app{\sem{np}}{\lambdaf{y}{\drsMerge{\drs{}{\textit{unknown}(x, y)}}{\app{P}{x}}}}}}}$$
 
 Het is een naamwoordgroep en dus een box ($\lambda P$). Daarbinnen pakken we de woordgroep die bestaat uit het lidwoord en het substantief uit naar de entiteit $x$. Vervolgens pakken we de naamdwoordgroep uit naar $y$. Er is een relatie tussen $x$ en $y$ maar deze is voorlopig nog onbekend. Ten slotte stoppen we $x$ in de box van het gehele naamwoordgroep want $x$ is de entiteit waar de naamwoordgroep als geheel naar verwijst.
