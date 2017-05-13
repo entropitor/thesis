@@ -260,7 +260,7 @@ problem(p15, problem(4, 5, [
 % lasted_for(presentation minutes)
 % received(presentation, grade)
 % was_long(presentation, minutes)
-problem(p15b, problem(5, 5, [
+problem(p15b, problem(4, 5, [
                          "The student who got the B-minus talked about Augustus",
                          "Johnnie, the student who gave the presentation on Augustus and the person who got the B-plus were three different students",
                          "Gina didn't get the B-plus",
@@ -357,7 +357,7 @@ problem(p16, problem(4, 5, [
 % begin is for time, start for place
 % add 10 to group sizes: they overlap!!!
 % Add extra type!!!
-problem(p17, problem(5, 5, [
+problem(p17, problem(4, 5, [
                          "The 11 am tour won't start at high park",
                          "Zachary's outing will begin 1 hour before the outing starting at Casa Loma",
                          "The tour with 7 people will begin 3 hours before the group of 6",
@@ -443,7 +443,7 @@ problem(p18, problem(4, 5, [
 % 3, 4, 6) the one -> the comet
 % 9) Whitaker's [comet]
 % year: orbital vs time -> time replace "year" with "cycle"
-problem(p19, problem(5, 5, [
+problem(p19, problem(4, 5, [
                          "The comet discovered by Whitaker doesn't have an orbital period of 30 years",
                          "Gostroma was discovered 1 cycle after the comet discovered by Tillman",
                          "Of the comet discovered by Underwood and the comet with an orbital period of 42 years, one was found in 2009 and the other is Trosny",

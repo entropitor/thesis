@@ -36,7 +36,7 @@ problem(p1, problem(4,5, [
                         prep([from]),
                         prep([with, a, population, size, of])
         ])).
-problem(p1b, problem(5,5, [
+problem(p1b, problem(4,5, [
                         "The perens pig lives in Slovakia and was recognized as endangered in 2009",
                         "The eldar elk has a population size of 210",
                         "The byengo bat doesn't live in Ghana",

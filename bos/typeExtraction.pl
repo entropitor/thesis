@@ -20,9 +20,9 @@ getPredicates([_ | Types], Preds) :-
     !,
     getPredicates(Types, Preds).
 
-getBaseTypes(Types, BaseTypes, NbBaseTypes, NbConceptsPerType) :-
+getBaseTypes(Types, BaseTypes, _NbBaseTypes, NbConceptsPerType) :-
     getBaseTypeAtoms(Types, BaseTypesAtoms),
-    length(BaseTypesAtoms, NbBaseTypes),
+    %% length(BaseTypesAtoms, NbBaseTypes),
     maplist(toBaseType(Types, NbConceptsPerType), BaseTypesAtoms, BaseTypes).
 
 getBaseTypeAtoms(Types, BaseTypesAtoms) :-

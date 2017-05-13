@@ -175,7 +175,19 @@ getRealBaseTypeCandidates(CombinedTypes, RealCandidates) :-
     getBaseTypeCandidates(CombinedTypes, BaseTypeCandidates),
     list_to_ord_set(DerivedTypes, DerivedTypesSet),
     list_to_ord_set(BaseTypeCandidates, BaseTypeCandidatesSet),
-    ord_subtract(BaseTypeCandidatesSet, DerivedTypesSet, RealCandidates).
+    getIntermediateTypes(BaseTypeCandidatesSet, CombinedTypes, IntermediateTypes),
+    list_to_ord_set(IntermediateTypes, IntermediateTypesSet),
+    ord_subtract(BaseTypeCandidatesSet, DerivedTypesSet, RealCandidates1),
+    ord_subtract(RealCandidates1, IntermediateTypesSet, RealCandidates).
+
+getIntermediateTypes([], _, []).
+getIntermediateTypes([BaseType | BaseTypes], CombinedTypes, [BaseType | IntermediateTypes]) :-
+    \+ (member(attr(Type, _), CombinedTypes), Type == BaseType),
+    !,
+    getIntermediateTypes(BaseTypes, CombinedTypes, IntermediateTypes).
+getIntermediateTypes([_ | BaseTypes], CombinedTypes, IntermediateTypes) :-
+  getIntermediateTypes(BaseTypes, CombinedTypes, IntermediateTypes).
+
 
 getDerivedTypes([], []).
 getDerivedTypes([attr(DerivedType, derivedCountable(_)) | Rest], [DerivedType | Types]) :-
