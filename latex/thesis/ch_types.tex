@@ -1,2 +1,28 @@
 \chapter{Types}
 \label{ch:types}
+
+Hoofdstuk~\ref{ch:framework} introduceerde een framework voor semantische analyse. Hoofdstukken~\ref{ch:lexicon} en \ref{ch:grammatica} beschreven hoe we dit framework konden gebruiken voor het vertalen van logigrammen naar logica. Op basis van deze drie hoofdstukken kunnen we nu de zinnen van een logigram omzetten naar zinnen in eerste-orde-logica. Om de computer een logigram automatisch te laten oplossen, is er ook nog nood aan een formeel vocabularium. Om dit te kunnen opstellen voegen we types toe aan het semantische framework.
+
+\paragraph{} We beschrijven eerst het achterliggende idee. Dan bekijken we welke aanpassingen het lexicon en de grammatica moeten ondergaan. Vervolgens leggen we uit welke informatie er nog nodig is om de types af te leiden. Ten slotte bespreken we drie problemen die we kunnen oplossen a.d.h.v. types.
+
+\section{Principe}
+- 1 type per woord (lijst van woord-types matching)
+- Getypeerde DRS
+- attributen voor countable
+- derived (countable) types
+- wij kozen voor inferentie, maar het even goed type checking kunnen zijn!!!
+\section{Grammatica}
+- noun geen vertaling meer
+- introductie van types bij elke kwantor
+- vrij voor de hang liggend
+\section{Vragen}
+- vragen voor het verder oplossen van unificatie probleem
+- waarom?
+- taalkundig!!!
+\section{Het juiste predicaat}
+- Resolve predicates on missing types
+\section{Een formeel vocabularium}
+- benoemen van types
+- wat vertaalt naar wat? (pn -> constructed types, ...)
+\section{Een correcte theorie}
+- Extra axioma's based on types
