@@ -5,23 +5,58 @@ Hoofdstuk~\ref{ch:framework} introduceerde een framework voor semantische analys
 
 \paragraph{} We beschrijven eerst het achterliggende idee en hoe we dit kunnen toepassen op logigrammen. Dan bekijken we welke aanpassingen het lexicon en de grammatica moeten ondergaan. Vervolgens leggen we uit welke informatie er nog nodig is om de types af te leiden. Ten slotte bespreken we drie problemen die we kunnen oplossen a.d.h.v. types.
 
+\todo{inleiding nog steeds juist met structuur van het hoofdstuk}
+
 \section{Het achterliggende idee}
 In natuurlijke taal kan men vele zinnen vormen zonder echte betekenis die wel grammaticaal correct zijn. Bijvoorbeeld de zin ``Het gras drinkt het zingende huis'' houdt weinig steek. Idealiter zouden we zo'n zinnen willen bestempelen als foutief. Gras is namelijk niet iets dat kan drinken en een huis kan ook niet gedronken worden. We zeggen dat ze niet van het juiste type zijn.
 
 Daarom zullen we een feature \texttt{vType}\footnote{We kiezen voor \texttt{vType} omdat sommige grammaticale categorieën reeds een feature \texttt{type} hebben. De \texttt{v} staat voor vocabularium.} toevoegen aan alle grammaticale categorieën. Ook een aantal lexicale categorieën krijgen deze feature (de meeste open categorieën alsook de voorzetsels). Het type van een naamwoordgroep komt overeen met het type van de entiteit waarnaar het verwijst. Het type van een verbale constituent is gelijk aan dat van het onderwerp. Het type van een transitief werkwoord bestaat dan weer uit een type-paar. Het eerste voor het type van het onderwerp (en dus de verbale constituent) en het andere voor het type van het lijdende voorwerp. Ook een voorzetsel heeft een paar als waarde voor \texttt{vType}. Het ene komt overeen met dat van het substantief dat getransformeerd wordt en het andere komt overeen met dat van de naamwoordgroep uit de voorzetselconstituent.
 
-\section{Types voor logigrammen}
+\paragraph{} Op basis van types kan men zinnen in natuurlijke taal type-checken. Voor deze thesis gaan we echter nog verder en doen we ook aan type-inferentie. Concreet willen we dus te weten komen dat ``France'' en ``Italy'' van hetzelfde type zijn, zonder per se te weten wat het type juist is. We hoeven dus niet te weten dat het om landen gaat. Wat ons vooral interesseert is het groeperen van de verschillende eigennamen volgens hun domein. We zouden ook in het lexicon elk woord kunnen annoteren met haar type. Het doel van deze thesis is echter om het lexicon zo eenvoudig mogelijk te houden. 
 
-\paragraph{}- 1 type per woord (lijst van woord-types matching)
-- Getypeerde DRS
-- attributen voor countable
-- derived (countable) types
-- wij kozen voor inferentie, maar het even goed type checking kunnen zijn!!!
-\section{Grammatica}
-- noun geen vertaling meer
-- introductie van types bij elke kwantor
-- vrij voor de hang liggend
-\section{Vragen}
+In sommige toepassingen van het KBS-paradigma, zoals requirements engineering, wordt er eerst een domein opgesteld. Dit domein zou dan ook in een lexicon met types gegoten kunnen worden. Daarna kan men een specificatie schrijven die ook juist getypeerd is. M.a.w. men zou niet over het stuur van een auto kunnen spreken als auto's in het domeinmodel niet over een stuur beschikken. Zo kan men fouten in de specificatie of het domein opsporen. Verder onderzoek hierover is nodig.
+
+\section{Types voor logigrammen}
+\paragraph{} Voor type-inferentie in logigrammen maken we één aanname: elk woord uit het lexicon heeft binnen één logigram exact één type. Later zal blijken dat hier niet altijd aan voldaan is. Het type-systeem zelf is vrij basic: het bestaat uit een aantal basistypes en één afgeleid type: een type-paar. Een type-paar moet altijd twee basistypes als argument hebben. Er is geen type-hiërarchie. Men kan dus niet uitdrukken dat mensen en dieren allebei levende wezens zijn. Type-checking is volledig gebaseerd op unificatie. Een basistype match met een andere basistype als ze gelijk zijn. Een type-paar matcht met een andere type-paar als beide argumenten matchen met die van het andere paar. We onderscheiden wel twee soorten basistypes: een basistype kan ofwel numeriek zijn ofwel niet. 
+
+
+\paragraph{} Met een getypeerde natuurlijke taal kunnen we ook vertalen naar een getypeerde formele taal. Daarvoor breiden we DRS-structuren uit met types: elke entiteit is van een bepaald type. Vanaf nu vertalen we ook altijd naar eerste-orde-logica met types. De vertaling van een getypeerde DRS naar getypeerde eerste-orde logica is analoog met de vertaling van DRS naar eerste-orde-logica. De types worden doorgegeven zoals men verwacht:
+
+\[
+  \left(\ \drs{x_1[t_1], \ldots, x_n[t_n]}{
+      \gamma_1 \\
+      \ldots \\
+      \gamma_m
+    }\ \right)^{fo} = \exists x_{1}[t_1] \ldots \exists x_n [t_n]\left((\gamma_{1})^{fo} \land \ldots \land (\gamma_m)^{fo}\right)
+\]
+
+\[\left(\ \drs{x_1[t_1], ..., x_n[t_n]}{\gamma_1 \\ ... \\ \gamma_m} \Rightarrow B\right)^{fo} =  \forall x_1[t_1]\ldots \forall x_n[t_n]\Bigg(\Big((\gamma_1)^{fo} \land ... \land (\gamma_m)^{fo}\Big) \Rightarrow \Big(B\Big)^{fo} \Bigg)\]
+
+\section{Aanpassingen}
+\paragraph{} We voegen geen type informatie toe aan het lexicon. We houden voor elk woord wel bij met welk type het is gebruikt. De vertaling van een zelfstandig naamwoord is nu veel simpeler: $\sem{noun} = \lambdaf{P}{\drs{}{}}$ Er is geen restrictie meer vanuit het zelfstandig naamwoord, deze restrictie zit volledig in het type van de entiteit. Een determinator heeft als vertaling $$\sem{det} = \lambdaf{R}{\lambdaf{S}{\left( \drs{x[\textit{Type}]}{} \oplus \app{R}{x} \oplus \app{S}{x} \right)}}$$ Hierbij komt \textit{Type} overeen met de waarde van de feature \texttt{vType}. Via unificatie krijgt de entiteit het type van het zelfstandige naamwoord mee.
+
+Ook bij een comparatief en een onbepaald woord is er een introductie van een nieuwe variabele. Bij een comparatief gebeurt dit gelijkaardig aan de determinator. Het type komt namelijk uit een lexicale feature \texttt{vType} die via de grammatica geünificeerd wordt met andere types. Voor een onbepaald woord is er echter iets speciaals. Het type komt nu niet rechtstreeks uit de lexicale feature. $$\sem{some} = \lambdaf{P}{\drsMerge{\drs{x[\textit{Type1}]}{x > 0}}{\app{P}{x}}}$$ De \textit{Type1} is een numeriek type waarvan het domein bestaat uit de mogelijk verschillen tussen twee waarden uit het domein van \textit{Type} (de waarde van de feature \texttt{vType}). 
+
+\paragraph{} De uitbreiding van de grammatica is vrij voor de hand liggend. Grammatica~\ref{dcg:types} geeft een aantal voorbeelden. De eerste grammaticale regel zegt dat het type van het onderwerp gelijk moet zijn aan dat van de verbale constituent. Het type van een verbale constituent komt dan weer overeen met het eerste type van het type-paar van het transitieve werkwoord. Het tweede type van dat paar komt overeen met het lijdend voorwerp.
+
+% De derde grammaticale regel is minder triviaal. Ze stelt dat bij een vergelijkende naamwoordgroep, het type overeenkomt met het type van de entiteit waarmee vergeleken wordt. Het type van het verschil wordt dan weer doorgegeven aan de comparatief.
+
+\begin{dcg}{Een aantal grammaticale regels met type}{dcg:types}
+s([coord:no, sem:Sem]) -->
+  np([coord:_, num:Num, gap:[], sem:NP, vType:Type]),
+  vp([coord:_, inf:fin, num:Num, gap:[], sem:VP, vType:Type]),
+  { Sem = app(VP, NP) }.
+
+vp([coord:no, inf:I, num:Num, gap:G, sem:Sem, vType:TypeSubj]) -->
+  tv([inf:I, num:Num, positions:Pre-Post, sem:TV, vType:TypeSubj-TypeObj]),
+  Pre,
+  np([coord:_, num:_, gap:G, sem:NP, vType:TypeObj]),
+  Post,
+  { Sem = app(TV, NP) }.
+\end{dcg}
+
+\section{Extra informatie}
+- Aantal types: NIET ALTIJD AANTAL DOMEINEN!
 - vragen voor het verder oplossen van unificatie probleem
 - waarom?
 - taalkundig!!!
@@ -29,6 +64,10 @@ Daarom zullen we een feature \texttt{vType}\footnote{We kiezen voor \texttt{vTyp
 - Resolve predicates on missing types
 \section{Een formeel vocabularium}
 - benoemen van types
-- wat vertaalt naar wat? (pn -> constructed types, ...)
+- wat vertaalt naar wat? (pn -> constructed types, countable -> domein, derivedCountable -> ..., intermediate noun -> ...)
 \section{Een correcte theorie}
 - Extra axioma's based on types
+
+\section{Conclusie}
+Types in een natuurlijke taal nog niet veel gedaan (nog niet gevonden alleszins), verder onderzoek nodig, eerste resultaten veelbelovend
+Uitgebreider type-systeem met hiërarchie
