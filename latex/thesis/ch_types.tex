@@ -56,15 +56,22 @@ vp([coord:no, inf:I, num:Num, gap:G, sem:Sem, vType:TypeSubj]) -->
 \end{dcg}
 
 \section{Extra informatie}
-- Aantal types: NIET ALTIJD AANTAL DOMEINEN!
-- vragen voor het verder oplossen van unificatie probleem
-- waarom?
-- taalkundig!!!
+\paragraph{} Het idee was dat we elke zin apart vertalen en dat we daarna de types unificeren volgens het principe van 1 type per woord. Op basis hiervan blijven we enkel met de basistypes over die nodig zijn om te vertalen. Hiermee kunnen we echter niet per se alle eigennamen voldoende groeperen. Het kan zijn dat één domein nog steeds is opgesplitst in meerdere groepen. Om de onderliggende axioma's van een logigram correct te kunnen uitdrukken, moeten deze groepen overeenkomen met de domeinen.
+
+De reden dat niet de groepering niet compleet zijn, heeft te maken met synoniemen. Het programma is namelijk niet op de hoogte van welke woorden synoniemen zijn. In het worst-case scenario komt elk woord maar één keer voor. In dat geval leert het principe ons niets en zijn alle eigennamen volledig gescheiden van elkaar.
+
+We hebben dus nood aan extra informatie.
+
+\paragraph{} Deze extra informatie bestaat o.a. uit het aantal domeinen in de logigram. We moeten namelijk weten wanneer we mogen stoppen met unificeren.
+
+Voor de rest hebben we extra informatie nodig van de gebruiker. We beperken onszelf opnieuw tot taalkundige informatie. Dit doen we door ja-nee-vragen te stellen aan de gebruiker. Er zijn 3 soorten vragen: ``Zijn A en B dezelfde relatie (synoniemen)?'', ``Zijn A en B een omgekeerde relatie?'' en ``Is A een mogelijk lijdend voorwerp van B?''. Al deze vragen zouden herschreven kunnen worden in de vorm ``Is ... een geldige zin?''. Deze vragen worden gesteld totdat er genoeg types geünificeerd zijn. En enkel als er iets uit geleerd kan worden. Als twee werkwoorden bijvoorbeeld al exact hetzelfde type hebben, dan weten we dat het sowieso synoniemen zijn. Er is namelijk maar één bijectie tussen elke twee domeinen in een logigram.
+
 \section{Het juiste predicaat}
 - Resolve predicates on missing types
 \section{Een formeel vocabularium}
 - benoemen van types
 - wat vertaalt naar wat? (pn -> constructed types, countable -> domein, derivedCountable -> ..., intermediate noun -> ...)
+- ``the_other_...''
 \section{Een correcte theorie}
 - Extra axioma's based on types
 
