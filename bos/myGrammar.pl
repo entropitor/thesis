@@ -215,9 +215,9 @@ np([coord:no, num:Num, gap:[tv:TV-pred(TypeSubj, TypeObj) | G], sem:NP, vType:Ty
 np([coord:comp, num:Num, gap:[tv:TV | G], sem:NP, vType:Type]) -->
   sp([num:Num, gap:[], sem:NP1, vType:Type]),
   comp([sem:Comp, vType:Type]),
-  np([coord:_, num:_, gap:[tv:TV | G], sem:NP2, vType:Type2]),
+  np([coord:_, num:_, gap:[tv:TV | G], sem:NP2, vType:Type]),
   { addTypeAttribute(Type, countable) },
-  { combine(np:NP, [np:NP1, comp:Comp, np:NP2, vType1:Type, vType2:Type2]) }.
+  { combine(np:NP, [np:NP1, comp:Comp, np:NP2]) }.
 
 np([coord:no, num:Num, gap:[], sem:NP, vType:Type]) -->
   pn([num:Num, sem:PN, vType:Type]),
