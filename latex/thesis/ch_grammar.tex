@@ -172,6 +172,7 @@ np([coord:no, num:_, gap:[], sem:Sem]) -->
 \end{dcg}
 
 \subsection{Een naamwoordgroep met onbekende relatie}
+\label{sec:npMissingRelation}
 Grammatica~\ref{dcg:np2} beschrijft twee grammaticale regels met dezelfde semantiek en gelijkaardige structuur. Het gaat om naamwoordgroepen respectievelijk zoals ``the Arkansas native'' en ``John's dog''. Ze bestaan allebei uit een simpele naamwoordgroep (\texttt{np} met \texttt{coord:no}) en een substantief~(\texttt{n}). Er is telkens een link tussen de entiteit van het substantief en dat van de simpele naamwoordgroep maar er is geen kennis over welke link dit juist is. Voor nu laten we het dus nog open. In hoofdstuk~\ref{ch:types} zullen we met behulp van types afleiden welk predicaat nodig is. De entiteit van de substantief is het belangrijkste en is ook de entiteit van de naamwoordgroep als geheel. Als resultaat krijgen we $$\sem{np} = \lambdaf{P}{\appH{\app{\sem{det}}{\sem{n}}}{\lambdaf{x}{\app{\sem{np}}{\lambdaf{y}{\drsMerge{\drs{}{\textit{unknown}(x, y)}}{\app{P}{x}}}}}}}$$
 
 Het is een naamwoordgroep en dus een box ($\lambda P$). Daarbinnen pakken we de woordgroep die bestaat uit het lidwoord en het substantief uit naar de entiteit $x$. Vervolgens pakken we de naamdwoordgroep uit naar $y$. Er is een relatie tussen $x$ en $y$ maar deze is voorlopig nog onbekend. Ten slotte stoppen we $x$ in de box van het gehele naamwoordgroep want $x$ is de entiteit waar de naamwoordgroep als geheel naar verwijst.
@@ -207,16 +208,16 @@ Zo'n hoeveelheid kan onbepaald zijn (lijn 8-10) zoals ``sometime'' of een simpel
 
 \paragraph{} Deze naamwoordgroep heeft de waarde \texttt{comp} voor de feature \texttt{coord}. Die feature is nodig om niet in een oneindige lus te geraken. Een vergelijkende naamwoordgroep kan namelijk starten met een simpele naamwoordgroep (lijn 2 en 10-12). Zonder de feature \texttt{coord} zou een vergelijkende naamwoordgroep ook kunnen starten met een vergelijkende naamwoordgroep. Bij het zoeken of de volgende woorden een vergelijkende naamwoordgroep kan zijn, moeten we dus eerst kijken of ze een vergelijkende naamwoordgroep zijn. Bij het gebruik van een andere parser zou dit niet per se nodig zijn.
 
-\paragraph{} Binnen logigrammen zit er ook altijd een ellips in zo'n vergelijkende naamwoordgroep, namelijk die van het hoofdwerkwoord binnen de naamwoordgroep waarmee vergeleken wordt. In de zin ``John finished after Mary'' ontbreekt het woord ``finished'' op het einde van de zin: ``John finished after Mary [finished]''. Lijn 1 en 5 zeggen dat de hele naamwoordgroep een ellips heeft a.s.a. de naamwoordgroep waarmee vergeleken wordt een ellips heeft.
+\paragraph{} Binnen logigrammen zit er ook altijd een ellips in zo'n vergelijkende naamwoordgroep, namelijk die van het hoofdwerkwoord binnen de naamwoordgroep waarmee vergeleken wordt. In de zin ``John finished after Mary'' ontbreekt het woord ``finished'' op het einde van de zin: ``John finished after Mary [finished]''. De feature \texttt{gap} op lijn 1 en 4 zegt dat de hele naamwoordgroep een ellips heeft, met naam in de naamwoordgroep waarmee vergeleken wordt. Binnen logigrammen is die ellips er altijd.
 
 Lijn 14 t.e.m. 20 geven dan weer de betekenis van zo'n naamwoordgroep met een ellips. In formulevorm wordt dit $$\sem{np} = \lambdaf{P}{\drsTriMerge{\drs{z}{}}{\appH{\app{\sem{tv}}{\lambdaf{P}{\app{P2}{z}}}}{\sem{np_1}}}{\app{P}{z}}}$$
 De betekenis is een nieuwe entiteit $z$ in een box. Bovendien is er de conditie dat (een lege box rond) $z$ het lijdend voorwerp vormt van het (verzwegen) werkwoord en de onderliggende naamwoordgroep het onderwerp.
 
 \begin{dcg}{De grammaticale regels i.v.m. een vergelijkende naamwoordgroep}{dcg:np3}
-np([coord:comp, num:Num, gap:G, sem:Sem]) -->
+np([coord:comp, num:Num, gap:[tv:TV | G], sem:Sem]) -->
   quantity([num:Num, sem:NP1]),
   comp([sem:Comp]),
-  np([coord:_, num:_, gap:G, sem:NP2]),
+  np([coord:_, num:_, gap:[tv:TV | G], sem:NP2]),
   { Sem = app(app(Comp, NP1), NP2) }.
 
 quantitity([num:_, sem:S]) -->
@@ -226,7 +227,7 @@ quantity([num:Num, sem:Sem]) -->
   np([coord:no, num:Num, gap:[], sem:NP]),
   { Sem = NP}.
 
-np([coord:no, num:Num, gap:[useTVGap, tv:TV | G], sem:Sem]) -->
+np([coord:no, num:Num, gap:[tv:TV | G], sem:Sem]) -->
   np([coord:_, num:Num, gap:G, sem:NP]),
   { Sem = lam(P, merge(
       merge(

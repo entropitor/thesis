@@ -126,9 +126,21 @@ addMissingType(Symbol, Type) :-
 
 nameTypes(Types) :-
     maplist(nameNounType, Types),
-    nameDerivedTypes(Types, 1, End),
-    term_variables(Types, UnnamedTypes),
-    nameUnnamedTypes(UnnamedTypes, End).
+    %% nameDerivedTypes(Types, 1, End),
+    getTypeVariables(Types, UnnamedTypes),
+    nameUnnamedTypes(UnnamedTypes, 1).
+
+getTypeVariables(Types, Variables) :-
+    include(isType, Types, RealTypes),
+    maplist(arg(2), RealTypes, RealRealTypes),
+    term_variables(RealRealTypes, UnnamedTypes1),
+    include(isAttr, Types, Attributes),
+    term_variables(Attributes, UnnamedTypes2),
+    append(UnnamedTypes1, UnnamedTypes2, UnnamedTypes),
+    list_to_set(UnnamedTypes, Variables).
+
+isAttr(attr(_, _)).
+isType(type(_, _)).
 
 nameNounType(type(noun-Symbol, Type)) :-
     var(Type),
@@ -175,7 +187,19 @@ getRealBaseTypeCandidates(CombinedTypes, RealCandidates) :-
     getBaseTypeCandidates(CombinedTypes, BaseTypeCandidates),
     list_to_ord_set(DerivedTypes, DerivedTypesSet),
     list_to_ord_set(BaseTypeCandidates, BaseTypeCandidatesSet),
-    ord_subtract(BaseTypeCandidatesSet, DerivedTypesSet, RealCandidates).
+    getIntermediateTypes(BaseTypeCandidatesSet, CombinedTypes, IntermediateTypes),
+    list_to_ord_set(IntermediateTypes, IntermediateTypesSet),
+    ord_subtract(BaseTypeCandidatesSet, DerivedTypesSet, RealCandidates1),
+    ord_subtract(RealCandidates1, IntermediateTypesSet, RealCandidates).
+
+getIntermediateTypes([], _, []).
+getIntermediateTypes([BaseType | BaseTypes], CombinedTypes, [BaseType | IntermediateTypes]) :-
+    \+ (member(attr(Type, _), CombinedTypes), Type == BaseType),
+    !,
+    getIntermediateTypes(BaseTypes, CombinedTypes, IntermediateTypes).
+getIntermediateTypes([_ | BaseTypes], CombinedTypes, IntermediateTypes) :-
+  getIntermediateTypes(BaseTypes, CombinedTypes, IntermediateTypes).
+
 
 getDerivedTypes([], []).
 getDerivedTypes([attr(DerivedType, derivedCountable(_)) | Rest], [DerivedType | Types]) :-

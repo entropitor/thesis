@@ -25,6 +25,7 @@ solution2idp(solution(Sentences, DRSs, TypesIn), ProblemName, Problem) :-
     Problem = problem(NbBaseTypes, NbConceptsPerType, _, _),
     writeln(TypesIn),
     combineTypesToMatrix(TypesIn, NbBaseTypes, NbConceptsPerType, TypesMatrix),
+    nameTypes(TypesMatrix),
     resolveMissingTypes(TypesMatrix, Types),
     maplist(drs2fol, DRSs, FOLs),
     pairs_keys_values(SentencePairs, Sentences, FOLs),
@@ -160,12 +161,12 @@ printTransitiveRelationAxioms([Predicate | Preds]) :-
 printTransitiveRelationAxioms(predicate(Name1, Type1, Type2), Preds) :-
     member(predicate(Name2, Type1, Type3), Preds),
     member(predicate(Name3, Type2, Type3), Preds),
-    format('    ! x [~p] y [~p] z [~p]: ~p(x, y) & ~p(x, z) => ~p(y, z).~n', [Type1, Type2, Type3, Name1, Name2, Name3]),
+    format('    ! x [~p] y [~p]: ~p(x, y) <=> ? z [~p]: ~p(x, z) & ~p(y, z).~n', [Type1, Type2, Name1, Type3, Name2, Name3]),
     fail.
 printTransitiveRelationAxioms(predicate(Name1, Type1, Type2), Preds) :-
     member(predicate(Name2, Type3, Type1), Preds),
     member(predicate(Name3, Type3, Type2), Preds),
-    format('    ! x [~p] y [~p] z [~p]: ~p(x, y) & ~p(z, x) => ~p(z, y).~n', [Type1, Type2, Type3, Name1, Name2, Name3]),
+    format('    ! x [~p] y [~p]: ~p(x, y) <=> ? z [~p]: ~p(z, x) & ~p(z, y).~n', [Type1, Type2, Name1, Type3, Name2, Name3]),
     fail.
 printTransitiveRelationAxioms(_, _).
 printReflexiveRelationAxioms([]).
