@@ -126,9 +126,21 @@ addMissingType(Symbol, Type) :-
 
 nameTypes(Types) :-
     maplist(nameNounType, Types),
-    nameDerivedTypes(Types, 1, End),
-    term_variables(Types, UnnamedTypes),
-    nameUnnamedTypes(UnnamedTypes, End).
+    %% nameDerivedTypes(Types, 1, End),
+    getTypeVariables(Types, UnnamedTypes),
+    nameUnnamedTypes(UnnamedTypes, 1).
+
+getTypeVariables(Types, Variables) :-
+    include(isType, Types, RealTypes),
+    maplist(arg(2), RealTypes, RealRealTypes),
+    term_variables(RealRealTypes, UnnamedTypes1),
+    include(isAttr, Types, Attributes),
+    term_variables(Attributes, UnnamedTypes2),
+    append(UnnamedTypes1, UnnamedTypes2, UnnamedTypes),
+    list_to_set(UnnamedTypes, Variables).
+
+isAttr(attr(_, _)).
+isType(type(_, _)).
 
 nameNounType(type(noun-Symbol, Type)) :-
     var(Type),

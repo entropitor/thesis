@@ -7,8 +7,8 @@ vocabulary V {
     type per_share = {25; 26; 27; 28; 29} isa int
     type type2 = {-1; 1; -2; 2; -3; 3; -4; 4} isa int // differences between values of type per_share
 
-    unknown_relation__912__1124_rev(position, stock)
-    unknown_relation__912__1124(stock, position)
+    unknown_relation_stock_position_rev(position, stock)
+    unknown_relation_stock_position(stock, position)
     purchased(type1, stock)
     is_worth(stock, per_share)
     sold_for(position, per_share)
@@ -38,24 +38,24 @@ theory T : V {
     ?g [per_share] h [per_share]: is_worth(financial_stock,g) & h = g+2 & is_worth(healthcare_stock,h).
 
     // The energy stock was less expensive than the JMO stock
-    ?i [type2] j [per_share] k [stock] l [per_share]: i>0 & is_worth(k,j) & unknown_relation__912__1124(k,jmo) & l = j-i & is_worth(energy_stock,l).
+    ?i [type2] j [per_share] k [stock] l [per_share]: i>0 & is_worth(k,j) & unknown_relation_stock_position(k,jmo) & l = j-i & is_worth(energy_stock,l).
 
     // Heathcliff purchased the real estate stock
     purchased(heathcliff,real_estate_stock).
 
     // Of QMZ and GXTV, one sold for $26 per share and the other was the health-care stock position
-    ~ (qmz = gxtv) & ((?m [position]: sold_for(qmz,26) & m = gxtv & unknown_relation__912__1124_rev(m,healthcare_stock)) | (?n [position]: sold_for(gxtv,26) & n = qmz & unknown_relation__912__1124_rev(n,healthcare_stock))).
+    ~ (qmz = gxtv) & ((?m [position]: sold_for(qmz,26) & m = gxtv & unknown_relation_stock_position_rev(m,healthcare_stock)) | (?n [position]: sold_for(gxtv,26) & n = qmz & unknown_relation_stock_position_rev(n,healthcare_stock))).
 
     // Abigail didn't purchase the stock that was $25 per share worth
     ~ (?o [stock]: is_worth(o,25) & purchased(abigail,o)).
 
 
     // Logigram bijection axioms:
-    ! x [position]: ?=1 y [stock]: unknown_relation__912__1124_rev(x, y).
-    ! x [stock]: ?=1 y [position]: unknown_relation__912__1124_rev(y, x).
+    ! x [position]: ?=1 y [stock]: unknown_relation_stock_position_rev(x, y).
+    ! x [stock]: ?=1 y [position]: unknown_relation_stock_position_rev(y, x).
 
-    ! x [stock]: ?=1 y [position]: unknown_relation__912__1124(x, y).
-    ! x [position]: ?=1 y [stock]: unknown_relation__912__1124(y, x).
+    ! x [stock]: ?=1 y [position]: unknown_relation_stock_position(x, y).
+    ! x [position]: ?=1 y [stock]: unknown_relation_stock_position(y, x).
 
     ! x [type1]: ?=1 y [stock]: purchased(x, y).
     ! x [stock]: ?=1 y [type1]: purchased(y, x).
@@ -72,13 +72,13 @@ theory T : V {
     // Logigram synonym axioms:
 
     // Logigram transitive relation axioms:
-    ! x [position] y [stock] z [per_share]: unknown_relation__912__1124_rev(x, y) & sold_for(x, z) => is_worth(y, z).
-    ! x [position] y [stock] z [type1]: unknown_relation__912__1124_rev(x, y) & bought(z, x) => purchased(z, y).
-    ! x [stock] y [position] z [per_share]: unknown_relation__912__1124(x, y) & is_worth(x, z) => sold_for(y, z).
-    ! x [stock] y [position] z [type1]: unknown_relation__912__1124(x, y) & purchased(z, x) => bought(z, y).
+    ! x [position] y [stock] z [per_share]: unknown_relation_stock_position_rev(x, y) & sold_for(x, z) => is_worth(y, z).
+    ! x [position] y [stock] z [type1]: unknown_relation_stock_position_rev(x, y) & bought(z, x) => purchased(z, y).
+    ! x [stock] y [position] z [per_share]: unknown_relation_stock_position(x, y) & is_worth(x, z) => sold_for(y, z).
+    ! x [stock] y [position] z [type1]: unknown_relation_stock_position(x, y) & purchased(z, x) => bought(z, y).
 
     // Logigram reflexive relation axioms:
-    ! x [position] y [stock]: unknown_relation__912__1124_rev(x, y) <=> unknown_relation__912__1124(y, x).
+    ! x [position] y [stock]: unknown_relation_stock_position_rev(x, y) <=> unknown_relation_stock_position(y, x).
 
     // Logigram symmetry breaking axioms:
 }

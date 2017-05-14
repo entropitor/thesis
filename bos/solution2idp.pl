@@ -25,6 +25,7 @@ solution2idp(solution(Sentences, DRSs, TypesIn), ProblemName, Problem) :-
     Problem = problem(NbBaseTypes, NbConceptsPerType, _, _),
     writeln(TypesIn),
     combineTypesToMatrix(TypesIn, NbBaseTypes, NbConceptsPerType, TypesMatrix),
+    nameTypes(TypesMatrix),
     resolveMissingTypes(TypesMatrix, Types),
     maplist(drs2fol, DRSs, FOLs),
     pairs_keys_values(SentencePairs, Sentences, FOLs),
