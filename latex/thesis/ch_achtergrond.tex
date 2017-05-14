@@ -12,67 +12,58 @@ Definite Clause Grammars \cite{Pereira1980} zijn een uitbreiding van contextvrij
 \end{enumerate}
 
 \subsection{Een eerste grammatica}
-\begin{ex}
-  Een voorbeeld van een DCG grammatica is:
-  \begin{quote}
-    \texttt{s ---> np, vp.} \\
-    \texttt{np ---> [ik].} \\
-    \texttt{np ---> [hem].} \\
-    \texttt{vp ---> v, np.} \\
-    \texttt{v ---> [zie].}
-  \end{quote}
-\end{ex} 
+Een voorbeeld van een DCG grammatica is grammatica~\ref{dcg:gram1}.
+\begin{dcg}{Een eerste grammatica}{dcg:gram1}
+s() --> np(), vp().
+np() --> [ik].
+np() --> [hem].
+vp() --> v(), np().
+v() --> [zie].
+\end{dcg}
 \texttt{s} is het startsymbool en staat voor \texttt{sentence}. \texttt{np} staat voor \texttt{noun phrase} (naamwoordgroep of nominale constituent), \texttt{vp} voor \texttt{verb phrase} (verbale constituent) en \texttt{v} voor \texttt{verb}. Deze grammatica zegt dat een zin bestaat uit een noun phrase gevold door een verb phrase. Een verb phrase is dan weer een werkwoord gevolgd door een noun phrase.
 
 De zin \example{ik zie hem} is onderdeel van deze taal. Maar ook de zin \example{ik zie ik} is deel van de taal. Om dit op te lossen kunnen we argumenten meegeven aan de niet-terminaal \texttt{np}.
 
 \subsection{De woordvorm is afhankelijk van de context}
-\begin{ex}
-  \label{ex:nom-acc-features}
-  Deze verbeterde grammatica houdt rekening met welke woordvorm kan voorkomen in welke context.
-  \begin{quote}
-    \texttt{s ---> np(nom), vp.} \\
-    \texttt{np(nom) ---> [ik].} \\
-    \texttt{np(acc) ---> [hem].} \\
-    \texttt{vp ---> v, np(acc).} \\
-    \texttt{v ---> [zie].} \\
-  \end{quote}
-\end{ex} 
+De verbeterde grammatica~\ref{dcg:nom-acc-features} houdt rekening met welke woordvorm kan voorkomen in welke context. De \texttt{nom} en \texttt{acc} slaan hier op de naamvallen \texttt{nominatief} en \texttt{accusatief}. Ze geven aan in welke functie de naamwoordgroepen gebruikt mogen worden binnen een zin. Namelijk als onderwerp of als lijdend voorwerp.
 
-De \texttt{nom} en \texttt{acc} slaan hier op de naamvallen \texttt{nominatief} en \texttt{accusatief}. Ze geven aan in welke functie de naamwoordgroepen gebruikt mogen worden binnen een zin.
+\begin{dcg}{Een grammatica met argumenten}{dcg:nom-acc-features}
+s() --> np(nom), vp().
+np(nom) --> [ik].
+np(acc) --> [hem].
+vp() --> v(), np(acc).
+v() --> [zie].
+\end{dcg}
 
 \subsection{Een boom als resultaat}
-\begin{ex} Verder is het ook mogelijk om een boom op te bouwen tijdens het parsen.
-  \begin{quote}
-    \texttt{s(Tree) ---> np(NP, nom), vp(Tree, NP).} \\
-    \texttt{np(ik, nom) ---> [ik].} \\
-    \texttt{np(hem, acc) ---> [hem].} \\
-    \texttt{vp(Tree, Subject) ---> v(Tree, Subject, Object), np(Object, acc).} \\
-    \texttt{v(zien(Subject, Object), Subject, Object) ---> [zie].}
-  \end{quote}
-\end{ex} 
-
-Bij het parsen van \example{ik zie hem} krijgen we nu volgende boom:
+Verder is het ook mogelijk om een boom op te bouwen tijdens het parsen. Grammatica~\ref{dcg:treeBuilding} is zo'n grammatica. Bij het parsen van \example{ik zie hem} krijgen we nu volgende boom als waarde voor het eerste argument van \texttt{s}.
 
 \Tree[.\textit{zien} \textit{ik} \textit{hem} ]
 
-Merk op dat deze boom de structuur van de grammatica niet hoeft te volgen. Het werkwoord wordt hier tot belangrijkste woord van de zin gebombardeerd.
+Merk op dat deze boom de structuur van de parse tree niet hoeft te volgen. Het werkwoord wordt hier tot belangrijkste woord van de zin gebombardeerd.
+\begin{dcg}{Een grammatica die een boom opbouwt}{dcg:treeBuilding}
+s(Tree) --> np(NP, nom), vp(Tree, NP).
+np(ik, nom) --> [ik].
+np(hem, acc) --> [hem].
+vp(Tree, Subject) --> v(Tree, Subject, Object), np(Object, acc).
+v(zien(Subject, Object), Subject, Object) --> [zie].
+\end{dcg} 
 
 \subsection{Prolog-code in de grammatica}
-\begin{ex} Ten slotte is het mogelijk om prolog restricties te embedden in de grammatica door deze prolog goals tussen accolades te plaatsen.
-  \begin{quote}
-    \texttt{expression(X) ---> factor(X).} \\
-    \texttt{expression(X) ---> term(X).} \\
+Ten slotte is het mogelijk om prolog restricties te embedden in de grammatica door deze prolog goals tussen accolades te plaatsen.
 
-    \texttt{factor(X) ---> numeral(X).} \\
-    \texttt{factor(X) ---> numberal(A), [*], factor(B), \{X is A * B\}.} \\
-    \texttt{term(X) ---> factor(A), [+], expression(B), \{X is A + B\}.} \\
+\begin{dcg}{Een grammatica met embedded prolog-code}{dcg:prologCode}
+expression(X) --> factor(X).
+expression(X) --> term(X).
 
-    \texttt{numeral(X) ---> [X], \{number(X)\}.} \\
-  \end{quote}
-\end{ex} 
+factor(X) --> numeral(X).
+factor(X) --> numberal(A), [*], factor(B), {X is A * B}.
+term(X) --> factor(A), [+], expression(B), {X is A + B}.
 
-Bovenstaande grammatica kan simpele wiskunde expressies omvormen tot de wiskundige waarde. Zo wordt \texttt{2 + 4 * 5} omgevormd tot \texttt{22} volgens volgende boom. Hierbij wordt de waarde van onder uit de boom naar boven toe gepropageerd via unificatie.
+numeral(X) --> [X], {number(X)}.
+\end{dcg} 
+
+Grammatica~\ref{dcg:prologCode} kan simpele wiskunde expressies omvormen tot hun wiskundige waarde. Zo wordt \texttt{2 + 4 * 5} omgevormd tot \texttt{22} volgens volgende boom. Hierbij wordt de waarde van onder uit de boom naar boven toe gepropageerd via unificatie.
 
 \Tree[.expression(22)
         [.term(22) [.factor(2) [.number(2) 2 ]]
@@ -95,7 +86,7 @@ De prologcode in de accolades heeft twee functies. Enerzijds berekent die de waa
 \section{Feature structures}
 \label{sec:featureStructures}
 
-\paragraph{} Een feature structure is een term uit de taalkunde. Men kan ze zien als \textit{named arguments} voor een niet-terminaal die gebruikt worden om een explosie aan grammaticale regels te voorkomen. Zo kan een \texttt{np} en \texttt{vp} een feature \texttt{getal} hebben dat aangeeft of de woordgroep in het enkelvoud of meervoud staat. De grammaticale regel voor een zin kan dan aangeven dat het onderwerp en werkwoord moeten overeenkomen in getal. Andere features geven bijvoorbeeld de naamval aan van een naamwoordgroep. Blackburn en Striegnitz \cite{NLPCourse} geven de volgende grammaticale regel als voorbeeld (hierbij staat \texttt{CAT} voor de categorie van een woordgroep):
+\paragraph{} Een feature structure is een term uit de taalkunde. Men kan ze zien als \textit{named arguments} voor een niet-terminaal die gebruikt worden om een explosie aan grammaticale regels te voorkomen. Zo kan een \texttt{np} en \texttt{vp} een feature \texttt{getal} hebben dat aangeeft of de woordgroep in het enkelvoud of meervoud staat. De grammaticale regel voor een zin kan dan aangeven dat het onderwerp en werkwoord moeten overeenkomen in getal. Andere features geven bijvoorbeeld de naamval aan van een naamwoordgroep. Blackburn en Striegnitz \cite{NLPCourse} geven de volgende grammaticale regel als voorbeeld (hierbij staat \texttt{CAT} voor de grammaticale categorie van een woordgroep, vergelijkbaar met de naam van een niet-terminaal):
 
 \[
   \fstructure{
@@ -117,49 +108,50 @@ Deze regel zegt dat een zin bestaat uit een \texttt{np} gevolgd door een \texttt
 
 Grammatica's die gebruik maken van feature structures, gebruiken altijd unificatie voor het samenvoegen van meerdere structuren. Niet alle features moeten namelijk altijd een waarde toegekend krijgen. Zo kan een eigennaam voorkomen als onderwerp en als lijdend voorwerp (en heeft dus geen waarde voor de feature \texttt{naamval}). Terwijl \example{ik} enkel als onderwerp kan voorkomen (en dus wel een waarde heeft voor die feature). Zoals in het voorbeeld hierboven kan men door unificatie ook controleren of meerdere woordgroepen dezelfde waarden hebben voor een feature.
 
-\paragraph{} Zoals Shieber et al.\ \cite{Shieber2003} aanhalen, verschillen prolog termen van feature structures enkel in vorm. Zo speelt de volgorde in prolog wel een rol. Bovendien moet men steeds alle features vermelden, ook als ze ongebonden zijn. Qua expressiviteit voegen ze echter niets toe aan DCG's. Zo is bovenstaande grammaticale regel op basis van feature structures equivalent met volgende DCG-regel:
+\paragraph{} Zoals Shieber et al.\ \cite{Shieber2003} aanhalen, verschillen prolog termen van feature structures enkel in vorm. Zo speelt de volgorde in prolog wel een rol. Bovendien moet men steeds alle features vermelden, ook als ze ongebonden zijn. Qua expressiviteit voegen ze echter niets toe aan DCG's. Zo is bovenstaande grammaticale regel op basis van feature structures equivalent met volgende DCG-regel
 
-\[
-    \texttt{s ---> np([naamval:nom, getal:Getal]), vp([getal:Getal]).} \\
-\]
+\begin{dcg}{Een DCG-grammatica equivalent aan de regel met feature structures}{dcg:equivalentFS}
+s --> np([naamval:nom, getal:Getal]), vp([getal:Getal]).
+\end{dcg}
+% \[ */
+%     \texttt{s ---> np([naamval:nom, getal:Getal]), vp([getal:Getal]).} \\ */
+% \] */
 
-\paragraph{} Feature structures (en argumenten in DCG's) zijn handig om de explosie van grammatica regels te voorkomen.
-\begin{ex}  Een voorbeeld van een grammatica zonder feature structures (uit \cite{NLPCourse}):
-  \label{ex:explosion}
-  \begin{quote}
-    \texttt{s ---> np\_{singular}, vp\_{singular}.} \\
-    \texttt{s ---> np\_{plural}, vp\_{plural}.} \\
-    \texttt{np ---> np\_{singular}.} \\
-    \texttt{np ---> np\_{plural}.} \\
-    \texttt{np\_{singular} ---> det, n\_{singular}.} \\
-    \texttt{np\_{plural} ---> det, n\_{plural}.} \\
-    \texttt{vp\_{singular} ---> intransitive\_verb\_{singular}.} \\
-    \texttt{vp\_{singular} ---> transitive\_verb\_{singular}, np.} \\
-    \texttt{vp\_{plural} ---> intransitive\_verb\_{plural}.} \\
-    \texttt{vp\_{plural} ---> transitive\_verb\_{plural}, np.} \\
-    \texttt{n\_singular ---> [man].} \\
-    ...
-  \end{quote}
-\end{ex} 
-Hierbij staat de \texttt{n} voor zelfstandig naamwoord (van het Engelse \texttt{noun}) en \texttt{det} voor determinator. Deze grammatica can veel korter gemaakt worden door gebruik te maken van feature structures:
+\paragraph{} Feature structures (en dus ook argumenten in DCG's) zijn handig om de explosie van grammatica regels te voorkomen. Grammatica~\ref{dcg:withoutFS} is een voorbeeld van een grammatica zonder feature structures.
 
-\begin{ex}  Een grammatica met feature structures equivalent aan voorbeeld \ref{ex:explosion} (ook uit \cite{NLPCourse})
-  \begin{quote}
-    \texttt{s ---> np([num:Num]), vp([num:Num]).} \\
-    \texttt{np([num:Num]) ---> det, n(num:Num).} \\
-    \texttt{vp([num:Num]) ---> intransitive\_verb([num:Num]).} \\
-    \texttt{vp([num:Num]) ---> transitive\_verb([num:Num]), np(\_).} \\
-    \texttt{n([num:singular]) ---> [man].} \\
-    ...
-  \end{quote}
-\end{ex} 
+\begin{dcg}{Een grammatica zonder feature structures (uit \cite{NLPCourse})}{dcg:withoutFS}
+s() --> np_singular(), vp_singular().
+s() --> np_plural(), vp_plural().
+np() --> np_singular().
+np() --> np_plural().
+np_singular() --> det(), n_singular().
+np_plural() --> det(), n_plural().
+vp_singular() --> intransitive_verb_singular().
+vp_singular() --> transitive_verb_singular(), np_singular().
+vp_singular() --> transitive_verb_singular(), np_plural().
+vp_plural() --> intransitive_verb_plural().
+vp_plural() --> transitive_verb_plural(), np_singular().
+vp_plural() --> transitive_verb_plural(), np_plural().
+n_singular() --> [man].
+...
+\end{dcg}
+Hierbij staat de \texttt{n} voor zelfstandig naamwoord (van het Engelse \texttt{noun}) en \texttt{det} voor determinator. Deze grammatica can veel korter gemaakt worden door gebruik te maken van feature structures. Grammatica~\ref{dcg:withFS} is equivalent aan grammatica~\ref{dcg:withoutFS} maar maakt gebruikt van feature structures.
 
-\paragraph{Conclusie} Door gebruik te maken van feature structures is de grammatica simpeler en leesbaarder. Bovendien hoeft het concept dat een zin bestaat uit een \texttt{np} gevolgd door een \texttt{vp} maar \'e\'en keer te worden uitgedrukt. De feature structures zorgen voor de congruentie in getal van het onderwerp met het werkwoord.
+\begin{dcg}{Een equivalente grammatica met feature structures (ook uit \cite{NLPCourse})}{dcg:withFS}
+s() --> np([num:Num]), vp([num:Num]).
+np([num:Num]) --> det(), n([num:Num]).
+vp([num:Num]) --> intransitive_verb([num:Num]).
+vp([num:Num]) --> transitive_verb([num:Num]), np([num:_]).
+n([num:singular]) --> [man].
+...
+\end{dcg} 
+
+\paragraph{Conclusie} Door gebruik te maken van feature structures is de grammatica simpeler en leesbaarder. Bovendien hoeft het concept dat een zin bestaat uit een \texttt{np} gevolgd door een \texttt{vp} maar \'e\'en keer te worden uitgedrukt. De feature structures zorgen voor de congruentie in getal van het onderwerp met het werkwoord. 
 
 \section{Discourse Representation Theory}
-Voor het vertalen van natuurlijke taal naar logica zouden we graag gebruik maken van Frege's compositionality principe: De betekenis van een zin bestaat uit de combinatie van de betekenissen van de delen ervan. Als we eerste-orde-logica als doeltaal van onze vertaling nemen, komen we echter vrij snel in de problemen. Neem bijvoorbeeld de zin ``If a man lives, he breathes''. De vertaling hiervan in eerste-orde-logica is $\forall x. man(x) \Rightarrow breathes(x)$. De vertaling van ``a man lives'' is echter $\exists x. man(x)$, wat geen deel uit maakt van de betekenis van de hele zin. Blackburn en Bos \cite{Blackburn2006} geven nog een aantal andere voorbeelden waarvoor DRS-structuren beter geschikt zijn dan eerste-orde-logica (bijvoorbeeld voor het oplossen van anaforische referenties).
+Voor het vertalen van natuurlijke taal naar logica zouden we graag gebruik maken van Frege's compositionality principe: De betekenis van een zin bestaat uit de combinatie van de betekenissen van de delen ervan. Als we eerste-orde-logica als doeltaal van onze vertaling nemen, komen we echter vrij snel in de problemen. Neem bijvoorbeeld de zin ``If a man lives, he breathes''. De vertaling hiervan in eerste-orde-logica is $\forall x \cdot man(x) \Rightarrow breathes(x)$. De vertaling van ``a man lives'' is echter $\exists x \cdot man(x)$, wat geen deel uit maakt van de betekenis van de hele zin. Blackburn en Bos \cite{Blackburn2006} geven nog een aantal andere voorbeelden waarvoor DRS-structuren beter geschikt zijn dan eerste-orde-logica (bijvoorbeeld voor het oplossen van anaforische referenties).
 
-Ze suggereren Discourse Representation Structures als alternatief. Deze structuren bestaan uit een lijst van \textit{discourse referents} (woordgroepen waarnaar andere woordgroepen kunnen verwijzen) en een lijst van condities i.v.m. die referenties \cite{Bos2011}. Blackburn en Bos \cite{Blackburn2006} geven o.a. een vertaling van deze DRS-structuren naar eerste-orde-logica. DRS-structuren hebben dus ook een formele betekenis, zoals we verder zullen aantonen, zijn ze echter beter geschikt als doeltaal. Van hieruit kan dan verder vertaald worden naar eerste-orde-logica volgens de vertaling van Blackburn en Bos. Wij hernemen hier hun vertaling als verdere introductie tot deze structuren:
+Ze suggereren Discourse Representation Structures als alternatief. Bos \cite{Bos2011} definieert deze structuren als een lijst van \textit{discourse referents} (woordgroepen waarnaar andere woordgroepen kunnen verwijzen) en een lijst van condities i.v.m. die referenties. Blackburn en Bos \cite{Blackburn2006} geven o.a. een vertaling van deze DRS-structuren naar eerste-orde-logica. DRS-structuren hebben dus ook een formele betekenis. Zoals we verder zullen aantonen, zijn ze echter beter geschikt als doeltaal. Van hieruit kan dan verder vertaald worden naar eerste-orde-logica volgens de vertaling van Blackburn en Bos. Wij hernemen hier hun vertaling als verdere introductie tot deze structuren:
 
 \[
   \left(\ \drs{x_1, \ldots, x_n}{
