@@ -75,8 +75,8 @@ theory T : V {
     ! x [person] y [vote]: finished_with(x, y) <=> ended_up_with(x, y).
 
     // Logigram transitive relation axioms:
-    ! x [person] y [candidate] z [vote]: acts_as(x, y) & finished_with(x, z) => received(y, z).
-    ! x [person] y [candidate] z [vote]: acts_as(x, y) & ended_up_with(x, z) => received(y, z).
+    ! x [person] y [candidate]: acts_as(x, y) <=> ? z [vote]: finished_with(x, z) & received(y, z).
+    ! x [person] y [candidate]: acts_as(x, y) <=> ? z [vote]: ended_up_with(x, z) & received(y, z).
 
     // Logigram reflexive relation axioms:
 
