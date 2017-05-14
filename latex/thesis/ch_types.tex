@@ -35,7 +35,7 @@ In sommige toepassingen van het KBS-paradigma, zoals requirements engineering, w
 \section{Aanpassingen}
 \paragraph{} We voegen geen type informatie toe aan het lexicon. We houden voor elk woord wel bij met welk type het is gebruikt. De vertaling van een zelfstandig naamwoord is nu veel simpeler: $\sem{noun} = \lambdaf{P}{\drs{}{}}$ Er is geen restrictie meer vanuit het zelfstandig naamwoord, deze restrictie zit volledig in het type van de entiteit. Een determinator heeft als vertaling $$\sem{det} = \lambdaf{R}{\lambdaf{S}{\left( \drs{x[\textit{Type}]}{} \oplus \app{R}{x} \oplus \app{S}{x} \right)}}$$ Hierbij komt \textit{Type} overeen met de waarde van de feature \texttt{vType}. Via unificatie krijgt de entiteit het type van het zelfstandige naamwoord mee.
 
-Ook bij een comparatief en een onbepaald woord is er een introductie van een nieuwe variabele. Bij een comparatief gebeurt dit gelijkaardig aan de determinator. Het type komt namelijk uit een lexicale feature \texttt{vType} die via de grammatica geünificeerd wordt met andere types. Voor een onbepaald woord is er echter iets speciaals. Het type komt nu niet rechtstreeks uit de lexicale feature. $$\sem{some} = \lambdaf{P}{\drsMerge{\drs{x[\textit{Type1}]}{x > 0}}{\app{P}{x}}}$$ De \textit{Type1} is een numeriek type waarvan het domein bestaat uit de mogelijk verschillen tussen twee waarden uit het domein van \textit{Type} (de waarde van de feature \texttt{vType}). 
+Ook bij een comparatief en een onbepaald woord is er een introductie van een nieuwe variabele. Bij een comparatief gebeurt dit gelijkaardig aan de determinator. Het type komt namelijk uit een lexicale feature \texttt{vType} die via de grammatica geünificeerd wordt met andere types. Voor een onbepaald woord is er echter iets speciaals. Het type komt nu niet rechtstreeks uit de lexicale feature. $$\sem{some} = \lambdaf{P}{\drsMerge{\drs{x[\textit{Type1}]}{x > 0}}{\app{P}{x}}}$$ De \textit{Type1} is een numeriek type waarvan het domein bestaat uit de mogelijk verschillen tussen twee waarden uit het domein van \textit{Type} (de waarde van de feature \texttt{vType}). In theorie volstaat het om te stellen dat $x$ een geheel getal moet zijn. In de praktijk blijkt het echter nodig om het domein te beperken tot de mogelijke verschillen.
 
 \paragraph{} De uitbreiding van de grammatica is vrij voor de hand liggend. Grammatica~\ref{dcg:types} geeft een aantal voorbeelden. De eerste grammaticale regel zegt dat het type van het onderwerp gelijk moet zijn aan dat van de verbale constituent. Het type van een verbale constituent komt dan weer overeen met het eerste type van het type-paar van het transitieve werkwoord. Het tweede type van dat paar komt overeen met het lijdend voorwerp.
 
@@ -58,7 +58,7 @@ vp([coord:no, inf:I, num:Num, gap:G, sem:Sem, vType:TypeSubj]) -->
 \section{Extra informatie}
 \paragraph{} Het idee was dat we elke zin apart vertalen en dat we daarna de types unificeren volgens het principe van 1 type per woord. Op basis hiervan blijven we enkel met de basistypes over die nodig zijn om te vertalen. Hiermee kunnen we echter niet per se alle eigennamen voldoende groeperen. Het kan zijn dat één domein nog steeds is opgesplitst in meerdere groepen. Om de onderliggende axioma's van een logigram correct te kunnen uitdrukken, moeten deze groepen overeenkomen met de domeinen.
 
-De reden dat niet de groepering niet compleet zijn, heeft te maken met synoniemen. Het programma is namelijk niet op de hoogte van welke woorden synoniemen zijn. In het worst-case scenario komt elk woord maar één keer voor. In dat geval leert het principe ons niets en zijn alle eigennamen volledig gescheiden van elkaar.
+De reden dat de groepering niet compleet hoeft te zijn, heeft te maken met synoniemen. Het programma is namelijk niet op de hoogte van welke woorden synoniemen zijn. In het worst-case scenario komt elk woord maar één keer voor. In dat geval leert het principe ons niets en zijn alle eigennamen volledig gescheiden van elkaar.
 
 We hebben dus nood aan extra informatie.
 
@@ -67,18 +67,40 @@ We hebben dus nood aan extra informatie.
 Voor de rest hebben we extra informatie nodig van de gebruiker. We beperken onszelf opnieuw tot taalkundige informatie. Dit doen we door ja-nee-vragen te stellen aan de gebruiker. Er zijn 3 soorten vragen: ``Zijn A en B dezelfde relatie (synoniemen)?'', ``Zijn A en B een omgekeerde relatie?'' en ``Is A een mogelijk lijdend voorwerp van B?''. Al deze vragen zouden herschreven kunnen worden in de vorm ``Is ... een geldige zin?''. Deze vragen worden gesteld totdat er genoeg types geünificeerd zijn. En enkel als er iets uit geleerd kan worden. Als twee werkwoorden bijvoorbeeld al exact hetzelfde type hebben, dan weten we dat het sowieso synoniemen zijn. Er is namelijk maar één bijectie tussen elke twee domeinen in een logigram.
 
 \section{Een formeel vocabularium}
-\paragraph{} Op basis van de types kunnen we een aantal inferenties doen. 
-- benoemen van types
-- wat vertaalt naar wat? (pn -> constructed types, countable -> domein, derivedCountable -> ..., intermediate noun -> ...)
-- ``the_other_...''
+\paragraph{} Op basis van de types kunnen we een aantal inferenties doen. De belangrijkste inferentie is het opstellen van een formeel (getypeerd) vocabularium. We leggen eerst uit hoe we de formele types kunnen opstellen en vervolgens de predicaten.
 
-\section{Het juiste predicaat}
-\paragraph{} Een tweede inferentie bestaat eruit om ontbrekende predicaten uit sectie~\ref{sec:npMissingRelation} (Een naamwoordgroep met onbekende relatie) te achterhalen. Dit zal gebeuren voor we vertalen naar het formele vocabularium.
+\paragraph{}Er zijn 4 soorten types in het formele vocabularium. Er zijn twee numerieke soorten die vertaald worden naar een subset van de gehele getallen. Er zijn ook twee niet-numerieke soorten die vertaald worden naar constructed types. Als er een substantief is van een bepaald type, dan geeft die een naam aan het type. De resterende types worden gewoon genummerd (\texttt{type1}, \texttt{type2}, ...).
 
-We weten het type van $x$ en $y$ en dus het domein. Bovendien is er binnen logigrammen altijd maar één functie tussen twee domeinen, namelijk de bijectie die we zoeken. We zoeken dus het werkwoord of voorzetsel met het juiste type-paar. Indien er één bestaat kunnen we het predicaat dat overeenkomt met dat woord kiezen. Dit verhoogt de leesbaarheid van de formele vertaling. Het kan echter zijn dat er zo geen woord bestaat. In dat geval introduceren we een nieuw predicaat met de juiste types.
+De meest voorkomende soort is een niet-numeriek type met eigennamen van dat type. De eigennamen vormen in dat geval domeinelementen en kunnen vertaald worden naar de constanten van de constructed type. Het is echter ook mogelijk dat er 1 domeinelement ontbreekt. Niet alle domeinelementen hoeven namelijk voor te komen in de zinnen van de logigram. De gebruiker moet dus ook opgeven hoeveel elementen er in elk domein zitten. Het ontbrekende element wordt dan toegevoegd als een extra constante. Bij de oplossing van de logigram kan er dan bijvoorbeeld \texttt{the\_other\_person} komen te staan. Men weet dan over welke persoon het gaat. Er kan immers maar 1 element missen. Als er 2 elementen zouden missen, dan zou men het onderscheid niet kunnen maken tussen de 2 elementen. Er is echter altijd een unieke oplossing.
+
+Een niet-numeriek type zonder eigennamen van dat type stelt geen domein voor. Het is een tussenliggend type om twee andere types te verbinden. Bijvoorbeeld ``tour'' in de zin ``John follows the tour with 54 people''. Er zijn twee echte domeinen in deze zin: de personen (met hun naam) en de groottes van de groep. We introduceren een constructed type met evenveel constanten als er domeinelementen zijn. Deze constanten spelen geen rol buiten voor het verbinden van de andere types. We zullen dus ook symmetrie-brekende axioma's moeten opleggen aan zo'n types om tot één unieke oplossing te komen.
+
+Er zijn twee soorten numerieke types: een echt type dat een domein voorstelt en een gelinkt type dat het verschil tussen twee domeinelementen voorstelt. Het tweede type is enkel nodig indien er in de logigram een vergelijking voorkomt met een onbepaald woord. Zoals eerder aangehaald is dit type de subset van gehele getallen die een verschil zijn tussen twee domeinelementen van het echte type. In tegenstelling tot voor een niet-numeriek type kunnen we hier niet de nodige domeinelementen afleiden uit de tekst. We hebben alle getallen nodig. Het volstaat niet om alle getal buiten één te kennen. Bovendien kan het zelfs zijn dat er meer dan één getal ontbreekt. Voor numerieke types vragen we dus het domein aan de gebruiker.
+
+\paragraph{} De predicaten uit het formeel vocabularium worden allemaal geïnduceerd door voorzetsels en transitieve werkwoorden. De types van het predicaat komen overeen met het type-paar van de woorden. 
+
+Via types is het mogelijk om ontbrekende predicaten uit sectie~\ref{sec:npMissingRelation} (Een naamwoordgroep met onbekende relatie) te achterhalen. We weten het type van $x$ en $y$ en dus het domein. Bovendien is er binnen logigrammen altijd maar één functie tussen twee domeinen, namelijk de bijectie die we zoeken. We zoeken dus het werkwoord of voorzetsel met het juiste type-paar. Indien er (minstens) één bestaat kunnen we het predicaat dat overeenkomt met dat woord kiezen. Dit verhoogt de leesbaarheid van de formele vertaling. Het kan echter zijn dat er zo geen woord bestaat. In dat geval introduceren we een nieuw predicaat met de juiste types.
+
+We gebruiken voor alle predicaten de predicaat-syntax (en dus niet de functionele syntax). De theorie bevat de nodige axioma's om deze predicaten te beperken tot bijecties.
+
+% \section{Het juiste predicaat} */
+% \paragraph{} Een tweede inferentie bestaat eruit om ontbrekende predicaten uit sectie~\ref{sec:npMissingRelation} (Een naamwoordgroep met onbekende relatie) te achterhalen. Dit zal gebeuren voor we vertalen naar het formele vocabularium. */
+
+% We weten het type van $x$ en $y$ en dus het domein. Bovendien is er binnen logigrammen altijd maar één functie tussen twee domeinen, namelijk de bijectie die we zoeken. We zoeken dus het werkwoord of voorzetsel met het juiste type-paar. Indien er één bestaat kunnen we het predicaat dat overeenkomt met dat woord kiezen. Dit verhoogt de leesbaarheid van de formele vertaling. Het kan echter zijn dat er zo geen woord bestaat. In dat geval introduceren we een nieuw predicaat met de juiste types. */
 
 \section{Een correcte theorie}
-- Extra axioma's based on types
+Naast de zinnen van een logigrammen zijn er ook altijd een aantal beperkingen die eigen zijn aan een logigram en die niet expliciet vermeld worden. Daarom bevat een correcte theorie voor logigrammen nog extra axioma's. Er zijn 5 soorten axioma's die allemaal gebaseerd zijn op de types van de predicaten.
+
+\begin{itemize}
+  \item Elk predicaat is een bijectie. Voor elk predicaat zijn er dus twee extra zinnen in de vorm van $\forall x \cdot \exists y \cdot pred(x, y)$ en $\forall y \cdot \exists x \cdot pred(x, y)$ die dit uitdrukken.
+  \item Er zijn 3 soorten axioma's die uitdrukken dat er een soort van equivalentieklassen bestaan van verschillende domeinelementen die samenhoren. Elke klasse bevat één domeinelement van elk domein. Tussen twee domeinen is er altijd exact één bijectie.
+    \begin{itemize}
+      \item \textbf{Synonymie} Er is maar één relatie tussen twee domeinen. Twee predicaten met dezelfde types zijn dus altijd synoniemen. $\forall x \forall y \cdot pred_1(x, y) \Leftrightarrow pred_2(x, y)$
+      \item \textbf{Symmetrie} Om dezelfde reden zijn predicaten met een omgekeerd type ook gelinkt via axioma's zoals $\forall x \forall y \cdot pred_1(x, y) \Leftrightarrow pred_2(y, x)$
+      \item \textbf{Transitiviteit} Ten slotte zijn er nog axioma's om de verschillende bijecties te linken. Deze axioma's zorgen voor de transitiviteit. Bijvoorbeeld de predicaten $pred_1(t_x, t_y)$, $pred_2(t_x, t_z)$ en $pred_1(t_z, t_y)$ introduceren het axioma $\forall x \forall y \cdot pred_1(x, y) \Leftrightarrow \exists z \cdot pred_2(x, z) \land pred_3(z, y)$
+    \end{itemize}
+  \item Niet-numerieke types zonder eigennamen introduceren een aantal nieuwe constanten. Deze constanten zijn inwisselbaar. Om een unieke oplossing te bekomen introduceren we een aantal axioma's die de constanten van zo'n type linken aan de domeinelementen van een domein naar keuze. Bijvoorbeeld $pred_1(NewConstant1, John) \land pred_1(NewConstant2, Mary) \land pred_1(NewConstant3, Charles)$.
+\end{itemize}
 
 \section{Conclusie}
 Types in een natuurlijke taal nog niet veel gedaan (nog niet gevonden alleszins), verder onderzoek nodig, eerste resultaten veelbelovend
