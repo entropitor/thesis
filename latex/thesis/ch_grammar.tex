@@ -1,14 +1,16 @@
 \chapter{Een grammatica voor logigrammen}
 \label{ch:grammatica}
 
-In dit hoofdstuk overlopen we de gebruikte grammaticale categorieën en de grammaticale regels die erbij horen, samen met hun semantiek. We beginnen bij de categorieën die bestaan uit lexicale categorieën en werken naar boven toe richting de categorie van een zin. We gebruiken de DCG-notatie uit hoofdstuk~\ref{sec:DCG}. De feature \texttt{sem} staat voor de semantiek van een woordgroep.
+In dit hoofdstuk overlopen we de grammaticale categorieën voor de vertaling van logigrammen naar logica. We bespreken ook telkens de grammaticale regels horend bij die categorie en hun semantiek. We beginnen bij de categorieën die bestaan uit lexicale categorieën en werken naar boven toe richting de categorie van een zin. We gebruiken de DCG-notatie uit hoofdstuk~\ref{sec:DCG}. De feature \texttt{sem} staat voor de semantiek van een woordgroep.
 
-\paragraph{}De grammatica is opgesteld vertrekkend van code van Blackburn en Bos \cite{Blackburn2006} en op basis van de eerste 10 logigrammen uit Puzzle Baron's Logic Puzzles Volume 3 \cite{logigrammen}. De grammatica regels van Blackburn en Bos die niet van toepassing zijn voor logigrammen zijn verwijderd.
+\paragraph{}De grammatica is opgesteld vertrekkend van code van Blackburn en Bos \cite{Blackburn2006}. Deze code werd aangepast aangepast om de eerste 10 logigrammen uit Puzzle Baron's Logic Puzzles Volume 3 \cite{logigrammen} te kunnen vertalen. De grammatica regels van Blackburn en Bos die niet van toepassing zijn voor logigrammen zijn verwijderd.
 
 \section{Lexicale categorieën}
+In deze sectie bespreken we de grammticale categorieën die overeenkomen met een lexicale categorie.
+
 \subsection{Een mapping naar het lexicon}
 \label{sec:lexgram}
-De meeste van de grammaticale categorieën die de link vormen met het lexicon volgend de structuur uit grammatica~\ref{dcg:lexcat}. Hierbij staat \textit{cat} voor de categorie in kwestie. De grammaticale regel bestaat uit het opzoeken van een woord in het lexicon (m.b.v. de functie \texttt{lexEntry}). Hierbij kijken we niet alleen naar de lexicale categorie maar ook naar andere features zoals getal; controleren dat het woord uit het lexicon het volgende woord is in de zin (lijn 3); en tenslotte het opzoeken van de betekenis van het woord (m.b.v. de functie \texttt{semLex}). Dit resulteert in de formules van hoofdstuk~\ref{ch:lexicon}.
+De meeste van de grammaticale categorieën die de link vormen met het lexicon volgen de structuur uit grammatica~\ref{dcg:lexcat}. Hierbij staat \texttt{cat} voor de categorie in kwestie. De grammaticale regel bestaat uit het opzoeken van een woord in het lexicon (m.b.v. de functie \texttt{lexEntry}, hierbij kijken we niet alleen naar de lexicale categorie maar ook naar andere features zoals getal); controleren dat het woord uit het lexicon het volgende woord is in de zin (lijn 3); en tenslotte het opzoeken van de betekenis van het woord (m.b.v. de functie \texttt{semLex}). De laatste stap resulteert in de formules van hoofdstuk~\ref{ch:lexicon}.
 
 \begin{dcg}{Een grammaticale regel voor een lexicale categorie \textit{cat}}{dcg:lexcat}
 cat([feature1:Feature1, type:Type, sem:Sem]) -->
@@ -44,7 +46,7 @@ optional(X) -->
 
 \subsection{Transitief werkwoord}
 \label{sec:gramm-tv}
-Er zijn twee grammaticale regels voor een transitief werkwoord (grammatica~\ref{dcg:tv}). Enerzijds is er de standaard mapping van grammatica naar lexicon. De voorzetsels en achtervoegsels uit het lexicon worden als feature meegegeven aan de grammaticale woordgroep. Het getal (\texttt{num}) en de vorm (\texttt{inf}) van de grammaticale woordgroep moet ook overeenkomen met die uit het lexicon.
+Er zijn twee grammaticale regels voor een transitief werkwoord (grammatica~\ref{dcg:tv}). Enerzijds is er de standaard mapping van grammatica naar lexicon. De voorzetsels en achtervoegsels uit het lexicon worden dan als feature meegegeven aan de grammaticale woordgroep. Het getal (\texttt{num}) en de vorm (\texttt{inf}) van de grammaticale woordgroep moet overeenkomen met die uit het lexicon.
 
 Anderzijds wordt de combinatie koppelwerkwoord + adjectief ook als een transitief werkwoord gezien. Hierbij is het adjectief het achtervoegsel. De semantiek van deze combinatie is die van het koppelwerkwoord ($\sem{cop_{ap}}$) zoals we die hebben afgeleid in hoofdstuk~\ref{sec:lex-koppelwerkwoord}.
 \begin{dcg}{De grammaticale regels voor een transitief werkwoord}{dcg:tv}
@@ -78,7 +80,7 @@ relpro([sem:Sem]) -->
 \end{dcg}
 
 \subsection{Voegwoord}
-Voegwoorden kunnen uit twee delen bestaan: het voegwoord zelf (\texttt{coord}) en een optionele prefix (\texttt{coordPrefix}). De prefix heeft geen vertaling bovenop het voegwoord. Dit zien we ook terug in de eerste grammaticale regel van grammatica~\ref{dcg:coord}. De tweede grammaticale regel stelt ook dat het optioneel is.
+Voegwoorden kunnen uit twee delen bestaan: het voegwoord zelf (\texttt{coord}) en een optionele prefix (\texttt{coordPrefix}). De prefix heeft geen vertaling bovenop het voegwoord. Dit zien we ook terug in de eerste grammaticale regel van grammatica~\ref{dcg:coord}. De tweede grammaticale regel stelt dat de prefix optioneel is.
 
 De grammaticale regel voor het voegwoord zelf volgt dezelfde structuur als die van sectie~\ref{sec:lexgram}. Een voegwoord kan soms echter weggelaten worden. De grammaticale categorie \texttt{noCoord} stelt een ellips van zo'n voegwoord voor. Er is gekozen voor een aparte categorie omdat een ellips niet overal mag voorkomen.
 \begin{dcg}{De grammaticale regels i.v.m. voegwoorden}{dcg:coord}
@@ -98,7 +100,7 @@ noCoord([type:Type, sem:Sem]) -->
 \end{dcg} 
 
 \section{(Getransformeerde) Substantieven}
-Grammatica~\ref{dcg:n} geeft een overzicht van de grammatica regels i.v.m. substantieven en transformaties op die substantieven. De eerste 2 regels zeggen dat een getransformeerd substantief (hiervoor gebruiken we de categorie \texttt{n}) kan bestaan uit een gewoon substantief (\texttt{noun}) al dan niet gevolgd door een transformatie op dat substantief (\texttt{nmod} naar \texttt{noun modifier}). In het geval van een transformatie is de betekenis van het getransformeerde substantief gelijk aan de applicatie van de transformatie op dat van het echte substantief of $\sem{n} = \app{\sem{nmod}}{\sem{noun}}$.
+Grammatica~\ref{dcg:n} geeft een overzicht van de grammatica regels i.v.m. substantieven en transformaties op die substantieven. De eerste 2 regels zeggen dat een getransformeerd substantief (hiervoor gebruiken we de categorie \texttt{n}) kan bestaan uit een gewoon substantief (\texttt{noun}) al dan niet gevolgd door een transformatie op dat substantief (\texttt{nmod} naar noun modifier). In het geval van een transformatie is de betekenis van het getransformeerde substantief gelijk aan de applicatie van de transformatie op dat van het echte substantief of $\sem{n} = \app{\sem{nmod}}{\sem{noun}}$.
 
 Lijnen 9 t.e.m. 14 van grammatica~\ref{dcg:n} definiëren de mogelijke transformaties: ofwel gaat het om een voorzetselconstituent (\texttt{pp}), ofwel om een betrekkelijke bijzin (\texttt{rc}). In het laatste geval moet het getal van het substantief en het werkwoord uit de bijzin overeenkomen.
 
@@ -140,7 +142,7 @@ De betekenis bestaat opnieuw uit één lambda-applicatie, namelijk $\sem{rc} = \
 \section{Nominale constituent}
 Een nominale constituent of naamwoordgroep (\texttt{np}) is een woordgroep waarin het naamwoord het belangrijkste woord is en die een entiteit aanduidt. Deze woordgroepen kunnen dienen als onderwerp of als lijdend voorwerp van een werkwoord.
 
-De grammaticale categorie heeft 4 mogelijke features: De feature \texttt{coord} duidt aan of het gaat om een simpele naamgroep (\texttt{coord:no}) of een complexere naamgroep. Zo heeft een naamwoordgroep met een vergelijking de waarde \texttt{comp} voor deze feature. De feature \texttt{num} duidt het getal van de woordgroep aan (enkelvoud \texttt{sg} of meervoud \texttt{pl}). De feature \texttt{gap} geeft aan welke woorden gebruikt zijn in een ellips binnen deze woordgroep. De waarde \texttt{[]} voor deze feature wilt dan weer zeggen dat er geen ellips zit in deze naamwoordgroep. Zoals altijd zit de semantiek in de feature \texttt{sem}.
+De grammaticale categorie heeft 4 mogelijke features: De feature \texttt{coord} duidt aan of het gaat om een simpele naamgroep (\texttt{coord:no}) of een complexere naamgroep. Zo heeft een vergelijkende naamwoordgroep de waarde \texttt{comp} voor deze feature. De feature \texttt{num} duidt het getal van de woordgroep aan (enkelvoud \texttt{sg} of meervoud \texttt{pl}). De feature \texttt{gap} geeft aan welke woorden gebruikt zijn in een ellips binnen deze woordgroep. De waarde \texttt{[]} voor deze feature wilt bijvoorbeeld zeggen dat er geen ellips zit in deze naamwoordgroep. Zoals altijd zit de semantiek in de feature \texttt{sem}.
 
 \subsection{Een eenvoudige naamwoordgroep}
 Grammatica~\ref{dcg:np1} geeft de eenvoudige naamwoordgroepen weer. De eerste grammaticale regel stelt dat een naamwoordgroep kan bestaan uit een eigennaam (\texttt{pn}) met hetzelfde getal. In dit geval is de semantiek gelijk aan die van de naamwoordgroep.
@@ -173,7 +175,7 @@ np([coord:no, num:_, gap:[], sem:Sem]) -->
 
 \subsection{Een naamwoordgroep met onbekende relatie}
 \label{sec:npMissingRelation}
-Grammatica~\ref{dcg:np2} beschrijft twee grammaticale regels met dezelfde semantiek en gelijkaardige structuur. Het gaat om naamwoordgroepen respectievelijk zoals ``the Arkansas native'' en ``John's dog''. Ze bestaan allebei uit een simpele naamwoordgroep (\texttt{np} met \texttt{coord:no}) en een substantief~(\texttt{n}). Er is telkens een link tussen de entiteit van het substantief en dat van de simpele naamwoordgroep maar er is geen kennis over welke link dit juist is. Voor nu laten we het dus nog open. In hoofdstuk~\ref{ch:types} zullen we met behulp van types afleiden welk predicaat nodig is. De entiteit van de substantief is het belangrijkste en is ook de entiteit van de naamwoordgroep als geheel. Als resultaat krijgen we $$\sem{np} = \lambdaf{P}{\appH{\app{\sem{det}}{\sem{n}}}{\lambdaf{x}{\app{\sem{np}}{\lambdaf{y}{\drsMerge{\drs{}{\textit{unknown}(x, y)}}{\app{P}{x}}}}}}}$$
+Grammatica~\ref{dcg:np2} beschrijft twee grammaticale regels met dezelfde semantiek en gelijkaardige structuur. Het gaat om naamwoordgroepen respectievelijk zoals ``the 2008 graduate'' en ``John's dog''. Ze bestaan allebei uit een simpele naamwoordgroep (\texttt{np} met \texttt{coord:no}) en een substantief~(\texttt{n}). Er is telkens een link tussen de entiteit van het substantief en dat van de simpele naamwoordgroep maar er is geen kennis over welke link dit juist is. Voor nu laten we het dus nog open. In hoofdstuk~\ref{ch:types} zullen we met behulp van types afleiden welk predicaat nodig is. De entiteit van de substantief is het belangrijkste en is ook de entiteit van de naamwoordgroep als geheel. Als resultaat krijgen we $$\sem{np} = \lambdaf{P}{\appH{\app{\sem{det}}{\sem{n}}}{\lambdaf{x}{\app{\sem{np}}{\lambdaf{y}{\drsMerge{\drs{}{\textit{unknown}(x, y)}}{\app{P}{x}}}}}}}$$
 
 Het is een naamwoordgroep en dus een box ($\lambda P$). Daarbinnen pakken we de woordgroep die bestaat uit het lidwoord en het substantief uit naar de entiteit $x$. Vervolgens pakken we de naamdwoordgroep uit naar $y$. Er is een relatie tussen $x$ en $y$ maar deze is voorlopig nog onbekend. Ten slotte stoppen we $x$ in de box van het gehele naamwoordgroep want $x$ is de entiteit waar de naamwoordgroep als geheel naar verwijst.
 
@@ -204,13 +206,13 @@ np([coord:np, num:Num, gap:[], sem:Sem]) -->
 \label{sec:gramNpComp}
 Grammatica~\ref{dcg:np3} geeft de grammaticale regels voor een vergelijkende naamwoordgroep, zoals ``3 years after John''. Zo'n naamwoordgroep bestaat uit een hoeveelheid (\texttt{quantity}), een comparatief (\texttt{comp}) en een andere naamwoordgroep (\texttt{np}). De betekenis bestaat uit twee simpele lambda-applicaties $\sem{np} = \appH{\app{\sem{comp}}{\sem{np_1}}}{\sem{np_2}}$
 
-Zo'n hoeveelheid kan onbepaald zijn (lijn 8-10) zoals ``sometime'' of een simpele naamwoordgroep (lijn 10-12) zoals ``2 years''.
+Zo'n hoeveelheid kan onbepaald zijn zoals ``sometime'' (lijn 7-9) of een simpele naamwoordgroep zoals ``2 years'' (lijn 10-12).
 
-\paragraph{} Deze naamwoordgroep heeft de waarde \texttt{comp} voor de feature \texttt{coord}. Die feature is nodig om niet in een oneindige lus te geraken. Een vergelijkende naamwoordgroep kan namelijk starten met een simpele naamwoordgroep (lijn 2 en 10-12). Zonder de feature \texttt{coord} zou een vergelijkende naamwoordgroep ook kunnen starten met een vergelijkende naamwoordgroep. Bij het zoeken of de volgende woorden een vergelijkende naamwoordgroep kan zijn, moeten we dus eerst kijken of ze een vergelijkende naamwoordgroep zijn. Bij het gebruik van een andere parser zou dit niet per se nodig zijn.
+\paragraph{} Deze naamwoordgroep heeft de waarde \texttt{comp} voor de feature \texttt{coord}. Die feature is nodig om niet in een oneindige lus te geraken. Een vergelijkende naamwoordgroep kan namelijk starten met een simpele naamwoordgroep (lijn 2 en 10-12). Zonder de feature \texttt{coord} zou een vergelijkende naamwoordgroep ook kunnen starten met een (andere) vergelijkende naamwoordgroep. Bij het zoeken of de volgende woorden een vergelijkende naamwoordgroep kunnen zijn, gaat prolog eerst kijken of ze een vergelijkende naamwoordgroep zijn. Op die manier geraakt prolog in een lus. Bij het gebruik van een andere parser zou dit niet per se nodig zijn.
 
-\paragraph{} Binnen logigrammen zit er ook altijd een ellips in zo'n vergelijkende naamwoordgroep, namelijk die van het hoofdwerkwoord binnen de naamwoordgroep waarmee vergeleken wordt. In de zin ``John finished after Mary'' ontbreekt het woord ``finished'' op het einde van de zin: ``John finished after Mary [finished]''. De feature \texttt{gap} op lijn 1 en 4 zegt dat de hele naamwoordgroep een ellips heeft, met naam in de naamwoordgroep waarmee vergeleken wordt. Binnen logigrammen is die ellips er altijd.
+\paragraph{} Binnen logigrammen zit er ook altijd een ellips in zo'n vergelijkende naamwoordgroep, namelijk die van het hoofdwerkwoord binnen de naamwoordgroep waarmee vergeleken wordt. In de zin ``John finished after Mary'' ontbreekt het woord ``finished'' op het einde van de zin: ``John finished after Mary [finished]''. De feature \texttt{gap} op lijn 1 en 4 zegt dat de hele naamwoordgroep een ellips heeft, met name in de naamwoordgroep waarmee vergeleken wordt. Binnen logigrammen is die ellips er altijd. De grammatica staat niet toe dat er geen ellips is.
 
-Lijn 14 t.e.m. 20 geven dan weer de betekenis van zo'n naamwoordgroep met een ellips. In formulevorm wordt dit $$\sem{np} = \lambdaf{P}{\drsTriMerge{\drs{z}{}}{\appH{\app{\sem{tv}}{\lambdaf{P}{\app{P2}{z}}}}{\sem{np_1}}}{\app{P}{z}}}$$
+Lijn 14 t.e.m. 20 geven de betekenis van zo'n naamwoordgroep met een ellips. In formulevorm wordt dit $$\sem{np} = \lambdaf{P}{\drsTriMerge{\drs{z}{}}{\appH{\app{\sem{tv}}{\lambdaf{P}{\app{P2}{z}}}}{\sem{np_1}}}{\app{P}{z}}}$$
 De betekenis is een nieuwe entiteit $z$ in een box. Bovendien is er de conditie dat (een lege box rond) $z$ het lijdend voorwerp vormt van het (verzwegen) werkwoord en de onderliggende naamwoordgroep het onderwerp.
 
 \begin{dcg}{De grammaticale regels i.v.m. een vergelijkende naamwoordgroep}{dcg:np3}
@@ -272,15 +274,15 @@ npCoordNum(neg, sg).
 
 \section{Verbale constituent}
 \subsection{Een simpele verbale constituent}
-Grammatica~\ref{dcg:vp1} geeft de grammaticale regels voor een aantal simpele verbale constituent.
+Grammatica~\ref{dcg:vp1} geeft de grammaticale regels voor een aantal simpele verbale constituenten.
 
-De eenvoudigste verbale constituent bestaat uit een transitief werkwoord, gevolgd door haar prefix en een naamwoordgroep (als lijdend voorwerp) en ten slotte het achtervoegsel van het werkwoord. Het getal van het werkwoord is ook deze van de verbale constituent. De betekenis is een lambda-applicatie $\sem{vp} = \app{\sem{tv}}{{\sem{np}}}$.
+De eenvoudigste verbale constituent bestaat uit een transitief werkwoord, gevolgd door haar prefix, een naamwoordgroep (als lijdend voorwerp) en ten slotte het achtervoegsel van het werkwoord. Het getal van het werkwoord is ook deze van de verbale constituent. De betekenis is een lambda-applicatie $\sem{vp} = \app{\sem{tv}}{{\sem{np}}}$.
 
 De tweede grammaticale regel drukt iets gelijkaardigs uit maar nu in het geval het lijdend voorwerp een vergelijking is (\texttt{coord:comp}). In dat geval zijn het voor- en achtervoegsel optioneel. Neem bijvoorbeeld de zinnen ``John won in 2008'' en ``Mary won 2 years after John''. Het voorvoegsel ``in'' verdwijnt in het geval van een vergelijkende naamwoordgroep. Bovendien is er een ellips van het werkwoord in de naamwoordgroep (zie ook sectie~\ref{sec:gramNpComp}). Dit reflecteert zich in de feature \texttt{gap} van de naamwoordgroep. 
 
 Merk op dat we in de eerste grammaticale regel niet toestaan dat er een ellips is van het werkwoord binnen het lijdende voorwerp. Dit zou kunnen lijden tot extra betekenissen die niet nuttig zijn binnen een logigram.
 
-\paragraph{} In bijzinnen kan het ook soms voorkomen dat er een naamwoordgroep voor het werkwoord komt te staan, bijvoorbeeld ``The horse that Mary won, ...''. In dat geval is de naamwoordgroep van de verbale constituent het onderwerp en de naamwoordgroep waar de bijzin bijstaat het lijdend voorwerp. De derde grammaticale regel (lijn 14-17) drukt dit uit. De semantiek is $$\sem{vp} = \lambdaf{N1}{\app{\app{\sem{tv}}{N1}}{\sem{np}}}$$
+\paragraph{} In bijzinnen kan het soms voorkomen dat er een naamwoordgroep voor het werkwoord komt te staan, bijvoorbeeld ``The horse that Mary won, ...''. In dat geval is de naamwoordgroep van de verbale constituent het onderwerp en de naamwoordgroep waar de bijzin bijstaat het lijdend voorwerp. De derde grammaticale regel (lijn 14-17) drukt dit uit. De semantiek is $$\sem{vp} = \lambdaf{N1}{\app{\app{\sem{tv}}{N1}}{\sem{np}}}$$
 
 Een verbale constituent kan ook een hulpwerkwoord bevatten. In dat geval komt het getal en de vorm (infinitief, deelwoord, ...) van de constituent overeen met dat van het hulpwerkwoord. Het hoofdwerkwoord moet in zo'n constituent voorkomen als infinitief (\texttt{inf}) of als deelwoord (\texttt{part}). De semantiek is nogmaals een lambda-appliatie $$\sem{vp} = \app{\sem{av}}{\sem{vp_1}}$$
 
@@ -312,11 +314,9 @@ vp([coord:no, inf:Inf, num:Num, gap:[], sem:Sem]) -->
 
 \subsection{Een verbale constituent met koppelwerkwoord}
 \label{sec:gram-koppelwerkwoord}
-Sectie~\ref{sec:lex-koppelwerkwoord} maakte een onderscheid tussen drie betekenissen van een koppelwerkwoord afhankelijk van de categorie van het \textit{argument} van dat werkwoord. Grammatica~\ref{dcg:vp2} beschrijft de grammatica voor een koppelwerkwoord met een nominale of voorzetselconstituent. Sectie~\ref{sec:gramm-tv} beschreef reeds het geval waarbij een adjectiefzin het argument is.
+Sectie~\ref{sec:lex-koppelwerkwoord} maakte een onderscheid tussen drie betekenissen van een koppelwerkwoord afhankelijk van de categorie van het \textit{argument} van dat werkwoord. Sectie~\ref{sec:gramm-tv} beschreef reeds het geval waarbij een adjectiefzin het argument is. Grammatica~\ref{dcg:vp2} beschrijft de grammatica voor een koppelwerkwoord met een nominale of voorzetselconstituent. De eerste twee grammaticale regels van grammatica~\ref{dcg:vp2} zeggen namelijk dat een verbale constituent kan bestaan uit een koppelwerkwoord met een nominale constituent of met een voorzetselconstituent. Het getal en de vorm van de verbale constituent komen overeen met die van het werkwoord. De betekenis is voor beide regels een simpele lambda-applicatie.
 
-De eerste twee grammaticale regels van grammatica~\ref{dcg:vp2} zeggen dat een verbale constituent kan bestaan uit een koppelwerkwoord met een nominale constituent of met een voorzetselconstituent. Het getal en de vorm van de verbale constituent komen overeen met die van het werkwoord. De betekenis is voor beide regels een simpele lambda-applicatie.
-
-\paragraph{} De derde grammaticale regel drukt een \textit{alldifferent}-constraint uit. Deze is van toepassing voor zinnen als ``John and Mary are two different persons'' of ``John, the person with the horse and the man from France are all different people''. Deze verbale constituent bestaat uit een koppelwerkwoord; een getal of het woordje ``all''; het woord ``different''; en tenslotte en substantief. De betekenis is $$\sem{vp} = \lambdaf{N}{\app{N}{\lambdaf{x}{\drs{}{alldifferent(x)}}}}$$ Dit drukt uit dat de entiteit van het onderwerp deel is van een alldifferent constraint. Zoals we in sectie~\ref{sec:lex-coord} reeds aanhaalden is er geen collectieve lezing voor een naamwoordgroep. Een alldifferent constraint drukt echter uit dat er binnen het collectief van het onderwerp geen twee dezelfde entiteiten bevinden. We passen echter de vertaling van DRS-structuren naar eerste-orde-logica lichtjes aan om dit te omzeilen.
+\paragraph{} De derde grammaticale regel drukt een \textit{alldifferent}-constraint uit. Deze is van toepassing voor zinnen als ``John and Mary are two different persons'' of ``John, the person with the horse and the man from France are all different people''. Deze verbale constituent bestaat uit een koppelwerkwoord; een getal of het woordje ``all''; het woord ``different''; en tenslotte en substantief. De betekenis is $$\sem{vp} = \lambdaf{N}{\app{N}{\lambdaf{x}{\drs{}{alldifferent(x)}}}}$$ Dit drukt uit dat de entiteit van het onderwerp deel is van een alldifferent constraint. Zoals we in sectie~\ref{sec:lex-coord} reeds aanhaalden is er geen collectieve lezing voor een naamwoordgroep. Maar een alldifferent constraint drukt uit dat er binnen het collectief van het onderwerp geen twee dezelfde entiteiten bevinden. We passen daarom de vertaling van DRS-structuren naar eerste-orde-logica lichtjes aan om dit te omzeilen.
 
 \[
   \left(\ \drs{x_1, \ldots, x_n}{
@@ -324,7 +324,7 @@ De eerste twee grammaticale regels van grammatica~\ref{dcg:vp2} zeggen dat een v
       \ldots \\
       \gamma_m \\
       alldifferent(y_1) \\
-     \ldots \\
+      \ldots \\
       alldifferent(y_k)
     }\ \right)^{fo} = \left(\ \drs{x_1, \ldots, x_n}{
       \gamma_1 \\
@@ -336,6 +336,21 @@ De eerste twee grammaticale regels van grammatica~\ref{dcg:vp2} zeggen dat een v
       alldifferent(y_2) \\
       \ldots \\
       alldifferent(y_k)
+    }\ \right)^{fo} 
+\]
+
+en 
+
+\[
+  \left(\ \drs{x_1, \ldots, x_n}{
+      \gamma_1 \\
+      \ldots \\
+      \gamma_m \\
+      alldifferent(y_k)
+    }\ \right)^{fo} = \left(\ \drs{x_1, \ldots, x_n}{
+      \gamma_1 \\
+      \ldots \\
+      \gamma_m \\
     }\ \right)^{fo} 
 \]
 
@@ -372,7 +387,7 @@ Een gecoördineerde verbale constituent is gelijkaardig aan die van een nominale
 
 $$\sem{vp} = \lambdaf{N}{\app{N}{\lambdaf{x}{\appH{\app{\app{\sem{coord}}{\sem{vp_1}}}{\sem{vp_2}}}{\lambdaf{P}{\app{P}{x}}}}}}$$ We halen de entiteit $x$ eerst uit het onderwerp en binnen de scope van de naamwoordgroep geven we x (in een lege box) terug aan de gecoördineerde verbale constituent.
 
-Voor logigrammen resulteren beide betekenissen echter tot een correct resultaat. Het onderwerp zal namelijk altijd volledig gespecifieerd zijn. Er is maar één entiteit die aan de omschrijving voldoet. Daardoor maakt het niet uit dat er twee kantoren zijn die gecombineerd worden met het voegwoord in kwestie i.p.v. dat het voegwoord zich bevindt in de scope van de kwantor. Dit voorbeeld toont echter nog eens aan dat het opstellen van de formules niet altijd triviaal is.
+Voor logigrammen leiden beide betekenissen echter tot een correct resultaat. Het onderwerp zal namelijk altijd volledig gespecifieerd zijn. Er is maar één entiteit die aan de omschrijving voldoet. Daardoor maakt het niet uit dat er twee kantoren zijn die gecombineerd worden met het voegwoord in kwestie i.p.v. dat het voegwoord zich bevindt in de scope van de kwantor. Dit voorbeeld toont echter nog eens aan dat het opstellen van de formules niet altijd triviaal is.
 
 \begin{dcg}{De grammaticale regels voor een verbale constituent met een voegwoord}{dcg:vp3}
 vp([coord:yes, inf:Inf, num:Num, gap:[], sem:Sem]) -->
@@ -386,13 +401,13 @@ vp([coord:yes, inf:Inf, num:Num, gap:[], sem:Sem]) -->
 \section{Zin}
 Er zijn drie soorten zinnen binnen logigrammen. Een normale zin bestaat uit een nominale en een verbale constituent die overeenkomen in getal. Dat is de eerste grammaticale regel van grammatica~\ref{dcg:s}. De betekenis is een simpele lambda-applicatie $\sem{s} = \app{\sem{vp}}{\sem{np}}$.
 
-\paragraph{} Een tweede soort zin is een andere vorm voor een alldifferent constraint en wordt gebruikt om alle domeinelement van een bepaald domein op te sommen. Een voorbeeldzin is ``The four players are John, Mary, the person who plays with cards and the man from France''. Zo'n zin bestaat uit het woordje ``the'', een getal (het aantal domeinelementen), een substantief, een koppelwerkwoord en ten slotte een gecoördineerde naamwoordgroep. De betekenis is gelijk aan die uit sectie~\ref{sec:gram-koppelwerkwoord}
+\paragraph{} Een tweede soort zin is een andere vorm voor een alldifferent constraint en wordt gebruikt om alle domeinelement van een bepaald domein op te sommen. Een voorbeeldzin is ``The four players are John, Mary, the person who plays with cards and the man from France''. Zo'n zin bestaat uit het woordje ``the'', een getal (het aantal domeinelementen), een substantief, een koppelwerkwoord en ten slotte een gecoördineerde naamwoordgroep. De betekenis is gelijkaardig aan die van de alldifferent-constraint uit sectie~\ref{sec:gram-koppelwerkwoord}
 
 \paragraph{} Een laatste soort zin is van de vorm ``Of John and Mary, one is from France and the other plays with cards''. De zin bestaat dus uit twee nominale en twee verbale constituenten. De twee entiteiten van de nominale constituenten zijn verschillend en bovendien is elk het onderwerp van één van de twee verbale constituenten. 
 
 $$\sem{s} = \app{\sem{np_1}}{\lambdaf{x1}{\app{\sem{np_2}}{\lambdaf{x2}{\\ \drsMerge{\drs{}{x1 \neq x2}}{\drsOr{\drsMerge{\app{\sem{vp_1}}{\lambdaf{P}{\app{P}{x1}}}}{\app{\sem{vp_2}}{\lambdaf{P}{\app{P}{x2}}}}}{\drsMerge{\app{\sem{vp_1}}{\lambdaf{P}{\app{P}{x2}}}}{\app{\sem{vp_2}}{\lambdaf{P}{\app{P}{x1}}}}}}}}}}$$
 
-We halen de entiteiten $x1$ en $x2$ uit hun box. We stellen dat ze verschillend zijn. Bovendien is (een lege box rond) entiteit $x1$ het onderwerp van de verbale constituent 1 en $x2$ het onderwerp van verbale constituent 2 of omgekeerd.
+We halen de entiteiten $x1$ en $x2$ uit hun box. We stellen dat ze verschillend zijn. Bovendien is (een lege box rond) entiteit $x1$ het onderwerp van de eerste verbale constituent en $x2$ het onderwerp van de tweede verbale constituent of omgekeerd.
 
 \begin{dcg}{De grammaticale regels voor een zin}{dcg:s}
 s([coord:no, sem:Sem]) -->
