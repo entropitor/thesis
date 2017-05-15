@@ -1,16 +1,16 @@
 // Problem p13
 
 vocabulary V {
-    type type1 = {750; 1000; 1250; 1500; 1750} isa int
+    type dollar = {750; 1000; 1250; 1500; 1750} isa int
     type piece constructed from {the_other_piece, valencia, waldarama, tombawomba, sniffletoe}
-    type type2 constructed from {kelly, isabel, lucas, nicole, herman}
-    type type3 constructed from {the_other_type3, vancouver, ypsilanti, mexico_city, st_moritz}
-    type type4 = {-250; 250; -500; 500; -750; 750; -1000; 1000} isa int // differences between values of type type1
+    type type1 constructed from {kelly, isabel, lucas, nicole, herman}
+    type type2 constructed from {the_other_type2, vancouver, ypsilanti, mexico_city, st_moritz}
+    type type3 = {-250; 250; -500; 500; -750; 750; -1000; 1000} isa int // differences between values of type dollar
 
-    cost(piece, type1)
-    go_to(piece, type3)
-    from(piece, type2)
-    sold_for(piece, type1)
+    cost(piece, dollar)
+    go_to(piece, type2)
+    from(piece, type1)
+    sold_for(piece, dollar)
 }
 
 structure S : V {
@@ -21,7 +21,7 @@ theory T : V {
     ?a [piece]: ~ cost(a,1250) & from(a,kelly).
 
     // Valencia cost somewhat more than Isabel's dummy
-    ?b [type4] c [type1] d [piece] e [type1]: b>0 & cost(d,c) & from(d,isabel) & e = c+b & cost(valencia,e).
+    ?b [type3] c [dollar] d [piece] e [dollar]: b>0 & cost(d,c) & from(d,isabel) & e = c+b & cost(valencia,e).
 
     // The puppet going to Vancouver, the $750 dummy and the $1500 piece are three different dummies
     ?f [piece] g [piece] h [piece]: ~ (f = g) & ~ (f = h) & ~ (g = h) & go_to(f,vancouver) & cost(g,750) & cost(h,1500).
@@ -42,7 +42,7 @@ theory T : V {
     ?o [piece] p [piece]: go_to(p,mexico_city) & ~ (o = p) & (tombawomba = o & from(p,isabel) | tombawomba = p & from(o,isabel)) & cost(o,750).
 
     // The puppet going to Ypsilanti cost $250 more than the puppet going to St. Moritz.
-    ?q [piece] r [type1] s [piece] t [type1]: go_to(q,ypsilanti) & go_to(s,st_moritz) & cost(s,r) & t = r+250 & cost(q,t).
+    ?q [piece] r [dollar] s [piece] t [dollar]: go_to(q,ypsilanti) & go_to(s,st_moritz) & cost(s,r) & t = r+250 & cost(q,t).
 
     // Of the $1000 dummy and the $1250 dummy, one is from Herman and the other is going to Mexico City
     ?u [piece] v [piece]: ~ (u = v) & (from(u,herman) & go_to(v,mexico_city) | from(v,herman) & go_to(u,mexico_city)) & cost(v,1250) & cost(u,1000).
@@ -52,20 +52,20 @@ theory T : V {
 
 
     // Logigram bijection axioms:
-    ! x [piece]: ?=1 y [type1]: cost(x, y).
-    ! x [type1]: ?=1 y [piece]: cost(y, x).
+    ! x [piece]: ?=1 y [dollar]: cost(x, y).
+    ! x [dollar]: ?=1 y [piece]: cost(y, x).
 
-    ! x [piece]: ?=1 y [type3]: go_to(x, y).
-    ! x [type3]: ?=1 y [piece]: go_to(y, x).
+    ! x [piece]: ?=1 y [type2]: go_to(x, y).
+    ! x [type2]: ?=1 y [piece]: go_to(y, x).
 
-    ! x [piece]: ?=1 y [type2]: from(x, y).
-    ! x [type2]: ?=1 y [piece]: from(y, x).
+    ! x [piece]: ?=1 y [type1]: from(x, y).
+    ! x [type1]: ?=1 y [piece]: from(y, x).
 
-    ! x [piece]: ?=1 y [type1]: sold_for(x, y).
-    ! x [type1]: ?=1 y [piece]: sold_for(y, x).
+    ! x [piece]: ?=1 y [dollar]: sold_for(x, y).
+    ! x [dollar]: ?=1 y [piece]: sold_for(y, x).
 
     // Logigram synonym axioms:
-    ! x [piece] y [type1]: cost(x, y) <=> sold_for(x, y).
+    ! x [piece] y [dollar]: cost(x, y) <=> sold_for(x, y).
 
     // Logigram transitive relation axioms:
 

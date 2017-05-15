@@ -209,11 +209,18 @@ getDerivedTypes([_ | Rest], Types) :-
     getDerivedTypes(Rest, Types).
 
 getBaseTypeCandidates([], []).
-getBaseTypeCandidates([type(_, Type) | Types], Vars) :-
+%% getBaseTypeCandidates([type(_, Type) | Types], Vars) :-
+%%     !,
+%%     term_variables(Type, Vars1),
+%%     append(Vars1, Vars2, Vars),
+%%     getBaseTypeCandidates(Types, Vars2).
+getBaseTypeCandidates([type(_, Var1) | Types], [Var1 | Vars]) :-
+    \+ (nonvar(Var1), Var1 = pred(_, _)),
     !,
-    term_variables(Type, Vars1),
-    append(Vars1, Vars2, Vars),
-    getBaseTypeCandidates(Types, Vars2).
+    getBaseTypeCandidates(Types, Vars).
+getBaseTypeCandidates([type(_, pred(Var1, Var2)) | Types], [Var1, Var2 | Vars]) :-
+    !,
+    getBaseTypeCandidates(Types, Vars).
 getBaseTypeCandidates([_ | Types], Vars) :-
     getBaseTypeCandidates(Types, Vars).
 
@@ -330,6 +337,26 @@ askSimplificationQuestion(CombinedTypes, NewCombinedTypes) :-
         NewCombinedTypes = CombinedTypes
     ;
         NewCombinedTypes = [notObjectOf(Symbol1, Symbol2) | CombinedTypes]
+    ).
+askSimplificationQuestion(CombinedTypes, NewCombinedTypes) :-
+    member(missingType(_, pred(_, TypeMissing1)), CombinedTypes),
+    member(type(pn-Symbol1, Type1), CombinedTypes),
+    TypeMissing1 == Type1,
+    member(missingType(_, pred(_, TypeMissing2)), CombinedTypes),
+    member(type(pn-Symbol2, Type2), CombinedTypes),
+    TypeMissing2 == Type2,
+    Type1 \== Type2,
+    \+ \+ (Type1 = Type2),
+    \+ compared(Symbol1, Symbol2, CombinedTypes),
+    format(string(Question), "Are '~p' and '~p' the same type? [yes/no]", [Symbol1, Symbol2]),
+    askQuestion(eq(Symbol1, Symbol2), Question, Answer),
+    (
+        Answer = yes
+    ->
+        Type1 = Type2,
+        NewCombinedTypes = [eq(Symbol1, Symbol2) | CombinedTypes]
+    ;
+        NewCombinedTypes = [neq(Symbol1, Symbol2) | CombinedTypes]
     ).
 
 

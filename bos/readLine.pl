@@ -81,6 +81,9 @@ readRest(Rest, notended) :-
 readWord(32, [], notended) :-
     !.      %%% blank
 
+readWord(36, [36], notended) :-
+    !.      %%% dollar sign $
+
 readWord(39, [], notended) :-
     !.      %%% apostrophe '
 
@@ -119,6 +122,9 @@ checkWords([Atom|Rest1], [Atom2|Rest2]) :-
 ========================================================================*/
 
 convertWord([], []) :-
+    !.
+
+convertWord([36], [36]) :-
     !.
 
 convertWord([Capital|Rest1], [Small|Rest2]) :-

@@ -149,10 +149,10 @@ np([coord:CoordType, num:CoordNum, gap:G, sem:NP, vType:Type]) -->
 np([coord:CoordType, num:CoordNum, gap:G, sem:NP, vType:Type]) -->
   { npCoordNum(CoordType, CoordNum) },
   coordPrefix([type:CoordType]),
-  { Coord1 = no ; Coord1 = np },
+  { Coord1 = no ; Coord1 = np ; Coord1 = comp },
   np([coord:Coord1, num:sg, gap:G, sem:NP1, vType:Type]),
   coord([type:CoordType, sem:C]),
-  { member(Coord, [CoordType, no, np]) },
+  { member(Coord, [CoordType, no, np, comp]) },
   np([coord:Coord, num:_, gap:G, sem:NP2, vType:Type]),
   { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
 
@@ -189,17 +189,29 @@ np([coord:CoordType, num:CoordNum, gap:G, sem:NP, vType:Type]) -->
 %%   np([coord:no, num:sg, gap:G, sem:NP2, vType:Type]),
 %%   { combine(np:NP, [np:NP1, coord:C, np:NP2]) }.
 
+np([coord:no, num:Num, gap:[], sem:NP, vType:dollar]) -->
+  ['$'],
+  np([coord:no, num:Num, gap:[], sem:NP, vType:dollar]).
+
+
 np([coord:no, num:Num, gap:[], sem:NP, vType:Type]) -->
   det([mood:decl, type:_, num:Num, sem:Det, vType:Type]),
   n([coord:_, num:Num, sem:N, vType:Type]),
   { combine(np:NP, [det:Det, n:N]) }.
 
-%TODO: fix plural vs singular
+
 np([coord:no, num:Num, gap:[], sem:NP, vType:Type]) -->
   number([sem:Number, vType:Type]),
   n([coord:_, num:Num, sem:N, vType:Type]),
   { addTypeAttribute(Type, countable) },
   { combine(np:NP, [number:Number, n:N]) }.
+
+np([coord:no, num:Num, gap:[], sem:NP, vType:Type]) -->
+  { semLex(det, [type:indef, num:Num, sem:Det, vType:Type]) },
+  [whoever],
+  { semLex(relpro, [sem:RP]) },
+  vp([coord:no, inf:fin, num:Num, gap:[], sem:VP, vType:Type]),
+  { combine(np:NP, [det:Det, whoever:RP, vp:VP]) }.
 
 np([coord:no, num:_Num, gap:[], sem:NP, vType:Type]) -->
   number([sem:Number, vType:Type]),
@@ -215,7 +227,8 @@ np([coord:no, num:Num, gap:[tv:TV-pred(TypeSubj, TypeObj) | G], sem:NP, vType:Ty
 np([coord:comp, num:Num, gap:[tv:TV | G], sem:NP, vType:Type]) -->
   sp([num:Num, gap:[], sem:NP1, vType:Type]),
   comp([sem:Comp, vType:Type]),
-  np([coord:_, num:_, gap:[tv:TV | G], sem:NP2, vType:Type]),
+  { Coord = no; Coord = np },
+  np([coord:Coord, num:_, gap:[tv:TV | G], sem:NP2, vType:Type]),
   { addTypeAttribute(Type, countable) },
   { combine(np:NP, [np:NP1, comp:Comp, np:NP2]) }.
 
@@ -395,7 +408,8 @@ vp([coord:no, inf:I, num:Num, gap:[], sem:VP, vType:TypeObj]) -->
 vp([coord:no, inf:I, num:Num, gap:G, sem:VP, vType:TypeSubj]) -->
   tv([inf:I, num:Num, gap:Pre-Post, sem:TV, vType:pred(TypeSubj, TypeObj)]),
   optional(Pre),
-  np([coord:comp, num:_, gap:[tv:TV-pred(TypeSubj, TypeObj) | G], sem:NP, vType:TypeObj]),
+  { Coord = conj ; Coord = comp },
+  np([coord:Coord, num:_, gap:[tv:TV-pred(TypeSubj, TypeObj) | G], sem:NP, vType:TypeObj]),
   optional(Post),
   { combine(vp:VP, [tv:TV, np:NP]) }.
 

@@ -4,14 +4,14 @@ vocabulary V {
     type position constructed from {qmz, gxtv, psto, jmo, kmpp}
     type stock constructed from {utilities_stock, financial_stock, healthcare_stock, energy_stock, real_estate_stock}
     type type1 constructed from {the_other_type1, geraldo, edith, abigail, heathcliff}
-    type per_share = {25; 26; 27; 28; 29} isa int
-    type type2 = {-1; 1; -2; 2; -3; 3; -4; 4} isa int // differences between values of type per_share
+    type dollar = {25; 26; 27; 28; 29} isa int
+    type type2 = {-1; 1; -2; 2; -3; 3; -4; 4} isa int // differences between values of type dollar
 
     unknown_relation_stock_position_rev(position, stock)
     unknown_relation_stock_position(stock, position)
     purchased(type1, stock)
-    is_worth(stock, per_share)
-    sold_for(position, per_share)
+    is_worth(stock, dollar)
+    sold_for(position, dollar)
     bought(type1, position)
 }
 
@@ -20,10 +20,10 @@ structure S : V {
 
 theory T : V {
     // The utilities stock was $1 per share less expensive than the stock that Geraldo purchased
-    ?a [per_share] b [stock] c [per_share]: purchased(geraldo,b) & is_worth(b,a) & c = a-1 & is_worth(utilities_stock,c).
+    ?a [dollar] b [stock] c [dollar]: purchased(geraldo,b) & is_worth(b,a) & c = a-1 & is_worth(utilities_stock,c).
 
     // GXTV sold for $2 per share less than QMZ
-    ?d [per_share] e [per_share]: sold_for(qmz,d) & e = d-2 & sold_for(gxtv,e).
+    ?d [dollar] e [dollar]: sold_for(qmz,d) & e = d-2 & sold_for(gxtv,e).
 
     // Edith didn't purchase the financial stock
     ~ purchased(edith,financial_stock).
@@ -35,10 +35,10 @@ theory T : V {
     ?f [position]: bought(abigail,f) & (kmpp = f | jmo = f).
 
     // The health-care stock was $2 per share more expensive than the financial stock
-    ?g [per_share] h [per_share]: is_worth(financial_stock,g) & h = g+2 & is_worth(healthcare_stock,h).
+    ?g [dollar] h [dollar]: is_worth(financial_stock,g) & h = g+2 & is_worth(healthcare_stock,h).
 
     // The energy stock was less expensive than the JMO stock
-    ?i [type2] j [per_share] k [stock] l [per_share]: i>0 & is_worth(k,j) & unknown_relation_stock_position(k,jmo) & l = j-i & is_worth(energy_stock,l).
+    ?i [type2] j [dollar] k [stock] l [dollar]: i>0 & is_worth(k,j) & unknown_relation_stock_position(k,jmo) & l = j-i & is_worth(energy_stock,l).
 
     // Heathcliff purchased the real estate stock
     purchased(heathcliff,real_estate_stock).
@@ -60,11 +60,11 @@ theory T : V {
     ! x [type1]: ?=1 y [stock]: purchased(x, y).
     ! x [stock]: ?=1 y [type1]: purchased(y, x).
 
-    ! x [stock]: ?=1 y [per_share]: is_worth(x, y).
-    ! x [per_share]: ?=1 y [stock]: is_worth(y, x).
+    ! x [stock]: ?=1 y [dollar]: is_worth(x, y).
+    ! x [dollar]: ?=1 y [stock]: is_worth(y, x).
 
-    ! x [position]: ?=1 y [per_share]: sold_for(x, y).
-    ! x [per_share]: ?=1 y [position]: sold_for(y, x).
+    ! x [position]: ?=1 y [dollar]: sold_for(x, y).
+    ! x [dollar]: ?=1 y [position]: sold_for(y, x).
 
     ! x [type1]: ?=1 y [position]: bought(x, y).
     ! x [position]: ?=1 y [type1]: bought(y, x).
@@ -72,9 +72,9 @@ theory T : V {
     // Logigram synonym axioms:
 
     // Logigram transitive relation axioms:
-    ! x [position] y [stock]: unknown_relation_stock_position_rev(x, y) <=> ? z [per_share]: sold_for(x, z) & is_worth(y, z).
+    ! x [position] y [stock]: unknown_relation_stock_position_rev(x, y) <=> ? z [dollar]: sold_for(x, z) & is_worth(y, z).
     ! x [position] y [stock]: unknown_relation_stock_position_rev(x, y) <=> ? z [type1]: bought(z, x) & purchased(z, y).
-    ! x [stock] y [position]: unknown_relation_stock_position(x, y) <=> ? z [per_share]: is_worth(x, z) & sold_for(y, z).
+    ! x [stock] y [position]: unknown_relation_stock_position(x, y) <=> ? z [dollar]: is_worth(x, z) & sold_for(y, z).
     ! x [stock] y [position]: unknown_relation_stock_position(x, y) <=> ? z [type1]: purchased(z, x) & bought(z, y).
 
     // Logigram reflexive relation axioms:

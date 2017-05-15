@@ -106,12 +106,10 @@ problem(p2, problem(4,5, [
                         prep([from])
         ])).
 
-% ADAPTED!!!
-% added "shirts" to clue 3
 problem(p3, problem(4, 5, [
                         "The team that finished with 739 points wore orange shirts",
                         "Of the squad in the blue shirts and the team from Stacyville, one had a final score of 715 points and the other was the Oddballs",
-                        "Of the Turkey Rolls and the team from Lathrop, one wore orange shirts and the other wore red shirts",
+                        "Of the Turkey Rolls and the team from Lathrop, one wore orange shirts and the other wore red",
                         "The rowdy rollers finished 12 points below the team in orange shirts",
                         "The squad that finished with 727 points was either the team in the orange shirts or the squad from Woodstock",
                         "The Turkey Rolls weren't from Castro Valley",
@@ -126,7 +124,7 @@ problem(p3, problem(4, 5, [
                         pn([blue, shirts]),
                         pn([stacyville]),
                         pn([lathrop]),
-                        pn([red, shirts]),
+                        pn([red]),
                         pn([woodstock]),
                         pn([castro, valley]),
                         pn([lime, green, shirts]),
@@ -143,7 +141,6 @@ problem(p3, problem(4, 5, [
                     ])).
 
 %ADAPTED
-% isn't playing -> doesn't play (clue 6)
 % dropped now from clue 7
 % adapted clue 8 to be a real enumeration
 % dropped "currently" from clue 10
@@ -153,7 +150,7 @@ problem(p4, problem(4, 5, [
                         "The 2006 graduate is either Ivan or Orlando",
                         "The Dodgers player didn't graduate in 2007 or 2008",
                         "Jackie graduated 2 years before the player from York",
-                        "The 2007 graduate doesn't play for the Giants",
+                        "The 2007 graduate isn't playing for the Giants",
                         "Of Lonnie and the person from Frenchboro, one is with the Dodgers and the other graduated in 2005",
                         %% "The five players are the person from Frenchboro, Ivan, and the three players currently with the Indians, Mariners and Giants",
                         "The five players are the person from Frenchboro, Ivan, the player with the Indians, the person with the Mariners and the graduate that plays for the Giants",
@@ -178,7 +175,7 @@ problem(p4, problem(4, 5, [
                         pn([mariners]),
                         pn([unity]),
                         tvPrep([graduated], [in], [graduate], [graduated]),
-                        tvPrep([plays], [for], [play], [played]),
+                        tvPrep([plays], [for], [play], [playing]),
                         prep([from]),
                         prep([with])
                      ])).
@@ -304,14 +301,14 @@ problem(p7, problem(4, 5, [
         ])).
 
 % ADAPTED
-% CLUE 4: orange -> the orange item
+% CLUE 4: orange -> in orange
 % CLUE 5 and 7: 5 fewer minutes -> 5 minutes fewer, moved to print to the end
 % CLUE 9: just 10 -> 10 minutes to print
 problem(p8, problem(4, 5, [
                         "The flower printed in 25 minutes",
                         "Adrienne's design took 15 minutes to print",
                         "The piece that printed in 30 minutes wasn't the mask",
-                        "Of the item that printed in 10 minutes and Bertha's piece, one was the flower and the other was the orange item",
+                        "Of the item that printed in 10 minutes and Bertha's piece, one was the flower and the other was in orange",
                         "The orange item required 5 minutes fewer than the yellow design to print",
                         "Adrienne's design was either the phone case or the item that printed in 30 minutes",
                         "The white item took 10 minutes more than Stella's piece",
@@ -337,56 +334,18 @@ problem(p8, problem(4, 5, [
                         tvPrep([printed], [in], [print], [printed]),
                         tvGap([took], [to, print], [take]),
                         tvGap([required], [to, print], [require]),
-                        comp(lower, [fewer, than])
-        ])).
-
-% p8 with extra prep's to fix problem of too little predicates
-problem(p8b, problem(4, 5, [
-                        "The flower printed in 25 minutes",
-                        "The design from adrienne took 15 minutes to print",
-                        "The piece that printed in 30 minutes wasn't the mask",
-                        "Of the item that printed in 10 minutes and the piece from Bertha, one was the flower and the other was in orange",
-                        "The orange item required 5 minutes fewer than the yellow design to print",
-                        "The design from Adrienne was either the phone case or the item that printed in 30 minutes",
-                        "The white item took 10 minutes more than Stella's piece",
-                        "The piece from raquel wasn't the mask",
-                        "Of the whistle and the blue piece, one took 30 minutes to print and the other took 10 minutes to print"
-        ], [
-                        noun([minute], [minutes]),
-                        noun([design], [designs]),
-                        noun([piece], [pieces]),
-                        noun([item], [items]),
-                        pn([flower]),
-                        pn([mask]),
-                        pn([phone, case]),
-                        pn([whistle]),
-                        pn([adrienne]),
-                        pn([bertha]),
-                        pn([raquel]),
-                        pn([stella]),
-                        pn([orange]),
-                        pn([yellow]),
-                        pn([blue]),
-                        pn([white]),
-                        tvPrep([printed], [in], [print], [printed]),
-                        tvGap([took], [to, print], [take]),
-                        tvGap([required], [to, print], [require]),
-                        prep([from]),
                         prep([in]),
                         comp(lower, [fewer, than])
         ])).
 
 % ADAPTED
-% clue 1: with the 10 am class => scheduled at 10
-% clue 1: 17 or 21 years old => isn't 17 years old AND isn't 21 years old
-% clue 4: repeat "is scheduled"
 % clue 2, 4, 5 and 6: 2 sentences each
 % clue 9: youngest => 15 years old
 problem(p9, problem(4, 5, [
-                        "The client scheduled at 10 am isn't 17 years old and isn't 21 years old",
+                        "The client with the 10 am class isn't 17 or 21 years old",
                         "Opal isn't 20 years old and is scheduled 2 hours after Harold",
                         "Harold is being trained by Mr Terry and isn't 17 years old",
-                        "Mr alford's client isn't 17 years old and is scheduled sometime before the trainee who is 15 year old and is scheduled 2 hours after Harold",
+                        "Mr alford's client isn't 17 years old and is scheduled sometime before the trainee who is 15 year old and 2 hours after Harold",
                         "Mr french's trainee isn't 20 years old and is scheduled 1 hour after mr terry's client",
                         "Elmer is being trained by Mr underwood and is scheduled 2 hours after jerry",
                         %% "Elmer isn't the youngest student"
@@ -398,6 +357,7 @@ problem(p9, problem(4, 5, [
                         noun([trainee], [trainees]),
                         noun([student], [students]),
                         noun([am], [ams]),
+                        noun([class], [classes]),
                         pn([opal]),
                         pn([harold]),
                         pn([mr, terry]),
@@ -413,26 +373,25 @@ problem(p9, problem(4, 5, [
         ])).
 
 % ADAPTED
-% whoever -> the person who
 % integer dollars
-% order: only for pasta, not for sauce
-% Damon's bill came to 8 -> Damon paid 8
+% order: only for pasta, not for sauce (-> clue 4: chose ipv order)
+% (Damon's bill came to 8 -> Damon paid 8): moet want kan types anders niet afleiden (prijzen met dollars)
 problem(p10, problem(4, 5, [
                          "Angie didn't order capellini",
-                         "The person who did order capellini paid $11",
-                         "Damon paid $8",
-                         "Claudia, the person who paid $9 and the person who chose arrabiata sauce were three different people",
+                         "Whoever did order capellini paid $11",
+                         "Damon's bill came to $8",
+                         "Claudia, the person who paid $9 and whoever chose arrabiata sauce were three different people",
                          "Angie was either the runner who ordered rotini or the diner who paid $11",
                          "The competitor who chose marinara sauce paid $2 less than the runner who ordered tagliolini",
                          "Elisa paid $2 less than the person who chose puttanesca sauce",
-                         "Of Claudia and the person who paid $7, one chose bolognese sauce and the other ordered tagliolini",
+                         "Of Claudia and whoever paid $7, one chose bolognese sauce and the other ordered tagliolini",
                          "Damon had either farfalle or rotini"
         ], [
                         noun([person], [people]),
                         noun([runner], [runners]),
                         noun([diner], [diners]),
                         noun([competitor], [competitors]),
-                        %% noun([bill], [bills]),
+                        noun([bill], [bills]),
                         pn([angie]),
                         pn([capellini]),
                         pn([damon]),
