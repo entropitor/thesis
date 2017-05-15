@@ -296,8 +296,44 @@ problem(p7, problem(4, 5, [
                         pnn([may], 5),
                         pnn([june], 6),
                         pnn([april], 4),
-                        tvPrep([born], [in], [born], [born])
-                        %% prep([in])
+                        tvPrep([born], [in], [born], [born]),
+                        prep([in])
+        ])).
+
+% ADAPTED almost completely
+problem(p7b, problem(4, 5, [
+                        "The traveler from Norway is born in May",
+                        "Of Bill and the traveler born in June, one is from Norway and the other is from Canada",
+                        "Izzy is born 1 month after the traveler acting as politician",
+                        "The traveler acting as engineer is from France",
+                        "The traveler from South Africa is born in either April or May",
+                        "The musician's birthday isn't in April",
+                        "Jeffrey is from either France or South Africa",
+                        "The traveler from Canada is born 1 month after the traveler acting as surgeon",
+                        "Harry is born sometime before Bill"
+        ], [
+                        noun([birthday], [birthdays]),
+                        noun([traveler], [travelers]),
+                        noun([month], [months]),
+                        pn([norway]),
+                        pn([bill]),
+                        pn([canada]),
+                        pn([izzy]),
+                        pn([politician]),
+                        pn([engineer]),
+                        pn([france]),
+                        pn([musician]),
+                        pn([jeffrey]),
+                        pn([harry]),
+                        pn([south, africa]),
+                        pn([surgeon]),
+                        pnn([may], 5),
+                        pnn([june], 6),
+                        pnn([april], 4),
+                        tvPrep([born], [in], [borned], [born]),
+                        tvPrep([acts], [as], [act], [acting]),
+                        prep([from]),
+                        prep([in])
         ])).
 
 % ADAPTED
