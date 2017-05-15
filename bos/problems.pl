@@ -349,7 +349,7 @@ problem(p8, problem(4, 5, [
                         "Adrienne's design was either the phone case or the item that printed in 30 minutes",
                         "The white item took 10 minutes more than Stella's piece",
                         "Raquel's piece wasn't the mask",
-                        "Of the whistle and the blue piece, one took 30 minutes to print and the other took 10 minutes to print"
+                        "Of the whistle and the blue piece, one took 30 minutes to print and the other took 10"
         ], [
                         noun([minute], [minutes]),
                         noun([design], [designs]),
@@ -411,7 +411,6 @@ problem(p9, problem(4, 5, [
 % ADAPTED
 % integer dollars
 % order: only for pasta, not for sauce (-> clue 4: chose ipv order)
-% (Damon's bill came to 8 -> Damon paid 8): moet want kan types anders niet afleiden (prijzen met dollars)
 problem(p10, problem(4, 5, [
                          "Angie didn't order capellini",
                          "Whoever did order capellini paid $11",

@@ -41,7 +41,7 @@ theory T : V {
     // Raquel's piece wasn't the mask
     ?o [design]: ~ (mask = o) & unknown_relation_design_type1(o,raquel).
 
-    // Of the whistle and the blue piece, one took 30 minutes to print and the other took 10 minutes to print
+    // Of the whistle and the blue piece, one took 30 minutes to print and the other took 10
     ?p [design]: ~ (whistle = p) & (took_to_print(whistle,30) & took_to_print(p,10) | took_to_print(p,30) & took_to_print(whistle,10)) & in(p,blue).
 
 
