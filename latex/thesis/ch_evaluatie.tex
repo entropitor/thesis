@@ -1,18 +1,86 @@
 \chapter{Evaluatie}
 \label{ch:evaluatie}
 
-\todo{
-  - Geen CNL: dus zelf niet makkelijk om te weten welke dingen werken en welke niet
+In dit hoofdstuk beschrijven we een experiment ter evaluatie van het framework. We controleren of de grammatica uit hoofdstuk~\ref{ch:grammatica} (opgesteld op basis van tien puzzels uit \cite{logigrammen}) gebruikt kan worden om nieuwe logigrammen te parsen. Anderzijds is de vraag of de type-inferentie beschreven in hoofdstuk~\ref{ch:types} genoeg is om logigrammen op te lossen. Kunnen we op basis van het principe van één type per woord en een aantal taalkundige ja-nee-vragen de juiste types achterhalen?
+
+\section{Experiment}
+Het experiment bestaat eruit om een grammatica op te stellen op basis van de eerste tien puzzels uit Puzzle Baron's Logic Puzzles Volume 3 \cite{logigrammen}. Het resultaat is te vinden in hoofdstuk~\ref{ch:grammatica}. Vervolgens passen we dit toe op de volgende tien puzzels uit hetzelfde boekje. Met dit experiment willen we een aantal vragen beantwoorden:
+
+\begin{enumerate}
+  \item Is de grammatica van een logigram beperkt (binnen hetzelfde boekje, met name Puzzle Baron's Logic Puzzles Volume 3 \cite{logigrammen})? M.a.w. moeten er aanpassingen gebeuren aan de puzzels in de testset om gevat te kunnen worden door de grammatica? Zo ja, hoeveel aanpassingen zijn er nodig en wat voor aanpassingen? Zijn het eerder kleine herschrijvingen of moeten de zinnen volledig anders geformuleerd worden? Is het überhaupt mogelijk om elke logigram te herschrijven?
+  \item Kunnen we op basis van het principe van één type per woord en een aantal taalkundige ja-nee-vragen de juiste types achterhalen?
+  \item Werkt het framework zoals beschreven in deze thesis voor het oplossen van logigrammen? Hoeveel logigrammen kunnen we oplossen? En indien we ze niet kunnen oplossen, waarom niet?
+\end{enumerate}
+
+Een belangrijke opmerking bij de eerste vraag is dat de grammatica opgesteld wordt op basis van 10 logigrammen. Daardoor is de grammatica niet per se makkelijk te leren. De grammatica is namelijk zo complex als de eerste 10 puzzels samen. Bovendien is het niet per se erg als er aanpassingen moeten gebeuren aan de zinnen uit de testset. Dit wil vooral zeggen dat het boekje geen gestructureerde grammatica volgt. De belangrijkste vraag is vooral of het mogelijk is om elke logigram te hervormen zodanig dat het framework de puzzel kan oplossen.
+ 
+\section{Trainingset}
+De trainingset bestaat uit de tien eerste puzzels uit Puzzle Baron's Logic Puzzles Volume 3 \cite{logigrammen}. Bij het opstellen van de grammatica proberen we de puzzels zo weinig mogelijk aan te passen. Dit is echter niet altijd mogelijk. We bespreken de aanpassingen die we doen aan de trainingset en de reden hiervoor.
+
+\subsection{Logigram 4}
+De eerste logigram die aangepast wordt, is logigram 4. In drie van de tien zinnen staan overbodige tijdsaanduidingen:
+
+\begin{itemize}
+  \item Of Lonnie and the person from Frenchboro, one is \underline{now} with the Dodgers and the other graduated in 2005
+  \item Lonnie \underline{currently} plays for the Mariners
+  \item The five players are the person from Frenchboro; Ivan; and the three players \underline{currently} with the Indians Mariners and Giants
+\end{itemize}
+
+De laatste zin bevat bovendien nog een moeilijke opsomming om te verwerken. Hier komt namelijk een distributieve lezing van ``the three players'' aan te pas. Deze zin is daarom herschreven naar ``The five players are the person from Frenchboro, Ivan, the player with the Indians, the person with the Mariners and the graduate that plays for the Giants'' 
+
+\subsection{Logigram 6}
+Ook logigram 6 bevat zo'n distributieve lezing. Bovendien is het deze keer in een ``Of ... and ..., one ... and the other ...'' constructie. Namelijk ``Of the two dogs who graduated in March and April, one went to Tanager County and the other was assigned to Officer Ingram''. Ook deze zin is herschreven. In dit geval naar ``Of the dog who graduated in March and the dog who graduated in April, one went to Tanager County and the other was assigned to Officer Ingram''
+
+\subsection{Logigram 7}
+Logigram 7 heeft een vrij andere grammatica dan alle andere logigrammen. Bovendien overtreedt het een aantal veronderstellingen die we gebruiken voor het vertalen van de zinnen naar logica. De logigram ziet er uit als volgt:
+\begin{enumerate}
+  \item The Norwegian's birthday is May 18
+  \item Of Bill and the traveler born on June 14, one is from Norway and the other is from Canada
+  \item Izzy's birthday is 1 month after the politician's
+  \item The engineer is from France
+  \item The South African's birthday is in either April or May
+  \item The musician's birthday isn't in April
+  \item Jeffrey is either French or South African
+  \item The Canadian's birthday is 1 month after the surgeon's
+  \item Harry's birthday is sometime before Bill's
+\end{enumerate}
+
+\paragraph{} Zo gebruikt men meerdere eigennamen voor hetzelfde domeinelement (bv. ``France'' en ``French''). Bovendien zijn er 3 domeinen die door elkaar gebruikt kunnen worden. Met name de nationaliteit, de naam en het beroep van een persoon. Ten slotte zijn er niet veel werkwoorden of voorzetsels. Dit maakt het vrij moeilijk om automatisch types af te leiden zonder aan de gebruiker te vragen of twee woorden van hetzelfde type zijn.
+
+\paragraph{} De logigram kan wel herschreven worden om binnen het framework te passen. De zinnen liggen echter soms vrij ver af van het origineel. De nationaliteit wordt altijd aangegeven met de naam van het land. Bovendien introduceren we een werkwoord ``acting as'' als een soort van \textit{type cast} tussen een beroep en een persoon. Ten slotte wordt het koppelwerkwoord vervangen door een echt werkwoord.
+
+\begin{enumerate}
+  \item The traveler from Norway is born in May
+  \item Of Bill and the traveler born in June, one is from Norway and the other is from Canada
+  \item Izzy is born 1 month after the traveler acting as politician
+  \item The traveler acting as engineer is from France
+  \item The traveler from South Africa is born in either April or May
+  \item The musician's birthday isn't in April
+  \item Jeffrey is from either France or South Africa
+  \item The traveler from Canada is born 1 month after the traveler acting as surgeon
+  \item Harry is born sometime before Bill
+\end{enumerate}
+
+\subsection{Logigram 8}
+- p8c9
+- p8c5, p8c7
+
+\subsection{Logigram 9}
+
+\subsection{Logigram 10}
+
+\subsection{Een IDP-file}
+of appendix?
+\section{Testset}
+\subsection{Een analyse van de fouten}
+\subsection{Een analyse van het aantal vragen}
+
+\section{Conclusie}
+
+
+\todo
+{
+  v Geen CNL: dus zelf niet makkelijk om te weten welke dingen werken en welke niet
   - Werkt niet voor 1 probleem uit de training
   - Wel nog type-inferentie uitgebreid
- }
-
- \section{Experiment}
- \section{Training}
- \subsection{Een moeilijk probleem}
- \subsection{Een IDP-file}
- of appendix?
- \section{Test}
- \subsection{Een analyse van de fouten}
-
- \section{Conclusie}
+}
