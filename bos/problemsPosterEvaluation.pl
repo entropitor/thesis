@@ -446,7 +446,7 @@ problem(p18, problem(4, 5, [
                          "Bev Baird ended up with 8500 votes",
                          "Ed Ewing finished 500 votes ahead of the Evansdale native",
                          "The man who received 9500 votes isn't the doctor",
-                         "Of the person acting as academic and Al Allen, one ended up with 10000 votes and the other ended up with 8500",
+                         "Of the person acting as academic and Al Allen, one ended up with 10000 votes and the other ended up with 8500 votes",
                          "The politician who finished with 10500 votes isn't from Lakota",
                          "The person acting as doctor was either the politician who finished with 10000 votes or Kelly Kirby"
 
