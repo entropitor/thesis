@@ -153,7 +153,7 @@ problem(p13, problem(4, 5, [
                          "Nicole's puppet, the $1000 piece and the puppet going to Ypsilanti are three different dummies",
                          "Of the $750 puppet and the piece going to Mexico City, one is Tombawomba and the other is Isabel's puppet",
                          "The puppet going to Ypsilanti cost $250 more than the puppet going to St. Moritz.",
-                         "Of the $1000 dummy and the $1250 dummy, one is Herman's puppet and the other is going to Mexico City",
+                         "Of the $1000 dummy and the $1250 dummy, one is from Herman and the other is going to Mexico City",
                          "Sniffletoe sold for $1000"
                      ], [
                          noun([piece], [pieces]),
