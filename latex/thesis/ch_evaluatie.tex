@@ -256,7 +256,34 @@ Tabel~\ref{tbl:log18} geeft een overzicht van de aanpassingen aan logigram 18. G
   \label{tbl:log18}
 \end{table}
 
-\subsection{Logigram 19}
+\subsection{Logigram 19: 13 aanpassingen}
+Tabel~\ref{tbl:log19} geeft een overzicht van de aanpassingen aan logigram 19. Er zijn drie zinnen met ``the one''. Daarnaast is er een zin met een bezittelijk voornaamwoord. Dit is een lexicale categorie die geen deel uitmaakt van de grammatica. De zin moet dus herschreven worden. In één zin is er een ellips van ``comet''.
+
+In 6 zinnen is er een bijzin zoals ``Whitaker discovered''. Het probleem is dat het onduidelijk is of het gaat om de persoon die de planeet heeft ontdekt (``discovered by'') of het jaartal waarin de planeet is ontdekt (``discovered in''). Indien de grammatica het passief correct zou ondersteunen of indien er type checking zou zijn i.p.v. type inferentie zou dit geen problemen geven. Nu zijn er echter twee betekenissen mogelijk. Daarom worden de zinnen herschreven.
+
+Daarnaast wordt ``year'' zowel gebruikt voor de rotatielengte van een planeet als voor het aantal jaar tussen een ontdekking. Het principe van één type per woord is dus gebroken. Daarom wordt er ``cycle'' gebruikt tussen de ontdekkingen van twee planeten\footnote{Het is ook mogelijk om het andere gebruik van ``year'' te veranderen door een nieuw woord maar dit resulteert in minder aanpassingen.}.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{p{0.2\linewidth}p{0.3\linewidth}p{0.3\linewidth}c}
+    \toprule
+    \textbf{Probleem} & \textbf{Origineel} & \textbf{Aangepast} & \textbf{Aantal} \\ 
+    \hline
+    ``the one'' & The comet Tillman discovered, \textbf{the one} discovered in 2011 and Casputi are three different comets & The comet Tillman discovered, \textbf{the comet} discovered in 2011 and Casputi are three different comets & 3 \\
+    \hline
+    Een bezittelijke naamwoord & Whitaker discovered his comet in 2010 & Whitaker's comet was discovered in 2010 & 1 \\
+    \hline
+    Onbrekend woord (ellips) & The comet Parks discovered was discovered 1 year before Whitaker's & The comet Parks discovered was discovered 1 year before Whitaker's \textbf{comet} & 1 \\
+    \hline
+    Bijzin met foute structuur & The comet \textbf{Whitaker discovered} doesn't have an orbital period of 30 year & The comet \textbf{discovered by Whitaker} doesn't have an orbital period of 30 years & 6 \\
+    \hline
+    Naamwoordgroep heeft fout type & Gostroma was discovered \textbf{1 year} after the comet discovered by Tillman & Gostroma was discovered \textbf{1 cycle} after the comet discovered by Tillman & 2 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Een overzicht van de aanpassingen aan logigram 19}
+  \label{tbl:log19}
+\end{table}
+
 \subsection{Logigram 20}
 
 % \subsection{Een analyse van de fouten}
