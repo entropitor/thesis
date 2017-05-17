@@ -1,50 +1,90 @@
 :- module(problemPosterEvaluation, [problem/2]).
 
-% ADAPTED!!!
-% ~~~~CLUE 1: added a [that]
-% CLUE 3: active form
-% ~~~~CLUE 5: added a [that]
-% CLUE 9: in the health-care sector -> the health-care stock
-% PROBLEM: Sector and name both refer to the same stock => flat types doesn't work
-% => sold for for name->price vs being expensive for sector->price
+%% % ADAPTED!!!
+%% % ~~~~CLUE 1: added a [that]
+%% % CLUE 3: active form
+%% % ~~~~CLUE 5: added a [that]
+%% % CLUE 9: in the health-care sector -> the health-care stock
+%% % PROBLEM: Sector and name both refer to the same stock => flat types doesn't work
+%% % => sold for for name->price vs being expensive for sector->price
 
-% purchase(person, sector)
-% buy(person, name)
-% stock = sector
-% position = name
-% being_expensive(sector, price)
-% sold_for(name, price)
-% named(sector, name)
+%% % purchase(person, sector)
+%% % buy(person, name)
+%% % stock = sector
+%% % position = name
+%% % being_expensive(sector, price)
+%% % sold_for(name, price)
+%% % named(sector, name)
+%% problem(p11, problem(4, 5, [
+%%                          "The utilities stock was $1 per share less expensive than the stock Geraldo purchased",
+%%                          "GXTV sold for $2 per share less than QMZ",
+%%                          %% "The financial stock wasn't purchased by Edith",
+%%                          "Edith didn't purchase the financial stock",
+%%                          "PSTO sold for $29 per share",
+%%                          "The position Abigail bought was either KMPP or JMO",
+%%                          "The health-care stock was $2 per share more expensive than the financial stock",
+%%                          "The energy stock was less expensive than the JMO stock",
+%%                          "Heathcliff purchased the real estate stock",
+%%                          %% "Of QMZ and GXTV, one sold for $26 per share and the other was in the health-care sector",
+%%                          "Of QMZ and GXTV, one sold for $26 per share and the other was the health-care stock position",
+%%                          "Abigail didn't purchase the stock that was $25 per share worth"
+%%                      ], [
+%%                          noun([per, share], [per, shares]),
+%%                          noun([stock], [stocks]),
+%%                          noun([position], [positions]),
+%%                          pn([utilities, stock]),
+%%                          pn([geraldo]),
+%%                          pn([gxtv]),
+%%                          pn([qmz]),
+%%                          pn([financial, stock]),
+%%                          pn([psto]),
+%%                          pn([abigail]),
+%%                          pn([kmpp]),
+%%                          pn([jmo]),
+%%                          pn([healthcare, stock]),
+%%                          pn([energy, stock]),
+%%                          pn([heathcliff]),
+%%                          pn([real, estate, stock]),
+%%                          pn([edith]),
+%%                          tv([bought], [buy]),
+%%                          tv([purchased], [purchase]),
+%%                          tvPrep([sold], [for], [sell], [sold]),
+%%                          %% tvPrep([purchased], [by], [purchase], [purchased]),
+%%                          copGap([], [worth]),
+%%                          prep([with, the, name]),
+%%                          comp(lower, [less, expensive, than]),
+%%                          comp(higher, [more, expensive, than])
+%%                      ])).
+
 problem(p11, problem(4, 5, [
-                         "The utilities stock was $1 per share less expensive than the stock Geraldo purchased",
-                         "GXTV sold for $2 per share less than QMZ",
+                         "The utilities stock was $1 per share less expensive than the stock Geraldo bought",
+                         "GXTV was $2 per share less expensive than QMZ",
                          %% "The financial stock wasn't purchased by Edith",
                          "Edith didn't purchase the financial stock",
                          "PSTO sold for $29 per share",
-                         "The position Abigail bought was either KMPP or JMO",
+                         "The stock Abigail bought was either KMPP or JMO",
                          "The health-care stock was $2 per share more expensive than the financial stock",
-                         "The energy stock was less expensive than the JMO stock",
+                         "The energy stock was less expensive than JMO",
                          "Heathcliff purchased the real estate stock",
-                         %% "Of QMZ and GXTV, one sold for $26 per share and the other was in the health-care sector",
-                         "Of QMZ and GXTV, one sold for $26 per share and the other was the health-care stock position",
-                         "Abigail didn't purchase the stock that was $25 per share worth"
+                         "Of QMZ and GXTV, one sold for $26 per share and the other was in the health-care sector",
+                         "Abigail didn't purchase the stock that sold for $25 per share"
                      ], [
                          noun([per, share], [per, shares]),
                          noun([stock], [stocks]),
-                         noun([position], [positions]),
-                         pn([utilities, stock]),
+                         noun([sector], [sectors]),
+                         pn([utilities]),
                          pn([geraldo]),
                          pn([gxtv]),
                          pn([qmz]),
-                         pn([financial, stock]),
+                         pn([financial]),
                          pn([psto]),
                          pn([abigail]),
                          pn([kmpp]),
                          pn([jmo]),
-                         pn([healthcare, stock]),
-                         pn([energy, stock]),
+                         pn([healthcare]),
+                         pn([energy]),
                          pn([heathcliff]),
-                         pn([real, estate, stock]),
+                         pn([real, estate]),
                          pn([edith]),
                          tv([bought], [buy]),
                          tv([purchased], [purchase]),
@@ -52,7 +92,8 @@ problem(p11, problem(4, 5, [
                          copGap([], [worth]),
                          prep([with, the, name]),
                          comp(lower, [less, expensive, than]),
-                         comp(higher, [more, expensive, than])
+                         comp(higher, [more, expensive, than]),
+                         prep([in])
                      ])).
 
 
@@ -112,7 +153,7 @@ problem(p13, problem(4, 5, [
                          "Nicole's puppet, the $1000 piece and the puppet going to Ypsilanti are three different dummies",
                          "Of the $750 puppet and the piece going to Mexico City, one is Tombawomba and the other is Isabel's puppet",
                          "The puppet going to Ypsilanti cost $250 more than the puppet going to St. Moritz.",
-                         "Of the $1000 dummy and the $1250 dummy, one is from Herman and the other is going to Mexico City",
+                         "Of the $1000 dummy and the $1250 dummy, one is Herman's puppet and the other is going to Mexico City",
                          "Sniffletoe sold for $1000"
                      ], [
                          noun([piece], [pieces]),

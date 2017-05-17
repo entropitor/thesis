@@ -15,6 +15,7 @@ Het experiment bestaat eruit om een grammatica op te stellen op basis van de eer
 Een belangrijke opmerking bij de eerste vraag is dat de grammatica opgesteld wordt op basis van 10 logigrammen. Daardoor is de grammatica niet per se makkelijk te leren. De grammatica is namelijk zo complex als de eerste 10 puzzels samen. Bovendien is het niet per se erg als er aanpassingen moeten gebeuren aan de zinnen uit de testset. Dit wil vooral zeggen dat het boekje geen gestructureerde grammatica volgt. De belangrijkste vraag is vooral of het mogelijk is om elke logigram te hervormen zodanig dat het framework de puzzel kan oplossen.
  
 \section{Trainingset}
+\todo[inline]{Een IDP-file? Of in de appendix?}
 De trainingset bestaat uit de tien eerste puzzels uit Puzzle Baron's Logic Puzzles Volume 3 \cite{logigrammen}. Bij het opstellen van de grammatica proberen we de puzzels zo weinig mogelijk aan te passen. Dit is echter niet altijd mogelijk. We bespreken de aanpassingen die we doen aan de trainingset en de reden hiervoor.
 
 \subsection{Logigram 4}
@@ -78,21 +79,84 @@ Daarnaast bevat logigram 9 een superlatief, namelijk ``Elmer isn't the youngest 
 \subsection{Logigram 10}
 Logigram 10 heeft twee problemen. Enerzijds wordt er gebruik gemaakt van kommagetallen. Anderzijds is er niet voldaan aan het principe van één type per woord.
 
-We tellen bij de kommagetallen (bv. ``\$6.99'') 0,01 op (tot bv. ``\$7''). Dit maakt geen verschil voor de logigram. Er wordt enkel gekeken naar de verschillen tussen twee getallen, die blijven met deze truk dezelfde.
+Aangezien de onderliggende tool IDP geen kommagetallen aankan, ondersteunen we deze ook niet in de grammatica. We passen de zinnen aan. We tellen daarvoor bij de kommagetallen (bv. ``\$6.99'') 0,01 op (tot bv. ``\$7''). Dit maakt geen verschil voor de logigram. Er wordt enkel gekeken naar de verschillen tussen twee getallen, die blijven met deze truk dezelfde.
 
 Het werkwoord ``to order'' wordt in deze logigram gebruikt voor zowel het bestellen van pasta als de saus die erbij hoort. Daarom passen we één voorkomen van ``to order'' aan naar ``to choose'', zodanig dat ``to order'' enkel voor het bestellen van de pastasoort is en ``to choose'' enkel voor het kiezen van de bijhorende saus.
 
-\todo[inline]{Een IDP-file? Of in de appendix?}
 \section{Testset}
-\subsection{Een analyse van de fouten}
-\subsection{Een analyse van het aantal vragen}
+De testset bestaat uit de volgende tien logigrammen uit Puzzle Baron's Logic Puzzles Volume 3 \cite{logigrammen}. Geen enkele logigram is vertaalbaar zonder wijzigingen uit te voeren aan de zinnen van de logigram. We bespreken de verschillende logigrammen en wat er aangepast moet worden om te vallen onder de grammatica van de trainingset. Daarbij minimaliseren we het aantal beperking en hoe groot deze moeten zijn. 
+
+\subsection{Logigram 11: 1 aanpassing}
+Tabel~\ref{tbl:log11} geeft een overzicht van de aanpassing aan logigram 11. Één zin werd herschreven van de passieve vorm naar de actieve vorm. Voor de rest past de logigram volledig binnen de grammatica van de testset.
+
+Het type-systeem kan het domein van de sectoren van de aandelen wel niet achterhalen zonder op een vraag van de vierde soort terug te vallen. Namelijk een vraag of twee elementen tot hetzelfde domein behoren. Alle sectoren komen namelijk voor in naamwoordgroepen met een onbekende relatie (``the health-care sector'', ``the energy stock'', ...).
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{p{0.2\linewidth}p{0.3\linewidth}p{0.3\linewidth}c}
+    \toprule
+    \textbf{Probleem} & \textbf{Origineel} & \textbf{Aangepast} & \textbf{Aantal} \\ 
+    \hline
+    Passieve zin & The financial stock wasn't purchased by Edith & Edith didn't purchase the financial stock & 1\\
+    \bottomrule
+  \end{tabular}
+  \caption{Een overzicht van de aanpassing aan logigram 11}
+  \label{tbl:log11}
+\end{table}
+
+\subsection{Logigram 12: 5 aanpassingen}
+Tabel~\ref{tbl:log12} geeft een overzicht van de aanpassing aan logigram 12. In drie zinnen kwamen kommagetallen voor i.p.v. gehele getallen, net zoals in logigram 10 uit de trainingset. Dit is niet echt een probleem met de grammatica maar eerder met de onderliggende tool.
+
+Daarnaast vervangen we een werkwoord door een ander werkwoord uit de logigram omdat aan het principe van één type per (werk)woord anders niet is voldaan.
+
+Ten slotte passen we ``the one'' aan naar een naamwoordgroep met een echt substantief. ``The one'' is een grammaticale structuur waarbij ``one'' verwijst naar een substantief dat eerder in de zin komt. Dit kwam niet voor in de trainingset. Dit probleem had ook opgelost kunnen worden door ``one'' als substantief toe te voegen aan het lexicon. Dit zou echter geen correcte evaluatie zijn van de opgestelde grammatica.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{p{0.2\linewidth}p{0.3\linewidth}p{0.3\linewidth}c}
+    \toprule
+    \textbf{Probleem} & \textbf{Origineel} & \textbf{Aangepast} & \textbf{Aantal} \\ 
+    \hline
+    Kommagetallen & Homer paid \textbf{\$6.99} & Homer paid \textbf{\$7} & 3 \\
+    \hline
+    Werkwoord heeft fout type & Glen paid \$3 less than whoever \textbf{had} the sloppy joe & Glen paid \$3 less than whoever \textbf{ordered} the sloppy joe & 1 \\
+    \hline
+    ``the one'' & The order with lemonade cost \$1 more than \textbf{the one} with the water & The order with the lemonade cost \$1 more than \textbf{the order} with the water & 1 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Een overzicht van de aanpassingen aan logigram 12}
+  \label{tbl:log12}
+\end{table}
+
+\subsection{Logigram 13: 3 aanpasssingen}
+Tabel~\ref{tbl:log13} geeft een overzicht van de aanpassing aan logigram 13. Er is opnieuw één zin met ``the one''. Daarnaast is er nog één zin die twee fouten bevat. Enerzijds is er een constructie waarbij het voegwoord op een nieuwe plaats voorkomt. Anderzijds wordt er het koppelwerkwoord op een nieuwe manier gebruikt. Er zijn twee manieren om de zin te herschrijven. Bij de manier die aangegeven is in de tabel kan het type-systeem alle types achterhalen zonder te moeten terugvallen op een vraag van de vierde soort. Namelijk een vraag die stelt of twee domeinelementen tot hetzelfde domein behoren. De aanpassing die dichter bij het origineel licht is ``...one is Hermans's puppet...''.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{p{0.2\linewidth}p{0.3\linewidth}p{0.3\linewidth}c}
+    \toprule
+    \textbf{Probleem} & \textbf{Origineel} & \textbf{Aangepast} & \textbf{Aantal} \\ 
+    \hline
+    ``the one'' & The puppet going to Ypsilanti cost \$250 more than \textbf{the one} going to St. Moritz & The puppet going to Ypsilanti cost \$250 more than \textbf{the puppet} going to St. Moritz & 1 \\
+    \hline
+    Foute structuur naamwoordgroep & Of \textbf{the \$1000 and \$1250 dummies}, one is Herman's and the other is going to Mexico city & Of \textbf{the \$1000 dummy and the \$1250 dummy}, one is Herman's and the other is going to Mexico city & 1 \\
+    \hline
+    Fout gebruik koppelwerkwoord & Of the \$1000 dummy and the \$1250 dummy, one \textbf{is Herman's} and the other is going to Mexico city & Of the \$1000 dummy and the \$1250 dummy, one \textbf{is from Herman} and the other is going to Mexico city & 1 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Een overzicht van de aanpassingen aan logigram 13}
+  \label{tbl:log13}
+\end{table}
+
+\subsection{Logigram 14}
+\subsection{Logigram 15}
+\subsection{Logigram 16}
+\subsection{Logigram 17}
+\subsection{Logigram 18}
+\subsection{Logigram 19}
+\subsection{Logigram 20}
+
+% \subsection{Een analyse van de fouten}
+% \subsection{Een analyse van het aantal vragen}
 
 \section{Conclusie}
-
-
-\todo
-{
-  v Geen CNL: dus zelf niet makkelijk om te weten welke dingen werken en welke niet
-  - Werkt niet voor 1 probleem uit de training
-  - Wel nog type-inferentie uitgebreid
-}
