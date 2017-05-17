@@ -25,7 +25,7 @@ theory T : V {
     // Homer paid $7
     paid(homer,7).
 
-    // Glen paid $3 less than the person who ordered the sloppy joe
+    // Glen paid $3 less than whoever ordered the sloppy joe
     ?e [dollar] f [order] g [dollar]: ordered(f,sloppy_joe) & paid(f,e) & g = e-3 & paid(glen,g).
 
     // Wallace didn't have the iced tea
@@ -37,7 +37,7 @@ theory T : V {
     // Oliver ordered the hamburger
     ordered(oliver,hamburger).
 
-    // The five diners were the person who ordered the turkey plate, Oliver, Glen, the person who got the iced tea and the person who paid $5
+    // The five diners were whoever ordered the turkey plate, Oliver, Glen, the person who got the iced tea and the person who paid $5
     ?i [order] j [order] k [order]: ~ (i = oliver) & ~ (i = glen) & ~ (i = j) & ~ (i = k) & ~ (oliver = glen) & ~ (oliver = j) & ~ (oliver = k) & ~ (glen = j) & ~ (glen = k) & ~ (j = k) & ordered(i,turkey_plate) & got(j,iced_tea) & paid(k,5).
 
     // Glen didn't have the orange soda

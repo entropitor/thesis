@@ -348,6 +348,13 @@ rc([num:Num, sem:RC, vType:TypeSubj]) -->
   GapAfter,
   { combine(rc:RC, [relpro:RP, vp:app(TV, NP)]) }.
 
+rc([num:Num, sem:RC, vType:TypeObj]) -->
+    { semLex(relpro, [sem:RP]) },
+    np([coord:_, num:_, gap:[], sem:NP, vType:TypeSubj]),
+    tv([inf:fin, num:Num, gap:_-[], sem:TV, vType:pred(TypeSubj, TypeObj)]),
+    { combine(vp:VP, [np:NP, tv:TV]) },
+    { combine(rc:RC, [relpro:RP, vp:VP]) }.
+
 /*========================================================================
   Verb Phrases
 ========================================================================*/
@@ -417,7 +424,7 @@ vp([coord:no, inf:I, num:Num, gap:G, sem:VP, vType:TypeSubj]) -->
   tv([inf:I, num:Num, gap:GapBefore-GapAfter, sem:TV, vType:pred(TypeSubj, TypeObj)]),
   GapBefore,
   np([coord:_, num:_, gap:G, sem:NP, vType:TypeObj]),
-  optional(GapAfter),
+  GapAfter,
   { combine(vp:VP, [tv:TV, np:NP]) }.
 
 %% vp([coord:no, inf:I, num:Num, gap:G, sem:VP, vType:TypeSubj]) -->

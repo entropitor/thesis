@@ -349,7 +349,7 @@ problem(p8, problem(4, 5, [
                         "Adrienne's design was either the phone case or the item that printed in 30 minutes",
                         "The white item took 10 minutes more than Stella's piece",
                         "Raquel's piece wasn't the mask",
-                        "Of the whistle and the blue piece, one took 30 minutes to print and the other took 10"
+                        "Of the whistle and the blue piece, one took 30 minutes to print and the other took 10 to print"
         ], [
                         noun([minute], [minutes]),
                         noun([design], [designs]),

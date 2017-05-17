@@ -32,20 +32,20 @@ theory T : V {
     // Kelly's puppet isn't going to Ypsilanti
     ?i [piece]: ~ go_to(i,ypsilanti) & from(i,kelly).
 
-    // The dummy going to Mexico City is either Tombawomba or the puppet from Lucas
-    ?j [piece]: go_to(j,mexico_city) & (tombawomba = j | (?k [piece]: from(k,lucas) & k = j)).
+    // The dummy going to Mexico City is either Tombawomba or Lucas's puppet
+    ?j [piece]: go_to(j,mexico_city) & (tombawomba = j | (?k [piece]: k = j & from(k,lucas))).
 
-    // The puppet from Nicole, the $1000 piece and the puppet going to Ypsilanti are three different dummies
+    // Nicole's puppet, the $1000 piece and the puppet going to Ypsilanti are three different dummies
     ?l [piece] m [piece] n [piece]: ~ (l = m) & ~ (l = n) & ~ (m = n) & from(l,nicole) & cost(m,1000) & go_to(n,ypsilanti).
 
-    // Of the $750 puppet and the piece going to Mexico City, one is Tombawomba and the other is from Isabel
-    ?o [piece] p [piece]: go_to(p,mexico_city) & ~ (o = p) & (tombawomba = o & from(p,isabel) | tombawomba = p & from(o,isabel)) & cost(o,750).
+    // Of the $750 puppet and the piece going to Mexico City, one is Tombawomba and the other is Isabel's puppet
+    ?o [piece] p [piece]: go_to(p,mexico_city) & ~ (o = p) & ((?q [piece]: tombawomba = o & q = p & from(q,isabel)) | (?r [piece]: tombawomba = p & r = o & from(r,isabel))) & cost(o,750).
 
     // The puppet going to Ypsilanti cost $250 more than the puppet going to St. Moritz.
-    ?q [piece] r [dollar] s [piece] t [dollar]: go_to(q,ypsilanti) & go_to(s,st_moritz) & cost(s,r) & t = r+250 & cost(q,t).
+    ?s [piece] t [dollar] u [piece] v [dollar]: go_to(s,ypsilanti) & go_to(u,st_moritz) & cost(u,t) & v = t+250 & cost(s,v).
 
     // Of the $1000 dummy and the $1250 dummy, one is from Herman and the other is going to Mexico City
-    ?u [piece] v [piece]: ~ (u = v) & (from(u,herman) & go_to(v,mexico_city) | from(v,herman) & go_to(u,mexico_city)) & cost(v,1250) & cost(u,1000).
+    ?w [piece] x [piece]: ~ (w = x) & (from(w,herman) & go_to(x,mexico_city) | from(x,herman) & go_to(w,mexico_city)) & cost(x,1250) & cost(w,1000).
 
     // Sniffletoe sold for $1000
     sold_for(sniffletoe,1000).

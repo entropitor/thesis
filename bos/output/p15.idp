@@ -21,7 +21,7 @@ theory T : V {
     // The student who got the B-minus talked about Augustus
     ?a [student]: got(a,bminus) & talked_about(a,augustus).
 
-    // Johnnie, the student who gave the presentation on Augustus and the person who got the B-plus were three different students
+    // Johnnie, the student who gave the presentation on Augustus and whoever got the B-plus were three different students
     ?b [student] c [student]: ~ (johnnie = b) & ~ (johnnie = c) & ~ (b = c) & gave_the_presentation_on(b,augustus) & got(c,bplus).
 
     // Gina didn't get the B-plus

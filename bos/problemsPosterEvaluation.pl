@@ -1,9 +1,9 @@
 :- module(problemPosterEvaluation, [problem/2]).
 
 % ADAPTED!!!
-% CLUE 1: added a [that]
+% ~~~~CLUE 1: added a [that]
 % CLUE 3: active form
-% CLUE 5: added a [that]
+% ~~~~CLUE 5: added a [that]
 % CLUE 9: in the health-care sector -> the health-care stock
 % PROBLEM: Sector and name both refer to the same stock => flat types doesn't work
 % => sold for for name->price vs being expensive for sector->price
@@ -16,12 +16,12 @@
 % sold_for(name, price)
 % named(sector, name)
 problem(p11, problem(4, 5, [
-                         "The utilities stock was $1 per share less expensive than the stock that Geraldo purchased",
+                         "The utilities stock was $1 per share less expensive than the stock Geraldo purchased",
                          "GXTV sold for $2 per share less than QMZ",
                          %% "The financial stock wasn't purchased by Edith",
                          "Edith didn't purchase the financial stock",
                          "PSTO sold for $29 per share",
-                         "The position that Abigail bought was either KMPP or JMO",
+                         "The position Abigail bought was either KMPP or JMO",
                          "The health-care stock was $2 per share more expensive than the financial stock",
                          "The energy stock was less expensive than the JMO stock",
                          "Heathcliff purchased the real estate stock",
@@ -64,11 +64,11 @@ problem(p11, problem(4, 5, [
 problem(p12, problem(4, 5, [
                          "The order with the lemonade cost $1 more than the order with the water",
                          "Homer paid $7",
-                         "Glen paid $3 less than the person who ordered the sloppy joe",
+                         "Glen paid $3 less than whoever ordered the sloppy joe",
                          "Wallace didn't have the iced tea",
                          "Of the diner who paid $6 and Homer, one ordered the spaghetti and the other drank the water",
                          "Oliver ordered the hamburger",
-                         "The five diners were the person who ordered the turkey plate, Oliver, Glen, the person who got the iced tea and the person who paid $5",
+                         "The five diners were whoever ordered the turkey plate, Oliver, Glen, the person who got the iced tea and the person who paid $5",
                          "Glen didn't have the orange soda"
                      ], [
                          noun([order], [orders]),
@@ -108,9 +108,9 @@ problem(p13, problem(4, 5, [
                          "The puppet going to Vancouver, the $750 dummy and the $1500 piece are three different dummies",
                          "Waldarama didn't cost $750 or $1500",
                          "Kelly's puppet isn't going to Ypsilanti",
-                         "The dummy going to Mexico City is either Tombawomba or the puppet from Lucas",
-                         "The puppet from Nicole, the $1000 piece and the puppet going to Ypsilanti are three different dummies",
-                         "Of the $750 puppet and the piece going to Mexico City, one is Tombawomba and the other is from Isabel",
+                         "The dummy going to Mexico City is either Tombawomba or Lucas's puppet",
+                         "Nicole's puppet, the $1000 piece and the puppet going to Ypsilanti are three different dummies",
+                         "Of the $750 puppet and the piece going to Mexico City, one is Tombawomba and the other is Isabel's puppet",
                          "The puppet going to Ypsilanti cost $250 more than the puppet going to St. Moritz.",
                          "Of the $1000 dummy and the $1250 dummy, one is from Herman and the other is going to Mexico City",
                          "Sniffletoe sold for $1000"
@@ -191,7 +191,7 @@ problem(p14, problem(4, 5, [
 % PROBLEM: intermediate type "presentation" can not be represented
 problem(p15, problem(4, 5, [
                          "The student who got the B-minus talked about Augustus",
-                         "Johnnie, the student who gave the presentation on Augustus and the person who got the B-plus were three different students",
+                         "Johnnie, the student who gave the presentation on Augustus and whoever got the B-plus were three different students",
                          "Gina didn't get the B-plus",
                          "The student who spoke for 10 minutes didn't get the C-Minus",
                          "Gina didn't talk about Galerius",
@@ -262,7 +262,7 @@ problem(p15, problem(4, 5, [
 % was_long(presentation, minutes)
 problem(p15b, problem(4, 5, [
                          "The student who got the B-minus talked about Augustus",
-                         "Johnnie, the student who gave the presentation on Augustus and the person who got the B-plus were three different students",
+                         "Johnnie, the student who gave the presentation on Augustus and whoever got the B-plus were three different students",
                          "Gina didn't get the B-plus",
                          "The student who spoke for 10 minutes didn't get the C-Minus",
                          "Gina didn't talk about Galerius",
