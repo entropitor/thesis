@@ -271,7 +271,7 @@ Daarnaast wordt ``year'' zowel gebruikt voor de rotatielengte van een planeet al
     \hline
     ``the one'' & The comet Tillman discovered, \textbf{the one} discovered in 2011 and Casputi are three different comets & The comet Tillman discovered, \textbf{the comet} discovered in 2011 and Casputi are three different comets & 3 \\
     \hline
-    Een bezittelijke naamwoord & Whitaker discovered his comet in 2010 & Whitaker's comet was discovered in 2010 & 1 \\
+    Een bezittelijk naamwoord & Whitaker discovered his comet in 2010 & Whitaker's comet was discovered in 2010 & 1 \\
     \hline
     Onbrekend woord (ellips) & The comet Parks discovered was discovered 1 year before Whitaker's & The comet Parks discovered was discovered 1 year before Whitaker's \textbf{comet} & 1 \\
     \hline
@@ -303,15 +303,40 @@ Tabel~\ref{tbl:log20} geeft een overzicht van de aanpassingen aan logigram 20. O
   \caption{Een overzicht van de aanpassingen aan logigram 20}
   \label{tbl:log20}
 \end{table}
-% \subsection{Een analyse van de fouten}
-% \subsection{Een analyse van het aantal vragen}
 
 \subsection{Resultaten}
+Tabel~\ref{tbl:resultaten} geeft een overzicht van alle aanpassingen. Er zijn een vijftal soort fouten. De eerste groep bestaat uit echte grammaticale elementen die niet ondersteund zijn. Dit zijn 30 van de 65 fouten (46\%). De helft daarvan is opgelost door het ondersteunen van ``the one'' als naamwoordgroep. De tweede groep bestaat uit grammaticale elementen die niet ondersteund zijn maar ook niet voorkwamen in de trainingset. In deze groep zijn er 5 aanpassingen.
+
+Daarnaast is er een grote groep van aanpassingen die nodig zijn om te passen binnen het voorgestelde type-systeem. Dit gaat allemaal op overtredingen van het principe van één type per woord.
+
+In één logigram is dan weer de assumptie overtreden dat elk domeinelement maar in één vorm voorkomt.
+
+Ten slotte zijn er 10 aanpassingen nodig voor het aanvullen of weglaten van woorden die niet veel aan de essentie van de zin veranderen.
+
 \begin{table}[h]
   \centering
   \begin{tabular}{ll}
     \toprule
     \textbf{Probleem} & \textbf{Aantal} \\ 
+    \hline
+    ``the one'' & 15 \\
+    Fout gebruik koppelwerkwoord & 6 \\
+    Bijzin met foute structuur & 6 \\
+    Passieve zin & 1 \\
+    Een bezittelijk voornaamwoord & 1 \\
+    Foute structuur naamwoordgroep & 1 \\
+    \hline
+    Kommagetallen & 3 \\
+    Superlatief & 1 \\
+    ``Of the two ...'' & 1 \\
+    \hline
+    Werkwoord heeft fout type & 14 \\
+    Naamwoordgroep heeft fout type & 5 \\
+    \hline
+    Dubbele vorm domeinelement & 1 \\
+    \hline
+    Overtollig woord & 7 \\
+    Ontbrekend woord (ellips) & 3 \\
     \bottomrule
   \end{tabular}
   \caption{Een overzicht van alle aanpassingen}
@@ -319,3 +344,8 @@ Tabel~\ref{tbl:log20} geeft een overzicht van de aanpassingen aan logigram 20. O
 \end{table}
 
 \section{Conclusie}
+Ten eerste kunnen we al stellen dat we elke logigram zodanig kunnen omvormen zodat het mogelijk wordt om hem automatisch te laten vertalen naar logica. In de meeste gevallen zijn de aanpassingen eerder klein. Er zijn slechts twee zinnen die vrij hard aangepast moeten worden (één van passief naar actief en één voor het verwijderen van het bezittelijke voornaamwoord). Het is echter niet zo dat we de logigrammen gewoon kunnen ingeven zonder aanpassingen te doen. Daarvoor is de grammatica nog te ruim. Het lijkt echter wel mogelijk om een grammatica op te stellen waaraan een schrijver zich kan houden zonder dat de lezer een verschil kan merken.
+
+Bovendien kunnen we ook altijd de types achterhalen. In de meeste gevallen enkel op basis van de drie soorten vragen die echt puur taalkundig zijn. Aan het principe van één type per woord is wel niet altijd voldaan. Daarvoor moet er soms enkele aanpassingen zijn.
+
+Het resultaat is echter dat we op basis van het systeem beschreven in deze thesis alle getesten logigrammen automatisch kunnen oplossen. Daarbij vertalen we eerst naar logica. Op basis van de inferenties van de types kunnen we ook de nodige extra axioma's en het formeel vocabularium opstellen. Daardoor kunnen we met behulp van de tool IDP de bijecties achterhalen en de domeinelementen opdelen in hun equivalentieklassen.
