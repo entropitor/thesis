@@ -150,7 +150,11 @@ n([num:singular]) --> [man].
 \section{Discourse Representation Theory}
 Voor het vertalen van natuurlijke taal naar logica zouden we graag gebruik maken van Frege's compositionality principe: De betekenis van een zin bestaat uit de combinatie van de betekenissen van de delen ervan. Als we eerste-orde-logica als doeltaal van onze vertaling nemen, komen we echter vrij snel in de problemen. Neem bijvoorbeeld de zin ``If a man lives, he breathes''. De vertaling hiervan in eerste-orde-logica is $\forall x \cdot man(x) \Rightarrow breathes(x)$. De vertaling van ``a man lives'' is echter $\exists x \cdot man(x)$, wat geen deel uit maakt van de betekenis van de hele zin. Blackburn en Bos \cite{Blackburn2006} geven nog een aantal andere voorbeelden waarvoor DRS-structuren beter geschikt zijn dan eerste-orde-logica (bijvoorbeeld voor het oplossen van anaforische referenties).
 
-Ze suggereren Discourse Representation Structures als alternatief. Bos \cite{Bos2011} definieert deze structuren als een lijst van \textit{discourse referents} (woordgroepen waarnaar andere woordgroepen kunnen verwijzen) en een lijst van condities i.v.m. die referenties. Blackburn en Bos \cite{Blackburn2006} geven o.a. een vertaling van deze DRS-structuren naar eerste-orde-logica. DRS-structuren hebben dus ook een formele betekenis. Zoals we verder zullen aantonen, zijn ze echter beter geschikt als doeltaal. Van hieruit kan dan verder vertaald worden naar eerste-orde-logica volgens de vertaling van Blackburn en Bos. Wij hernemen hier hun vertaling als verdere introductie tot deze structuren:
+Ze suggereren Discourse Representation Structures als alternatief. Bos \cite{Bos2011} definieert deze structuren als een lijst van \textit{discourse referents} (woordgroepen waarnaar andere woordgroepen kunnen verwijzen) en een lijst van condities i.v.m. die referenties. Blackburn en Bos \cite{Blackburn2006} geven o.a. een vertaling van deze DRS-structuren naar eerste-orde-logica. DRS-structuren hebben dus ook een formele betekenis. Zoals we verder zullen aantonen, zijn ze echter beter geschikt als doeltaal. Van hieruit kan dan verder vertaald worden naar eerste-orde-logica volgens de vertaling van Blackburn en Bos.
+
+Wij hernemen hier hun vertaling naar eerste-orde-logica als semantiek voor deze structuren. Daarnaast geven we ook een inductieve definitie van zowel een DRS als een DRS-conditie.
+
+Zij $x_i$ variabelen en $\gamma_i$ DRS-condities, dan is \drs{x_1, \ldots, x_n}{\gamma_1 \\ \ldots \\ \gamma_m} een DRS met als vertaling
 
 \[
   \left(\ \drs{x_1, \ldots, x_n}{
@@ -160,7 +164,33 @@ Ze suggereren Discourse Representation Structures als alternatief. Bos \cite{Bos
     }\ \right)^{fo} = \exists x_{1} \ldots \exists x_n\left((\gamma_{1})^{fo} \land \ldots \land (\gamma_m)^{fo}\right)
 \]
 
-En de vertaling van alle mogelijke condities $\gamma$:
+Een lege DRS heeft als vertaling $\left( \drs{}{} \right)^{fo} = true$.
+
+Zij $B_1$ en $B_2$ allebei een DRS, dan is ook $\drsMerge{B_1}{B_2}$ een DRS. De $\oplus$-connector kan men zien als de logische conjunctie van twee DRS-structuren. De vertaling bestaat uit het samenvoegen van de twee DRS-structuren:
+
+\[
+  \left( \drsMerge{\drs{x_1, \ldots, x_k}{
+      \gamma_1 \\
+      \ldots \\
+      \gamma_l
+    }}{\drs{y_1, \ldots, y_m}{
+      \delta_1 \\
+      \ldots \\
+      \delta_n
+    }} \right)^{fo} = \left (\drs{x_1, \ldots, x_k, y_1, \ldots, y_m}{
+    \gamma_1 \\
+    \ldots \\
+    \gamma_l \\
+    \delta_1 \\
+    \ldots \\
+    \delta_n
+  }
+  \right)^{fo}
+\]
+
+Dit zijn alle mogelijke DRS-structuren.
+
+\paragraph{} Zij $R$ een predicaat met $n$ argumenten, $x_i$ een variabele, $\tau_i$ een term (uit eerste-orde-logica) en $B_i$ een DRS, dan zijn $R(x_1, \ldots, x_n)$, $\tau_1 = \tau_2$, $\lnot B$, $B_1 \lor B_2$ en $B_1 \Rightarrow B_2$ alle mogelijke DRS-condities. De vertaling naar eerste-orde-logica is:
 
 \[\Big(R(x_1, ..., x_n)\Big)^{fo} = R(x_1, ..., x_n)\]
 \[\Big(\tau_1 = \tau_2\Big)^{fo} = \Big(\tau_1 = \tau_2\Big)\]
@@ -169,31 +199,12 @@ En de vertaling van alle mogelijke condities $\gamma$:
 
 \[\left(\ \drs{x_1, ..., x_n}{\gamma_1 \\ ... \\ \gamma_m} \Rightarrow B\right)^{fo} =  \forall x_1...\forall x_n\Bigg(\Big((\gamma_1)^{fo} \land ... \land (\gamma_m)^{fo}\Big) \Rightarrow \Big(B\Big)^{fo} \Bigg)\]
 
-Ten slotte kan men twee DRS-structuren samenvoegen door de referenties en de condities samen te voegen:
+Er zijn twee vertaalstappen van natuurlijke taal naar eerste-orde-logica. Eerst van natuurlijke taal naar DRS en vervolgens van DRS naar eerste-orde-logica. De laatste stap is niet compositioneel. De vertaling van de laatste DRS-conditie is dit namelijk niet. De variabelen van het hoofd van de implicatie zijn universeel gekwantificeerd i.p.v. existentieel.
 
-\[
-  \drsMerge{\drs{x_1, \ldots, x_k}{
-      \gamma_1 \\
-      \ldots \\
-      \gamma_l
-    }}{\drs{y_1, \ldots, y_m}{
-      \delta_1 \\
-      \ldots \\
-      \delta_n
-    }} = \drs{x_1, \ldots, x_k, y_1, \ldots, y_m}{
-    \gamma_1 \\
-    \ldots \\
-    \gamma_l \\
-    \delta_1 \\
-    \ldots \\
-    \delta_n
-  }
-\]
-
-De vertaling van ``If a man lives, he breathes'' naar DRS is \\
+De eerste stap is echter wel compositioneel. De vertaling van ``If a man lives, he breathes'' naar DRS is \\
 
 \drs{}{\ifdrs{x}{man(x) \\ lives(x)}{}{breathes(x)}}
 
-\paragraph{} Merk op dat de betekenis van het deel ``a man lives'' \drs{x}{man(x) \\ lives(x)} wel deel uitmaakt van de betekenis van de hele zin.
+\paragraph{} De betekenis van het deel ``a man lives'' \drs{x}{man(x) \\ lives(x)} maakt deel uit van de betekenis van de hele zin.
 
 \section{Conclusie} Definite Clause Grammars vormen een expressieve grammatica die natuurlijke taal in al haar facetten makkelijk kan modelleren. Feature Structures komen overeen met argumenten in prolog en kunnen gebruikt worden om grammatica's kort en leesbaar te houden. Discourse Representation Structures vormen een representatie die tussen natuurlijke taal en eerste-orde-logica ligt. Ze zijn even expressief als eerste-orde-logica maar een aantal concepten in de natuurlijke taal zijn beter te modelleren met DRS-structuren.
