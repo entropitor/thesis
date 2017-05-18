@@ -1,18 +1,351 @@
 \chapter{Evaluatie}
 \label{ch:evaluatie}
 
-\todo{
-  - Geen CNL: dus zelf niet makkelijk om te weten welke dingen werken en welke niet
-  - Werkt niet voor 1 probleem uit de training
-  - Wel nog type-inferentie uitgebreid
- }
+In dit hoofdstuk beschrijven we een experiment ter evaluatie van het framework. We controleren of de grammatica uit hoofdstuk~\ref{ch:grammatica} (opgesteld op basis van tien puzzels uit \cite{logigrammen}) gebruikt kan worden om nieuwe logigrammen te parsen. Anderzijds is de vraag of de type-inferentie beschreven in hoofdstuk~\ref{ch:types} genoeg is om logigrammen op te lossen. Kunnen we op basis van het principe van één type per woord en een aantal taalkundige ja-nee-vragen de juiste types achterhalen?
 
- \section{Experiment}
- \section{Training}
- \subsection{Een moeilijk probleem}
- \subsection{Een IDP-file}
- of appendix?
- \section{Test}
- \subsection{Een analyse van de fouten}
+\section{Experiment}
+Het experiment bestaat eruit om een grammatica op te stellen op basis van de eerste tien puzzels uit Puzzle Baron's Logic Puzzles Volume 3 \cite{logigrammen}. Het resultaat is te vinden in hoofdstuk~\ref{ch:grammatica}. Vervolgens passen we dit toe op de volgende tien puzzels uit hetzelfde boekje. Met dit experiment willen we een aantal vragen beantwoorden:
 
- \section{Conclusie}
+\begin{enumerate}
+  \item Is de grammatica van een logigram beperkt (binnen hetzelfde boekje, met name Puzzle Baron's Logic Puzzles Volume 3 \cite{logigrammen})? M.a.w. moeten er aanpassingen gebeuren aan de puzzels in de testset om gevat te kunnen worden door de grammatica? Zo ja, hoeveel aanpassingen zijn er nodig en wat voor aanpassingen? Zijn het eerder kleine herschrijvingen of moeten de zinnen volledig anders geformuleerd worden? Is het überhaupt mogelijk om elke logigram te herschrijven?
+  \item Kunnen we op basis van het principe van één type per woord en een aantal taalkundige ja-nee-vragen de juiste types achterhalen?
+  \item Werkt het framework zoals beschreven in deze thesis voor het oplossen van logigrammen? Hoeveel logigrammen kunnen we oplossen? En indien we ze niet kunnen oplossen, waarom niet?
+\end{enumerate}
+
+Een belangrijke opmerking bij de eerste vraag is dat de grammatica opgesteld wordt op basis van 10 logigrammen. Daardoor is de grammatica niet per se makkelijk te leren. De grammatica is namelijk zo complex als de eerste 10 puzzels samen. Bovendien is het niet per se erg als er aanpassingen moeten gebeuren aan de zinnen uit de testset. Dit wil vooral zeggen dat het boekje geen gestructureerde grammatica volgt. De belangrijkste vraag is vooral of het mogelijk is om elke logigram te hervormen zodanig dat het framework de puzzel kan oplossen.
+ 
+\section{Trainingset}
+\todo[inline]{Een IDP-file? Of in de appendix?}
+De trainingset bestaat uit de tien eerste puzzels uit Puzzle Baron's Logic Puzzles Volume 3 \cite{logigrammen}. Bij het opstellen van de grammatica proberen we de puzzels zo weinig mogelijk aan te passen. Dit is echter niet altijd mogelijk. We bespreken de aanpassingen die we doen aan de trainingset en de reden hiervoor.
+
+\subsection{Logigram 4}
+De eerste logigram die aangepast wordt, is logigram 4. In drie van de tien zinnen staan overbodige tijdsaanduidingen:
+
+\begin{itemize}
+  \item Of Lonnie and the person from Frenchboro, one is \underline{now} with the Dodgers and the other graduated in 2005
+  \item Lonnie \underline{currently} plays for the Mariners
+  \item The five players are the person from Frenchboro; Ivan; and the three players \underline{currently} with the Indians Mariners and Giants
+\end{itemize}
+
+De laatste zin bevat bovendien nog een moeilijke opsomming om te verwerken. Hier komt namelijk een distributieve lezing van ``the three players'' aan te pas. Deze zin is daarom herschreven naar ``The five players are the person from Frenchboro, Ivan, the player with the Indians, the person with the Mariners and the graduate that plays for the Giants'' 
+
+\subsection{Logigram 6}
+Ook logigram 6 bevat zo'n distributieve lezing. Bovendien is het deze keer in een ``Of ... and ..., one ... and the other ...'' constructie. Namelijk ``Of the two dogs who graduated in March and April, one went to Tanager County and the other was assigned to Officer Ingram''. Ook deze zin is herschreven. In dit geval naar ``Of the dog who graduated in March and the dog who graduated in April, one went to Tanager County and the other was assigned to Officer Ingram''
+
+\subsection{Logigram 7}
+Logigram 7 heeft een vrij andere grammatica dan alle andere logigrammen. Bovendien overtreedt het een aantal veronderstellingen die we gebruiken voor het vertalen van de zinnen naar logica. De logigram ziet er uit als volgt:
+\begin{enumerate}
+  \item The Norwegian's birthday is May 18
+  \item Of Bill and the traveler born on June 14, one is from Norway and the other is from Canada
+  \item Izzy's birthday is 1 month after the politician's
+  \item The engineer is from France
+  \item The South African's birthday is in either April or May
+  \item The musician's birthday isn't in April
+  \item Jeffrey is either French or South African
+  \item The Canadian's birthday is 1 month after the surgeon's
+  \item Harry's birthday is sometime before Bill's
+\end{enumerate}
+
+\paragraph{} Zo gebruikt men meerdere eigennamen voor hetzelfde domeinelement (bv. ``France'' en ``French''). Bovendien zijn er 3 domeinen die door elkaar gebruikt kunnen worden. Met name de nationaliteit, de naam en het beroep van een persoon. Ten slotte zijn er niet veel werkwoorden of voorzetsels. Dit maakt het vrij moeilijk om automatisch types af te leiden zonder aan de gebruiker te vragen of twee woorden van hetzelfde type zijn.
+
+\paragraph{} De logigram kan wel herschreven worden om binnen het framework te passen. De zinnen liggen echter soms vrij ver af van het origineel. De nationaliteit wordt altijd aangegeven met de naam van het land. Bovendien introduceren we een werkwoord ``acting as'' als een soort van \textit{type cast} tussen een beroep en een persoon. Ten slotte wordt het koppelwerkwoord vervangen door een echt werkwoord.
+
+\begin{enumerate}
+  \item The traveler from Norway is born in May
+  \item Of Bill and the traveler born in June, one is from Norway and the other is from Canada
+  \item Izzy is born 1 month after the traveler acting as politician
+  \item The traveler acting as engineer is from France
+  \item The traveler from South Africa is born in either April or May
+  \item The musician's birthday isn't in April
+  \item Jeffrey is from either France or South Africa
+  \item The traveler from Canada is born 1 month after the traveler acting as surgeon
+  \item Harry is born sometime before Bill
+\end{enumerate}
+
+\subsection{Logigram 8}
+Logigram 8 is simpeler. Er zijn drie soorten aanpassingen die we doen.
+
+\begin{enumerate}
+  \item We vervangen een adjectief door een voorzetselconstituent: ``... the other was orange'' wordt ``... the other was \underline{in} orange''.
+  \item In de twee zinnen met een vergelijking is de woordvolgorde een beetje anders. ``The orange item required 5 fewer minutes to print than the yellow design'' wordt ``The orange item required 5 minutes fewer than the yellow design to print''
+  \item ``just'' wordt verwijderd in ``Of the whistle and the blue piece, one took 30 minutes to print and the other took \underline{just} 10''
+\end{enumerate}
+
+\subsection{Logigram 9}
+Logigram 9 bevat een aantal bijzinnen tussen haakjes. Deze worden gepromoveerd tot hoofdzinnen. Bijvoorbeeld ``Opal (who isn't 20 years old) is scheduled 2 hours after Harold'' wordt ``Opal isn't 20 years old and is scheduled 2 hours after Harold''.
+
+Daarnaast bevat logigram 9 een superlatief, namelijk ``Elmer isn't the youngest student''. Dit zou een nieuwe lexicale categorie kunnen zijn. Het is echter moeilijk om hier ook het juiste type van af te leiden. Er is gekozen om superlatieven te verbieden omdat binnen logigrammen dit altijd herschreven kan worden naar de juiste waarde. Deze zin wordt dan ``Elmer isn't 15 years old''.
+
+\subsection{Logigram 10}
+Logigram 10 heeft twee problemen. Enerzijds wordt er gebruik gemaakt van kommagetallen. Anderzijds is er niet voldaan aan het principe van één type per woord.
+
+Aangezien de onderliggende tool IDP \cite{IDP} geen kommagetallen aankan, ondersteunen we deze ook niet in de grammatica. We passen de zinnen aan. We tellen daarvoor bij de kommagetallen (bv. ``\$6.99'') 0,01 op (tot bv. ``\$7''). Dit maakt geen verschil voor de logigram. Er wordt enkel gekeken naar de verschillen tussen twee getallen, die blijven met deze truk dezelfde.
+
+Het werkwoord ``to order'' wordt in deze logigram gebruikt voor zowel het bestellen van pasta als de saus die erbij hoort. Daarom passen we één voorkomen van ``to order'' aan naar ``to choose'', zodanig dat ``to order'' enkel voor het bestellen van de pastasoort is en ``to choose'' enkel voor het kiezen van de bijhorende saus.
+
+\section{Testset}
+De testset bestaat uit de volgende tien logigrammen uit Puzzle Baron's Logic Puzzles Volume 3 \cite{logigrammen}. Geen enkele logigram is vertaalbaar zonder wijzigingen uit te voeren aan de zinnen van de logigram. We bespreken de verschillende logigrammen en wat er aangepast moet worden om te vallen onder de grammatica van de trainingset. Daarbij minimaliseren we het aantal beperking en hoe groot deze moeten zijn. 
+
+\subsection{Logigram 11: 1 aanpassing}
+Tabel~\ref{tbl:log11} geeft een overzicht van de aanpassing aan logigram 11. Één zin werd herschreven van de passieve vorm naar de actieve vorm. Voor de rest past de logigram volledig binnen de grammatica van de testset.
+
+Het type-systeem kan het domein van de sectoren van de aandelen wel niet achterhalen zonder op een vraag van de vierde soort terug te vallen. Namelijk een vraag of twee elementen tot hetzelfde domein behoren. Alle sectoren komen namelijk voor in naamwoordgroepen met een onbekende relatie (``the health-care sector'', ``the energy stock'', ...).
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{p{0.2\linewidth}p{0.3\linewidth}p{0.3\linewidth}c}
+    \toprule
+    \textbf{Probleem} & \textbf{Origineel} & \textbf{Aangepast} & \textbf{Aantal} \\ 
+    \hline
+    Passieve zin & The financial stock wasn't purchased by Edith & Edith didn't purchase the financial stock & 1\\
+    \bottomrule
+  \end{tabular}
+  \caption{Een overzicht van de aanpassing aan logigram 11}
+  \label{tbl:log11}
+\end{table}
+
+\subsection{Logigram 12: 5 aanpassingen}
+Tabel~\ref{tbl:log12} geeft een overzicht van de aanpassingen aan logigram 12. In drie zinnen kwamen kommagetallen voor i.p.v. gehele getallen, net zoals in logigram 10 uit de trainingset. Dit is niet echt een probleem met de grammatica maar eerder met de onderliggende tool.
+
+Daarnaast vervangen we een werkwoord door een ander werkwoord uit de logigram omdat aan het principe van één type per (werk)woord anders niet is voldaan.
+
+Ten slotte passen we ``the one'' aan naar een naamwoordgroep met een echt substantief. ``The one'' is een grammaticale structuur waarbij ``one'' verwijst naar een substantief dat eerder in de zin komt. Dit kwam niet voor in de trainingset. Dit probleem had ook opgelost kunnen worden door ``one'' als substantief toe te voegen aan het lexicon. Dit zou echter geen correcte evaluatie zijn van de opgestelde grammatica.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{p{0.2\linewidth}p{0.3\linewidth}p{0.3\linewidth}c}
+    \toprule
+    \textbf{Probleem} & \textbf{Origineel} & \textbf{Aangepast} & \textbf{Aantal} \\ 
+    \hline
+    Kommagetallen & Homer paid \textbf{\$6.99} & Homer paid \textbf{\$7} & 3 \\
+    \hline
+    Werkwoord heeft fout type & Glen paid \$3 less than whoever \textbf{had} the sloppy joe & Glen paid \$3 less than whoever \textbf{ordered} the sloppy joe & 1 \\
+    \hline
+    ``the one'' & The order with lemonade cost \$1 more than \textbf{the one} with the water & The order with the lemonade cost \$1 more than \textbf{the order} with the water & 1 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Een overzicht van de aanpassingen aan logigram 12}
+  \label{tbl:log12}
+\end{table}
+
+\subsection{Logigram 13: 3 aanpasssingen}
+Tabel~\ref{tbl:log13} geeft een overzicht van de aanpassingen aan logigram 13. Er is opnieuw één zin met ``the one''. Daarnaast is er nog één zin die twee fouten bevat. Enerzijds is er een constructie waarbij het voegwoord op een nieuwe plaats voorkomt. Anderzijds wordt er het koppelwerkwoord op een nieuwe manier gebruikt. Er zijn twee manieren om de zin te herschrijven. Bij de manier die aangegeven is in de tabel kan het type-systeem alle types achterhalen zonder te moeten terugvallen op een vraag van de vierde soort. Namelijk een vraag die stelt of twee domeinelementen tot hetzelfde domein behoren. De aanpassing die dichter bij het origineel licht is ``...one is Hermans's puppet...''.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{p{0.2\linewidth}p{0.3\linewidth}p{0.3\linewidth}c}
+    \toprule
+    \textbf{Probleem} & \textbf{Origineel} & \textbf{Aangepast} & \textbf{Aantal} \\ 
+    \hline
+    ``the one'' & The puppet going to Ypsilanti cost \$250 more than \textbf{the one} going to St. Moritz & The puppet going to Ypsilanti cost \$250 more than \textbf{the puppet} going to St. Moritz & 1 \\
+    \hline
+    Foute structuur naamwoordgroep & Of \textbf{the \$1000 and \$1250 dummies}, one is Herman's and the other is going to Mexico city & Of \textbf{the \$1000 dummy and the \$1250 dummy}, one is Herman's and the other is going to Mexico city & 1 \\
+    \hline
+    Fout gebruik koppelwerkwoord & Of the \$1000 dummy and the \$1250 dummy, one \textbf{is Herman's} and the other is going to Mexico city & Of the \$1000 dummy and the \$1250 dummy, one \textbf{is from Herman} and the other is going to Mexico city & 1 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Een overzicht van de aanpassingen aan logigram 13}
+  \label{tbl:log13}
+\end{table}
+
+\subsection{Logigram 14: 13 aanpassingen}
+Tabel~\ref{tbl:log14} geeft een overzicht van de aanpassingen aan logigram 14. Er zinnen twee zinnen met ``the one''. Daarnaast is er een domeinelement dat twee keer voorkomt maar in verschillende vormen. Één keer als ``monk's fin shell'' en één keer als ``monk's fin''. We passen één van de twee aan om dezelfde structuur te hebben.
+
+In deze logigram zijn de kleuren adjectieven (zonder adjectiefconstituent). Dit wordt niet ondersteund in de grammatica. We beschouwen de adjectieven daarom als eigennamen en voegen telkens een voorzetsel toe om er een voorzetselconstituent van te maken.
+
+Ten slotte wordt het werkwoord ``found in'' zowel gebruikt voor het jaartal als de plaats waar een schelp gevonden is. Dit is in strijd met het principe van één type per (werk)woord. We gebruiken daarom het werkwoord ``discovered in'' voor een plaats en ``found in'' voor een jaartal. In totaal zijn dit 5 aanpassingen.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{p{0.2\linewidth}p{0.3\linewidth}p{0.3\linewidth}c}
+    \toprule
+    \textbf{Probleem} & \textbf{Origineel} & \textbf{Aangepast} & \textbf{Aantal} \\ 
+    \hline
+    ``the one'' & The baby's ear shell was found 3 years before \textbf{the one} from Jamaica & The baby's ear shell was found 3 years before \textbf{the shell} from Jamaica & 2 \\
+    \hline
+    Dubbele vorm domeinelement & The shell found in 2001 is either the monk's fin or the coquina & The shell found in 2001 is either the monk's fin \textbf{shell} or the coquina & 1 \\
+    \hline
+    Fout gebruik koppelwerkwoord & The seashell found in Puerto Rico \textbf{isn't black and white} & The seashell found in Puerto Rico \textbf{isn't in black and white} & 5 \\
+    \hline
+    Werkwoord heeft fout type & The seashell \textbf{found in} Puerto Rico isn't in black and white & The seashell \textbf{discovered in} Puerto Rico isn't in black and white & 5 \\ 
+    \bottomrule
+  \end{tabular}
+  \caption{Een overzicht van de aanpassingen aan logigram 14}
+  \label{tbl:log14}
+\end{table}
+
+\subsection{Logigram 15: 8 aanpassingen}
+Tabel~\ref{tbl:log15} geeft een overzicht van de aanpassingen aan logigram 15. Andermaal bevat deze logigram een zin met ``the one''. Daarnaast is er een zin die een verwijzing maakt naar een vorige zin via het woord ``also''. Dit past niet in de grammatica. Bovendien is er net als in logigram 6 een constructie ``Of the two ...''. Deze constructie wordt op een gelijkaardige manier aangepast. Net als logigram 9, bevat deze logigram een superlatief. Ook hier wordt de superlatief vervangen door een eigennaam.
+
+Ten slotte is er opnieuw een probleem met een werkwoord dat meer dan één type heeft. ``got'' wordt zowel gebruik voor de score van een student als die van een presentatie uit te drukken. Dit wordt aangepast naar ``got'' (voor studenten) en ``received'' (voor presentaties).
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{p{0.2\linewidth}p{0.3\linewidth}p{0.3\linewidth}c}
+    \toprule
+    \textbf{Probleem} & \textbf{Origineel} & \textbf{Aangepast} & \textbf{Aantal} \\ 
+    \hline
+    ``the one'' & The presentation that got the A was 4 minutes shorter than \textbf{the one} on Caligula & The presentation that got the A was 4 minutes shorter than \textbf{the presentation} on Caligula & 2 \\
+    \hline
+    Overtollig woord & Yolada \textbf{also} didn't give a presentation on Galerius & Yolada didn't give a presentation on Galerius & 1 \\
+    \hline
+    ``Of the two ...'' & Of \textbf{the two presentations on Augustus and Caligula}, one was given by Catherine and the other lasted for 10 minutes & Of \textbf{the presentation on Augustus and the presentation on Caligula}, one was given by Catherine and the other lasted for 10 minutes & 1 \\
+    \hline
+    Superlatief & The talk on Nero was 2 minutes shorter than the presentation that got \textbf{the lowest grade} & The talk on Nero was 2 minutes shorter than the presentation that got \textbf{the D} & 1 \\
+    \hline
+    Werkwoord heeft fout type & The presentation that \textbf{got} the A was 4 minutes shorter than the one on Caligula & The presentation that \textbf{received} the A was 4 minutes shorter than the one on Caligula & 3 \\ 
+    \bottomrule
+  \end{tabular}
+  \caption{Een overzicht van de aanpassingen aan logigram 15}
+  \label{tbl:log15}
+\end{table}
+
+\subsection{Logigram 16: 3 aanpassingen}
+Tabel~\ref{tbl:log16} geeft een overzicht van de aanpassingen aan logigram 16. Enerzijds zijn er twee voorkomens van ``the one'' anderzijds is er een overtollig woord ``always'' dat verwijderd wordt.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{p{0.2\linewidth}p{0.3\linewidth}p{0.3\linewidth}c}
+    \toprule
+    \textbf{Probleem} & \textbf{Origineel} & \textbf{Aangepast} & \textbf{Aantal} \\ 
+    \hline
+    ``the one'' & Floyd was either the juggler who went second or \textbf{the one} from Quasqueton & Floyd was either the juggler who went second or \textbf{the juggler} from Quasqueton & 2 \\
+    \hline
+    Overtollig woord & Floyd \textbf{always} juggles rubber balls & Floyd juggles rubber balls & 1 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Een overzicht van de aanpassingen aan logigram 16}
+  \label{tbl:log16}
+\end{table}
+
+\subsection{Logigram 17: 6 aanpassingen}
+Tabel~\ref{tbl:log17} geeft een overzicht van de aanpassingen aan logigram 17. Nogmaals zijn er drie zinnen met ``the one''. Daarnaast ontbreekt er in twee zinnen het woordje ``trip''. Ten slotte wordt ``start at'' meestal gebruikt voor een plaats en ``begin at'' voor een tijdstip. Er is echter één plaats waar dit niet zo was.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{p{0.2\linewidth}p{0.3\linewidth}p{0.3\linewidth}c}
+    \toprule
+    \textbf{Probleem} & \textbf{Origineel} & \textbf{Aangepast} & \textbf{Aantal} \\ 
+    \hline
+    ``the one'' & Zachary's outing will begin 1 hour before \textbf{the one} starting at Casa Loma & Zachary's outing will begin 1 hour before \textbf{the outing} starting at Casa Loma & 3 \\
+    \hline
+    Ontbrekend woord (ellips) & Zachary's trip will begin 3 hours before Janice's & Zachary's trip will begin 3 hours before Janice's \textbf{trip} & 2 \\
+    \hline
+    Werkwoord heeft fout type & The Yorkville tour, the tour \textbf{starting at} 9 am and the one with 5 people are three different tours & The Yorkville tour, the tour \textbf{beginning at} 9 am and the one with 5 people are three different tours & 1 \\ 
+    \bottomrule
+  \end{tabular}
+  \caption{Een overzicht van de aanpassingen aan logigram 17}
+  \label{tbl:log17}
+\end{table}
+
+\subsection{Logigram 18: 7 aanpassingen}
+Tabel~\ref{tbl:log18} geeft een overzicht van de aanpassingen aan logigram 18. Grammaticaal is deze volledig correct. Er zijn echter veel problemen met types. Enerzijds wordt ``finished with'' en ``received'' zowel gebruikt met het beroep als onderwerp als met de persoon als onderwerp. Anderzijds wordt een beroep soms gelijk gesteld aan een persoon. We passen de zinnen aan zodat ze voldoen aan één type per woord. Hiervoor moeten we ook een soort van type-cast introduceren van beroep naar persoon (``the person acting as ...'')
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{p{0.2\linewidth}p{0.3\linewidth}p{0.3\linewidth}c}
+    \toprule
+    \textbf{Probleem} & \textbf{Origineel} & \textbf{Aangepast} & \textbf{Aantal} \\ 
+    \hline
+    Werkwoord heeft fout type & The academic \textbf{finished} 500 votes behind the teacher & The academic \textbf{received} 500 votes less than the teacher & 4 \\
+    \hline
+    Naamwoordgroep heeft fout type & Kelly Kirby finished 1000 votes ahead of \textbf{the academic} & Kelly Kirby finished 1000 votes ahead of \textbf{the person who acts as the academic} & 3 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Een overzicht van de aanpassingen aan logigram 18}
+  \label{tbl:log18}
+\end{table}
+
+\subsection{Logigram 19: 13 aanpassingen}
+Tabel~\ref{tbl:log19} geeft een overzicht van de aanpassingen aan logigram 19. Er zijn drie zinnen met ``the one''. Daarnaast is er een zin met een bezittelijk voornaamwoord. Dit is een lexicale categorie die geen deel uitmaakt van de grammatica. De zin moet dus herschreven worden. In één zin is er een ellips van ``comet''.
+
+In 6 zinnen is er een bijzin zoals ``Whitaker discovered''. Het probleem is dat het onduidelijk is of het gaat om de persoon die de planeet heeft ontdekt (``discovered by'') of het jaartal waarin de planeet is ontdekt (``discovered in''). Indien de grammatica het passief correct zou ondersteunen of indien er type checking zou zijn i.p.v. type inferentie zou dit geen problemen geven. Nu zijn er echter twee betekenissen mogelijk. Daarom worden de zinnen herschreven.
+
+Daarnaast wordt ``year'' zowel gebruikt voor de rotatielengte van een planeet als voor het aantal jaar tussen een ontdekking. Het principe van één type per woord is dus gebroken. Daarom wordt er ``cycle'' gebruikt tussen de ontdekkingen van twee planeten\footnote{Het is ook mogelijk om het andere gebruik van ``year'' te veranderen door een nieuw woord maar dit resulteert in minder aanpassingen.}.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{p{0.2\linewidth}p{0.3\linewidth}p{0.3\linewidth}c}
+    \toprule
+    \textbf{Probleem} & \textbf{Origineel} & \textbf{Aangepast} & \textbf{Aantal} \\ 
+    \hline
+    ``the one'' & The comet Tillman discovered, \textbf{the one} discovered in 2011 and Casputi are three different comets & The comet Tillman discovered, \textbf{the comet} discovered in 2011 and Casputi are three different comets & 3 \\
+    \hline
+    Een bezittelijk naamwoord & Whitaker discovered his comet in 2010 & Whitaker's comet was discovered in 2010 & 1 \\
+    \hline
+    Onbrekend woord (ellips) & The comet Parks discovered was discovered 1 year before Whitaker's & The comet Parks discovered was discovered 1 year before Whitaker's \textbf{comet} & 1 \\
+    \hline
+    Bijzin met foute structuur & The comet \textbf{Whitaker discovered} doesn't have an orbital period of 30 year & The comet \textbf{discovered by Whitaker} doesn't have an orbital period of 30 years & 6 \\
+    \hline
+    Naamwoordgroep heeft fout type & Gostroma was discovered \textbf{1 year} after the comet discovered by Tillman & Gostroma was discovered \textbf{1 cycle} after the comet discovered by Tillman & 2 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Een overzicht van de aanpassingen aan logigram 19}
+  \label{tbl:log19}
+\end{table}
+
+\subsection{Logigram 20: 6 aanpassingen}
+Tabel~\ref{tbl:log20} geeft een overzicht van de aanpassingen aan logigram 20. Ook logigram 20 bevat een voorkomen van ``the one''. Daarnaast zijn er 5 woordgroepen die verwijderd worden. Twee keer ``said to be'' en drie keer ``Priscilla''. Het is namelijk altijd Priscilla die een huis bezoekt.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{p{0.2\linewidth}p{0.3\linewidth}p{0.3\linewidth}c}
+    \toprule
+    \textbf{Probleem} & \textbf{Origineel} & \textbf{Aangepast} & \textbf{Aantal} \\ 
+    \hline
+    ``the one'' & Of the building haunted by Lady Grey and \textbf{the one} haunted by Victor, one was Markmanor and the other was visited in January & Of the building haunted by Lady Grey and \textbf{the building} haunted by Victor, one was Markmanor and the other was visited in January & 1 \\
+    \hline
+    Overtollig woord (said to be) & Wolfenden was \textbf{said to be} haunted by Brunhilde & Wolfenden was haunted by Brunhilde & 2 \\
+    \hline
+    Overtollig woord (Priscilla) &  The house \textbf{Priscilla} visited in march wasn't located on Circle Drive & The house visited in march wasn't located on Circle Drive & 3 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Een overzicht van de aanpassingen aan logigram 20}
+  \label{tbl:log20}
+\end{table}
+
+\subsection{Resultaten}
+Tabel~\ref{tbl:resultaten} geeft een overzicht van alle aanpassingen. Er zijn een vijftal soort fouten. De eerste groep bestaat uit echte grammaticale elementen die niet ondersteund zijn. Dit zijn 30 van de 65 fouten (46\%). De helft daarvan is opgelost door het ondersteunen van ``the one'' als naamwoordgroep. De tweede groep bestaat uit grammaticale elementen die niet ondersteund zijn maar ook niet voorkwamen in de trainingset. In deze groep zijn er 5 aanpassingen.
+
+Daarnaast is er een grote groep van aanpassingen die nodig zijn om te passen binnen het voorgestelde type-systeem. Dit gaat allemaal op overtredingen van het principe van één type per woord.
+
+In één logigram is dan weer de assumptie overtreden dat elk domeinelement maar in één vorm voorkomt.
+
+Ten slotte zijn er 10 aanpassingen nodig voor het aanvullen of weglaten van woorden die niet veel aan de essentie van de zin veranderen.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{ll}
+    \toprule
+    \textbf{Probleem} & \textbf{Aantal} \\ 
+    \hline
+    ``the one'' & 15 \\
+    Fout gebruik koppelwerkwoord & 6 \\
+    Bijzin met foute structuur & 6 \\
+    Passieve zin & 1 \\
+    Een bezittelijk voornaamwoord & 1 \\
+    Foute structuur naamwoordgroep & 1 \\
+    \hline
+    Kommagetallen & 3 \\
+    Superlatief & 1 \\
+    ``Of the two ...'' & 1 \\
+    \hline
+    Werkwoord heeft fout type & 14 \\
+    Naamwoordgroep heeft fout type & 5 \\
+    \hline
+    Dubbele vorm domeinelement & 1 \\
+    \hline
+    Overtollig woord & 7 \\
+    Ontbrekend woord (ellips) & 3 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Een overzicht van alle aanpassingen}
+  \label{tbl:resultaten}
+\end{table}
+
+\section{Conclusie}
+Ten eerste kunnen we al stellen dat we elke logigram zodanig kunnen omvormen zodat het mogelijk wordt om hem automatisch te laten vertalen naar logica. In de meeste gevallen zijn de aanpassingen eerder klein. Er zijn slechts twee zinnen die vrij hard aangepast moeten worden (één van passief naar actief en één voor het verwijderen van het bezittelijke voornaamwoord). Het is echter niet zo dat we de logigrammen gewoon kunnen ingeven zonder aanpassingen te doen. Daarvoor is de grammatica nog te ruim. Het lijkt echter wel mogelijk om een grammatica op te stellen waaraan een schrijver zich kan houden zonder dat de lezer een verschil kan merken.
+
+Bovendien kunnen we ook altijd de types achterhalen. In de meeste gevallen enkel op basis van de drie soorten vragen die echt puur taalkundig zijn. Aan het principe van één type per woord is wel niet altijd voldaan. Daarvoor zijn er soms aanpassingen nodig.
+
+Het resultaat is echter dat we op basis van het systeem beschreven in deze thesis alle getesten logigrammen automatisch kunnen oplossen. Daarbij vertalen we eerst naar logica. Op basis van de inferenties van de types kunnen we ook de nodige extra axioma's en het formeel vocabularium opstellen. Daardoor kunnen we met behulp van de tool IDP \cite{IDP} de bijecties achterhalen en de domeinelementen opdelen in hun equivalentieklassen.

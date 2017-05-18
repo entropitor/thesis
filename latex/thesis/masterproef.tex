@@ -2,16 +2,15 @@
 \setup{title={Automatisch vertalen van logigrammen naar logica},
   author={Jens Claes},
   promotor={Prof. dr. M. Denecker},
-  assessor={},
+  assessor={Prof. dr. B. Berendt},
   assistant={Dr. B. Bogaerts \and Ir. L. Janssens}}
 % De volgende \setup mag verwijderd worden als geen fiche gewenst is.
 \setup{filingcard,
   translatedtitle={Automatic translation of logigrams into logic},
   udc=621.3,
-  shortabstract={Hier komt een heel bondig abstract van hooguit 500
-    woorden. \LaTeX\ commando's mogen hier gebruikt worden. Blanco lijnen
-    (of het commando \texttt{\string\pa r}) zijn wel niet toegelaten!
-    \endgraf \lipsum[2]}}
+  shortabstract={Deze thesis stelt een aangepassing voor aan het semantische framework van Blackburn en Bos \cite{Blackburn2005, Blackburn2006}. Specifiek passen we dit framework aan voor het oplossen van logigrammen door ze te vertalen naar logica.
+    Deze aanpassingen bestaan enerzijds uit het opstellen van een lexicon en een grammatica voor logigrammen. Anderzijds voegen we types toe aan het framework. Dankzij types kunnen grammaticaal correcte zinnen zonder betekenis toch uitgesloten worden. Bovendien kan men op basis van types achtergrondinformatie afleiden. Binnen logigrammen kunnen de verschillende domeinen geleerd worden m.b.v. types.
+    }}
 % Verwijder de "%" op de volgende lijn als je de kaft wil afdrukken
 %\setup{coverpageonly}
 % Verwijder de "%" op de volgende lijn als je enkel de eerste pagina's wil
@@ -40,10 +39,6 @@
 \allowdisplaybreaks
 
 \theoremstyle{definition}
-\newtheorem{ex}{Voorbeeld}[chapter]
-% \newfloat{ex}{thp}{loex}[chapter]
-% \floatname{ex}{Voorbeeld}
-\def\exautorefname{Voorbeeld}
 
 \newcommand{\example}[1]{\textit{``#1''}}
 
@@ -133,11 +128,11 @@
 \tableofcontents*
 
 \begin{abstract}
-  In dit \texttt{abstract} environment wordt een al dan niet uitgebreide
-  samenvatting van het werk gegeven. De bedoeling is wel dat dit tot
-  1~bladzijde beperkt blijft.
+Deze thesis stelt een aangepassing voor aan het semantische framework van Blackburn en Bos \cite{Blackburn2005, Blackburn2006}. Specifiek passen we dit framework aan voor het oplossen van logigrammen door ze te vertalen naar logica. Deze aanpassingen bestaan enerzijds uit het opstellen van een lexicon en een grammatica specifiek voor logigrammen. Anderzijds voegen we types toe aan het framework.
 
-  \lipsum[1]
+Het lexicon en de grammatica worden opgesteld op basis van tien logigrammen. Dit wordt dan toegepast op tien nieuwe logigrammen. Hierbij onderzoeken we of de nieuwe logigrammen uitdrukbaar zijn mits aanpassingen en wat voor aanpassingen dan nodig zijn.
+
+Dankzij types kunnen grammaticaal correcte zinnen zonder betekenis, zoals ``Het gras drinkt het zingende huis'', toch uitgesloten worden. Binnen deze thesis wordt het echter gebruikt om achtergrondinformatie af te leiden. Binnen logigrammen leren we namelijk de verschillende domeinen met behulp van types.
 \end{abstract}
 
 % Een lijst van figuren en tabellen is optioneel
@@ -164,6 +159,8 @@
 \include{ch_grammar}
 \include{ch_types}
 \include{ch_evaluatie}
+
+\include{ch_conclusie}
 
 % Indien er bijlagen zijn:
 \appendixpage*          % indien gewenst

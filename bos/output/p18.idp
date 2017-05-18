@@ -45,7 +45,7 @@ theory T : V {
     // The man who received 9500 votes isn't the doctor
     ?o [candidate]: received(o,9500) & ~ (doctor = o).
 
-    // Of the person acting as academic and Al Allen, one ended up with 10000 votes and the other ended up with 8500
+    // Of the person acting as academic and Al Allen, one ended up with 10000 votes and the other ended up with 8500 votes
     ?p [person]: acts_as(p,academic) & ~ (p = al_allen) & (ended_up_with(p,10000) & ended_up_with(al_allen,8500) | ended_up_with(al_allen,10000) & ended_up_with(p,8500)).
 
     // The politician who finished with 10500 votes isn't from Lakota

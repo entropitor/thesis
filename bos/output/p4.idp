@@ -31,7 +31,7 @@ theory T : V {
     // Jackie graduated 2 years before the player from York
     ?d [year] e [graduate] f [year]: from(e,york) & graduated_in(e,d) & f = d-2 & graduated_in(jackie,f).
 
-    // The 2007 graduate doesn't play for the Giants
+    // The 2007 graduate isn't playing for the Giants
     ?g [graduate]: ~ plays_for(g,giants) & graduated_in(g,2007).
 
     // Of Lonnie and the person from Frenchboro, one is with the Dodgers and the other graduated in 2005

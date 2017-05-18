@@ -1,14 +1,14 @@
-// Problem p8b
+// Problem p8
 
 vocabulary V {
-    type minute = {10; 15; 20; 25; 30} isa int
     type design constructed from {the_other_design, flower, mask, phone_case, whistle}
     type type1 constructed from {the_other_type1, adrienne, bertha, stella, raquel}
+    type minute = {10; 15; 20; 25; 30} isa int
     type type2 constructed from {the_other_type2, orange, yellow, white, blue}
 
+    unknown_relation_design_type1(design, type1)
     printed_in(design, minute)
     took_to_print(design, minute)
-    from(design, type1)
     in(design, type2)
     required_to_print(design, minute)
 }
@@ -20,40 +20,40 @@ theory T : V {
     // The flower printed in 25 minutes
     printed_in(flower,25).
 
-    // The design from Adrienne took 15 minutes to print
-    ?a [design]: from(a,adrienne) & took_to_print(a,15).
+    // Adrienne's design took 15 minutes to print
+    ?a [design]: took_to_print(a,15) & unknown_relation_design_type1(a,adrienne).
 
     // The piece that printed in 30 minutes wasn't the mask
     ?b [design]: printed_in(b,30) & ~ (mask = b).
 
-    // Of the item that printed in 10 minutes and the Bertha's piece, one was the flower and the other was in orange
-    ?c [design] d [design]: printed_in(c,10) & ~ (c = d) & (flower = c & in(d,orange) | flower = d & in(c,orange)) & from(d,bertha).
+    // Of the item that printed in 10 minutes and Bertha's piece, one was the flower and the other was in orange
+    ?c [design] d [design]: printed_in(c,10) & ~ (c = d) & (flower = c & in(d,orange) | flower = d & in(c,orange)) & unknown_relation_design_type1(d,bertha).
 
     // The orange item required 5 minutes fewer than the yellow design to print
     ?e [design] f [minute] g [design] h [minute]: required_to_print(g,f) & in(g,yellow) & h = f-5 & required_to_print(e,h) & in(e,orange).
 
     // Adrienne's design was either the phone case or the item that printed in 30 minutes
-    ?i [design]: (phone_case = i | (?j [design]: printed_in(j,30) & j = i)) & from(i,adrienne).
+    ?i [design]: (phone_case = i | (?j [design]: printed_in(j,30) & j = i)) & unknown_relation_design_type1(i,adrienne).
 
     // The white item took 10 minutes more than Stella's piece
-    ?k [design] l [minute] m [design] n [minute]: took_to_print(m,l) & from(m,stella) & n = l+10 & took_to_print(k,n) & in(k,white).
+    ?k [design] l [minute] m [design] n [minute]: took_to_print(m,l) & unknown_relation_design_type1(m,stella) & n = l+10 & took_to_print(k,n) & in(k,white).
 
     // Raquel's piece wasn't the mask
-    ?o [design]: ~ (mask = o) & from(o,raquel).
+    ?o [design]: ~ (mask = o) & unknown_relation_design_type1(o,raquel).
 
-    // Of the whistle and the blue piece, one took 30 minutes to print and the other took 10 minutes to print
+    // Of the whistle and the blue piece, one took 30 minutes to print and the other took 10 to print
     ?p [design]: ~ (whistle = p) & (took_to_print(whistle,30) & took_to_print(p,10) | took_to_print(p,30) & took_to_print(whistle,10)) & in(p,blue).
 
 
     // Logigram bijection axioms:
+    ! x [design]: ?=1 y [type1]: unknown_relation_design_type1(x, y).
+    ! x [type1]: ?=1 y [design]: unknown_relation_design_type1(y, x).
+
     ! x [design]: ?=1 y [minute]: printed_in(x, y).
     ! x [minute]: ?=1 y [design]: printed_in(y, x).
 
     ! x [design]: ?=1 y [minute]: took_to_print(x, y).
     ! x [minute]: ?=1 y [design]: took_to_print(y, x).
-
-    ! x [design]: ?=1 y [type1]: from(x, y).
-    ! x [type1]: ?=1 y [design]: from(y, x).
 
     ! x [design]: ?=1 y [type2]: in(x, y).
     ! x [type2]: ?=1 y [design]: in(y, x).

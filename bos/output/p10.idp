@@ -1,14 +1,17 @@
 // Problem p10
 
 vocabulary V {
-    type type1 constructed from {the_other_type1, capellini, rotini, tagliolini, farfalle}
+    type bill constructed from {bill_1, bill_2, bill_3, bill_4, bill_5}
     type person constructed from {the_other_person, angie, damon, claudia, elisa}
-    type type2 = {7; 8; 9; 10; 11} isa int
-    type type3 constructed from {the_other_type3, arrabiata_sauce, marinara_sauce, puttanesca_sauce, bolognese_sauce}
+    type type1 constructed from {the_other_type1, capellini, rotini, tagliolini, farfalle}
+    type dollar = {7; 8; 9; 10; 11} isa int
+    type type2 constructed from {the_other_type2, arrabiata_sauce, marinara_sauce, puttanesca_sauce, bolognese_sauce}
 
+    unknown_relation_bill_person(bill, person)
     ordered(person, type1)
-    paid(person, type2)
-    chose(person, type3)
+    paid(person, dollar)
+    came_to(bill, dollar)
+    chose(person, type2)
     had(person, type1)
 }
 
@@ -19,40 +22,46 @@ theory T : V {
     // Angie didn't order capellini
     ~ ordered(angie,capellini).
 
-    // The person who did order capellini paid $11
+    // Whoever did order capellini paid $11
     ?a [person]: ordered(a,capellini) & paid(a,11).
 
-    // Damon paid $8
-    paid(damon,8).
+    // Damon's bill came to $8
+    ?b [bill]: came_to(b,8) & unknown_relation_bill_person(b,damon).
 
-    // Claudia, the person who paid $9 and the person who chose arrabiata sauce were three different people
-    ?b [person] c [person]: ~ (claudia = b) & ~ (claudia = c) & ~ (b = c) & paid(b,9) & chose(c,arrabiata_sauce).
+    // Claudia, the person who paid $9 and whoever chose arrabiata sauce were three different people
+    ?c [person] d [person]: ~ (claudia = c) & ~ (claudia = d) & ~ (c = d) & paid(c,9) & chose(d,arrabiata_sauce).
 
     // Angie was either the runner who ordered rotini or the diner who paid $11
-    (?d [person]: ordered(d,rotini) & d = angie) | (?e [person]: paid(e,11) & e = angie).
+    (?e [person]: ordered(e,rotini) & e = angie) | (?f [person]: paid(f,11) & f = angie).
 
     // The competitor who chose marinara sauce paid $2 less than the runner who ordered tagliolini
-    ?f [person] g [type2] h [person] i [type2]: chose(f,marinara_sauce) & ordered(h,tagliolini) & paid(h,g) & i = g-2 & paid(f,i).
+    ?g [person] h [dollar] i [person] j [dollar]: chose(g,marinara_sauce) & ordered(i,tagliolini) & paid(i,h) & j = h-2 & paid(g,j).
 
     // Elisa paid $2 less than the person who chose puttanesca sauce
-    ?j [type2] k [person] l [type2]: chose(k,puttanesca_sauce) & paid(k,j) & l = j-2 & paid(elisa,l).
+    ?k [dollar] l [person] m [dollar]: chose(l,puttanesca_sauce) & paid(l,k) & m = k-2 & paid(elisa,m).
 
-    // Of Claudia and the person who paid $7, one chose bolognese sauce and the other ordered tagliolini
-    ?m [person]: paid(m,7) & ~ (claudia = m) & (chose(claudia,bolognese_sauce) & ordered(m,tagliolini) | chose(m,bolognese_sauce) & ordered(claudia,tagliolini)).
+    // Of Claudia and whoever paid $7, one chose bolognese sauce and the other ordered tagliolini
+    ?n [person]: paid(n,7) & ~ (claudia = n) & (chose(claudia,bolognese_sauce) & ordered(n,tagliolini) | chose(n,bolognese_sauce) & ordered(claudia,tagliolini)).
 
     // Damon had either farfalle or rotini
     had(damon,farfalle) | had(damon,rotini).
 
 
     // Logigram bijection axioms:
+    ! x [bill]: ?=1 y [person]: unknown_relation_bill_person(x, y).
+    ! x [person]: ?=1 y [bill]: unknown_relation_bill_person(y, x).
+
     ! x [person]: ?=1 y [type1]: ordered(x, y).
     ! x [type1]: ?=1 y [person]: ordered(y, x).
 
-    ! x [person]: ?=1 y [type2]: paid(x, y).
-    ! x [type2]: ?=1 y [person]: paid(y, x).
+    ! x [person]: ?=1 y [dollar]: paid(x, y).
+    ! x [dollar]: ?=1 y [person]: paid(y, x).
 
-    ! x [person]: ?=1 y [type3]: chose(x, y).
-    ! x [type3]: ?=1 y [person]: chose(y, x).
+    ! x [bill]: ?=1 y [dollar]: came_to(x, y).
+    ! x [dollar]: ?=1 y [bill]: came_to(y, x).
+
+    ! x [person]: ?=1 y [type2]: chose(x, y).
+    ! x [type2]: ?=1 y [person]: chose(y, x).
 
     ! x [person]: ?=1 y [type1]: had(x, y).
     ! x [type1]: ?=1 y [person]: had(y, x).
@@ -61,10 +70,16 @@ theory T : V {
     ! x [person] y [type1]: ordered(x, y) <=> had(x, y).
 
     // Logigram transitive relation axioms:
+    ! x [bill] y [person]: unknown_relation_bill_person(x, y) <=> ? z [dollar]: came_to(x, z) & paid(y, z).
 
     // Logigram reflexive relation axioms:
 
     // Logigram symmetry breaking axioms:
+    unknown_relation_bill_person(bill_1, the_other_person).
+    unknown_relation_bill_person(bill_2, angie).
+    unknown_relation_bill_person(bill_3, damon).
+    unknown_relation_bill_person(bill_4, claudia).
+    unknown_relation_bill_person(bill_5, elisa).
 }
 
 procedure main() {

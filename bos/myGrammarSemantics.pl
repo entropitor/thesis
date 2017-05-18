@@ -48,6 +48,7 @@ combine(s:app(NP, lam(X, drs([], [alldifferent(X)]))), [cop:_, np:NP, alldiffere
 %% combine(q:app(B, A), [whnp:A, vp:B]).
 %% combine(q:A, [sinv:A]).
 
+combine(np:app(Det, app(app(RP, VP), lam(_, drs([], [])))), [det: Det, whoever:RP, vp:VP]).
 combine(np:app(app(B, A), C), [np:A, coord:B, np:C]).
 combine(np:app(A, B), [det:A, n:B]).
 combine(np:app(A, B), [number:A, n:B]).

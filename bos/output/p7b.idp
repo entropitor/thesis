@@ -1,0 +1,75 @@
+// Problem p7b
+
+vocabulary V {
+    type month = {4; 5; 6; 7; 8} isa int
+    type traveler constructed from {the_other_traveler, bill, izzy, jeffrey, harry}
+    type type1 constructed from {the_other_type1, norway, canada, france, south_africa}
+    type type2 constructed from {the_other_type2, politician, engineer, musician, surgeon}
+    type type3 = {-1; 1; -2; 2; -3; 3; -4; 4} isa int // differences between values of type month
+
+    born_in(traveler, month)
+    from(traveler, type1)
+    acts_as(traveler, type2)
+    in(traveler, month)
+}
+
+structure S : V {
+}
+
+theory T : V {
+    // The traveler from Norway is born in May
+    ?a [traveler]: from(a,norway) & born_in(a,5).
+
+    // Of Bill and the traveler born in June, one is from Norway and the other is from Canada
+    ?b [traveler]: born_in(b,6) & ~ (bill = b) & (from(bill,norway) & from(b,canada) | from(b,norway) & from(bill,canada)).
+
+    // Izzy is born 1 month after the traveler acting as politician
+    ?c [month] d [traveler] e [month]: acts_as(d,politician) & born_in(d,c) & e = c+1 & born_in(izzy,e).
+
+    // The traveler acting as engineer is from France
+    ?f [traveler]: acts_as(f,engineer) & from(f,france).
+
+    // The traveler from South Africa is born in either April or May
+    ?g [traveler]: from(g,south_africa) & (born_in(g,4) | born_in(g,5)).
+
+    // The musician's birthday isn't in April
+    ?h [traveler]: ~ in(h,4) & acts_as(h,musician).
+
+    // Jeffrey is from either France or South Africa
+    from(jeffrey,france) | from(jeffrey,south_africa).
+
+    // The traveler from Canada is born 1 month after the traveler acting as surgeon
+    ?i [traveler] j [month] k [traveler] l [month]: from(i,canada) & acts_as(k,surgeon) & born_in(k,j) & l = j+1 & born_in(i,l).
+
+    // Harry is born sometime before Bill
+    ?m [type3] n [month] o [month]: m>0 & born_in(bill,n) & o = n-m & born_in(harry,o).
+
+
+    // Logigram bijection axioms:
+    ! x [traveler]: ?=1 y [month]: born_in(x, y).
+    ! x [month]: ?=1 y [traveler]: born_in(y, x).
+
+    ! x [traveler]: ?=1 y [type1]: from(x, y).
+    ! x [type1]: ?=1 y [traveler]: from(y, x).
+
+    ! x [traveler]: ?=1 y [type2]: acts_as(x, y).
+    ! x [type2]: ?=1 y [traveler]: acts_as(y, x).
+
+    ! x [traveler]: ?=1 y [month]: in(x, y).
+    ! x [month]: ?=1 y [traveler]: in(y, x).
+
+    // Logigram synonym axioms:
+    ! x [traveler] y [month]: born_in(x, y) <=> in(x, y).
+
+    // Logigram transitive relation axioms:
+
+    // Logigram reflexive relation axioms:
+
+    // Logigram symmetry breaking axioms:
+}
+
+procedure main() {
+    stdoptions.nbmodels = 10;
+    printmodels(modelexpand(T,S))
+}
+
