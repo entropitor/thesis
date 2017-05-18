@@ -108,14 +108,13 @@ Deze regel zegt dat een zin bestaat uit een \texttt{np} gevolgd door een \texttt
 
 Grammatica's die gebruik maken van feature structures, gebruiken altijd unificatie voor het samenvoegen van meerdere structuren. Niet alle features moeten namelijk altijd een waarde toegekend krijgen. Zo kan een eigennaam voorkomen als onderwerp en als lijdend voorwerp (en heeft dus geen waarde voor de feature \texttt{naamval}). Terwijl \example{ik} enkel als onderwerp kan voorkomen (en dus wel een waarde heeft voor die feature). Zoals in het voorbeeld hierboven kan men door unificatie ook controleren of meerdere woordgroepen dezelfde waarden hebben voor een feature.
 
-\paragraph{} Zoals Shieber et al.\ \cite{Shieber2003} aanhalen, verschillen prolog termen van feature structures enkel in vorm. Zo speelt de volgorde in prolog wel een rol. Bovendien moet men steeds alle features vermelden, ook als ze ongebonden zijn. Qua expressiviteit voegen ze echter niets toe aan DCG's. Zo is bovenstaande grammaticale regel op basis van feature structures equivalent met volgende DCG-regel
+\paragraph{} Zoals Shieber et al.\ \cite{Shieber2003} aanhalen, verschillen prolog termen van feature structures enkel in vorm. Zo speelt de volgorde in prolog wel een rol. Bovendien moet men steeds alle features vermelden, ook als ze ongebonden zijn. Qua expressiviteit voegen ze echter niets toe aan DCG's. Zo is bovenstaande grammaticale regel op basis van feature structures equivalent met grammatica~\ref{dcg:equivalentFS}.
 
 \begin{dcg}{Een DCG-grammatica equivalent aan de regel met feature structures}{dcg:equivalentFS}
-s --> np([naamval:nom, getal:Getal]), vp([getal:Getal]).
+s() --> np([naamval:nom, getal:Getal]), vp([getal:Getal]).
 \end{dcg}
-% \[ */
-%     \texttt{s ---> np([naamval:nom, getal:Getal]), vp([getal:Getal]).} \\ */
-% \] */
+
+In deze thesis zullen we altijd bovenstaande notatie gebruiken om de argumenten van een DCG-grammatica te noteren. De argumenten zijn namelijk taalkundig verantwoord en kunnen aanzien worden als feature structures.
 
 \paragraph{} Feature structures (en dus ook argumenten in DCG's) zijn handig om de explosie van grammatica regels te voorkomen. Grammatica~\ref{dcg:withoutFS} is een voorbeeld van een grammatica zonder feature structures.
 
