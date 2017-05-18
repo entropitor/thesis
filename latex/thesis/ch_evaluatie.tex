@@ -79,7 +79,7 @@ Daarnaast bevat logigram 9 een superlatief, namelijk ``Elmer isn't the youngest 
 \subsection{Logigram 10}
 Logigram 10 heeft twee problemen. Enerzijds wordt er gebruik gemaakt van kommagetallen. Anderzijds is er niet voldaan aan het principe van één type per woord.
 
-Aangezien de onderliggende tool IDP geen kommagetallen aankan, ondersteunen we deze ook niet in de grammatica. We passen de zinnen aan. We tellen daarvoor bij de kommagetallen (bv. ``\$6.99'') 0,01 op (tot bv. ``\$7''). Dit maakt geen verschil voor de logigram. Er wordt enkel gekeken naar de verschillen tussen twee getallen, die blijven met deze truk dezelfde.
+Aangezien de onderliggende tool IDP \cite{IDP} geen kommagetallen aankan, ondersteunen we deze ook niet in de grammatica. We passen de zinnen aan. We tellen daarvoor bij de kommagetallen (bv. ``\$6.99'') 0,01 op (tot bv. ``\$7''). Dit maakt geen verschil voor de logigram. Er wordt enkel gekeken naar de verschillen tussen twee getallen, die blijven met deze truk dezelfde.
 
 Het werkwoord ``to order'' wordt in deze logigram gebruikt voor zowel het bestellen van pasta als de saus die erbij hoort. Daarom passen we één voorkomen van ``to order'' aan naar ``to choose'', zodanig dat ``to order'' enkel voor het bestellen van de pastasoort is en ``to choose'' enkel voor het kiezen van de bijhorende saus.
 
@@ -346,6 +346,6 @@ Ten slotte zijn er 10 aanpassingen nodig voor het aanvullen of weglaten van woor
 \section{Conclusie}
 Ten eerste kunnen we al stellen dat we elke logigram zodanig kunnen omvormen zodat het mogelijk wordt om hem automatisch te laten vertalen naar logica. In de meeste gevallen zijn de aanpassingen eerder klein. Er zijn slechts twee zinnen die vrij hard aangepast moeten worden (één van passief naar actief en één voor het verwijderen van het bezittelijke voornaamwoord). Het is echter niet zo dat we de logigrammen gewoon kunnen ingeven zonder aanpassingen te doen. Daarvoor is de grammatica nog te ruim. Het lijkt echter wel mogelijk om een grammatica op te stellen waaraan een schrijver zich kan houden zonder dat de lezer een verschil kan merken.
 
-Bovendien kunnen we ook altijd de types achterhalen. In de meeste gevallen enkel op basis van de drie soorten vragen die echt puur taalkundig zijn. Aan het principe van één type per woord is wel niet altijd voldaan. Daarvoor moet er soms enkele aanpassingen zijn.
+Bovendien kunnen we ook altijd de types achterhalen. In de meeste gevallen enkel op basis van de drie soorten vragen die echt puur taalkundig zijn. Aan het principe van één type per woord is wel niet altijd voldaan. Daarvoor zijn er soms aanpassingen nodig.
 
-Het resultaat is echter dat we op basis van het systeem beschreven in deze thesis alle getesten logigrammen automatisch kunnen oplossen. Daarbij vertalen we eerst naar logica. Op basis van de inferenties van de types kunnen we ook de nodige extra axioma's en het formeel vocabularium opstellen. Daardoor kunnen we met behulp van de tool IDP de bijecties achterhalen en de domeinelementen opdelen in hun equivalentieklassen.
+Het resultaat is echter dat we op basis van het systeem beschreven in deze thesis alle getesten logigrammen automatisch kunnen oplossen. Daarbij vertalen we eerst naar logica. Op basis van de inferenties van de types kunnen we ook de nodige extra axioma's en het formeel vocabularium opstellen. Daardoor kunnen we met behulp van de tool IDP \cite{IDP} de bijecties achterhalen en de domeinelementen opdelen in hun equivalentieklassen.
