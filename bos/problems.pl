@@ -105,6 +105,42 @@ problem(p2, problem(4,5, [
                         tvPrep([finishes], [with], [finish], [finished]),
                         prep([from])
         ])).
+problem(p2b, problem(4,5, [
+                        "Of the contestant who scored 41 points and the person who threw the white darts, one was from Worthington and the other was Ira",
+                        "Bill was from Mount union",
+                        "Ira scored 21 points higher than the contestant from Worthington",
+                        "Oscar scored somewhat higher than the player who threw the orange darts",
+                        "The contestant from Mount union threw the black darts",
+                        "Pedro didn't finish with 55 points",
+                        "The player who threw the red darts was either Colin or the contestant who scored 48 points",
+                        "Of the contestant who scored 41 points and the person who threw the orange darts, one was from Gillbertville and the other was from Worthington",
+                        "Ira scored 7 points lower than the player from Lohrville"
+        ], [
+                        noun([contestant], [contestants]),
+                        noun([person], [persons]),
+                        noun([player], [players]),
+                        noun([point], [points]),
+                        noun([darts], [darts]),
+                        pn([bill]),
+                        pn([colin]),
+                        pn([ira]),
+                        pn([oscar]),
+                        pn([pedro]),
+                        pn([mount, union]),
+                        pn([gillbertville]),
+                        pn([lohrville]),
+                        pn([worthington]),
+                        pn([yorktown]),
+                        ppn([black]),
+                        ppn([orange]),
+                        ppn([red]),
+                        ppn([white]),
+                        ppn([yellow]),
+                        tv([threw], [throw]),
+                        tv([scored], [score]),
+                        tvPrep([finishes], [with], [finish], [finished]),
+                        prep([from])
+        ])).
 
 problem(p3, problem(4, 5, [
                         "The team that finished with 739 points wore orange shirts",
