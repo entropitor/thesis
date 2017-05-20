@@ -2,6 +2,19 @@
 
 \IEEEPARstart{K}{nowledge} base systems have been around for a while. This has triggered a lot of research into formal languages and their expressivity. These languages are often hard to both read, write and learn.
 
-There has also been a lot of research into Controlled Natural Languages (CNL). These are subset of natural languages that, for example, allow to write specifications in a more consistent language. Kuhn~\cite{Kuhn2014} made an overview of 100 CNL's. Some of these languages even have formal semantics and can be translated automatically into a logic. They could be used as a knowledge representation language within a knowledge base system. They are often easy to read. However the translations of a CNL into logic are often not well documented which makes it hard to expand the language.
+There has also been a lot of research into Controlled Natural Languages (CNL). These are subsets of natural languages that, for example, allow to write specifications in a more consistent language. Kuhn~\cite{Kuhn2014} made an overview of 100 CNL's. Some of these languages even have formal semantics and can be translated automatically into a logic. They could be used as a knowledge representation language within a knowledge base system. They are often easy to read. However the translations of a CNL into logic are often not well documented which makes it hard to expand the language.
 
-This paper therefor constructs a new CNL based on the language used in logigrams. It is then tested on unseen logigrams. The goal of this paper is to show that the framework introduced by Blackburn and Bos \cite{Blackburn2005, Blackburn2006} can be used to automatically translate such a CNL into logic.
+This paper therefor constructs a new CNL based on the language used in a small domain, namely logigrams. It is then tested on unseen logigrams. The first goal of this paper is to show that the framework introduced by Blackburn and Bos \cite{Blackburn2005, Blackburn2006} can be used to automatically translate such a CNL into logic. The second goals is to show that adding types to this framework allows more inference.
+
+\section{Motivation}
+A knowledge base system is very powerful. It allows multiple inferences based on the same theory. However because knowledge representation languages can be hard to read, write and learn, an expert in formal languages is required. A formal language that is more accessible for non-experts, like a CNL with formal semantics, could solve this issue.
+
+The idea of a knowledge base system is to apply multiple inferences to the same theory. Some examples of inferences that are possible once the clues of a logigram are translated into logic:
+\begin{itemize}
+  \item Solve the puzzle automatically.
+  \item Given a (partial) solution by the user, indicate which clues have already been incorporated in the solution, which clues still hold some new information and which clues have been violated.
+  \item Given a partial solution by the user, automatically derive a subset of clues that can be used to expand the solution. This could be part of a ``hint''-system for the user.
+  \item Given a (sub)set of clues, indicate which solutions are still possible. This could help the author while writing new logigrams. The possible solutions help to construct a new hint that removes some of these solutions until only one remains.
+\end{itemize}
+
+
