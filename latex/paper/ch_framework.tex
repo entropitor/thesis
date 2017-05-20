@@ -1,1 +1,51 @@
 \section{A semantical framework}
+Blackburn and Bos constructed a framework~\cite{Blackburn2005, Blackburn2006} to capture the meaning of natural language by translating it into a logic. It consists of four parts: the lexicon, the grammar, the semantics of the lexicon and the semantics of the grammar. The framework is based on the $\lambda$-calculus and Frege's compositionality principle. Every word has an $\lambda$-expression as its meaning. The meaning of a group of words is a combination of the meaning of the words that are part of the group. In this framework, $\lambda$-application will be used to combine words.
+
+The grammar defines which sentences are grammatical and thus allowed and which are not. E.g. a sentence consists of a subject (a noun phrase) and a verb phrase that agree in number. This process results in a parse tree of every grammatical sentence, in which the words are the leaves. The framework then combines the meaning of the leaves (the words) upwards in the tree to the meaning of the root node (the sentence).
+
+\begin{dcg}{A small grammar}{dcg:frameworkIllustration}
+s([]) -->
+  np([num:Num]),
+  vp([num:Num]).
+np([num:sg]) -->
+  pn([]).
+np([num:Num]) -->
+  det([]),
+  n([num:Num]).
+vp([num:Num, sem:Sem]) -->
+  iv([num:Num, sem:Sem]).
+vp([num:Num, sem:Sem]) -->
+  tv([num:Num, sem:]),
+  np([num:_]).
+\end{dcg}
+
+The lexicon consists of the enumeration of the different words that can be used along with some linguistic features. E.g. ``loves'' is a verb in the present tense, ``love'' is a verb and an infinitive. A lot of words also have a feature \textit{Symbol} which will be used in the translation of the word.
+
+The goal of the framework is to lexicalize as much of the meaning as possible. The semantics of a grammar rule should be limited to $\lambda$-applications, if possible. The most important word of a group of words is then the functor and the other words its arguments. The meaning of a sentence is a $\lambda$-application with the verb phrase as the functor and the noun phrase as the argument, i.e. $\sem{s} = \app{\sem{vp}}{\sem{np}}$. Table~\ref{tbl:grammar-sem} gives the semantics for grammar~\ref{dcg:frameworkIllustration}. The determiner is taken to be the most important word in the noun phrase.
+
+\begin{table}[h]
+  \begin{tabular}{@{}ll}
+    \hline
+    \textbf{Grammatical rule} & \textbf{Semantics} \\
+    \hline
+    S (line 1-3) & $\sem{s} = \app{\sem{vp}}{\sem{np}}$ \\
+    NP1 (line 4-5) & $\sem{np} = \sem{pn}$ \\
+    NP2 (line 6-8) & $\sem{np} = \app{\sem{det}}{\sem{n}}$ \\
+    VP1 (line 9-10) & $\sem{vp} = \sem{iv}$ \\
+    VP2 (line 11-13) & $\sem{vp} = \app{\sem{tv}}{\sem{np}}$\\
+    \hline
+  \end{tabular}
+  \centering
+  \caption{De semantics of grammar~\ref{dcg:frameworkIllustration}}
+  \label{tbl:grammar-sem}
+\end{table}
+
+The meaning of the words is the only thing missing. Blackburn and Bos assume that the meaning of a word is only dependent on its linguistic features, most importantly its linguistic category. Constructing these $\lambda$-expressions can be hard. Therefore, we first analyze the signature of these expressions. We used a $\lambda$-calculus with two types for this: $e$ represents entities and $t$ truth-values. A noun is the easiest. It's signature is $\tau(n) = e \rightarrow t$, given an entity, the noun says whether or not the entity can be described with the noun. A noun phrase represents one or more entities. E.g. ``a man'', ``every woman''. A sentence is true if enough entities of the noun phrase satisfy a certain property of the verb phrase. The signature of a noun phrase is thus $\tau(np) = (e \rightarrow t) \rightarrow t$. Given a property $P$ with signature $e \rightarrow t$, the semantics of the noun phrase will say if enough entities described by the noun phrase, satisfy the property $P$ of the verb phrase. The semantics of the proper noun John is for example $\sem{pn_{John}} = \lambdaf{P}{\app{P}{John}}$. I.e. when we say something about ``John'', the property should hold for $John$. The meaning of the noun phrase ``every man'' is $\sem{np_{every\ man}} = \lambdaf{P}{\forall x \cdot man(x) \Rightarrow P(x)}$. Given a property P, the property should hold for all men for the sentence to be true.
+
+The signature of a verb phrase is $\tau(vp) = \tau(np) \rightarrow \tau(s) = ((e \rightarrow t) \rightarrow t) \rightarrow t$. Given an noun phrase, it should say whether the sentence is true or not. The meaning of the intransitive verb for example is $\sem{iv_{sleeps}} = \lambdaf{S}{\app{S}{\lambdaf{x}{Sleeps(x)}}}$. Given the subject $S$, the sentence is true if the subject holds the property $\lambdaf{x}{Sleeps(x)}$.
+
+The meaning of the sentence ``John sleeps'' is $$\sem{s} = \app{\sem{vp}}{\sem{np}} =$$ $$ \appH{\lambdaf{S}{\app{S}{\lambdaf{x}{Sleeps(x)}}}}{\lambdaf{P}{\app{P}{John}}}$$ $$= Sleeps(John)$$.
+
+% We illustrate the framework using the example ``John sleeps''. John is a proper noun (pn) and sleeps an intransitive verb (iv). The meaning of a proper noun is $\sem{pn} = \lambdaf{M}{\app{M}{Symbol}}$. E.g. $\sem{pn} = \lambdaf{M}{\app{M}{John}}$. This can be read as \textit{given a set-membership function $M$ which represents the entities that execute the verb,  }
+
+

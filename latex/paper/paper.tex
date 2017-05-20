@@ -94,7 +94,7 @@
 
 % *** MATH PACKAGES ***
 %
-%\usepackage{amsmath}
+% \usepackage{amsmath}
 % A popular package from the American Mathematical Society that provides
 % many useful and powerful commands for dealing with mathematics.
 %
@@ -262,7 +262,24 @@
 % correct bad hyphenation here
 \hyphenation{op-tical net-works semi-conduc-tor}
 
-\usepackage{../thesis/prologconfig}
+\usepackage{prologconfig}
+
+\usepackage{amsmath}
+\usepackage{stmaryrd}
+
+\newcommand{\sem}[1]{\llbracket #1 \rrbracket}
+\newcommand{\lambdaf}[2]{
+  \lambda #1 \cdot #2
+}
+\newcommand{\appB}[2]{
+  \app{#1}{\left( #2 \right)}
+}
+\newcommand{\appH}[2]{
+  \app{\left( #1 \right)}{#2}
+}
+\newcommand{\app}[2]{
+  #1 \left( #2 \right)
+}
 
 \begin{document}
 \input{content}
