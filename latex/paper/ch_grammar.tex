@@ -1,1 +1,12 @@
 \section{A grammar for logigrams}
+A grammar was constructed based on the first ten logigrams from Puzzle Baron's Logic Puzzles Volume 3 \cite{logigrammen}.
+
+In total there are 49 grammar rules: 3 grammar rules for sentences, 20 related to nouns and noun phrases, 8 for verb phrases and 18 rules that connect the grammar with the lexicon.
+
+Again, because of space constraints, we can't give the full grammar. We limit ourselves to a short discussion.
+
+Most grammar rules are quite general. They could be used outside logigrams as well. Others like the grammar rule for a sentence with template ``Of ... and ..., one ... and the other ...'' are specific for logigrams.
+
+The semantics of most rules consists only of $\lambda$-applications. Some rules are more complex. Those exceptions are either because the scope of variables and negations would otherwise be incorrect or because the grammar rule is specific to logigrams and can not be explained linguistically. This linguistic shortcut is then visible in the semantics.
+
+There are two type of noun phrases which introduce an unknown predicate. Namely ``the 2008 graduate'' and ``John's dog''. In the current framework, it's impossible to derive which relation holds between ``the graduate'' and ``2008''. Adding types to the framework will solve the issue.
