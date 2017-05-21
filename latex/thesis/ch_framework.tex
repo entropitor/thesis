@@ -86,11 +86,11 @@ Voor de betekenis van de taal zullen we gebruiken maken van een getypeerde lambd
     \hline
   \end{tabular}
   \centering
-  \caption{De semantiek van de grammatica uit grammatica~\ref{dcg:simple-gramm}}
+  \caption{De semantiek van grammatica~\ref{dcg:simple-gramm}}
   \label{tbl:grammar-sem}
 \end{table}
 
-Tabel~\ref{tbl:grammar-sem} geeft een overzicht van de semantiek van grammatica~\ref{dcg:simple-gramm}. Voor woordgroepen die maar uit één woord bestaan is de betekenis van de woordgroep gelijk aan die van het woord zelf. Voor de meeste andere woordgroepen is de betekenis een simpele lambda-applicatie van de betekenissen van de woordgroepen waaruit ze bestaan. Enkel voor de speciale zinsstructuur van de conditionele zin is er ook een speciale constructie nodig in de semantiek. Indien we het functiewoord ``if'' naar het lexicon zouden verhuizen, dan volstaan twee lambda-applicaties\footnote{$\sem{if} = \lambdaf{S1}{\lambdaf{S2}{\drs{}{S1 \Rightarrow S2}}}$ en $\sem{s} = \app{\app{\sem{if}}{\sem{s1}}}{\sem{s2}}$}.
+Tabel~\ref{tbl:grammar-sem} geeft een overzicht van de semantiek van grammatica~\ref{dcg:simple-gramm}. Een idee achter het framework is om de betekenis van de zinnen zoveel mogelijk in de betekenis van de woorden te stoppen. De betekenis van een grammaticale regel wordt, indien mogelijk, beperkt tot lambda-applicaties. Voor woordgroepen die maar uit één woord bestaan is de betekenis van de woordgroep gelijk aan die van het woord zelf. Voor de meeste andere woordgroepen is de betekenis enkel een lambda-applicatie van de betekenissen van de woordgroepen waaruit ze bestaan. Het belangrijkste woord uit de woordgroep is de functor, het andere woord het argument. Enkel voor de speciale zinsstructuur van de conditionele zin is er ook een speciale constructie nodig in de semantiek. Indien we het functiewoord ``if'' naar het lexicon zouden verhuizen, dan zouden twee lambda-applicaties volstaan\footnote{$\sem{if} = \lambdaf{S1}{\lambdaf{S2}{\drs{}{S1 \Rightarrow S2}}}$ en $\sem{s} = \app{\app{\sem{if}}{\sem{s1}}}{\sem{s2}}$}.
 
 % \[
 %   \fstructure{
