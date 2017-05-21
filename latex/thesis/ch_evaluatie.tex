@@ -33,7 +33,7 @@ De laatste zin bevat bovendien nog een moeilijke opsomming om te verwerken. Hier
 Ook logigram 6 bevat zo'n distributieve lezing. Bovendien is het deze keer in een ``Of ... and ..., one ... and the other ...'' constructie. Namelijk ``Of the two dogs who graduated in March and April, one went to Tanager County and the other was assigned to Officer Ingram''. Ook deze zin is herschreven. In dit geval naar ``Of the dog who graduated in March and the dog who graduated in April, one went to Tanager County and the other was assigned to Officer Ingram''
 
 \subsection{Logigram 7}
-Logigram 7 heeft een vrij andere grammatica dan alle andere logigrammen. Bovendien overtreedt het een aantal veronderstellingen die we gebruiken voor het vertalen van de zinnen naar logica. De logigram ziet er uit als volgt:
+Logigram 7 heeft een vrij andere grammatica dan alle andere logigrammen. Bovendien overtreedt het een aantal veronderstellingen die we gebruiken voor het vertalen van de zinnen naar logica. Het logigram ziet er uit als volgt:
 \begin{enumerate}
   \item The Norwegian's birthday is May 18
   \item Of Bill and the traveler born on June 14, one is from Norway and the other is from Canada
@@ -48,7 +48,7 @@ Logigram 7 heeft een vrij andere grammatica dan alle andere logigrammen. Bovendi
 
 \paragraph{} Zo gebruikt men meerdere eigennamen voor hetzelfde domeinelement (bv. ``France'' en ``French''). Bovendien zijn er 3 domeinen die door elkaar gebruikt kunnen worden. Met name de nationaliteit, de naam en het beroep van een persoon. Ten slotte zijn er niet veel werkwoorden of voorzetsels. Dit maakt het vrij moeilijk om automatisch types af te leiden zonder aan de gebruiker te vragen of twee woorden van hetzelfde type zijn.
 
-\paragraph{} De logigram kan wel herschreven worden om binnen het framework te passen. De zinnen liggen echter soms vrij ver af van het origineel. De nationaliteit wordt altijd aangegeven met de naam van het land. Bovendien introduceren we een werkwoord ``acting as'' als een soort van \textit{type cast} tussen een beroep en een persoon. Ten slotte wordt het koppelwerkwoord vervangen door een echt werkwoord.
+\paragraph{} Het logigram kan wel herschreven worden om binnen het framework te passen. De zinnen liggen echter soms vrij ver af van het origineel. De nationaliteit wordt altijd aangegeven met de naam van het land. Bovendien introduceren we een werkwoord ``acting as'' als een soort van \textit{type cast} tussen een beroep en een persoon. Ten slotte wordt het koppelwerkwoord vervangen door een echt werkwoord.
 
 \begin{enumerate}
   \item The traveler from Norway is born in May
@@ -79,15 +79,15 @@ Daarnaast bevat logigram 9 een superlatief, namelijk ``Elmer isn't the youngest 
 \subsection{Logigram 10}
 Logigram 10 heeft twee problemen. Enerzijds wordt er gebruik gemaakt van kommagetallen. Anderzijds is er niet voldaan aan het principe van één type per woord.
 
-Aangezien de onderliggende tool IDP \cite{IDP} geen kommagetallen aankan, ondersteunen we deze ook niet in de grammatica. We passen de zinnen aan. We tellen daarvoor bij de kommagetallen (bv. ``\$6.99'') 0,01 op (tot bv. ``\$7''). Dit maakt geen verschil voor de logigram. Er wordt enkel gekeken naar de verschillen tussen twee getallen, die blijven met deze truk dezelfde.
+Aangezien de onderliggende tool IDP \cite{IDP} geen kommagetallen aankan, ondersteunen we deze ook niet in de grammatica. We passen de zinnen aan. We tellen daarvoor bij de kommagetallen (bv. ``\$6.99'') 0,01 op (tot bv. ``\$7''). Dit maakt geen verschil voor het logigram. Er wordt enkel gekeken naar de verschillen tussen twee getallen, die blijven met deze truk dezelfde.
 
 Het werkwoord ``to order'' wordt in deze logigram gebruikt voor zowel het bestellen van pasta als de saus die erbij hoort. Daarom passen we één voorkomen van ``to order'' aan naar ``to choose'', zodanig dat ``to order'' enkel voor het bestellen van de pastasoort is en ``to choose'' enkel voor het kiezen van de bijhorende saus.
 
 \section{Testset}
-De testset bestaat uit de volgende tien logigrammen uit Puzzle Baron's Logic Puzzles Volume 3 \cite{logigrammen}. Geen enkele logigram is vertaalbaar zonder wijzigingen uit te voeren aan de zinnen van de logigram. We bespreken de verschillende logigrammen en wat er aangepast moet worden om te vallen onder de grammatica van de trainingset. Daarbij minimaliseren we het aantal beperking en hoe groot deze moeten zijn. 
+De testset bestaat uit de volgende tien logigrammen uit Puzzle Baron's Logic Puzzles Volume 3 \cite{logigrammen}. Geen enkele logigram is vertaalbaar zonder wijzigingen uit te voeren aan de zinnen van het logigram. We bespreken de verschillende logigrammen en wat er aangepast moet worden om te vallen onder de grammatica van de trainingset. Daarbij minimaliseren we het aantal beperking en hoe groot deze moeten zijn. 
 
 \subsection{Logigram 11: 1 aanpassing}
-Tabel~\ref{tbl:log11} geeft een overzicht van de aanpassing aan logigram 11. Één zin werd herschreven van de passieve vorm naar de actieve vorm. Voor de rest past de logigram volledig binnen de grammatica van de testset.
+Tabel~\ref{tbl:log11} geeft een overzicht van de aanpassing aan logigram 11. Één zin werd herschreven van de passieve vorm naar de actieve vorm. Voor de rest past het logigram volledig binnen de grammatica van de testset.
 
 Het type-systeem kan het domein van de sectoren van de aandelen wel niet achterhalen zonder op een vraag van de vierde soort terug te vallen. Namelijk een vraag of twee elementen tot hetzelfde domein behoren. Alle sectoren komen namelijk voor in naamwoordgroepen met een onbekende relatie (``the health-care sector'', ``the energy stock'', ...).
 
@@ -107,7 +107,7 @@ Het type-systeem kan het domein van de sectoren van de aandelen wel niet achterh
 \subsection{Logigram 12: 5 aanpassingen}
 Tabel~\ref{tbl:log12} geeft een overzicht van de aanpassingen aan logigram 12. In drie zinnen kwamen kommagetallen voor i.p.v. gehele getallen, net zoals in logigram 10 uit de trainingset. Dit is niet echt een probleem met de grammatica maar eerder met de onderliggende tool.
 
-Daarnaast vervangen we een werkwoord door een ander werkwoord uit de logigram omdat aan het principe van één type per (werk)woord anders niet is voldaan.
+Daarnaast vervangen we een werkwoord door een ander werkwoord uit het logigram omdat aan het principe van één type per (werk)woord anders niet is voldaan.
 
 Ten slotte passen we ``the one'' aan naar een naamwoordgroep met een echt substantief. ``The one'' is een grammaticale structuur waarbij ``one'' verwijst naar een substantief dat eerder in de zin komt. Dit kwam niet voor in de trainingset. Dit probleem had ook opgelost kunnen worden door ``one'' als substantief toe te voegen aan het lexicon. Dit zou echter geen correcte evaluatie zijn van de opgestelde grammatica.
 
