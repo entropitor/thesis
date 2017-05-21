@@ -3,7 +3,7 @@
 
 In dit hoofdstuk overlopen we de grammaticale categorieën voor de vertaling van logigrammen naar logica. We bespreken ook telkens de grammaticale regels horend bij die categorie en hun semantiek. We beginnen bij de categorieën die bestaan uit lexicale categorieën en werken naar boven toe richting de categorie van een zin. We gebruiken de DCG-notatie uit hoofdstuk~\ref{sec:DCG}. De feature \texttt{sem} staat voor de semantiek van een woordgroep.
 
-\paragraph{}De grammatica is opgesteld vertrekkend van code van Blackburn en Bos \cite{Blackburn2006}. Deze code werd aangepast aangepast om de eerste 10 logigrammen uit Puzzle Baron's Logic Puzzles Volume 3 \cite{logigrammen} te kunnen vertalen. De grammatica regels van Blackburn en Bos die niet van toepassing zijn voor logigrammen zijn verwijderd.
+\paragraph{}De grammatica is opgesteld vertrekkend van een grammatica uit de code van Blackburn en Bos \cite{Blackburn2006}. Deze code werd aangepast aangepast om de eerste 10 logigrammen uit Puzzle Baron's Logic Puzzles Volume 3 \cite{logigrammen} te kunnen vertalen. De grammatica regels van Blackburn en Bos die niet van toepassing zijn voor logigrammen zijn verwijderd.
 
 \section{Lexicale categorieën}
 In deze sectie bespreken we de grammticale categorieën die overeenkomen met een lexicale categorie.
@@ -30,7 +30,7 @@ noun([num:Num, sem:Sem]) -->
 \end{dcg}
 
 \subsection{Eigennaam}
-Grammatica~\ref{dcg:pn} geeft de grammaticale regel voor een eigennaam weer. Dit lijkt zeer sterk op de algemene mapping van de grammatica naar het lexicon buiten de optionele ``the''. Deze is nodig omdat in sommige puzzels een bepaalde term zowel met als zonder ``the'' voorkomt. Indien we deze twee verschillende termen allebei apart in het lexicon zouden ingeven, zouden deze worden vertaald naar verschillende symbolen. Dit zouden we graag vermijden \footnote{Een alternatief was om de twee vormen met hetzelfde symbool in het lexicon op te nemen. Dat is equivalent aan onderstaande grammatica}.
+Grammatica~\ref{dcg:pn} geeft de grammaticale regel voor een eigennaam weer. Dit lijkt zeer sterk op de algemene mapping van de grammatica naar het lexicon buiten de optionele ``the''. Deze is nodig omdat in sommige puzzels een bepaalde term zowel met als zonder ``the'' voorkomt. Indien we deze twee verschillende termen allebei apart in het lexicon zouden ingeven, zouden deze worden vertaald naar verschillende symbolen. Dit zouden we graag vermijden\footnote{Een alternatief was om de twee vormen met hetzelfde symbool in het lexicon op te nemen. Dat is equivalent aan onderstaande grammatica}.
 
 \begin{dcg}{De grammaticale regel voor een eigennaam}{dcg:pn}
 pn([num:Num, sem:Sem]) -->
