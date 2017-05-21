@@ -1,0 +1,33 @@
+\section{A typed language}
+In natural language, it is possible to construct sentences that are grammatically correct but without meaning. E.g. ``The grass is drinking the house''. The grass is not something that can drink and a house is not something that can be drunk. We say the sentence is wrongly typed. Based on grammar alone, we can never exclude these sentences. Therefore, we add types to the framework.
+
+Some words and phrases have a feature \textit{number} to indicate whether it is singular or plural. In a sentence, the \textit{number} of the noun phrase and the verb phrase must unify, i.e. the subject and the verb must agree in number.
+
+Similarly to this, we add the feature \textit{type} to most words and phrases to indicate its type. In this paper we use a very basic type system. There are a number of basic types and a \textit{pair-type} that consists of two basic types. E.g. a noun has a basic type, a transitive verb a pair of types: one for its subject and one for its object. Also phrases get types. A noun phrase gets a basic type. The same goes for a verb phrase. In the grammar we can then express that the type of the noun phrase and the verb phrase should unify when they make a sentence. This way, badly typed sentences get excluded.
+
+As indicated earlier, most words (like noun, verb, ...) should also get a type in the lexicon. In this paper we explored a form of type inference. We assume that every word has exactly one type but that it is unknown. We then try to find the types of all words. We cannot allow a word to have more than one type because it is the only information we have to unify types. If we know the type of all words, we know to which domain every domain element belongs, i.e. we know that ``France'' and ``Italy'' are from the same domain (without necessarily knowing that they are countries). Knowing which domain elements belong to the same domain is the goal of our type inference.
+
+However, only based on the principle of one type per word, the system cannot always deduce all types. This is the case when a lot of synonyms are used. There is no indication of synonyms in the lexicon so the principle of one type per word doesn't help us in that case. Therefore we also ask the user how many domains are in the puzzle. In case the system cannot unify enough types, it will ask the user some linguistic questions that could be rewritten as ``Is ... a meaningful sentence?''.
+
+In the case a certain domain always occurs as part of noun phrases with an unknown relation (e.g. ``the 2008 graduate''), we cannot construct such a question. In that case, the system asks the user if two proper nouns are of the same type. This is the exact question the system was supposed to solve in the first place. But in all other cases, the type inference system can deduce the correct types based on linguistic information only.
+
+Having a typed natural language means we can translated to a typed formal language. In this paper we translate to the IDP language \cite{IDP}. We can construct the formal vocabulary based on linguistic information. When the types correspond to a domain of the puzzle, we translate to to a constructed type or to a subset of the natural numbers. The former in case of a non-numerical domain. The different proper nouns that belong to this type are the constants of the constructed type. However, it is possible that one constant is missing (i.e. that it didn't occur in any of the clues). Therefore, we provide the system with the number of domain elements that are in each domain. In case one is missing, the system adds an extra constant. It is not possible that two elements are missing as a logic grid puzzle has a unique solution and these two elements would be interchangeable. The system translates to a subset of the natural numbers in case of a numerical domain. In that case, the system asks the user the exact subset.
+
+There can also be types that don't correspond with domain elements. There is a derived numerical type which contains the set of numbers that are a difference of two numbers from a numerical domain. This type is only necessary because the inferences in IDP would otherwise not be finite.
+
+It is also possible to have an intermediate type that links two domains, e.g. \textit{tour} in ``John follows the tour with 54 people''. These types are translated to constructed types with as many constants as there are domain elements in a domain. Symmetry-breaking axioms are added to the theory to link every constant with one domain element.
+
+Every transitive verb and preposition introduces a predicate. The noun phrases with an unknown predicate can now be resolved based on type information. We know which predicates are suitable, namely the predicates that link the corresponding types. Because there is exactly one bijection between every two domains, it doesn't matter which predicate the system picks.
+
+With a formal vocabulary and a translation of all clues into logic, the system can almost solve the puzzle (and apply other inferences). The theory only needs to be expanded with a number of axioms specific to logic grid puzzles. We need type information to construct some of these axioms. 
+
+The first type of axioms is the symmetry-breaking axioms mentioned earlier (E.g. $pred(C1, John) \land pred(C2, Mary) \land pred(C3, Charles)$). Another type is the bijection axioms to state that every predicate is a bijection (E.g. $\forall x \cdot \exists y \cdot pred(x, y) \land \forall y \cdot \exists x \cdot pred(x, y)$).
+
+Finally there are three types of axioms to express that there is an equivalence relation between domain elements. Two elements are equivalent if they are linked through a predicate or if they are equal. In second order logic $x \sim y \Leftrightarrow \exists P \cdot P(x, y) \lor x = y$. The reflexivity is satisfied by definition.
+
+\begin{itemize}
+  \item \textbf{Synonymy} There is exactly one bijection between every two domains. Therefore, two predicates with the same types are always synonyms. E.g. $\forall x \forall y \cdot pred_1(x, y) \Leftrightarrow pred_2(x, y).$
+  \item \textbf{Symmetry} Predicates with a reversed signature are each other inverse. E.g. $\forall x \forall y \cdot pred_1(x, y) \Leftrightarrow pred_2(y, x).$
+  \item \textbf{Transitivity} Finally there are axioms linking the different predicates. They express the transitivity of the equivalence relation. E.g. $\forall x \forall y \cdot pred_1(x, y) \Leftrightarrow \exists z \cdot pred_2(x, z) \land pred_3(z, y).$
+\end{itemize}
+

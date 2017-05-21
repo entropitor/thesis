@@ -1,0 +1,6 @@
+\begin{dcg}{Een grammaticale regel voor een lexicale categorie \textit{cat}}{dcg:lexcat}
+cat([feature1:Feature1, type:Type, sem:Sem]) -->
+  { lexEntry(cat, [feature1:Feature1, type:Type, syntax:Word]) },
+  Word,
+  { semLex(cat, [feature1:Feature1, type:Type, sem:Sem]) }.
+\end{dcg}

@@ -1,0 +1,85 @@
+// Problem p2b
+
+vocabulary V {
+    type darts constructed from {darts_1, darts_2, darts_3, darts_4, darts_5}
+    type type2 constructed from {the_other_type2, white, orange, black, red}
+    type person constructed from {ira, bill, oscar, pedro, colin}
+    type type1 constructed from {the_other_type1, worthington, mount_union, gillbertville, lohrville}
+    type point = {41; 48; 55; 62; 69} isa int
+    type type3 = {-7; 7; -14; 14; -21; 21; -28; 28} isa int // differences between values of type point
+
+    unknown_relation_darts_type2(darts, type2)
+    from(person, type1)
+    threw(person, darts)
+    scored(person, point)
+    finishes_with(person, point)
+}
+
+structure S : V {
+}
+
+theory T : V {
+    // Of the contestant who scored 41 points and the person who threw the white darts, one was from Worthington and the other was Ira
+    ?a [person] b [person] c [darts]: scored(a,41) & threw(b,c) & unknown_relation_darts_type2(c,white) & ~ (a = b) & (from(a,worthington) & ira = b | from(b,worthington) & ira = a).
+
+    // Bill was from Mount union
+    from(bill,mount_union).
+
+    // Ira scored 21 points higher than the contestant from Worthington
+    ?d [point] e [person] f [point]: from(e,worthington) & scored(e,d) & f = d+21 & scored(ira,f).
+
+    // Oscar scored somewhat higher than the player who threw the orange darts
+    ?g [type3] h [point] i [person] j [darts] k [point]: g>0 & threw(i,j) & unknown_relation_darts_type2(j,orange) & scored(i,h) & k = h+g & scored(oscar,k).
+
+    // The contestant from Mount union threw the black darts
+    ?l [person] m [darts]: from(l,mount_union) & threw(l,m) & unknown_relation_darts_type2(m,black).
+
+    // Pedro didn't finish with 55 points
+    ~ finishes_with(pedro,55).
+
+    // The player who threw the red darts was either Colin or the contestant who scored 48 points
+    ?n [person] o [darts]: threw(n,o) & unknown_relation_darts_type2(o,red) & (colin = n | (?p [person]: scored(p,48) & p = n)).
+
+    // Of the contestant who scored 41 points and the person who threw the orange darts, one was from Gillbertville and the other was from Worthington
+    ?q [person] r [person] s [darts]: scored(q,41) & threw(r,s) & unknown_relation_darts_type2(s,orange) & ~ (q = r) & (from(q,gillbertville) & from(r,worthington) | from(r,gillbertville) & from(q,worthington)).
+
+    // Ira scored 7 points lower than the player from Lohrville
+    ?t [point] u [person] v [point]: from(u,lohrville) & scored(u,t) & v = t-7 & scored(ira,v).
+
+
+    // Logigram bijection axioms:
+    ! x [darts]: ?=1 y [type2]: unknown_relation_darts_type2(x, y).
+    ! x [type2]: ?=1 y [darts]: unknown_relation_darts_type2(y, x).
+
+    ! x [person]: ?=1 y [type1]: from(x, y).
+    ! x [type1]: ?=1 y [person]: from(y, x).
+
+    ! x [person]: ?=1 y [darts]: threw(x, y).
+    ! x [darts]: ?=1 y [person]: threw(y, x).
+
+    ! x [person]: ?=1 y [point]: scored(x, y).
+    ! x [point]: ?=1 y [person]: scored(y, x).
+
+    ! x [person]: ?=1 y [point]: finishes_with(x, y).
+    ! x [point]: ?=1 y [person]: finishes_with(y, x).
+
+    // Logigram synonym axioms:
+    ! x [person] y [point]: scored(x, y) <=> finishes_with(x, y).
+
+    // Logigram transitive relation axioms:
+
+    // Logigram reflexive relation axioms:
+
+    // Logigram symmetry breaking axioms:
+    unknown_relation_darts_type2(darts_1, the_other_type2).
+    unknown_relation_darts_type2(darts_2, white).
+    unknown_relation_darts_type2(darts_3, orange).
+    unknown_relation_darts_type2(darts_4, black).
+    unknown_relation_darts_type2(darts_5, red).
+}
+
+procedure main() {
+    stdoptions.nbmodels = 10;
+    printmodels(modelexpand(T,S))
+}
+

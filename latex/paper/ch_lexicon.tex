@@ -1,0 +1,17 @@
+\section{A lexicon for logic grid puzzles}
+The different lexical categories used in our grammar are determiner, number, noun, proper noun, preposition, relative pronoun, transitive verb, auxiliary verb, copular verb, comparative, \textit{some}-words (somewhat, sometime, ...) and conjunction.
+
+Because of space constraints, we refer the reader to the full master thesis for the $\lambda$-expression of all categories.
+
+The determiners in logic grid puzzles are simple in that only existential quantifiers are necessary. Universal quantification is not needed as the puzzles always fully classify their noun phrases. This is a consequence of the bijections. There is always exactly one person who for example drinks tea. For the same reason there is also no negative quantifier (e.g. ``No person drinks tea'' cannot occur).
+
+Proper nouns play an important role in our translation of logic grid puzzles into logic. We assume that every domain element (of a non-numeric) domain is represented by a proper noun (and only one). Even when the words are adjectives, they must be declared as proper nouns to the system.
+Proper nouns can also be numeric, e.g. ``March''. In that case the user has to encode it into a number.
+
+There are three words that can introduce a predicate. A transitive verb links its subject and its object. A preposition (in a prepositional phrase) links the noun phrase of the prepositional phrase to the noun phrase to which it is attached. Finally, an adjective phrase as object of a copular verb. This links the subject with the noun phrase that is part of the adjective phrase. This is the only place an adjective can occur in our grammar.
+
+% An auxiliary verb can negate the verb phrase (without negating the restrictions of the subject). This is again an example of following the order of the sentence in natural language.
+
+% A copular verb has three main uses in logic grid puzzles: with a noun phrase (in which it implicates equality), with an adjective phrase (this is the only place an adjective can occur in our grammar and it will also introduce a new predicate)
+
+Finally there are two lexical categories which can be considered special to logic grid puzzles: comparatives and \textit{some}-words. The latter are used as an unspecified integer and always appear as a quantity in a comparison (e.g. ``somewhat more than John'').
