@@ -229,11 +229,11 @@ quantity([num:Num, sem:Sem]) -->
 
 np([coord:no, num:Num, gap:[tv:TV | G], sem:Sem]) -->
   np([coord:_, num:Num, gap:G, sem:NP]),
-  { Sem = lam(P, merge(
+  { Sem = lam(E, merge(
       merge(
         drs([Z], []),
-        app(P, Z)),
-      app(app(TV, lam(N, app(N, Z))), NP))) }.
+        app(E, Z)),
+      app(app(TV, lam(E2, app(E2, Z))), NP))) }.
 \end{dcg}
 
 \subsection{Een naamwoordgroep met een voegwoord}
@@ -301,7 +301,7 @@ vp([coord:no, inf:I, num:Num, gap:G, sem:Sem]) -->
 vp([coord:no, inf:I, num:Num, gap:[], sem:Sem]) -->
   np([coord:_, num:_, gap:[], sem:NP]),
   tv([inf:I, num:Num, positions:_-[], sem:TV]),
-  { Sem = lam(N1, app(app(TV, N1), NP))}.
+  { Sem = lam(L, app(app(TV, L), NP))}.
 
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:Sem]) -->
   av([inf:Inf, num:Num, sem:AV]),
@@ -393,7 +393,7 @@ vp([coord:yes, inf:Inf, num:Num, gap:[], sem:Sem]) -->
   coord([type:_, sem:Coord]),
   vp([coord:_, inf:Inf, num:Num, gap:[], sem:VP2]),
   { CoordinatedVP = app(app(Coord, VP1), VP2) },
-  { Sem = lam(N, app(N, lam(X, app(CoordinatedVP, lam(P, app(P, X)))))) }.
+  { Sem = lam(O, app(O, lam(X, app(CoordinatedVP, lam(E, app(E, X)))))) }.
 \end{dcg}
 
 \section{Zin}
