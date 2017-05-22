@@ -175,9 +175,9 @@ np([coord:no, num:_, gap:[], sem:Sem]) -->
 
 \subsection{Een naamwoordgroep met onbekende relatie}
 \label{sec:npMissingRelation}
-Grammatica~\ref{dcg:np2} beschrijft twee grammaticale regels met dezelfde semantiek en gelijkaardige structuur. Het gaat om naamwoordgroepen respectievelijk zoals ``the 2008 graduate'' en ``John's dog''. Ze bestaan allebei uit een simpele naamwoordgroep (\texttt{np} met \texttt{coord:no}) en een substantief~(\texttt{n}). Er is telkens een link tussen de entiteit van het substantief en dat van de simpele naamwoordgroep maar er is geen kennis over welke link dit juist is. Voor nu laten we het dus nog open. In hoofdstuk~\ref{ch:types} zullen we met behulp van types afleiden welk predicaat nodig is. De entiteit van de substantief is het belangrijkste en is ook de entiteit van de naamwoordgroep als geheel. Als resultaat krijgen we $$\sem{np} = \lambdaf{P}{\appH{\app{\sem{det}}{\sem{n}}}{\lambdaf{x}{\app{\sem{np}}{\lambdaf{y}{\drsMerge{\drs{}{\textit{unknown}(x, y)}}{\app{P}{x}}}}}}}$$
+Grammatica~\ref{dcg:np2} beschrijft twee grammaticale regels met dezelfde semantiek en gelijkaardige structuur. Het gaat om naamwoordgroepen respectievelijk zoals ``the 2008 graduate'' en ``John's dog''. Ze bestaan allebei uit een simpele naamwoordgroep (\texttt{np} met \texttt{coord:no}) en een substantief~(\texttt{n}). Er is telkens een link tussen de entiteit van het substantief en dat van de simpele naamwoordgroep maar er is geen kennis over welke link dit juist is. Voor nu laten we het dus nog open. In hoofdstuk~\ref{ch:types} zullen we met behulp van types afleiden welk predicaat nodig is. De entiteit van de substantief is het belangrijkste en is ook de entiteit van de naamwoordgroep als geheel. Als resultaat krijgen we $$\sem{np} = \lambdaf{E}{\appH{\app{\sem{det}}{\sem{n}}}{\lambdaf{x}{\drsMerge{\app{E}{x}}{\app{\sem{np}}{\lambdaf{y}{\drs{}{\textit{unknown}(x, y)}}}}}}}}$$
 
-Het is een naamwoordgroep en dus een box ($\lambda P$). Daarbinnen pakken we de woordgroep die bestaat uit het lidwoord en het substantief uit naar de entiteit $x$. Vervolgens pakken we de naamdwoordgroep uit naar $y$. Er is een relatie tussen $x$ en $y$ maar deze is voorlopig nog onbekend. Ten slotte stoppen we $x$ in de box van het gehele naamwoordgroep want $x$ is de entiteit waar de naamwoordgroep als geheel naar verwijst.
+Het is een naamwoordgroep en moet dus voldoen aan een eigenschap $E$. De naamwoordgroep voldoet hier aan als de naamwoordgroep die bestaat uit het lidwoord en het substantief voldoet aan de eigenschap die bestaat uit een conjunctie van de eigenschap $E$ en een link met de inwendige naamwoordgroep via een onbekend predicaat. Het is $x$ die aan eigenschap $E$ moet voldoen omdat de entiteit van het substantief het belangrijkste is en de entiteit van de naamwoordgroep als geheel voorstelt.
 
 \paragraph{}Bij de tweede grammaticale regel is er geen expliciet lidwoord aanwezig maar de betekenis hiervan is wel nog steeds nodig om een scope te geven aan het zelfstandig naamwoord. Er wordt dus gebruik gemaakt van dezelfde betekenis alsof er wel een lidwoord had gestaan (lijn 10).
 
@@ -188,18 +188,16 @@ np([coord:np, num:Num, gap:[], sem:Sem]) -->
   det([num:Num, sem:Det]),
   np([coord:no, num:_, gap:[], sem:NP]),
   n([num:Num, sem:N]),
-  { Sem = lam(P, app(app(Det, N), lam(X, app(NP, lam(Y, merge(
-    drs([], [rel(_, X, Y)]),
-    app(P, X))))))) }.
+  { Sem = lam(E, app(app(Det, N), lam(X, merge(app(E, X), app(NP, lam(Y,
+    drs([], [rel(_, X, Y)]))))))) }.
 
 np([coord:np, num:Num, gap:[], sem:Sem]) -->
   { semLex(det, [num:sg, sem:Det]) },
   np([coord:no, num:_, gap:[], sem:NP]),
   [s],
   n([coord:_, num:Num, sem:N]),
-  { Sem = lam(P, app(app(Det, N), lam(X, app(NP, lam(Y, merge(
-    drs([], [rel(_, X, Y)]),
-    app(P, X))))))) }.
+  { Sem = lam(E, app(app(Det, N), lam(X, merge(app(E, X), app(NP, lam(Y,
+    drs([], [rel(_, X, Y)]))))))) }.
 \end{dcg}
 
 \subsection{Een vergelijkende naamwoordgroep}
@@ -212,8 +210,8 @@ Zo'n hoeveelheid kan onbepaald zijn zoals ``sometime'' (lijn 7-9) of een simpele
 
 \paragraph{} Binnen logigrammen zit er ook altijd een ellips in zo'n vergelijkende naamwoordgroep, namelijk die van het hoofdwerkwoord binnen de naamwoordgroep waarmee vergeleken wordt. In de zin ``John finished after Mary'' ontbreekt het woord ``finished'' op het einde van de zin: ``John finished after Mary [finished]''. De feature \texttt{gap} op lijn 1 en 4 zegt dat de hele naamwoordgroep een ellips heeft, met name in de naamwoordgroep waarmee vergeleken wordt. Binnen logigrammen is die ellips er altijd. De grammatica staat niet toe dat er geen ellips is.
 
-Lijn 14 t.e.m. 20 geven de betekenis van zo'n naamwoordgroep met een ellips. In formulevorm wordt dit $$\sem{np} = \lambdaf{P}{\drsTriMerge{\drs{z}{}}{\appH{\app{\sem{tv}}{\lambdaf{P}{\app{P2}{z}}}}{\sem{np_1}}}{\app{P}{z}}}$$
-De betekenis is een nieuwe entiteit $z$ in een box. Bovendien is er de conditie dat (een lege box rond) $z$ het lijdend voorwerp vormt van het (verzwegen) werkwoord en de onderliggende naamwoordgroep het onderwerp.
+Lijn 14 t.e.m. 20 geven de betekenis van zo'n naamwoordgroep met een ellips. In formulevorm wordt dit $$\sem{np} = \lambdaf{E}{\drsTriMerge{\drs{z}{}}{\app{E}{z}}{\app{\app{\sem{tv}}{\lambdaf{E2}{\app{E2}{z}}}}{\sem{np_1}}}}$$
+De naamwoordgroep voldoet aan de eigenschap $E$ als er een $z$ bestaat die hier aan voldoet en bovendien zodang is dat er voldaan is aan de betekenis van het werkwoord met die $z$ als lijdend voorwerp\footnote{$\lambdaf{E2}{\app{E2}{z}}$ kan men opnieuw zien als een eigennaam die verwijst naar een bepaalde $z$} en $np_1$ als onderwerp.
 
 \begin{dcg}{De grammaticale regels i.v.m. een vergelijkende naamwoordgroep}{dcg:np3}
 np([coord:comp, num:Num, gap:[tv:TV | G], sem:Sem]) -->
@@ -231,11 +229,11 @@ quantity([num:Num, sem:Sem]) -->
 
 np([coord:no, num:Num, gap:[tv:TV | G], sem:Sem]) -->
   np([coord:_, num:Num, gap:G, sem:NP]),
-  { Sem = lam(P, merge(
+  { Sem = lam(E, merge(
       merge(
         drs([Z], []),
-        app(app(TV, lam(N, app(N, Z))), NP)),
-      app(P, Z))) }.
+        app(E, Z)),
+      app(app(TV, lam(E2, app(E2, Z))), NP))) }.
 \end{dcg}
 
 \subsection{Een naamwoordgroep met een voegwoord}
@@ -282,7 +280,7 @@ De tweede grammaticale regel drukt iets gelijkaardigs uit maar nu in het geval h
 
 Merk op dat we in de eerste grammaticale regel niet toestaan dat er een ellips is van het werkwoord binnen het lijdende voorwerp. Dit zou kunnen lijden tot extra betekenissen die niet nuttig zijn binnen een logigram.
 
-\paragraph{} In bijzinnen kan het soms voorkomen dat er een naamwoordgroep voor het werkwoord komt te staan, bijvoorbeeld ``The horse that Mary won, ...''. In dat geval is de naamwoordgroep van de verbale constituent het onderwerp en de naamwoordgroep waar de bijzin bijstaat het lijdend voorwerp. De derde grammaticale regel (lijn 14-17) drukt dit uit. De semantiek is $$\sem{vp} = \lambdaf{N1}{\app{\app{\sem{tv}}{N1}}{\sem{np}}}$$
+\paragraph{} In bijzinnen kan het soms voorkomen dat er een naamwoordgroep voor het werkwoord komt te staan, bijvoorbeeld ``The horse that Mary won, ...''. In dat geval is de naamwoordgroep van de verbale constituent het onderwerp en de naamwoordgroep waar de bijzin bijstaat het lijdend voorwerp. De derde grammaticale regel (lijn 14-17) drukt dit uit. De semantiek is $$\sem{vp} = \lambdaf{L}{\app{\app{\sem{tv}}{L}}{\sem{np}}}$$
 
 Een verbale constituent kan ook een hulpwerkwoord bevatten. In dat geval komt het getal en de vorm (infinitief, deelwoord, ...) van de constituent overeen met dat van het hulpwerkwoord. Het hoofdwerkwoord moet in zo'n constituent voorkomen als infinitief (\texttt{inf}) of als deelwoord (\texttt{part}). De semantiek is nogmaals een lambda-appliatie $$\sem{vp} = \app{\sem{av}}{\sem{vp_1}}$$
 
@@ -303,7 +301,7 @@ vp([coord:no, inf:I, num:Num, gap:G, sem:Sem]) -->
 vp([coord:no, inf:I, num:Num, gap:[], sem:Sem]) -->
   np([coord:_, num:_, gap:[], sem:NP]),
   tv([inf:I, num:Num, positions:_-[], sem:TV]),
-  { Sem = lam(N1, app(app(TV, N1), NP))}.
+  { Sem = lam(L, app(app(TV, L), NP))}.
 
 vp([coord:no, inf:Inf, num:Num, gap:[], sem:Sem]) -->
   av([inf:Inf, num:Num, sem:AV]),
@@ -383,9 +381,9 @@ numberOrAll() -->
 \end{dcg}
 
 \subsection{Een verbale constituent met voegwoord}
-Een gecoördineerde verbale constituent is gelijkaardig aan die van een nominale constituent. Er is echter één klein verschil in de betekenis ervan. Een simpele lambda-applicatie volstaat hier niet altijd. Indien het onderwerp een kwantor bevat, dan valt de verbale constituent namelijk onder de scope van deze kwantor. We willen dus ook dat de vertaling van het voegwoord binnen de scope van de kwantor valt. Als we $\sem{vp} = \app{\app{\sem{coord}}{\sem{vp_1}}}{\sem{vp_2}}$ als vertaling nemen, dan valt de vertaling van het voegwoord buiten de scope van het onderwerp. De juiste betekenis is
+Een gecoördineerde verbale constituent is gelijkaardig aan die van een nominale constituent. Er is echter één klein verschil in de betekenis ervan. Een simpele lambda-applicatie volstaat hier niet altijd. Indien het onderwerp een kwantor bevat, dan valt de verbale constituent namelijk onder de scope van deze kwantor. We willen dus ook dat de vertaling van het voegwoord binnen de scope van de kwantor valt. Als we $\sem{vp} = \app{\app{\sem{coord}}{\sem{vp_1}}}{\sem{vp_2}}$ als vertaling nemen, dan valt de vertaling van het voegwoord buiten de scope van het onderwerp. Neem bijvoorbeeld ``No man breathes and is dead''. De bovenstaande semantiek zou in eerste-orde-logica de vertaling $(\lnot \exists m \cdot man(x) \land breathes(x)) \land (\lnot \exists m \cdot man(x) \land dead(x))$ geven. De juiste vertaling is $\lnot (\exists m \cdot man(x) \land breathes(x) \land dead(x))$. De juiste semantiek is
 
-$$\sem{vp} = \lambdaf{N}{\app{N}{\lambdaf{x}{\appH{\app{\app{\sem{coord}}{\sem{vp_1}}}{\sem{vp_2}}}{\lambdaf{P}{\app{P}{x}}}}}}$$ We halen de entiteit $x$ eerst uit het onderwerp en binnen de scope van de naamwoordgroep geven we x (in een lege box) terug aan de gecoördineerde verbale constituent.
+$$\sem{vp} = \lambdaf{O}{\app{O}{\lambdaf{x_o}{\appH{\app{\app{\sem{coord}}{\sem{vp_1}}}{\sem{vp_2}}}{\lambdaf{E}{\app{E}{x_o}}}}}}$$ De zin is waar als het onderwerp voldoet aan de eigenschap dat \textit{een eigennaam die verwijst naar $x_o$}\footnote{Een eigennaam die verwijst naar $x_o$ heeft als semantiek $\lambdaf{E}{\app{E}{x_o}}$.} het onderwerp vormt van de coördinatie van de twee onderliggende verbale constituenten. In geval van een conjunctie met het dus één $x_o$ zijn die voldoet aan beide verbale constituenten. Met de eerste semantiek zou dit een verschillende $x_o$ kunnen zijn. 
 
 Voor logigrammen leiden beide betekenissen echter tot een correct resultaat. Het onderwerp zal namelijk altijd volledig gespecifieerd zijn. Er is maar één entiteit die aan de omschrijving voldoet. Daardoor maakt het niet uit dat er twee kantoren zijn die gecombineerd worden met het voegwoord in kwestie i.p.v. dat het voegwoord zich bevindt in de scope van de kwantor. Dit voorbeeld toont echter nog eens aan dat het opstellen van de formules niet altijd triviaal is.
 
@@ -395,7 +393,7 @@ vp([coord:yes, inf:Inf, num:Num, gap:[], sem:Sem]) -->
   coord([type:_, sem:Coord]),
   vp([coord:_, inf:Inf, num:Num, gap:[], sem:VP2]),
   { CoordinatedVP = app(app(Coord, VP1), VP2) },
-  { Sem = lam(N, app(N, lam(X, app(CoordinatedVP, lam(P, app(P, X)))))) }.
+  { Sem = lam(O, app(O, lam(X, app(CoordinatedVP, lam(E, app(E, X)))))) }.
 \end{dcg}
 
 \section{Zin}
@@ -405,9 +403,9 @@ Er zijn drie soorten zinnen binnen logigrammen. Een normale zin bestaat uit een 
 
 \paragraph{} Een laatste soort zin is van de vorm ``Of John and Mary, one is from France and the other plays with cards''. De zin bestaat dus uit twee nominale en twee verbale constituenten. De twee entiteiten van de nominale constituenten zijn verschillend en bovendien is elk het onderwerp van één van de twee verbale constituenten. 
 
-$$\sem{s} = \app{\sem{np_1}}{\lambdaf{x1}{\app{\sem{np_2}}{\lambdaf{x2}{\\ \drsMerge{\drs{}{x1 \neq x2}}{\drsOr{\drsMerge{\app{\sem{vp_1}}{\lambdaf{P}{\app{P}{x1}}}}{\app{\sem{vp_2}}{\lambdaf{P}{\app{P}{x2}}}}}{\drsMerge{\app{\sem{vp_1}}{\lambdaf{P}{\app{P}{x2}}}}{\app{\sem{vp_2}}{\lambdaf{P}{\app{P}{x1}}}}}}}}}}$$
+$$\sem{s} = \app{\sem{np_1}}{\lambdaf{x_1}{\app{\sem{np_2}}{\lambdaf{x_2}{\\ \drsMerge{\drs{}{x_1 \neq x_2}}{\drsOr{\drsMerge{\app{\sem{vp_1}}{\lambdaf{E}{\app{E}{x_1}}}}{\app{\sem{vp_2}}{\lambdaf{E}{\app{E}{x_2}}}}}{\drsMerge{\app{\sem{vp_1}}{\lambdaf{E}{\app{E}{x_2}}}}{\app{\sem{vp_2}}{\lambdaf{E}{\app{E}{x_1}}}}}}}}}}$$
 
-We halen de entiteiten $x1$ en $x2$ uit hun box. We stellen dat ze verschillend zijn. Bovendien is (een lege box rond) entiteit $x1$ het onderwerp van de eerste verbale constituent en $x2$ het onderwerp van de tweede verbale constituent of omgekeerd.
+We gaan er van uit dat beide naamgroepen volledig zijn gespecifieerd. Er is dus maar één mogelijke $x_1$ en $x_2$. We kunnen $x_1$ dus ook voorstellen als een naamwoordgroep met semantiek $\lambdaf{E}{\app{E}{x_1}}$. Zo'n naamwoordgroep voldoet immers aan een eigenschap $E$ als en slechts als $x_1$ dat doet. Een analoge redenering geldt voor $x_2$. Dan zegt de semantiek dat $x_1$ en $x_2$ verschillend moeten zijn en dat $x_1$ het onderwerp vormt voor de eerste verbale constituent en $x_2$ voor de tweede verbale constituent, of omgekeerd.
 
 \begin{dcg}{De grammaticale regels voor een zin}{dcg:s}
 s([coord:no, sem:Sem]) -->
@@ -437,11 +435,11 @@ s([coord:no, sem:Sem]) -->
         drs([], [not(drs([], [eq(X1, X2)]))]),
         drs([], [or(
           merge(
-            app(VP1, lam(N, app(N, X1))), 
-            app(VP2, lam(N, app(N, X2)))), 
+            app(VP1, lam(E, app(E, X1))), 
+            app(VP2, lam(E, app(E, X2)))), 
           merge(
-            app(VP1, lam(N, app(N, X2))),
-            app(VP2, lam(N, app(N, X1)))))])))))) }.
+            app(VP1, lam(E, app(E, X2))),
+            app(VP2, lam(E, app(E, X1)))))])))))) }.
 \end{dcg}
 
 \section{Conclusie}
