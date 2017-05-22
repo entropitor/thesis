@@ -151,7 +151,13 @@ Daarnaast kan een naamwoordgroep ook bestaan uit een lidwoord (of meer algemeen,
 
 Zoals we ook in sectie~\ref{sec:lex-number} besproken hebben, kan een hoofdtelwoord ook aanzien worden als een determinator. We krijgen dus nog een gelijkaardige regel als de vorige maar nu met een hoofdtelwoord i.p.v. een determinator.
 
-Ten slotte kan een getal ook op zichzelf staan zonder zelfstandig naamwoord, bijvoorbeeld als jaartal. De grammaticale regel van lijn 15 t.e.m. 17 dekt dit geval. De semantiek is vergelijkbaar met de vorige grammaticale regel maar er is geen extra restrictie op het getal. Vandaar de lege DRS-structuur in $\sem{np} = \app{\sem{number}}{\lambdaf{x}{\drs{}{}}}$.
+Daarnaast kan een getal ook op zichzelf staan zonder zelfstandig naamwoord, bijvoorbeeld als jaartal. De grammaticale regel van lijn 15 t.e.m. 17 dekt dit geval. De semantiek is vergelijkbaar met de vorige grammaticale regel maar er is geen extra restrictie op het getal. Vandaar de lege DRS-structuur in $\sem{np} = \app{\sem{number}}{\lambdaf{x}{\drs{}{}}}$.
+
+Een naamwoordgroep kan vooraf gegaan zijn door een dollar-symbool. Wanneer we types introduceren in hoofdstuk~\ref{ch:types} fixeren we het type van deze naamwoordgroep op \texttt{dollar}.
+
+Ten slotte kan een naamwoordgroep bestaan uit ``whoever'' gevolgd door een verbale constituent, bijvoorbeeld ``whoever loves Mary'' Dit zou voluit neerkomen op ``the entity that loves Mary''. Het bestaat dus eigenlijk uit een verzwegen determinator met een ontbrekend substantief en een verzwegen betrekkelijk voornaamwoord. De betekenis is gelijk aan $$\sem{np} = \app{\sem{det}}{\appH{\app{\sem{relpro}}{vp}}{\lambdaf{x}{\drs{}{}}}}$$
+
+Het lidwoord krijgt een getransformeerd substantief mee. Die transformatie bestaat uit een (verzwegen) betrekkelijk voornaamwoord en een verbale constituent. Het substantief dat getransformeerd wordt ontbreekt en legt dus geen restrictie op. Vandaar de lege DRS die overeenkomt met $\lambdaf{x}{true}$ in eerste-orde-logica.
 
 \begin{dcg}{De grammaticale regels voor een simpele naamwoordgroep}{dcg:np1}
 np([coord:no, num:Num, gap:[], sem:Sem]) -->
@@ -171,6 +177,18 @@ np([coord:no, num:Num, gap:[], sem:Sem]) -->
 np([coord:no, num:_, gap:[], sem:Sem]) -->
   number([sem:Number]),
   { Sem = app(Number, lam(_, drs([], []))) }.
+
+np([coord:no, num:Num, gap:[], sem:Sem]) -->
+  ['$'],
+  np([coord:no, num:Num, gap:[], sem:NP]),
+  { Sem = NP }.
+
+np([coord:no, num:Num, gap:[], sem:Sem]) -->
+  { semLex(det, [num:Num, sem:Det]) },
+  [whoever],
+  { semLex(relpro, [sem:RP]) },
+  vp([coord:no, inf:fin, num:Num, gap:[], sem:VP]),
+  { Sem = app(Det, app(app(RP, VP), lam(_, drs([], []))))}.
 \end{dcg}
 
 \subsection{Een naamwoordgroep met onbekende relatie}
@@ -202,7 +220,7 @@ np([coord:np, num:Num, gap:[], sem:Sem]) -->
 
 \subsection{Een vergelijkende naamwoordgroep}
 \label{sec:gramNpComp}
-Grammatica~\ref{dcg:np3} geeft de grammaticale regels voor een vergelijkende naamwoordgroep, zoals ``3 years after John''. Zo'n naamwoordgroep bestaat uit een hoeveelheid (\texttt{quantity}), een comparatief (\texttt{comp}) en een andere naamwoordgroep (\texttt{np}). De betekenis bestaat uit twee simpele lambda-applicaties $\sem{np} = \appH{\app{\sem{comp}}{\sem{np_1}}}{\sem{np_2}}$
+Grammatica~\ref{dcg:np3} geeft de grammaticale regels voor een vergelijkende naamwoordgroep, zoals ``3 years after John''. Zo'n naamwoordgroep bestaat uit een hoeveelheid (\texttt{quantity}), een comparatief (\texttt{comp}) en een andere naamwoordgroep (\texttt{np}). Deze laatste moet een simpelere naamwoordgroep zijn (namelijk een eenvoudige naamwoordgroep of één met een onbekende relatie). De betekenis bestaat uit twee simpele lambda-applicaties $\sem{np} = \appH{\app{\sem{comp}}{\sem{np_1}}}{\sem{np_2}}$
 
 Zo'n hoeveelheid kan onbepaald zijn zoals ``sometime'' (lijn 7-9) of een simpele naamwoordgroep zoals ``2 years'' (lijn 10-12).
 
@@ -217,7 +235,8 @@ De naamwoordgroep voldoet aan de eigenschap $E$ als er een $z$ bestaat die hier 
 np([coord:comp, num:Num, gap:[tv:TV | G], sem:Sem]) -->
   quantity([num:Num, sem:NP1]),
   comp([sem:Comp]),
-  np([coord:_, num:_, gap:[tv:TV | G], sem:NP2]),
+  { Coord = no; Coord = np },
+  np([coord:Coord, num:_, gap:[tv:TV | G], sem:NP2]),
   { Sem = app(app(Comp, NP1), NP2) }.
 
 quantitity([num:_, sem:S]) -->
@@ -237,9 +256,9 @@ np([coord:no, num:Num, gap:[tv:TV | G], sem:Sem]) -->
 \end{dcg}
 
 \subsection{Een naamwoordgroep met een voegwoord}
-Ten slotte is er nog een naamwoordgroep met een voegwoord in of ook wel gecoördineerde naamwoodgroep genoemd. Grammatica~\ref{dcg:np4} geeft de twee grammaticale regels die dit soort naamwoordgroepen beschrijven. De eerste regel zegt dat een gecoördineerde naamwoordgroep kan bestaat uit een eventuele prefix van een voegwoord, een naamwoordgroep (een simpele of ééntje met een onbekende relatie), een voegwoord en opnieuw een naamwoordgroep (een simpele, ééntje met een onbekende relatie of een naamwoordgroep met een voegwoord van het zelfde type als het voegwoord van deze naamwoordgroep).
+Ten slotte is er nog een naamwoordgroep met een voegwoord in of ook wel gecoördineerde naamwoodgroep genoemd. Grammatica~\ref{dcg:np4} geeft de twee grammaticale regels die dit soort naamwoordgroepen beschrijven. De eerste regel zegt dat een gecoördineerde naamwoordgroep kan bestaat uit een eventuele prefix van een voegwoord, een naamwoordgroep (een simpele, één met een onbekende relatie of een vergelijkende naamwoordgroep), een voegwoord en opnieuw een naamwoordgroep (een simpele, één met een onbekende relatie, één met een vergelijking of een naamwoordgroep met een voegwoord van het zelfde type als het voegwoord van deze naamwoordgroep).
 
-De tweede grammaticale regel is gelijkaardig maar behandelt het geval dat het voegwoord is verzwegen, zoals in ``John, Pete and Mary''. De naamwoordgroep ``John, Pete'' bevat geen voegwoord. De grammaticale regel is vrij gelijkaardig. De enige andere verandering is dat de tweede naamwoordgroep sowieso opnieuw gecoördineerd moet zijn. Het type van voegwoord in die tweede naamwoordgroep is ook het type van het voegwoord dat is verzwegen.
+De tweede grammaticale regel behandelt het geval dat het voegwoord is verzwegen, zoals in ``John, Pete and Mary''. De naamwoordgroep ``John, Pete'' bevat geen voegwoord. De grammaticale regel is vrij gelijkaardig. De enige andere verandering is dat de tweede naamwoordgroep sowieso opnieuw gecoördineerd moet zijn. Het type van voegwoord in die tweede naamwoordgroep is ook het type van het voegwoord dat is verzwegen.
 
 \paragraph{} Het getal van een gecoördineerde naamwoordgroep is afhankelijk van het type van het voegwoord (lijn 2, 12 en 20-22). Een conjunctief voegwoord (``and'') resulteert in een naamwoordgroep in het meervoud. De andere twee types resulteren in een naamwoordgroep in het enkelvoud.
 
@@ -249,7 +268,7 @@ De betekenis bestaat zoals bij zo vele grammaticale regels uit twee lambda-appli
 np([coord:CoordType, num:CoordNum, gap:G, sem:Sem]) -->
   { npCoordNum(CoordType, CoordNum) },
   coordPrefix([type:CoordType]),
-  { Coord1 = no ; Coord1 = np},
+  { Coord1 = no ; Coord1 = np ; Coord1 = comp },
   np([coord:Coord1, num:sg, gap:G, sem:NP1]),
   coord([type:CoordType, sem:Coord]),
   { Coord2 = CoordType ; Coord2 = no ; Coord2 = np },
@@ -259,7 +278,7 @@ np([coord:CoordType, num:CoordNum, gap:G, sem:Sem]) -->
 np([coord:CoordType, num:CoordNum, gap:G, sem:NP, vType:Type]) -->
   { npCoordNum(CoordType, CoordNum) },
   coordPrefix([type:CoordType]),
-  { Coord1 = no ; Coord1 = np},
+  { Coord1 = no ; Coord1 = np },
   np([coord:Coord1, num:sg, gap:G, sem:NP1, vType:Type]),
   noCoord([type:CoordType, sem:Coord]),
   np([coord:CoordType, num:_, gap:G, sem:NP2, vType:Type]),
@@ -276,7 +295,7 @@ Grammatica~\ref{dcg:vp1} geeft de grammaticale regels voor een aantal simpele ve
 
 De eenvoudigste verbale constituent bestaat uit een transitief werkwoord, gevolgd door haar prefix, een naamwoordgroep (als lijdend voorwerp) en ten slotte het achtervoegsel van het werkwoord. Het getal van het werkwoord is ook deze van de verbale constituent. De betekenis is een lambda-applicatie $\sem{vp} = \app{\sem{tv}}{{\sem{np}}}$.
 
-De tweede grammaticale regel drukt iets gelijkaardigs uit maar nu in het geval het lijdend voorwerp een vergelijking is (\texttt{coord:comp}). In dat geval zijn het voor- en achtervoegsel optioneel. Neem bijvoorbeeld de zinnen ``John won in 2008'' en ``Mary won 2 years after John''. Het voorvoegsel ``in'' verdwijnt in het geval van een vergelijkende naamwoordgroep. Bovendien is er een ellips van het werkwoord in de naamwoordgroep (zie ook sectie~\ref{sec:gramNpComp}). Dit reflecteert zich in de feature \texttt{gap} van de naamwoordgroep. 
+De tweede grammaticale regel drukt iets gelijkaardigs uit maar nu in het geval het lijdend voorwerp een vergelijking is (\texttt{coord:comp}) of een conjunctie van twee vergelijkingen (\texttt{coord:conj}). In dat geval zijn het voor- en achtervoegsel optioneel. Neem bijvoorbeeld de zinnen ``John won in 2008'' en ``Mary won 2 years after John''. Het voorvoegsel ``in'' verdwijnt in het geval van een vergelijkende naamwoordgroep. Bovendien is er een ellips van het werkwoord in de naamwoordgroep (zie ook sectie~\ref{sec:gramNpComp}). Dit reflecteert zich in de feature \texttt{gap} van de naamwoordgroep. 
 
 Merk op dat we in de eerste grammaticale regel niet toestaan dat er een ellips is van het werkwoord binnen het lijdende voorwerp. Dit zou kunnen lijden tot extra betekenissen die niet nuttig zijn binnen een logigram.
 
@@ -294,7 +313,8 @@ vp([coord:no, inf:I, num:Num, gap:G, sem:Sem]) -->
 vp([coord:no, inf:I, num:Num, gap:G, sem:Sem]) -->
   tv([inf:I, num:Num, positions:Pre-Post, sem:TV]),
   optional(Pre),
-  np([coord:comp, num:_, gap:[tv:TV | G], sem:NP]),
+  { Coord = conj ; Coord = comp },
+  np([coord:Coord, num:_, gap:[tv:TV | G], sem:NP]),
   optional(Post),
   { Sem = app(TV, NP) }.
 
