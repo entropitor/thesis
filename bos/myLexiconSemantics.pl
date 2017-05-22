@@ -117,7 +117,8 @@ semLex(prep, M) :-
 
 semLex(av, M) :-
     M = [pol:neg,
-         sem:lam(P, lam(N, app(N, lam(X, drs([], [not(app(P, lam(Y, app(Y, X))))])))))];
+         %% sem:lam(P, lam(N, app(N, lam(X, drs([], [not(app(P, lam(Y, app(Y, X))))])))))];
+          sem:lam(P, lam(N, app(N, lam(X, app(P, lam(Y, drs([], [not(app(Y, X))])))))))];
     M = [pol:pos,
          sem:lam(P, P)].
 
