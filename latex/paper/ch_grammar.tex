@@ -3,10 +3,12 @@ A grammar was constructed based on the first ten logic grid puzzles from Puzzle 
 
 In total there are 49 grammar rules: 3 grammar rules for sentences, 20 related to nouns and noun phrases, 8 for verb phrases and 18 rules that connect the grammar with the lexicon.
 
-Again, because of space constraints, we can't show the full grammar. We limit ourselves to a short discussion.
+Again, because of space constraints, we cannot show the full grammar. We limit ourselves to a short discussion.
 
-Most grammar rules are quite general. They can be used outside logic grid puzzles as well. Others like the grammar rule for a sentence with template ``Of ... and ..., one ... and the other ...'' are specific for these types of puzzles.
+Most grammar rules are quite general. They can be used outside logic grid puzzles as well. Others, like the grammar rule for a sentence with template ``Of ... and ..., one ... and the other ...'', are specific for these types of puzzles. The introduction to \cite{logigrammen} explicitly mentions this template and explains how this template should be interpreted. This interpretation is incorporated in the semantics of the grammar rule covering this template.
+
+Some other more specific rules include an \textit{alldifferent} constraint (``A, B, and C are three different persons'') and a numerical comparison (``John scored 3 points higher than Mary'') which introduces an addition or subtraction.
 
 The semantics of most rules consists only of $\lambda$-applications. Some rules are more complex. Those exceptions are either because the scope of variables and negations would otherwise be incorrect or because the grammar rule is specific to logic grid puzzles and can not be easily explained linguistically. This linguistic shortcut is then visible in the semantics.
 
-There are two type of noun phrases which introduce an unknown predicate. Namely ``the 2008 graduate'' and ``John's dog''. In the current framework, it's impossible to derive which relation holds between ``the graduate'' and ``2008''. Adding types to the framework solves the issue.
+There are two type of noun phrases which relate two entities without a reference to this relation. Namely ``the 2008 graduate'' and ``John's dog''. In the current framework, it is impossible to derive which relation holds between ``the graduate'' and ``2008''. In Section \ref{sec:types}, we discuss a solution to this problem.
