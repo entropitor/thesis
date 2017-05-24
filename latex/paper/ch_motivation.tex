@@ -1,10 +1,11 @@
 \section{Motivation}
-A knowledge base system is very powerful. It allows multiple inferences based on the same theory. However, since knowledge representation languages can be hard to read, write and learn, an expert in formal languages is required to write and maintain this specification. A formal language that is more accessible for non-experts, like a CNL with formal semantics, can solve this issue.
+Since knowledge representation languages can be hard to read, write and learn, an expert in formal languages is required to write and maintain the specification. A formal language that is more accessible for non-experts, like a CNL with formal semantics, can solve this issue without compromising on the strength of knowledge base systems. It is still possible to apply different kind of inferences on a specification that is more accessible for non-experts.
 
-Once the clues of a logic grid puzzle are expressed in a knowledge representation language, inference on these clues is possible. Some examples include:
+For example, when the clues of a logic grid puzzle are expressed in a CNL (with formal semantics), it is possible to
+% With a CNL for logic grid puzzles, it is possible to apply different kind of inferences to these puzzles. It is for example possible to
 \begin{itemize}
   \item Solve the puzzle automatically.
   \item Given a (partial) solution by the user, indicate which clues have already been incorporated in the solution, which clues still hold some new information and which clues have been violated.
   \item Given a partial solution by the user, automatically derive a subset of clues that can be used to expand the solution. This can be part of a ``hint''-system for the user.
-  \item Given a (sub)set of clues, indicate which solutions are still possible. This can help the author while writing new puzzles. The solutions that are still possible help to construct a new hint that eliminates some of them until only the correct solution remains.
+  \item Given a set of clues, indicate which solutions are still possible. This can help the author while writing new puzzles. Based on the solutions that are still possible, the author can construct a new clue to eliminate some of the possibilities until only one solution remains.
 \end{itemize}
