@@ -1,0 +1,15 @@
+\section{An overview of the system}
+We created such a system. It can reason about a logic grid puzzle starting from the clues in (controlled) natural language and a puzzle-specific lexicon. The system uses the following steps
+\begin{enumerate}
+  \item It translates the clues into logic using the extended framework of Blackburn and Bos. While doing so, it gathers type information about the words in the lexicon.
+  \item The system uses this type information to automatically deduce the domains of the puzzle. It asks the user questions, if necessary.
+  \item The system then constructs a formal vocabulary based on these domains.
+  \item Thereafter, it formulates the necessary axioms to model the implicit assumptions of a logic grid puzzle
+  \item Finally, the system passes the complete specification (consisting of the formal vocabulary and the theory with the axioms and the translation of the clues) to IDP \cite{IDP} to get a solution to the puzzle (or to apply another kind of inference)
+\end{enumerate}
+
+For this system, we extended the framework of Blackburn and Bos, we constructed a grammar and a set of lexical categories that can be used in this framework for the translation of logic grid puzzles into logic. We devised an inference system to deduce the different domains from the type information. We contrived how to express these domains in a formal vocabulary and finally, we listed the axioms necessary to complete the specification.
+
+% These types also allow the system to deduce the domains of the puzzle automatically. The user is asked for help if necessary. The system prefers to ask the user linguistic questions, like ``Is ... a well-typed sentence?''.
+
+
