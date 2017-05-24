@@ -1,22 +1,35 @@
 \section{A complete specification}
+In step 3 and 4 of the system, a formal vocabulary is constructed and the implied axioms are modelled.
+
 \subsection{The formal vocabulary}
-Having a typed natural language means we can translated to a typed formal language. In this paper we translate to the IDP language \cite{IDP}. We can construct the formal vocabulary based on linguistic information. When the types correspond to a domain of the puzzle, we translate to to a constructed type or to a subset of the natural numbers. The former in case of a non-numerical domain. The different proper nouns that belong to this type are the constants of the constructed type. However, it is possible that one constant is missing (i.e. that it didn't occur in any of the clues). Therefore, we provide the system with the number of domain elements that are in each domain. In case one is missing, the system adds an extra constant. It is not possible that two elements are missing as a logic grid puzzle has a unique solution and these two elements would be interchangeable. The system translates to a subset of the natural numbers in case of a numerical domain. In that case, the system asks the user the exact subset.
+\label{sec:vocabulary}
+We can construct the formal vocabulary based on linguistic information and type information.
 
-There can also be types that don't correspond with domain elements. There is a derived numerical type which contains the set of numbers that are a difference of two numbers from a numerical domain. This type is only necessary because the inferences in IDP would otherwise not be finite.
+A type that corresponds to a non-numerical domain of the puzzle is translated to a constructed type. A constructed type consist of a set of constants with two extra axioms implied: Domain Closure Axiom (DCA) and Unique Names Axiom (UNA). DCA states that the set of constants are the only possible elements of the domain. UNA states that all constants are different from each other.
 
-It is also possible to have an intermediate type that links two domains, e.g. \textit{tour} in ``John follows the tour with 54 people''. These types are translated to constructed types with as many constants as there are domain elements in a domain. Symmetry-breaking axioms are added to the theory to link every constant with one domain element.
+The different proper nouns that belong to this type are the constants of the constructed type. However, it is possible that one constant is missing (i.e. it didn't occur in any of the clues). In that case, the system adds an extra constant. Because every puzzle has an unique solution, it is not possible that two elements are missing (as these two elements would be interchangeable).
 
-Every transitive verb and preposition introduces a predicate. The noun phrases with an unknown predicate can now be resolved based on type information. We know which predicates are suitable, namely the predicates that link the corresponding types. Because there is exactly one bijection between every two domains, it doesn't matter which predicate the system picks.
+A type that corresponds to a numerical domain is translated to a subset of the natural numbers. In that case, the system asks the user the exact subset as it often cannot be automatically inferred from the clues.
+
+% When the types correspond to a domain of the puzzle, we translate to to a constructed type or to a subset of the natural numbers. The former in case of a non-numerical domain. The different proper nouns that belong to this type are the constants of the constructed type. However, it is possible that one constant is missing (i.e. that it didn't occur in any of the clues). In that case, the system adds an extra constant. It is not possible that two elements are missing as a logic grid puzzle has a unique solution and these two elements would be interchangeable. The system translates to a subset of the natural numbers in case of a numerical domain. In that case, the system asks the user the exact subset.
+
+
+% There can also be types that don't correspond to domain elements. There is a derived numerical type which contains the set of numbers that are a difference of two numbers from a numerical domain. This type is only necessary because the inferences in IDP would otherwise not be finite.
+
+It is also possible to have an intermediate type that links two domains, e.g. \textit{tour} in ``John follows the tour with 54 people''. These types are translated to constructed types with as many constants as there are domain elements in a domain. Symmetry-breaking axioms are added to the theory to link every constant with one domain element of another domain.
+
+Every transitive verb and preposition introduces a predicate. The type signature of the predicate corresponds with the type pair of the word.  Based on these signatures, we can infer the relation behind noun phrases like ``the 2008 graduate''. The predicate that links the two entities is the predicate that links the corresponding types. %It doesn't matter which predicate the system picks (if there is more than one), because there is only one bijection between every two domains.
 
 \subsection{The implied axioms}
-With a formal vocabulary and a translation of all clues into logic, the system can almost solve the puzzle (and apply other inferences). The theory only needs to be expanded with a number of axioms specific to logic grid puzzles. We need type information to construct some of these axioms. 
+There are some axioms implied for a logic grid puzzle. They are not expressed in the clues because they hold for all logic grid puzzles.
+% With a formal vocabulary and a translation of all clues into logic, the system can almost solve the puzzle (and apply other inferences). The theory only needs to be expanded with a number of axioms specific to logic grid puzzles. We need type information to construct some of these axioms. 
 
-The first type of axioms is the symmetry-breaking axioms mentioned earlier (E.g. $pred(C1, John) \land pred(C2, Mary) \land pred(C3, Charles)$). Another type is the bijection axioms to state that every predicate is a bijection (E.g. $\forall x \cdot \exists y \cdot pred(x, y) \land \forall y \cdot \exists x \cdot pred(x, y)$).
+The first type of axioms is the symmetry-breaking axioms mentioned in \ref{sec:vocabulary} for intermediate types (E.g. $with(T1, 54) \land with(T2, 64) \land with(T3, 74)$). Another type is the bijection axioms to state that every predicate is a bijection (E.g. $\forall x \cdot \exists y \cdot with(x, y) \land \forall y \cdot \exists x \cdot with(x, y)$).
 
 Finally there are three types of axioms to express that there is an equivalence relation between domain elements. Two elements are equivalent if they are linked through a predicate or if they are equal. In second order logic $x \sim y \Leftrightarrow \exists P \cdot P(x, y) \lor x = y$. The reflexivity is satisfied by definition.
 
 \begin{itemize}
-  \item \textbf{Synonymy} There is exactly one bijection between every two domains. Therefore, two predicates with the same types are always synonyms. E.g. $\forall x \forall y \cdot pred_1(x, y) \Leftrightarrow pred_2(x, y).$
-  \item \textbf{Symmetry} Predicates with a reversed signature are each other inverse. E.g. $\forall x \forall y \cdot pred_1(x, y) \Leftrightarrow pred_2(y, x).$
-  \item \textbf{Transitivity} Finally there are axioms linking the different predicates. They express the transitivity of the equivalence relation. E.g. $\forall x \forall y \cdot pred_1(x, y) \Leftrightarrow \exists z \cdot pred_2(x, z) \land pred_3(z, y).$
+  \item \textbf{Synonymy} There is exactly one bijection between every two domains. Therefore, two predicates with the same types are always synonyms. E.g. $\forall x \forall y \cdot livesIn(x, y) \Leftrightarrow from(x, y).$
+  \item \textbf{Symmetry} Predicates with a reversed signature are each other inverse. E.g. $\forall x \forall y \cdot gave(x, y) \Leftrightarrow givenBy(y, x).$
+  \item \textbf{Transitivity} Finally there are axioms linking the different predicates. They express the transitivity of the equivalence relation. E.g. $\forall x \forall y \cdot spokeFor(x, y) \Leftrightarrow \exists z \cdot gave(x, z) \land lastedFor(z, y).$
 \end{itemize}

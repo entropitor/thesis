@@ -2,7 +2,7 @@
 We created such a system. It can reason about a logic grid puzzle starting from the clues in (controlled) natural language and a puzzle-specific lexicon. The system uses the following steps
 \begin{enumerate}
   \item It translates the clues into logic using the extended framework of Blackburn and Bos. While doing so, it gathers type information about the words in the lexicon.
-  \item The system uses this type information to automatically deduce the domains of the puzzle. It asks the user questions, if necessary.
+  \item The system uses this type information to automatically deduce the domains of the puzzle. If necessary, it asks the user questions.
   \item The system then constructs a formal vocabulary based on these domains.
   \item Thereafter, it formulates the necessary axioms to model the implicit assumptions of a logic grid puzzle
   \item Finally, the system passes the complete specification (consisting of the formal vocabulary and the theory with the axioms and the translation of the clues) to IDP \cite{IDP} to get a solution to the puzzle (or to apply another kind of inference)
