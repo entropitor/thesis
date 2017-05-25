@@ -193,7 +193,7 @@ np([coord:no, num:Num, gap:[], sem:Sem]) -->
 
 \subsection{Een naamwoordgroep met onbekende relatie}
 \label{sec:npMissingRelation}
-Grammatica~\ref{dcg:np2} beschrijft twee grammaticale regels met dezelfde semantiek en gelijkaardige structuur. Het gaat om naamwoordgroepen respectievelijk zoals ``the 2008 graduate'' en ``John's dog''. Ze bestaan allebei uit een simpele naamwoordgroep (\texttt{np} met \texttt{coord:no}) en een substantief~(\texttt{n}). Er is telkens een link tussen de entiteit van het substantief en dat van de simpele naamwoordgroep maar er is geen kennis over welke link dit juist is. Voor nu laten we het dus nog open. In hoofdstuk~\ref{ch:types} zullen we met behulp van types afleiden welk predicaat nodig is. De entiteit van de substantief is het belangrijkste en is ook de entiteit van de naamwoordgroep als geheel. Als resultaat krijgen we $$\sem{np} = \lambdaf{E}{\appH{\app{\sem{det}}{\sem{n}}}{\lambdaf{x}{\drsMerge{\app{E}{x}}{\app{\sem{np}}{\lambdaf{y}{\drs{}{\textit{unknown}(x, y)}}}}}}}}$$
+Grammatica~\ref{dcg:np2} beschrijft twee grammaticale regels met dezelfde semantiek en gelijkaardige structuur. Het gaat om naamwoordgroepen respectievelijk zoals ``the 2008 graduate'' en ``John's dog''. Ze bestaan allebei uit een simpele naamwoordgroep (\texttt{np} met \texttt{coord:no}) en een substantief~(\texttt{n}). Er is telkens een link tussen de entiteit van het substantief en dat van de simpele naamwoordgroep maar er is geen kennis over welke link dit juist is. Voor nu laten we het dus nog open. In hoofdstuk~\ref{ch:types} zullen we met behulp van types afleiden welk predicaat nodig is. De entiteit van de substantief is het belangrijkste en is ook de entiteit van de naamwoordgroep als geheel. Als resultaat krijgen we $$\sem{np} = \lambdaf{E}{\appH{\app{\sem{det}}{\sem{n}}}{\lambdaf{x}{\drsMerge{\app{E}{x}}{\app{\sem{np}}{\lambdaf{y}{\drs{}{\textit{unknown}(x, y)}}}}}}}$$
 
 Het is een naamwoordgroep en moet dus voldoen aan een eigenschap $E$. De naamwoordgroep voldoet hier aan als de naamwoordgroep die bestaat uit het lidwoord en het substantief voldoet aan de eigenschap die bestaat uit een conjunctie van de eigenschap $E$ en een link met de inwendige naamwoordgroep via een onbekend predicaat. Het is $x$ die aan eigenschap $E$ moet voldoen omdat de entiteit van het substantief het belangrijkste is en de entiteit van de naamwoordgroep als geheel voorstelt.
 
@@ -372,7 +372,7 @@ en
     }\ \right)^{fo} 
 \]
 
-M.a.w. alle alldifferent constraints die zich binnen één DRS-structuur bevinden, behoren tot één groep van entiteiten die allemaal verschillend zijn. Men kan dit ook schalen naar meerdere groepen door de groep te reïficeren binnen de alldifferent constraint (i.e. $alldifferent(g_i, x_j)$ i.p.v. $alldifferent(x_j)$).
+M.a.w. alle alldifferent constraints die zich binnen één DRS-structuur bevinden, behoren tot één groep van entiteiten die allemaal verschillend zijn. Men kan dit ook schalen naar meerdere groepen door de groep te reïficeren binnen de alldifferent constraint (d.w.z. $alldifferent(g_i, x_j)$ i.p.v. $alldifferent(x_j)$).
 
 Er wordt geen rekening gehouden met de betekenis van het getal of het koppelwerkwoord. ``John and Mary are three different persons.'' is dus een geldige zin, alhoewel de ``three'' niet overeenkomt met het aantal entiteiten in het onderwerp.
 

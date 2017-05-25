@@ -3,16 +3,16 @@ Om deze thesis te begrijpen worden hier een aantal concepten uitgelegd die niet 
 
 \section{Definite Clause Grammars}
 \label{sec:DCG}
-Definite Clause Grammars \cite{Pereira1980} zijn een uitbreiding van contextvrije grammatica's die vaak ingebakken zitten in logische talen zoals prolog. Pereira et al.\ \cite{Pereira1980} geven 3 voorbeelden van hoe DCG's kunnen helpen bij het parsen van natuurlijke talen:
+Definite Clause Grammars \cite{Pereira1980} zijn grammatica's die expressiever zijn dan contextvrije grammatica's. Ze zitten vaak ingebakken in logische talen zoals prolog. Pereira et al.\ \cite{Pereira1980} geven 3 voorbeelden van hoe DCG's kunnen helpen bij het parsen van natuurlijke talen:
 
 \begin{enumerate}
   \item De woordvorm kan afhankelijk gemaakt worden van de context waarin deze verschijnt. Zo kan men eisen dat een werkwoord in de juiste vervoeging voorkomt.
   \item Tijdens het parsen kan men een boom opbouwen die de semantiek van de zin moet vatten. Deze boom hoeft niet isomorf te zijn met de structuur van de grammatica.
-  \item Het is mogelijk om prolog code toe te voegen die extra restricties oplegt aan de grammatica.
+  \item Het is mogelijk om (prolog) code toe te voegen die extra restricties oplegt aan de grammatica.
 \end{enumerate}
 
 \subsection{Een eerste grammatica}
-Een voorbeeld van een DCG grammatica is grammatica~\ref{dcg:gram1}.
+Een voorbeeld van een DCG is grammatica~\ref{dcg:gram1}.
 \begin{dcg}{Een eerste grammatica}{dcg:gram1}
 s() --> np(), vp().
 np() --> [ik].
@@ -36,7 +36,7 @@ v() --> [zie].
 \end{dcg}
 
 \subsection{Een boom als resultaat}
-Verder is het ook mogelijk om een boom op te bouwen tijdens het parsen. Grammatica~\ref{dcg:treeBuilding} is zo'n grammatica. Bij het parsen van \example{ik zie hem} krijgen we nu volgende boom als waarde voor het eerste argument van \texttt{s}.
+Verder is het ook mogelijk om een boom op te bouwen tijdens het parsen. Dit gebeurt in grammatica~\ref{dcg:treeBuilding}. Bij het parsen van \example{ik zie hem} krijgen we nu volgende boom als waarde voor het eerste argument van \texttt{s}.
 
 \Tree[.\textit{zien} \textit{ik} \textit{hem} ]
 
@@ -86,7 +86,7 @@ De prologcode in de accolades heeft twee functies. Enerzijds berekent die de waa
 \section{Feature structures}
 \label{sec:featureStructures}
 
-\paragraph{} Een feature structure is een term uit de taalkunde. Men kan ze zien als \textit{named arguments} voor een niet-terminaal die gebruikt worden om een explosie aan grammaticale regels te voorkomen. Zo kan een \texttt{np} en \texttt{vp} een feature \texttt{getal} hebben dat aangeeft of de woordgroep in het enkelvoud of meervoud staat. De grammaticale regel voor een zin kan dan aangeven dat het onderwerp en werkwoord moeten overeenkomen in getal. Andere features geven bijvoorbeeld de naamval aan van een naamwoordgroep. Blackburn en Striegnitz \cite{NLPCourse} geven de volgende grammaticale regel als voorbeeld (hierbij staat \texttt{CAT} voor de grammaticale categorie van een woordgroep, vergelijkbaar met de naam van een niet-terminaal):
+\paragraph{} Een feature structure is een term uit de taalkunde. Men kan zo'n structuur zien als \textit{named arguments} voor een niet-terminaal symbool die gebruikt worden om een explosie aan grammaticale regels te voorkomen. Zo kan een \texttt{np} en \texttt{vp} een feature \texttt{getal} hebben dat aangeeft of de woordgroep in het enkelvoud of meervoud staat. De grammaticale regel voor een zin kan dan aangeven dat het onderwerp en werkwoord moeten overeenkomen in getal. Andere features geven bijvoorbeeld de naamval aan van een naamwoordgroep. Blackburn en Striegnitz \cite{NLPCourse} geven de volgende grammaticale regel als voorbeeld (hierbij staat \texttt{CAT} voor de grammaticale categorie van een woordgroep, vergelijkbaar met de naam van een niet-terminaal symbool):
 
 \[
   \fstructure{
@@ -108,10 +108,10 @@ Deze regel zegt dat een zin bestaat uit een \texttt{np} gevolgd door een \texttt
 
 Grammatica's die gebruik maken van feature structures, gebruiken altijd unificatie voor het samenvoegen van meerdere structuren. Niet alle features moeten namelijk altijd een waarde toegekend krijgen. Zo kan een eigennaam voorkomen als onderwerp en als lijdend voorwerp (en heeft dus geen waarde voor de feature \texttt{naamval}). Terwijl \example{ik} enkel als onderwerp kan voorkomen (en dus wel een waarde heeft voor die feature). Zoals in het voorbeeld hierboven kan men door unificatie ook controleren of meerdere woordgroepen dezelfde waarden hebben voor een feature.
 
-\paragraph{} Zoals Shieber et al.\ \cite{Shieber2003} aanhalen, verschillen prolog termen van feature structures enkel in vorm. Zo speelt de volgorde in prolog wel een rol. Bovendien moet men steeds alle features vermelden, ook als ze ongebonden zijn. Qua expressiviteit voegen ze echter niets toe aan DCG's. Zo is bovenstaande grammaticale regel op basis van feature structures equivalent met grammatica~\ref{dcg:equivalentFS}.
+\paragraph{} Zoals Shieber et al.\ \cite{Shieber2003} aanhalen, verschillen prolog termen van feature structures enkel in vorm\footnote{Zo speelt de volgorde in prolog wel een rol. Bovendien moet men in een DCG steeds alle argumenten vermelden, ook als ze ongebonden zijn.}. Qua expressiviteit voegen feature structures echter niets toe aan DCG's. Zo is bovenstaande grammaticale regel op basis van feature structures equivalent met grammatica~\ref{dcg:equivalentFS}\footnote{De volgorde van de features \texttt{naamval} en \texttt{getal} is belangrijk. De tijd van het werkwoord moet men vermelden, ook al maakt het niet uit voor deze regel.}.
 
 \begin{dcg}{Een DCG-grammatica equivalent aan de regel met feature structures}{dcg:equivalentFS}
-s() --> np([naamval:nom, getal:Getal]), vp([getal:Getal]).
+s() --> np([naamval:nom, getal:Getal]), vp([tijd:_, getal:Getal]).
 \end{dcg}
 
 In deze thesis zullen we altijd bovenstaande notatie gebruiken om de argumenten van een DCG-grammatica te noteren. De argumenten zijn namelijk taalkundig verantwoord en kunnen aanzien worden als feature structures.
@@ -148,7 +148,7 @@ n([num:singular]) --> [man].
 \paragraph{Conclusie} Door gebruik te maken van feature structures is de grammatica simpeler en leesbaarder. Bovendien hoeft het concept dat een zin bestaat uit een \texttt{np} gevolgd door een \texttt{vp} maar \'e\'en keer te worden uitgedrukt. De feature structures zorgen voor de congruentie in getal van het onderwerp met het werkwoord. 
 
 \section{Discourse Representation Theory}
-Voor het vertalen van natuurlijke taal naar logica zouden we graag gebruik maken van Frege's compositionality principe: De betekenis van een zin bestaat uit de combinatie van de betekenissen van de delen ervan. Als we eerste-orde-logica als doeltaal van onze vertaling nemen, komen we echter vrij snel in de problemen. Neem bijvoorbeeld de zin ``If a man lives, he breathes''. De vertaling hiervan in eerste-orde-logica is $\forall x \cdot man(x) \Rightarrow breathes(x)$. De vertaling van ``a man lives'' is echter $\exists x \cdot man(x)$, wat geen deel uit maakt van de betekenis van de hele zin. Blackburn en Bos \cite{Blackburn2006} geven nog een aantal andere voorbeelden waarvoor DRS-structuren beter geschikt zijn dan eerste-orde-logica (bijvoorbeeld voor het oplossen van anaforische referenties).
+Voor het vertalen van natuurlijke taal naar logica zouden we graag gebruik maken van Frege's compositionaliteitsprincipe: De betekenis van een zin bestaat uit de combinatie van de betekenissen van de delen ervan. Als we eerste-orde-logica als doeltaal van onze vertaling nemen, komen we echter vrij snel in de problemen. Neem bijvoorbeeld de zin ``If a man lives, he breathes''. De vertaling hiervan in eerste-orde-logica is $\forall x \cdot man(x) \Rightarrow breathes(x)$. De vertaling van ``a man lives'' is echter $\exists x \cdot man(x)$, wat geen deel uit maakt van de betekenis van de hele zin. Blackburn en Bos \cite{Blackburn2006} geven nog een aantal andere voorbeelden waarvoor DRS-structuren beter geschikt zijn dan eerste-orde-logica (bijvoorbeeld voor het oplossen van anaforische referenties).
 
 Ze suggereren Discourse Representation Structures als alternatief. Bos \cite{Bos2011} definieert deze structuren als een lijst van \textit{discourse referents} (woordgroepen waarnaar andere woordgroepen kunnen verwijzen) en een lijst van condities i.v.m. die referenties. Blackburn en Bos \cite{Blackburn2006} geven o.a. een vertaling van deze DRS-structuren naar eerste-orde-logica. DRS-structuren hebben dus ook een formele betekenis. Zoals we verder zullen aantonen, zijn ze echter beter geschikt als doeltaal. Van hieruit kan dan verder vertaald worden naar eerste-orde-logica volgens de vertaling van Blackburn en Bos.
 
