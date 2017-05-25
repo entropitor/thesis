@@ -1,13 +1,13 @@
 \section{Evaluation}
-A grammar was constructed based on the ten first logic grid puzzles from Puzzle Baron's Logic Puzzles Volume 3 \cite{logigrammen} and evaluated on the next ten puzzles. Some rare and difficult constructs in the training set were rewritten to make it easier to parse. To fit the unseen puzzles to the constructed grammar, some clues of the test set were adapted as well. The question arises how many of these adaptions are necessary to represent the unseen puzzles in the constructed grammar. Another question is whether or not it is possible to deduce the types of a logic grid puzzle or not. Finally, we want to know if all puzzles are represented correctly such that the solution can automatically be derived with the IDP system \cite{IDP}.
+A grammar was constructed based on the ten first logic grid puzzles from Puzzle Baron's Logic Puzzles Volume 3 \cite{logigrammen} and evaluated on the next ten puzzles. Some rare and difficult constructs in the training set were modified to make it easier to parse. To fit the unseen puzzles to the constructed grammar, some clues of the test set were modified as well. The question arises how many of these modifications are necessary to represent the unseen puzzles in the constructed grammar. Another question is whether or not it is possible to deduce the types of a logic grid puzzle or not. Finally, we want to know if all puzzles are represented correctly such that the solution can automatically be derived with the IDP system \cite{IDP}.
 
-It turns out that once adapted to the grammar, the types of most unseen puzzles can be derived automatically and the clues can be translated correctly into logic. For one puzzle the system asks the user if certain domain elements belong to the same domain. Thereafter, it does translate the puzzle correctly into logic.
+It turns out that once modified to the grammar, the types of nine unseen puzzles can be derived automatically and the clues can be translated correctly into logic. For one puzzle the system asks the user if certain domain elements belong to the same domain. Thereafter, it does translate the puzzle correctly into logic.
 
-Table~\ref{tbl:resultaten} gives an overview of the different adaptations. In total 65 adaptations were necessary, 30 of which were purely grammatical. They used grammatical structures that didn't appear in the training set. The next 5 adaptations were adaptations similar to those from the training set. There are 19 adaptations due to badly typed words. E.g. a verb ``to order'' that was used to order both food and drinks. The assumption of one type per word wasn't satisfied in that case. There was one adaptation to a proper noun because the same domain element appeared in two different word forms. We assumed there is only one word form per domain element. Finally, there were 10 cases where an extra word was added or removed.
+Table~\ref{tbl:resultaten} gives an overview of the different modifications. In total 65 modifications were necessary, 30 of which were purely grammatical. They used grammatical structures that didn't appear in the training set. The next 5 modifications were modifications similar to those from the training set. There are 19 modifications due to badly typed words. E.g. a verb ``to order'' that was used to order both food and drinks. The assumption of one type per word wasn't satisfied in that case. There was one modification to a proper noun because the same domain element appeared in two different word forms. We assumed there is only one word form per domain element. Finally, there were 10 cases where an extra word was added or removed.
 
-We refer to the full master thesis for a detailed overview of all the adaptations. However, most of the adaptations are small and they were always necessary to fit them in the grammar. No adaptations were necessary to avoid a parse that resulted in a wrong translation.
+We refer to the full master thesis for a detailed overview of all the modifications. However, most of the modifications are small and they were always necessary to fit them in the grammar. No modifications were necessary to avoid a parse that resulted in a wrong translation.
 
-\begin{table}[h]
+\begin{table}[t]
   \centering
   \begin{tabular}{lc}
     \hline
@@ -33,6 +33,6 @@ We refer to the full master thesis for a detailed overview of all the adaptation
     Missing word (ellipse) & 3 \\
     \hline
   \end{tabular}
-  \caption{An overview of the different adaptations}
+  \caption{An overview of the different modifications}
   \label{tbl:resultaten}
 \end{table}

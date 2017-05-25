@@ -13,3 +13,5 @@ As indicated earlier, most words (like noun, verb, ...) also get a type in the l
 The search for the types of all words gets as input the number of domains in the puzzle (related to the number of base types) and some type constraints (from the translation of the clues into logic, based on the principle of one type per word). If many synonyms are used, the system enters an interactive mode and asks the user some linguistic questions that can be rewritten as ``Is ... a meaningful sentence?'' until the types are unified enough.
 
 This process fails if (and only if) a certain domain always occurs as part of noun phrases with an unknown relation (e.g. ``the 2008 graduate''). In such a scenario, the system cannot fallback on a linguistic question and therefore asks the user if two proper nouns are of the same type. This is the exact question the system was supposed to solve.
+
+The described system can thus correctly derive which domain elements belong together based on type constraints and the answers to some linguistic questions. Only when they do not provide enough information, is the user asked to help identify the elements that belong together.

@@ -1,5 +1,5 @@
 \section{A complete specification}
-In step 3 and 4 of the system, a formal vocabulary is constructed and the implied axioms are modelled.
+In step 3 and 4 of the system described in \ref{sec:system}, the system completes the specification with a formal vocabulary and the formulation of the implied axioms. We now describe these steps.
 
 \subsection{The formal vocabulary}
 \label{sec:vocabulary}
@@ -7,7 +7,7 @@ We can construct the formal vocabulary based on linguistic information and type 
 
 A type that corresponds to a non-numerical domain of the puzzle is translated to a constructed type. A constructed type consist of a set of constants with two extra axioms implied: Domain Closure Axiom (DCA) and Unique Names Axiom (UNA). DCA states that the set of constants are the only possible elements of the domain. UNA states that all constants are different from each other.
 
-The different proper nouns that belong to this type are the constants of the constructed type. However, it is possible that one constant is missing (i.e. it didn't occur in any of the clues). In that case, the system adds an extra constant. Because every puzzle has an unique solution, it is not possible that two elements are missing (as these two elements would be interchangeable).
+The different proper nouns that belong to this type are the constants of the constructed type. However, it is possible that one constant is missing (i.e. it didn't occur in any of the clues). In that case, the system adds an extra constant. It is not possible that two elements are missing, because every puzzle has an unique solution and  these two elements would be interchangeable.
 
 A type that corresponds to a numerical domain is translated to a subset of the natural numbers. In that case, the system asks the user the exact subset as it often cannot be automatically inferred from the clues.
 

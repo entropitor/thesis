@@ -1,7 +1,7 @@
 \section{A semantical framework}
 Blackburn and Bos constructed a framework~\cite{Blackburn2005, Blackburn2006} to capture the meaning of natural language by translating it into a logic. It consists of four parts: the lexicon, the grammar, the semantics of the lexicon and the semantics of the grammar. The framework is based on the $\lambda$-calculus and Frege's compositionality principle. Every word has a $\lambda$-expression as its meaning. The meaning of a group of words is a combination of the meaning of the words that are part of the group. In this framework, $\lambda$-application is used to combine the meaning of words.
 
-The grammar defines which sentences are grammatically correct (and thus allowed) and which are not. E.g. a (correct) sentence consists of a noun phrase and a verb phrase that agree in number. This process results in a parse tree of every grammatically correct sentence, in which the words are the leaves. The framework then combines the meaning of the leaves (the words) upwards in the tree to the meaning of the root node (the sentence).
+The grammar defines which sentences are grammatically correct (and thus allowed) and which are not. E.g. a correct sentence consists of a noun phrase and a verb phrase that agree in number. This process results in a parse tree of every grammatically correct sentence, in which the words are the leaves. The framework then combines the meaning of the leaves (the words) upwards in the tree to the meaning of the root node (the sentence).
 
 \begin{dcg}{A simple grammar}{dcg:frameworkIllustration}
 s([]) -->
@@ -19,7 +19,7 @@ vp([num:Num, sem:Sem]) -->
   np([num:_]).
 \end{dcg}
 
-The lexicon consists of the enumeration of the different words that can be used along with some linguistic features. E.g. ``loves'' is a transitive verb in the present tense, ``love'' is a transitive verb and an infinitive. A lot of words also have a feature \textit{Symbol} which is used in the translation of the word to differentiate between the different words from the same lexical category.
+The lexicon consists of the enumeration of the different words that can be used along with some linguistic features. E.g. ``loves'' is a transitive verb in the present tense, ``love'' is a transitive verb and an infinitive. A lot of words also have a feature \textit{Symbol} which is used in the translation as the name of a constant or predicate.
 
 The goal of the framework is to lexicalize as much of the meaning as possible. The semantics of a grammar rule should be limited to $\lambda$-applications, if possible. Table~\ref{tbl:grammar-sem} gives the semantics for grammar~\ref{dcg:frameworkIllustration}.
 
@@ -40,7 +40,7 @@ The goal of the framework is to lexicalize as much of the meaning as possible. T
   \label{tbl:grammar-sem}
 \end{table}
 
-The meaning of the words themselves is the only thing still missing. Blackburn and Bos assume that the meaning of a word is only dependent on its linguistic features, most importantly its lexical category. Constructing these $\lambda$-expressions can be hard. Therefore, it can help to analyze the signature of these expressions. We used a $\lambda$-calculus with two types for this: $e$ represents entities and $t$ truth-values. The signature of a noun is $\tau(n) = e \rightarrow t$, given an entity, the noun says whether or not the entity can be described with the noun. E.g. $\sem{n_{man}} = \lambdaf{x}{man(x)}$
+The meaning of the words themselves is the only thing still missing. Blackburn and Bos assume that the meaning of a word is only dependent on its linguistic features, most importantly its lexical category. Constructing these $\lambda$-expressions can be hard. Therefore, it can help to analyze the signature of these expressions. Blackburn and Bos suggest a $\lambda$-calculus with two types for this: $e$ represents entities and $t$ truth-values. The signature of a noun is $\tau(n) = e \rightarrow t$, given an entity, the noun says whether or not the entity can be described with the noun. E.g. $\sem{n_{man}} = \lambdaf{x}{man(x)}$
 
 A noun phrase represents one or more entities. E.g. ``a man'', ``every woman''. A sentence is true if enough entities of the noun phrase satisfy a certain property of the verb phrase. The signature of a noun phrase is thus $\tau(np) = (e \rightarrow t) \rightarrow t$. Given a property $P$ with signature $e \rightarrow t$, the semantics of the noun phrase tell us if the noun phrase satisfies the property $P$ of the verb phrase. The simplest noun phrase is a proper noun like John. Its semantics is $\sem{pn_{John}} = \lambdaf{P}{\app{P}{John}}$. I.e. when we say something about ``John'', the property should hold for $John$. The meaning of the noun phrase ``every man'' is $\sem{np_{every\ man}} = \lambdaf{P}{\forall x \cdot man(x) \Rightarrow P(x)}$. The property $P$ should hold for all men for the sentence to be true. From this, we conclude the meaning of ``every'' as $\sem{det_{universal}} = \lambdaf{R}{\lambdaf{P}{\forall x \cdot R(x) \Rightarrow P(x)}}$. We call $R$ the restriction by the noun. We can generalize this to other determiners like ``two'': $\sem{det_{binary}} = \lambdaf{R}{\lambdaf{P}{\exists_{>2} x \cdot R(x) \land P(x)}}$.
 
