@@ -10,94 +10,98 @@ In deze sectie bespreken we de grammticale categorieën die overeenkomen met een
 
 \subsection{Een mapping naar het lexicon}
 \label{sec:lexgram}
-De meeste van de grammaticale categorieën die de link vormen met het lexicon volgen de structuur uit grammatica~\ref{dcg:lexcat}. Hierbij staat \texttt{cat} voor de categorie in kwestie. De grammaticale regel bestaat uit het opzoeken van een woord in het lexicon (m.b.v. de functie \texttt{lexEntry}, hierbij kijken we niet alleen naar de lexicale categorie maar ook naar andere features zoals getal); controleren dat het woord uit het lexicon het volgende woord is in de zin (lijn 3); en tenslotte het opzoeken van de betekenis van het woord (m.b.v. de functie \texttt{semLex}). De laatste stap resulteert in de formules van hoofdstuk~\ref{ch:lexicon}.
+% De meeste van de grammaticale categorieën die de link vormen met het lexicon volgen de structuur uit grammatica~\ref{dcg:lexcat}. Hierbij staat \texttt{cat} voor de categorie in kwestie. De grammaticale regel bestaat uit het opzoeken van een woord in het lexicon (m.b.v. de functie \texttt{lexEntry}, hierbij kijken we niet alleen naar de lexicale categorie maar ook naar andere features zoals getal); controleren dat het woord uit het lexicon het volgende woord is in de zin (lijn 3); en tenslotte het opzoeken van de betekenis van het woord (m.b.v. de functie \texttt{semLex}). De laatste stap resulteert in de formules van hoofdstuk~\ref{ch:lexicon}.
 
-\begin{dcg}{Een grammaticale regel voor een lexicale categorie \textit{cat}}{dcg:lexcat}
-cat([feature1:Feature1, type:Type, sem:Sem]) -->
-  { lexEntry(cat, [feature1:Feature1, type:Type, syntax:Word]) },
-  Word,
-  { semLex(cat, [feature1:Feature1, type:Type, sem:Sem]) }.
-\end{dcg}
+De meeste van de grammaticale categorieën die de link met het lexicon vormen, zijn een directe mapping naar dit lexicon. Een woord(groep) behoort tot een grammaticale categorie als het tot de overeenkomstige lexicale categorie behoort. De features van de grammaticale categorie komen overeen met die van de lexicale categorie. De semantiek van de woordgroep komt overeen met de formules uit hoofdstuk~\ref{ch:lexicon}.
 
-De categorieën die deze structuur volgen zijn determinatoren (\texttt{det}), hoofdtelwoorden (\texttt{number}), substantieven (\texttt{noun}), voorzetsels (\texttt{prep}), hulpwerkwoorden (\texttt{av}), koppelwerkwoorden (\texttt{cop}) en comparatieven (\texttt{comp}).
+% \begin{dcg}{Een grammaticale regel voor een lexicale categorie \textit{cat}}{dcg:lexcat}
+% cat([feature1:Feature1, type:Type, sem:Sem]) -->
+%   { lexEntry(cat, [feature1:Feature1, type:Type, syntax:Word]) },
+%   Word,
+%   { semLex(cat, [feature1:Feature1, type:Type, sem:Sem]) }.
+% \end{dcg}
 
-\paragraph{}Bijvoorbeeld voor een substantief wordt dit grammatica~\ref{dcg:noun}. Het getal van de grammaticale categorie komt overeen met het getal uit het lexicon. Het symbool dat wordt gebruikt in de betekenis van een woord komt ook uit het lexicon.
-\begin{dcg}{De grammaticale regel voor een substantief}{dcg:noun}
-noun([num:Num, sem:Sem]) -->
-  { lexEntry(noun, [symbol:Sym, num:Num, syntax:Word]) },
-  Word,
-  { semLex(noun, [symbol:Sym, sem:Sem]) }.
-\end{dcg}
+De categorieën die zo'n directe link vormen zijn determinatoren (\texttt{det}), hoofdtelwoorden (\texttt{number}), substantieven (\texttt{noun}), voorzetsels (\texttt{prep}), hulpwerkwoorden (\texttt{av}), koppelwerkwoorden (\texttt{cop}) en comparatieven (\texttt{comp}).
+
+% \paragraph{}Bijvoorbeeld voor een substantief wordt dit grammatica~\ref{dcg:noun}. Het getal van de grammaticale categorie komt overeen met het getal uit het lexicon. Het symbool dat wordt gebruikt in de betekenis van een woord komt ook uit het lexicon.
+% \begin{dcg}{De grammaticale regel voor een substantief}{dcg:noun}
+% noun([num:Num, sem:Sem]) -->
+%   { lexEntry(noun, [symbol:Sym, num:Num, syntax:Word]) },
+%   Word,
+%   { semLex(noun, [symbol:Sym, sem:Sem]) }.
+% \end{dcg}
 
 \subsection{Eigennaam}
-Grammatica~\ref{dcg:pn} geeft de grammaticale regel voor een eigennaam weer. Dit lijkt zeer sterk op de algemene mapping van de grammatica naar het lexicon buiten de optionele ``the''. Deze is nodig omdat in sommige puzzels een bepaalde term zowel met als zonder ``the'' voorkomt. Indien we deze twee verschillende termen allebei apart in het lexicon zouden ingeven, zouden deze worden vertaald naar verschillende symbolen. Dit zouden we graag vermijden\footnote{Een alternatief was om de twee vormen met hetzelfde symbool in het lexicon op te nemen. Dat is equivalent aan onderstaande grammatica}.
+De grammaticale categorie van eigennamen verschilt lichtjes van de overeenkomstige lexicale categorie. Voor de grammaticale categorie kan een eigennaam uit het lexicon namelijk voorafgegaan zijn door ``the''. Deze optionele ``the'' is nodig omdat in sommige puzzels een bepaalde term zowel met als zonder ``the'' voorkomt. Indien we deze twee verschillende termen allebei apart in het lexicon zouden ingeven, zouden deze worden vertaald naar verschillende symbolen. Dit zouden we graag vermijden\footnote{Een alternatief was om de twee vormen met hetzelfde symbool in het lexicon op te nemen. Dat is equivalent aan de beschreven grammatica}.
 
-\begin{dcg}{De grammaticale regel voor een eigennaam}{dcg:pn}
-pn([num:Num, sem:Sem]) -->
-  { lexEntry(pn, [symbol:Sym, syntax:Word, num:Num]) },
-  optional([the]),
-  Word,
-  { semLex(pn, [symbol:Sym, sem:Sem]) }.
-optional(X) -->
-  X.
-optional(X) -->
-  [].
-\end{dcg}
+% Grammatica~\ref{dcg:pn} geeft de grammaticale regel voor een eigennaam weer. Dit lijkt zeer sterk op de algemene mapping van de grammatica naar het lexicon buiten de optionele ``the''. Deze is nodig omdat in sommige puzzels een bepaalde term zowel met als zonder ``the'' voorkomt. Indien we deze twee verschillende termen allebei apart in het lexicon zouden ingeven, zouden deze worden vertaald naar verschillende symbolen. Dit zouden we graag vermijden\footnote{Een alternatief was om de twee vormen met hetzelfde symbool in het lexicon op te nemen. Dat is equivalent aan onderstaande grammatica}.
+
+% \begin{dcg}{De grammaticale regel voor een eigennaam}{dcg:pn}
+% pn([num:Num, sem:Sem]) -->
+%   { lexEntry(pn, [symbol:Sym, syntax:Word, num:Num]) },
+%   optional([the]),
+%   Word,
+%   { semLex(pn, [symbol:Sym, sem:Sem]) }.
+% optional(X) -->
+%   X.
+% optional(X) -->
+%   [].
+% \end{dcg}
 
 \subsection{Transitief werkwoord}
 \label{sec:gramm-tv}
-Er zijn twee grammaticale regels voor een transitief werkwoord (grammatica~\ref{dcg:tv}). Enerzijds is er de standaard mapping van grammatica naar lexicon. De voorzetsels en achtervoegsels uit het lexicon worden dan als feature meegegeven aan de grammaticale woordgroep. Het getal (\texttt{num}) en de vorm (\texttt{inf}) van de grammaticale woordgroep moet overeenkomen met die uit het lexicon.
 
-Anderzijds wordt de combinatie koppelwerkwoord + adjectief ook als een transitief werkwoord gezien. Hierbij is het adjectief het achtervoegsel. De semantiek van deze combinatie is die van het koppelwerkwoord ($\sem{cop_{ap}}$) zoals we die hebben afgeleid in hoofdstuk~\ref{sec:lex-koppelwerkwoord}.
-\begin{dcg}{De grammaticale regels voor een transitief werkwoord}{dcg:tv}
-tv([inf:Inf, num:Num, positions:Pre-Post, sem:Sem]) -->
-  { lexEntry(tv, [symbol:Sym, syntax:Word-Pre-Post, inf:Inf, num:Num]) },
-  Word,
-  { semLex(tv, [symbol:Sym, sem:Sem]) }.
+Er zijn twee grammaticale regels voor een transitief werkwoord. Enerzijds is er de standaard mapping van grammatica naar lexicon. De voorzetsels en achtervoegsels uit het lexicon worden dan als feature meegegeven aan de grammaticale woordgroep. Anderzijds wordt de combinatie koppelwerkwoord + adjectief ook als een transitief werkwoord gezien, bijvoorbeeld ``is old'' in ``John is 18 years old''. Hierbij is het adjectief het achtervoegsel. De semantiek van deze combinatie is die van het koppelwerkwoord ($\sem{cop_{ap}}$) zoals we die hebben afgeleid in hoofdstuk~\ref{sec:lex-koppelwerkwoord}.
+% Er zijn twee grammaticale regels voor een transitief werkwoord (grammatica~\ref{dcg:tv}). Enerzijds is er de standaard mapping van grammatica naar lexicon. De voorzetsels en achtervoegsels uit het lexicon worden dan als feature meegegeven aan de grammaticale woordgroep. Het getal (\texttt{num}) en de vorm (\texttt{inf}) van de grammaticale woordgroep moet overeenkomen met die uit het lexicon.
 
-tv([inf:Inf, num:Num, positions:[]-Post, sem:Sem]) -->
-  cop([type:ap, inf:Inf, num:Num, sem:Sem, symbol:Sym]),
-  { lexEntry(copAdj, [symbol:Sym, adj:Post]) }.
-\end{dcg}
+% Anderzijds wordt de combinatie koppelwerkwoord + adjectief ook als een transitief werkwoord gezien. Hierbij is het adjectief het achtervoegsel. De semantiek van deze combinatie is die van het koppelwerkwoord ($\sem{cop_{ap}}$) zoals we die hebben afgeleid in hoofdstuk~\ref{sec:lex-koppelwerkwoord}.
+% \begin{dcg}{De grammaticale regels voor een transitief werkwoord}{dcg:tv}
+% tv([inf:Inf, num:Num, positions:Pre-Post, sem:Sem]) -->
+%   { lexEntry(tv, [symbol:Sym, syntax:Word-Pre-Post, inf:Inf, num:Num]) },
+%   Word,
+%   { semLex(tv, [symbol:Sym, sem:Sem]) }.
+
+% tv([inf:Inf, num:Num, positions:[]-Post, sem:Sem]) -->
+%   cop([type:ap, inf:Inf, num:Num, sem:Sem, symbol:Sym]),
+%   { lexEntry(copAdj, [symbol:Sym, adj:Post]) }.
+% \end{dcg}
 
 \subsection{Onbepaalde woorden en betrekkelijke voornaamwoorden}
-Het is mogelijk om een onbepaald woord te verzwijgen, bijvoorbeeld ``John finished [sometime] before Mia''. Daarom is er een extra regel die zegt dat het woord niet per se hoeft voor te komen in de zin (lijn 5 en 6). Hetzelfde geldt voor betrekkelijke voornaamwoorden.
+Het is mogelijk om een onbepaald woord te verzwijgen, bijvoorbeeld ``John finished [sometime] before Mia''. Daarom is er een extra regel die zegt dat het woord niet per se hoeft voor te komen in de zin. Hetzelfde geldt voor betrekkelijke voornaamwoorden.
 
-\begin{dcg}{De grammaticale regels voor onbepaalde woorden en betrekkelijke voornaamwoorden}{dcg:someAndRelpro}
-some([sem:Sem]) -->
-  { lexEntry(some, [syntax:Word]) },
-  Word,
-  { semLex(some, [sem:Sem]) }.
-some([sem:Sem]) -->
-  { semLex(some, [sem:Sem]) }.
+% \begin{dcg}{De grammaticale regels voor onbepaalde woorden en betrekkelijke voornaamwoorden}{dcg:someAndRelpro}
+% some([sem:Sem]) -->
+%   { lexEntry(some, [syntax:Word]) },
+%   Word,
+%   { semLex(some, [sem:Sem]) }.
+% some([sem:Sem]) -->
+%   { semLex(some, [sem:Sem]) }.
 
-relpro([sem:Sem]) -->
-  { lexEntry(relpro, [syntax:Word]) },
-  Word,
-  { semLex(relpro, [sem:Sem]) }.
-relpro([sem:Sem]) -->
-  { semLex(relpro, [sem:Sem]) }.
-\end{dcg}
+% relpro([sem:Sem]) -->
+%   { lexEntry(relpro, [syntax:Word]) },
+%   Word,
+%   { semLex(relpro, [sem:Sem]) }.
+% relpro([sem:Sem]) -->
+%   { semLex(relpro, [sem:Sem]) }.
+% \end{dcg}
 
 \subsection{Voegwoord}
-Voegwoorden kunnen uit twee delen bestaan: het voegwoord zelf (\texttt{coord}) en een optionele prefix (\texttt{coordPrefix}). De prefix heeft geen vertaling bovenop het voegwoord. Dit zien we ook terug in de eerste grammaticale regel van grammatica~\ref{dcg:coord}. De tweede grammaticale regel stelt dat de prefix optioneel is.
+Voegwoorden kunnen uit twee delen bestaan: het voegwoord zelf (\texttt{coord}) en een optionele prefix (\texttt{coordPrefix}). De prefix heeft geen vertaling bovenop het voegwoord. De grammaticale regel voor het voegwoord zelf volgt dezelfde structuur als die van sectie~\ref{sec:lexgram}. Een voegwoord kan soms echter weggelaten worden. De grammaticale categorie \texttt{noCoord} stelt een ellips van zo'n voegwoord voor. Er is gekozen voor een aparte categorie omdat een ellips niet overal mag voorkomen.
+% \begin{dcg}{De grammaticale regels i.v.m. voegwoorden}{dcg:coord}
+% coordPrefix([type:Type]) -->
+%   { lexEntry(coordPrefix, [syntax:Word, type:Type]) },
+%   Word.
+% coordPrefix([type:_]) -->
+%   [].
 
-De grammaticale regel voor het voegwoord zelf volgt dezelfde structuur als die van sectie~\ref{sec:lexgram}. Een voegwoord kan soms echter weggelaten worden. De grammaticale categorie \texttt{noCoord} stelt een ellips van zo'n voegwoord voor. Er is gekozen voor een aparte categorie omdat een ellips niet overal mag voorkomen.
-\begin{dcg}{De grammaticale regels i.v.m. voegwoorden}{dcg:coord}
-coordPrefix([type:Type]) -->
-  { lexEntry(coordPrefix, [syntax:Word, type:Type]) },
-  Word.
-coordPrefix([type:_]) -->
-  [].
+% coord([type:Type, sem:Sem]) -->
+%   { lexEntry(coord, [syntax:Word, type:Type]) },
+%   Word,
+%   { semLex(coord, [type:Type, sem:Sem]) }.
 
-coord([type:Type, sem:Sem]) -->
-  { lexEntry(coord, [syntax:Word, type:Type]) },
-  Word,
-  { semLex(coord, [type:Type, sem:Sem]) }.
-
-noCoord([type:Type, sem:Sem]) -->
-  { semLex(coord, [type:Type, sem:Sem]) }.
-\end{dcg} 
+% noCoord([type:Type, sem:Sem]) -->
+%   { semLex(coord, [type:Type, sem:Sem]) }.
+% \end{dcg} 
 
 \section{(Getransformeerde) Substantieven}
 Grammatica~\ref{dcg:n} geeft een overzicht van de grammatica regels i.v.m. substantieven en transformaties op die substantieven. De eerste 2 regels zeggen dat een getransformeerd substantief (hiervoor gebruiken we de categorie \texttt{n}) kan bestaan uit een gewoon substantief (\texttt{noun}) al dan niet gevolgd door een transformatie op dat substantief (\texttt{nmod} naar noun modifier). In het geval van een transformatie is de betekenis van het getransformeerde substantief gelijk aan de applicatie van de transformatie op dat van het echte substantief of $\sem{n} = \app{\sem{nmod}}{\sem{noun}}$.
@@ -328,6 +332,12 @@ vp([coord:no, inf:Inf, num:Num, gap:[], sem:Sem]) -->
   { Inf2 = inf ; Inf2 = part },
   vp([coord:_, inf:Inf2, num:_, gap:[], sem:VP]),
   { Sem = app(AV, VP) }.
+
+  
+optional(X) -->
+  X.
+optional(X) -->
+  [].
 \end{dcg}
 
 \subsection{Een verbale constituent met koppelwerkwoord}
@@ -463,6 +473,8 @@ s([coord:no, sem:Sem]) -->
 \end{dcg}
 
 \section{Conclusie}
-Een grammatica voor logigrammen is redelijk beperkt. De betekenis van een grammaticale regel komt vaak neer op een simpele lambda-applicatie maar soms zijn ook complexere formules nodig om de scope van de kwantoren correct te krijgen.
+Onze grammatica voor logigrammen is redelijk beperkt. De betekenis van een grammaticale regel komt vaak neer op een simpele lambda-applicatie maar soms zijn ook complexere formules nodig om de scope van de kwantoren correct te krijgen.
 
-Sommige grammaticale regels zijn specifiek voor logigrammen. Andere zijn dan weer algemeen bruikbaar. Het is soms wel moeilijk om maar 1 vertaling toe te staan. Zo laten we enkel voor een vergelijkende naamwoordgroep een ellips van het werkwoord toe. Dit is namelijk de enige plaats waar dit gebeurt in logigrammen. Als we deze grammatica willen uitbreiden naar andere specificaties moeten we dus meerdere betekenissen toelaten of bijvoorbeeld het gebruik van ellipsen verbieden.
+Sommige grammaticale regels zijn algemeen bruikbaar. Andere zijn specifiek voor logigrammen. Zo is er een \textit{alldifferent}-constraint en zijn er vergelijkingen (bijvoorbeeld ``John is 2 years younger than Mary'') die zich vertalen in een som of een verschil van twee getallen.
+
+De grammatica is opgesteld om maar één vertaling toe te staan. Zo laten we enkel binnen een vergelijkende naamwoordgroep een ellips van het werkwoord toe. In andere gevallen zou dit leiden tot een extra vertaling. Bovendien is dit de enige plaats waar er een ellips van het werkwoord voorkomt in de bestudeerde logigrammen. Als we deze grammatica willen uitbreiden naar andere specificaties, moeten we meerdere betekenissen toelaten of bijvoorbeeld het gebruik van ellipsen verbieden.
