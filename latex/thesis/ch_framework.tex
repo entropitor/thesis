@@ -2,10 +2,10 @@
 \label{ch:framework}
 In dit hoofdstuk bespreken we het framework van Blackburn en Bos \cite{Blackburn2005, Blackburn2006} voor semantische analyse. Het framework bestaat uit een lexicon (het vocabularium), de grammatica, de semantiek van de grammaticale regels en de semantiek van de woorden in het lexicon. Het hele framework is gebaseerd op lambda-calcalus en Frege's compositionaliteitsprincipe dat stelt dat de betekenis van een woordgroep enkel afhangt van de betekenissen van de woorden waaruit ze bestaat.
 
-\paragraph{} \textit{Dit hele hoofdstuk is een samenvatting van de relevante hoofdstukken van de boeken van Blackburn en Bos \cite{Blackburn2005, Blackburn2006}. De formules komen grotendeels overeen met die uit hun boeken en uit de code die erbij hoort. De aanpassingen die zijn gebeurd, dienen vooral om de leesbaarheid te vergroten. De nadruk op de signaturen van de verschillende categorieën is nieuw, al komt de getypeerde lambda-calcalus met de twee types wel aan bod in appendix B van hun eerste boek \cite{Blackburn2005}.}
+\paragraph{} \textit{Dit hele hoofdstuk is een samenvatting van de relevante hoofdstukken van de boeken van Blackburn en Bos \cite{Blackburn2005, Blackburn2006}. De formules komen grotendeels overeen met die uit hun boeken en uit de code die erbij hoort. De aanpassingen die zijn gebeurd, dienen vooral om de leesbaarheid te verhogen. De nadruk op de signaturen van de verschillende categorieën is nieuw, al komt de getypeerde lambda-calcalus met de twee types wel aan bod in appendix B van hun eerste boek \cite{Blackburn2005}.}
 
 \section{Lexicon}
-Het lexicon bestaat uit een opsomming van alle woorden met een aantal (taalkundige) features (zoals de categorie van het woord). Tabel \ref{tbl:lexicon} geeft een voorbeeld van een lexicon. Het lexicon is meer dan een woordenboek. Het bevat alle woordvormen, niet enkel de basisvorm. Zo komt ``love'' drie keer voor in het lexicon. ``love'' zelf komt één keer voor als infinitief en één keer als meervoud van de tegenwoordige tijd. ``loves'' is dan weer het enkelvoud van de tegenwoordige tijd. De meeste woordvormen hebben ook een feature ``Symbool'', dit zal gebruikt worden bij de semantiek van de woorden.
+Het lexicon bestaat uit een opsomming van alle woorden met een aantal (taalkundige) features (zoals de categorie van het woord). Tabel \ref{tbl:lexicon} geeft een voorbeeld van een lexicon. Het lexicon is meer dan een woordenboek. Het bevat alle woordvormen, niet enkel de basisvorm. Zo komt ``love'' drie keer voor in het lexicon. ``love'' zelf komt één keer voor als infinitief en één keer als meervoud van de tegenwoordige tijd. ``loves'' is dan weer het enkelvoud van de tegenwoordige tijd. De meeste woordvormen hebben ook een feature \texttt{Symbool} die zal gebruikt worden bij de semantiek van de woorden. Deze feature maakt het onderscheid tussen de verschillende woorden van dezelfde categorie. Het is de naam van de constanten en predicaten in het formeel vocabularium (zie sectie~\ref{sec:vocabularium}).
 
 \begin{table}[!]
   \centering
@@ -34,7 +34,7 @@ Het lexicon bestaat uit een opsomming van alle woorden met een aantal (taalkundi
 \section{Grammatica}
 De grammatica bepaalt welke woorden samen woordgroepen vormen, welke woordgroepen samen andere woordgroepen vormen en welke woordgroepen een zin vormen. Op die manier ontstaat er een boom van woorden.
 
-\paragraph{Een simpele grammatica} Grammatica~\ref{dcg:simple-gramm} bevat een simpele grammatica. Een simpele zin bestaat uit een \texttt{np} gevolgd door een \texttt{vp}, beiden met hetzelfde getal. Een naamwoordgroep (noun phrase of \texttt{np}) is een woordgroep waar het naamwoord het belangrijkste woord is. Deze wordt ook wel een nominale constituent genoemd. Deze woordgroep verwijst altijd naar één of meerdere entiteiten. Een verb phrase (\texttt{vp}) of verbale constituent is een woordgroep waar het werkwoord het belangrijkste woord is. Een verbale constituent drukt meestal een actie uit.
+\paragraph{Een simpele grammatica} Grammatica~\ref{dcg:simple-gramm} bevat een simpele grammatica. Een zin bestaat in deze grammatica uit een \texttt{np} gevolgd door een \texttt{vp}, beiden met hetzelfde getal. Een naamwoordgroep (noun phrase of \texttt{np}) is een woordgroep die naar één of meerdere entiteiten verwijst. Zo'n groep wordt ook wel een nominale constituent genoemd. Een verb phrase (\texttt{vp}) of verbale constituent drukt meestal een actie uit.
 
 \begin{dcg}{Een simpele grammatica}{dcg:simple-gramm}
 s() --> np([num:Num]), vp([num:Num]).
@@ -45,7 +45,7 @@ vp([num:Num]) --> iv([num:Num]).
 vp([num:Num]) --> tv([num:Num]), np([num:_]).
 \end{dcg} 
 
-Een complexe zin bestaat uit het functiewoord ``if'' gevolgd door twee zinnen (bijvoorbeeld ``If a man breathes, he lives''). Een functiewoord is deel van de grammatica en komt niet voor in het lexicon. Ze helpen om de structuur van de zin te herkennen. De betekenis van deze woorden komt via de grammaticale semantiek naar boven.
+Een zin kan ook bestaan uit het functiewoord ``if'', gevolgd door twee zinnen (bijvoorbeeld ``If a man breathes, he lives''). Functiewoorden zijn deel van de grammatica en komen niet voor in het lexicon. Ze helpen om de structuur van de zin te herkennen. De betekenis van deze woorden komt via de semantiek van de grammatica naar boven.
 
 Een naamwoordgroep (\texttt{np}) kan bestaan uit een eigen naam (proper name of \texttt{pn}) of uit een determinator (\texttt{det}, bijvoorbeeld een lidwoord) en een zelfstandig naamwoord (noun of \texttt{n}) die overeenkomen in getal. Een eigennaam is in deze grammatica altijd in het enkelvoud.
 
@@ -55,7 +55,7 @@ Grammatica~\ref{dcg:simple-gramm} bevat een aantal categorieën (\texttt{pn}, \t
 
 Bovenstaande grammatica is nog heel beperkt. De moeilijkheid ligt erin om de grammatica simpel te houden maar toch zoveel mogelijk gewenste zinnen toe te laten. Om logigrammen automatisch te kunnen vertalen moet er dus een grammatica opgesteld worden die de zinnen van deze logigrammen omvat.
 
-\paragraph{Een boom} Op basis van deze grammatica kunnen we ook een parse trees opbouwen voor elke geldige zin. Zo wordt ``Every woman loves john omgezet in de boom
+\paragraph{Een boom} Op basis van deze grammatica kunnen we ook een parse tree opbouwen voor elke geldige zin. Zo wordt ``Every woman loves john omgezet in de boom
 
 \Tree[.s [.np [.det every ] [.n woman ]] [.vp [.tv loves ] [.np [.pn john ]]]]
 
@@ -68,7 +68,7 @@ Het lexicon bepaalt welke woorden gebruikt mogen worden, de grammatica hoe deze 
 
 \subsection{Semantiek van de grammaticale regels}
 \paragraph{Een getypeerde lambda-calcalus}
-Voor de betekenis van de taal zullen we gebruiken maken van een getypeerde lambda-calcalus. Er zijn drie types in onze lambda-calcalus \texttt{e} voor entiteiten, \texttt{t} voor waarheidswaarden (\textit{waar} en \textit{onwaar}) en ten slotte het functie-type die we noteren met $\rightarrow$. Zo is $\lambda x \cdot man(x)$ een lambda-expressie van type $e \rightarrow t$. Elk woord zal een lambda-formule als betekenis krijgen. Deze formules zullen gecombineerd worden tot één formule voor de zin die geen lambda's meer bevat. Die formule vormt de betekenis van de zin. De betekenis van een zin is dus van type $t$.
+Voor de betekenis van de taal zullen we gebruiken maken van een getypeerde lambda-calcalus. Er zijn twee basistypes in onze lambda-calcalus, namelijk $e$ voor entiteiten en $t$ voor waarheidswaarden (\textit{waar} en \textit{onwaar}). Ten slotte is er de type-constructor voor een functie-type die we noteren met $\rightarrow$. Zo is $\lambda x \cdot man(x)$ een lambda-expressie van type $e \rightarrow t$. Elk woord zal een lambda-formule als betekenis krijgen. Deze formules zullen gecombineerd worden tot één formule voor de zin die geen lambda's meer bevat. Die formule vormt de betekenis van de zin. De betekenis van een zin is dus van type $t$.
 
 \paragraph{Frege's compositionaliteitsprincipe} Voor de betekenis van de grammatica berusten we op Frege's compositionaliteitsprincipe: De betekenis van een woordgroep bestaat uit een combinatie van de betekenissen van de woorden of woordgroepen waaruit ze bestaat. Deze combinatie kan afhangen van de manier waarop de woorden gecombineerd worden. Op deze manier propageren we de semantiek van de woorden (die de bladeren in de boom vormen) naar boven toe om zo de betekenis van de zin te verkrijgen. We hernemen bovenstaande grammaticale regels nu en voegen de semantiek toe. Later zullen we aantonen dat deze simpele combinatieregels tot een zinnig resultaat kunnen leiden.
 
@@ -78,7 +78,7 @@ Voor de betekenis van de taal zullen we gebruiken maken van een getypeerde lambd
     \textbf{Grammaticale regel} & \textbf{Semantiek} \\
     \hline
     \texttt{s ---> np([num:Num]), vp([num:Num]).}              & $\sem{s} = \app{\sem{vp}}{\sem{np}}$ \\
-    \texttt{s ---> [if], s, s.}                                & $\sem{s} = \drs{}{\sem{s1} \Rightarrow \sem{s2}}$ \\
+    \texttt{s ---> [if], s$_1$, s$_2$.}                        & $\sem{s} = \drs{}{\sem{s_1} \Rightarrow \sem{s_2}}$ \\
     \texttt{np([num:sg]) ---> pn.}                             & $\sem{np} = \sem{pn}$ \\
     \texttt{np([num:Num]) ---> det([num:Num]), n([num:Num]).}  & $\sem{np} = \app{\sem{det}}{\sem{n}}$ \\
     \texttt{vp([num:Num]) ---> iv([num:Num]).}                 & $\sem{vp} = \sem{iv}$ \\
@@ -90,140 +90,21 @@ Voor de betekenis van de taal zullen we gebruiken maken van een getypeerde lambd
   \label{tbl:grammar-sem}
 \end{table}
 
-Tabel~\ref{tbl:grammar-sem} geeft een overzicht van de semantiek van grammatica~\ref{dcg:simple-gramm}. Een idee achter het framework is om de betekenis van de zinnen zoveel mogelijk in de betekenis van de woorden te stoppen. De betekenis van een grammaticale regel wordt, indien mogelijk, beperkt tot lambda-applicaties. Voor woordgroepen die maar uit één woord bestaan is de betekenis van de woordgroep gelijk aan die van het woord zelf. Voor de meeste andere woordgroepen is de betekenis enkel een lambda-applicatie van de betekenissen van de woordgroepen waaruit ze bestaan. Het belangrijkste woord uit de woordgroep is de functor, het andere woord het argument. Enkel voor de speciale zinsstructuur van de conditionele zin is er ook een speciale constructie nodig in de semantiek. Indien we het functiewoord ``if'' naar het lexicon zouden verhuizen, dan zouden twee lambda-applicaties volstaan\footnote{$\sem{if} = \lambdaf{S1}{\lambdaf{S2}{\drs{}{S1 \Rightarrow S2}}}$ en $\sem{s} = \app{\app{\sem{if}}{\sem{s1}}}{\sem{s2}}$}.
-
-% \[
-%   \fstructure{
-%     \feature{CAT}{s}
-%     \feature{SEM}{\fvariable{VP}@\fvariable{NP}}
-%   }
-%   \rightarrow
-%   \fstructure{
-%     \feature{CAT}{np}
-%     \feature{NUM}{\fvariable{Num}}
-%     \feature{SEM}{\fvariable{NP}}
-%   }
-%   \fstructure{
-%     \feature{CAT}{vp}
-%     \feature{NUM}{\fvariable{Num}}
-%     \feature{SEM}{\fvariable{VP}}
-%   }
-% \]
-% De semantiek van een simpele zin is de lambda-applicatie van de semantiek van de naamwoordgroep op die van de verbale constituent.
-
-% \[
-%   \fstructure{
-%     \feature{CAT}{s}
-%     \feature{SEM}{\drs{}{\fvariable{S1} \Rightarrow \fvariable{S2}}}
-%   }
-%   \rightarrow
-%   if
-%   \fstructure{
-%     \feature{CAT}{s}
-%     \feature{SEM}{\fvariable{S1}}
-%   }
-%   \fstructure{
-%     \feature{CAT}{s}
-%     \feature{SEM}{\fvariable{S2}}
-%   }
-% \]
-% De semantiek van een conditionele zin wordt vertaald op een implicatie in een DRS.
-
-% \[
-%   \fstructure{
-%     \feature{CAT}{np}
-%     \feature{NUM}{sg}
-%     \feature{SEM}{\fvariable{PN}}
-%   }
-%   \rightarrow
-%   \fstructure{
-%     \feature{CAT}{pn}
-%     \feature{SEM}{\fvariable{PN}}
-%   }
-% \]
-% De semantiek van een naamwoordgroep die bestaat uit een eigennaam is gelijk aan de semantiek van die eigennaam.
-
-% \[
-%   \fstructure{
-%     \feature{CAT}{np}
-%     \feature{NUM}{\fvariable{Num}}
-%     \feature{SEM}{\fvariable{DET}@\fvariable{N}}
-%   }
-%   \rightarrow
-%   \fstructure{
-%     \feature{CAT}{det}
-%     \feature{NUM}{\fvariable{Num}}
-%     \feature{SEM}{\fvariable{DET}}
-%   }
-%   \fstructure{
-%     \feature{CAT}{n}
-%     \feature{NUM}{\fvariable{Num}}
-%     \feature{SEM}{\fvariable{N}}
-%   }
-% \]
-% De semantiek van een naamwoordgroep die bestaat uit een lidwoord en een zelfstandig naamwoord is de applicatie van de semantiek van het zelfstandig naamwoord op die van het lidwoord.
-
-% \[
-%   \fstructure{
-%     \feature{CAT}{vp}
-%     \feature{NUM}{\fvariable{Num}}
-%     \feature{SEM}{\fvariable{IV}}
-%   }
-%   \rightarrow
-%   \fstructure{
-%     \feature{CAT}{iv}
-%     \feature{NUM}{\fvariable{Num}}
-%     \feature{SEM}{\fvariable{IV}}
-%   }
-% \]
-% De betekenis van een verbale constituent die bestaat uit een onovergankelijk werkwoord is gelijk aan die van het werkwoord.
-
-% \[
-%   \fstructure{
-%     \feature{CAT}{vp}
-%     \feature{NUM}{\fvariable{Num}}
-%     \feature{SEM}{\fvariable{TV}@\fvariable{NP}}
-%   }
-%   \rightarrow
-%   \fstructure{
-%     \feature{CAT}{tv}
-%     \feature{NUM}{\fvariable{Num}}
-%     \feature{SEM}{\fvariable{TV}}
-%   }
-%   \fstructure{
-%     \feature{CAT}{np}
-%     \feature{NUM}{\fvariable{1}}
-%     \feature{SEM}{\fvariable{NP}}
-%   }
-% \]
-% De betekenis van een verbale constituent die bestaat uit een vergankelijk werkwoord met lijdend voorwerp is gelijk aan die van het lijdend voorwerp toegepast op die van het werkwoord.
-
-% \begin{ex}
-%   Een simpele grammatica met semantiek. De lexicale categorieën zijn \texttt{pn}, \texttt{det}, \texttt{n}, \texttt{iv} en \texttt{tv}
-%   \label{gramm:simple-gramm}
-%   \begin{quote}
-%     \texttt{s([sem:VP@NP]) ---> np([num:Num, sem:NP]), vp([num:Num, sem:VP]).} \\
-%     \texttt{s([sem:drs([], [S1 => S2])]) ---> [if], s([sem:S1]), s([sem:S2]).} \\
-%     \texttt{np([num:sg]) ---> pn.} \\
-%     \texttt{np([num:Num]) ---> det([num:Num]), n([num:Num]).} \\
-%     \texttt{vp([num:Num]) ---> iv([num:Num]).} \\
-%     \texttt{vp([num:Num]) ---> tv([num:Num]), np([num:\_]).} \\
-%   \end{quote}
-% \end{ex} 
+Tabel~\ref{tbl:grammar-sem} geeft een overzicht van de semantiek van grammatica~\ref{dcg:simple-gramm}. Een idee achter het framework is om de betekenis van de zinnen zoveel mogelijk in de betekenis van de woorden te stoppen. De betekenis van een grammaticale regel wordt, indien mogelijk, beperkt tot lambda-applicaties. Voor woordgroepen die maar uit één woord bestaan is de betekenis van de woordgroep gelijk aan die van het woord zelf. Voor de meeste andere woordgroepen is de betekenis enkel een lambda-applicatie van de betekenissen van de woordgroepen waaruit ze bestaan. Meestal heeft een woordgroep één woord die essentieel is aan de groep. De woordgroep is hier dan ook naar vernoemd\footnote{Voor de semantiek van een naamwoordgroep wordt het lidwoord toch als het belangrijkste woord aanzien door Blackburn en Bos}. Dit woord is de functor van de lambda-applicatie, het andere woord het argument. Enkel voor de speciale zinsstructuur van de conditionele zin is er ook een speciale constructie nodig in de semantiek. Indien we het functiewoord ``if'' naar het lexicon zouden verhuizen, dan zouden twee lambda-applicaties volstaan\footnote{$\sem{if} = \lambdaf{S1}{\lambdaf{S2}{\drs{}{S1 \Rightarrow S2}}}$ en $\sem{s} = \app{\app{\sem{if}}{\sem{s1}}}{\sem{s2}}$}.
 
 \subsection{Semantiek van het lexicon} We weten nu hoe we de semantiek van de woorden kunnen combineren tot de semantiek van de woordgroepen en bij uitbreiding tot die van een zin. Er ontbreekt enkel nog de semantiek van de woorden zelf.
 
-Voor we de betekenis van woorden kunnen opstellen moeten we eerst de signatuur achterhalen. Cruciaal voor het framework is dat elke grammaticale categorie exact 1 signatuur heeft. Zodanig dat we altijd woordgroepen van dezelfde categorie kunnen uitwisselen voor elkaar. We gebruiken de functie $\tau$ om de signatuur aan te duiden.
+Voor we de betekenis van woorden kunnen opstellen moeten we eerst de signatuur achterhalen. Cruciaal voor het framework is dat elke grammaticale categorie exact 1 signatuur heeft. Zodanig dat we altijd woordgroepen van dezelfde categorie kunnen uitwisselen. We gebruiken de functie $\tau$ om de signatuur aan te duiden.
 
 We beginnen met de signatuur van een zelfstandig naamwoord (\texttt{n}) te achterhalen. Daarna bekijken we achtereenvolgens de nominale constituent (\texttt{np}), de eigennaam (\texttt{pn}) en het lidwoord (\texttt{det}). Ten slotte bekijken we de hiërarchie van de verbale constituenten: de verbale constituent zelf (\texttt{vp}), onovergankelijk werkwoord (\texttt{iv}) en overgankelijk werkwoord (\texttt{tv}).
 
 \paragraph{De signatuur van een zelfstandig naamwoord.} Een zelfstandig naamwoord, zoals bijvoorbeeld $\mathit{man}$, stelt een verzameling entiteiten voor. In het voorbeeld van $\mathit{man}$ alle mannen. In logica wordt zo'n verzameling typisch voorgesteld door een unair predicaat. In deze setting gebeurt net hetzelfde: we stellen een zelfstandig naamwoord voor als een functie van entiteiten naar waarheidswaarden, of in formule $e \to t$. Dit is de functionele variant van een unair predicaat. De functie van een substantief bepaalt of een bepaalde entiteit omschreven kan worden met dat substantief of niet.
 
-\paragraph{De signatuur voor een nominale constituent (np)} Een nominale constituent of naamwoordgroep is een woordgroep waarin het naamwoord het belangrijkste woord is. De betekenis ervan is een verwijzing naar een entiteit (of een groep van entiteiten). In een zin zeggen we altijd iets over deze entiteiten, bijvoorbeeld ``a man sleeps''. Een zin is waar als de entiteit(en) van de naamwoordgroep voldoen aan een bepaalde eigenschap, bijvoorbeeld als er een man is die de eigenschap heeft dat hij slaapt. Dat is wat signatuur $$\tau(np) = (e \to t) \to t$$ uitdrukt. Het eerste argument van type $e \to t$ is een eigenschap waaraan entiteiten kunnen voldoen. Bijvoorbeeld voor ``sleeps'' is dit (in eerste-orde-logica) $\lambdaf{x}{sleeps(x)}$.
+\paragraph{De signatuur voor een nominale constituent (np)} Een nominale constituent of naamwoordgroep is een woordgroep waarin het naamwoord essentieel is. De betekenis ervan is een verwijzing naar een entiteit (of een groep van entiteiten). In een zin zeggen we altijd iets over deze entiteiten, bijvoorbeeld ``a man sleeps''. Een zin is waar als de entiteit(en) van de naamwoordgroep voldoen aan een bepaalde eigenschap, bijvoorbeeld als er een man is die de eigenschap heeft dat hij slaapt. Dat is wat signatuur $$\tau(np) = (e \to t) \to t$$ uitdrukt. Het eerste argument van type $e \to t$ is een eigenschap waaraan entiteiten kunnen voldoen. Bijvoorbeeld voor ``sleeps'' is dit (in eerste-orde-logica) $\lambdaf{x}{sleeps(x)}$.
 
-Een naamwoordgroep voldoet aan een eigenschap als er \textit{genoeg} entiteiten zijn die omschreven worden door de naamwoordgroep en die voldoen aan de eigenschap. Een voorbeeldimplementatie voor ``a man'' (in eerste-orde-logica) is $$\lambdaf{E}{\exists x \cdot man(x) \land E(x)}$$ Er moet namelijk minstens één man zijn die aan de eigenschap $E$ voldoet. In het geval van ``alle mannen'' moeten alle mannen voldoen aan de eigenschap $E$ $$\lambdaf{E}{\forall x \cdot man(x) \Rightarrow E(x)}$$
+Een naamwoordgroep voldoet aan een eigenschap als er \textit{genoeg} entiteiten zijn die omschreven worden door de naamwoordgroep en die voldoen aan de eigenschap. Een voorbeeldimplementatie voor ``a man'' (in eerste-orde-logica) is $$\lambdaf{E}{\exists x \cdot man(x) \land E(x)}$$ Er moet namelijk minstens één man zijn die aan de eigenschap $E$ voldoet. In het geval van ``every man'' moeten alle mannen voldoen aan de eigenschap $E$ $$\lambdaf{E}{\forall x \cdot man(x) \Rightarrow E(x)}$$
 
-\paragraph{Eigennaam en lidwoord} De signatuur van een eigennaam is gelijk aan die van een naamwoordgroep. Dat volgt uit de semantiek van de grammatica. $$\tau(pn) = \tau(np) = (e \rightarrow t) \rightarrow t$$ Uit de semantiek van de grammatica volgt ook dat de signatuur van een lidwoord gelijk is aan die van een zelfstandig naamwoord naar een naamwoordgroep. $$ \tau(det) = \tau(n) \rightarrow \tau(np) = (e \to t) \rightarrow (e \rightarrow t) \rightarrow t$$ 
+\paragraph{Eigennaam en lidwoord} De signatuur van een eigennaam is gelijk aan die van een naamwoordgroep. Dat volgt uit de semantiek van de grammatica. $$\tau(pn) = \tau(np) = (e \rightarrow t) \rightarrow t$$ Uit de semantiek van de grammatica volgt ook dat de signatuur van een lidwoord gelijk is aan die van een zelfstandig naamwoord naar een naamwoordgroep. $$ \tau(det) = \tau(n) \rightarrow \tau(np) = (e \to t) \rightarrow (e \rightarrow t) \rightarrow t$$ Bijvoorbeeld voor ``every'' wordt dit (met $R$ een restrictie vanuit het substantief) $$\lambdaf{R}{\lambdaf{E}{\forall x \cdot R(x) \Rightarrow E(x)}}$$
 
 \paragraph{Verbale constituent} De signatuur voor een verbale constituent (\texttt{vp}) volgt opnieuw uit de grammatica en de andere signaturen $$\tau(vp) = \tau(np) \rightarrow \tau(s) = ((e \rightarrow t) \rightarrow t) \rightarrow t$$ Een zin is waar als het onderwerp voldoet aan de eigenschap die het werkwoord uitdrukt.
 
@@ -374,6 +255,6 @@ Niet alleen heeft deze lambda-expressie een signatuur die gelijk is aan die van 
 Dit is de vertaling zoals we die zouden verwachten.
 
 \section{Evaluatie}
-Het framework dat Blackburn en Bos voorstellen is uitermate geschikt voor semantische analyse van natuurlijke taal. De verschillende onderdelen staat vrij los van elkaar. Zo kan men de doeltaal vrij kijzen. Blackburn en Bos vertalen in hun eerste boek \cite{Blackburn2005} naar eerste-orde-logica. In hun tweede boek \cite{Blackburn2006} vertalen ze naar DRS-structuren. Ook de vorm van de grammatica is vrij te kiezen. Zowel Blackburn en Bos als deze thesis gebruiken DCG's om de grammatica te specifiëren. Baral et al. \cite{Baral2008} gebruiken een gelijkaardig framework maar met behulp van een Combinatorische Categorische Grammatica.
+Het framework dat Blackburn en Bos voorstellen is uitermate geschikt voor semantische analyse van natuurlijke taal. De verschillende onderdelen staat vrij los van elkaar. Zo kan men de doeltaal vrij kijzen. Blackburn en Bos vertalen in hun eerste boek \cite{Blackburn2005} naar eerste-orde-logica. In hun tweede boek \cite{Blackburn2006} vertalen ze naar \textit{Discourse Representation Structures}. Ook de vorm van de grammatica is vrij te kiezen. Zowel Blackburn en Bos als deze thesis gebruiken DCG's om de grammatica te specifiëren. Baral et al. \cite{Baral2008} gebruiken een gelijkaardig framework maar met behulp van een Combinatorische Categorische Grammatica.
 
-\paragraph{} Dankzij dit framework, wordt het probleem van semantische analyse herleidt tot het opstellen van een lexicon dat de woorden van het logigram bevat; het opstellen van een grammatica dat de zinsstructuren van een logigram omvat; het opstellen van de semantiek van deze grammaticale regels; en ten slotte het opstellen van semantische macro's voor alle lexicale categorieën die we introduceren.
+\paragraph{} Dankzij het framework van Blackburn en Bos, wordt het probleem van semantische analyse herleid tot het opstellen van een lexicon dat de woorden van het logigram bevat; het opstellen van een grammatica die de zinsstructuren van een logigram omvat; het opstellen van de semantiek van deze grammaticale regels; en ten slotte het opstellen van semantische macro's voor alle lexicale categorieën die we introduceren.
