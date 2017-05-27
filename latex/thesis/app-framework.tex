@@ -1,0 +1,105 @@
+\chapter{Een illustratie van het semantische framework}
+\label{app:vb-framework}
+
+In deze appendix illustreren we het framework van Blackburn en Bos (zie hoofdstuk~\ref{ch:framework}) aan de hand van de zin ``If every man sleeps, a woman loves John''. De parse tree die bij deze zin hoort is
+
+\Tree[.s if [.s [.np [.det every ] [.n man ]] [.vp [.iv sleeps ]]] [.s [.np [.det a ] [.n woman ]] [.vp [.tv loves ] [.np [.pn john ]]]]]
+
+Frege's compositionaliteitsprincipe leert ons dat we elke knoop apart mogen behandelen om daarna de resultaten te combineren. In de rest van deze appendix, doorlopen we alle knopen in de boom. We passen de formules die we hierboven hebben afgeleid toe en vereenvoudigen vervolgens met behulp van beta-reductie uit de lambda-calculus.
+
+\section{Every man sleeps}
+% \subsection{Every man}
+% \Tree[.np:$\app{\sem{det}}{\sem{n}}$ [.det:$\lambdaf{R}{\lambdaf{S}{\drs{}{\drsImpl{\drsMerge{\drs{x}{}}{\app{R}{x}}}{\app{S}{x}}}}}$ every ] [.n:$\lambdaf{x}{\drs{}{man(x)}}$ man ]]
+% \Tree[.np [.det every ] [.n man ]]
+
+% \begin{equation*}
+  \begin{align*}
+    \sem{np_{every\ man}} &= \app{\sem{det}}{\sem{n}} \\
+             &= \appH{\lambdaf{R}{\lambdaf{S}{\drs{}{\drsImpl{\drsMerge{\drs{x}{}}{\app{R}{x}}}{\app{S}{x}}}}}}{\lambdaf{y}{\drs{}{man(y)}}} \\
+             &= \lambdaf{S}{\drs{}{\drsImpl{\drsMerge{\drs{x}{}}{\appH{\lambdaf{y}{\drs{}{man(y)}}}{x}}}{\app{S}{x}}}} \\
+             &= \lambdaf{S}{\drs{}{\drsImpl{\drsMerge{\drs{x}{}}{\drs{}{man(x)}}}{\app{S}{x}}}} \\
+             &= \lambdaf{S}{\drs{}{\drsImpl{\drs{x}{man(x)}}{\app{S}{x}}}} \\
+  % \label{eq:np-every-man}
+  \end{align*}
+% \end{equation*}
+
+% \subsection{Every man sleeps}
+% \Tree[.s:$\app{\sem{vp}}{\sem{np}}$ [.np_{every\ man}:$\lambdaf{S}{\drs{}{\drsImpl{\drs{x}{man(x)}}{\app{S}{x}}}}$ ] [.vp [.iv:$\lambdaf{N}{\app{N}{\lambdaf{x}{\drs{}{sleeps(x)}}}}$ sleeps ]]]
+% \Tree[.s [.np_{every\ man} ] [.vp [.iv sleeps ]]]
+
+% \begin{equation*}
+  \begin{align*}
+    \sem{s_{every\ man\ sleeps}} &= \app{\sem{vp}}{\sem{np}} \\
+                            &= \appH{\lambdaf{O}{\app{O}{\lambdaf{y}{\drs{}{sleeps(y)}}}}}{\lambdaf{S}{\drs{}{\drsImpl{\drs{x}{man(x)}}{\app{S}{x}}}}} \\
+                            &= \app{\left( \lambdaf{S}{\drs{}{\drsImpl{\drs{x}{man(x)}}{\app{S}{x}}}} \right)}{\lambdaf{y}{\drs{}{sleeps(y)}}} \\
+                            &= \drs{}{\drsImpl{\drs{x}{man(x)}}{\app{\left( \lambdaf{y}{\drs{}{sleeps(y)}} \right)}{x}}} \\
+                            &= \drs{}{\drsImpl{\drs{x}{man(x)}}{\drs{}{sleeps(x)}}} \\
+  % \label{eq:s-every-man-sleeps}
+  \end{align*}
+% \end{equation*}
+
+\section{A woman loves John}
+% \subsection{A woman}
+% \Tree[.np:$\app{\sem{det}}{\sem{n}}$ [.det:$\lambdaf{R}{\lambdaf{S}{\left( \drs{x}{} \oplus \app{R}{x} \oplus \app{S}{x} \right)}}$ a ] [.n:$\lambdaf{x}{\drs{}{woman(x)}}$ woman ]]
+% \Tree[.np [.det a ] [.n woman ]]
+
+% \begin{equation*}
+  \begin{align*}
+    \sem{np_{a\ woman}} &= \app{\sem{det}}{\sem{n}} \\
+             &= \appH{\lambdaf{R}{\lambdaf{S}{\drsTriMerge{\drs{x}{}}{\app{R}{x}}{\app{S}{x}}}}}{\lambdaf{y}{\drs{}{woman(y)}}} \\
+             &= \lambdaf{S}{\drsTriMerge{\drs{x}{}}{\appH{\lambdaf{y}{\drs{}{woman(y)}}}{x}}{\app{S}{x}}} \\
+             &= \lambdaf{S}{\drsTriMerge{\drs{x}{}}{\drs{}{woman(x)}}{\app{S}{x}}} \\
+             &= \lambdaf{S}{\drsMerge{\drs{x}{woman(x)}}{\app{S}{x}}} \\
+  % \label{eq:np-a-woman}
+  \end{align*}
+% \end{equation*}
+
+% \subsection{loves John}
+% \Tree[.vp:$\app{\sem{tv}}{\sem{np}}$ [.tv:$\lambdaf{N1}{\lambdaf{N2}{\appB{N2}{\lambdaf{x2}{\appB{N1}{\lambdaf{x1}{\drs{}{loves(x2, x1)}}}}}}}$ loves ] [.np:$\sem{pn}$ [.pn:$\lambdaf{P}{\app{P}{john}}$ john ]]]
+% \Tree[.vp [.tv loves ] [.np [.pn john ]]]
+
+% \begin{equation*}
+  \begin{align*}
+    \sem{vp_{loves\ john}} &= \app{\sem{tv}}{\sem{np}} \\
+                        &= \appH{\lambdaf{L}{\lambdaf{O}{\app{O}{\lambdaf{x_o}{\app{L}{\lambdaf{x_l}{\drs{}{loves(x_o, x_l)}}}}}}}}{\lambdaf{P}{\app{P}{john}}} \\
+                        &= \lambdaf{O}{\app{O}{\lambdaf{x_o}{\appH{\lambdaf{P}{\app{P}{john}}}{\lambdaf{x_l}{\drs{}{loves(x_o, x_l)}}}}}} \\
+                        &= \lambdaf{O}{\app{O}{\lambdaf{x_o}{\appH{\lambdaf{x_l}{\drs{}{loves(x_o, x_l)}}}{john}}}} \\
+                        &= \lambdaf{O}{\app{O}{\lambdaf{x_o}{\drs{}{loves(x_o, john)}}}} \\
+  % \label{eq:vp-loves-john}
+  \end{align*}
+% \end{equation*}
+
+Niet alleen heeft deze lambda-expressie een signatuur die gelijk is aan die van een onovergankelijk werkwoord, de structuur lijkt er ook sterk op.
+
+% \subsection{A woman loves John}
+% \Tree[.s:$\app{\sem{vp}}{\sem{np}}$ [.np_{a\ woman}:$\lambdaf{S}{\drsMerge{\drs{x}{woman(x)}}{\app{S}{x}}}$ ] [.vp_{loves\ john}:$\lambdaf{N2}{\appB{N2}{\lambdaf{x2}{\drs{}{loves(x2, john)}}}}$ ]]
+% \Tree[.s [.np_{a\ woman} ] [.vp_{loves\ john} ]]
+
+% \begin{equation*}
+  \begin{align*}
+    \sem{s_{a\ woman\ loves\ john}} &= \app{\sem{vp}}{\sem{np}} \\
+                              &= \appH{\lambdaf{O}{\app{O}{\lambdaf{x_o}{\drs{}{loves(x_o, john)}}}}}{\lambdaf{S}{\drsMerge{\drs{x}{woman(x)}}{\app{S}{x}}}} \\
+                              &= \appH{\lambdaf{S}{\drsMerge{\drs{x}{woman(x)}}{\app{S}{x}}}}{\lambdaf{x_o}{\drs{}{loves(x_o, john)}}} \\
+                              &= \drsMerge{\drs{x}{woman(x)}}{\app{\left( \lambdaf{x_o}{\drs{}{loves(x_o, john)}} \right)}{x}} \\
+                              &= \drsMerge{\drs{x}{woman(x)}}{\drs{}{loves(x, john)}} \\
+                              &= \drs{x}{woman(x) \\ loves(x, john)} \\
+  % \label{eq:s-a-woman-loves-john}
+  \end{align*}
+% \end{equation*}
+
+\section{If every man sleeps, a woman loves John}
+% \Tree[.s:$\drs{}{\sem{s1} \Rightarrow \sem{s2}}$ if [.s_{every\ man\ sleeps} ] [.s_{a\ woman\ loves\ john} ]]
+% Met $\sem{s1} = \drs{}{\drsImpl{\drs{x}{man(x)}}{\drs{}{sleeps(x)}}}$ en $\sem{s2} = \drs{x}{woman(x) \\ loves(x, john)}$ 
+% \Tree[.s if [.s_{every\ man\ sleeps} ] [.s_{a\ woman\ loves\ john} ]]
+
+% \begin{equation*}
+  \begin{align*}
+    \sem{s} &= \drs{}{\sem{s1} \Rightarrow \sem{s2}} \\
+            % &= \drs{}{\drsImpl{\drs{}{\drsImpl{\drs{x}{man(x)}}{\drs{}{sleeps(x)}}}}{\drs{x}{woman(x) \\ loves(x, john)}}} \\
+            &= \drs{}{\drsImpl{\drs{}{\drsImpl{\drs{x}{man(x)}}{\drs{}{sleeps(x)}}}}{\drs{y}{woman(y) \\ loves(y, john)}}} \\
+            &= \bigg( \forall x \cdot man(x) \Rightarrow sleeps(x) \bigg) \Rightarrow \bigg( \exists y \cdot woman(y) \land loves(y, john) \bigg)
+  % \label{eq:s-if-a-woman-loves-john-every-man-sleeps}
+  \end{align*}
+% \end{equation*}
+
+Dit is de vertaling zoals we die zouden verwachten.
