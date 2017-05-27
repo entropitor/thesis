@@ -1,0 +1,195 @@
+\chapter{Specificatie van logigram 1}
+\label{app:idp}
+
+In deze appendix geven we de specificatie die het systeem genereert voor logigram 1 uit Puzzle Baron's Logic Puzzles Volume 3 \cite{logigrammen}. De zinnen van de logigram zien er uit als volgt:
+
+\begin{enumerate}
+ \item The perens pig lives in Slovakia and was recognized as endangered in 2009
+ \item The eldar elk has a population size of 210
+ \item The byengo bat doesn't live in Ghana
+ \item The animal that lives in Slovakia was listed sometime before the animal from Russia
+ \item Of the species with a population size of 490 and the eldar elk, one lives in Poland and the other was recognized as endangered in 2009
+ \item Neither the nibner newt nor the byengo bat has a surviving population size of 525
+ \item The species that lives in Ghana was listed 2 years after the nibner newt
+ \item The animal that lives in Russia doesn't have a surviving population size of 315
+\end{enumerate}
+
+Het lexicon voor deze logigram bevat
+\begin{itemize}
+  \item 5 zelfstandige naamwoorden (``species'', ``animal'', ``year'', ``population size'' en ``surviving population size'')
+  \item 8 eigennamen (``perens pig'', ``byengo bat'', ``nibner newt'', ``eldar elk'', ``ghana'', ``poland'', ``russia'' en ``slovakia'')
+  \item 4 werkwoorden (``to have'', ``to live in'', ``to be recognized as endangered in'' en ``listed in'').
+\end{itemize}
+
+Bij de type inferentie stelt het systeem de volgende vragen, enkel op de laatste vraag is het antwoord ``ja''.
+\begin{enumerate}
+  \item Are 'recognized\_as\_endangered\_in' and 'lives\_in' the same relation? [yes/no]
+  \item Are 'recognized\_as\_endangered\_in' and 'of' the same relation? [yes/no]
+  \item Are 'recognized\_as\_endangered\_in' and 'has' the same relation? [yes/no]
+  \item Are 'recognized\_as\_endangered\_in' and 'from' the same relation? [yes/no]
+  \item Are 'recognized\_as\_endangered\_in' and 'listed\_in' the same relation? [yes/no]
+\end{enumerate}
+
+Bij het opstellen van het vocabularium stelt het ook nog volgende twee vragen. De antwoorden zijn \{2006, 2007, 2008, 2009, 2010\} en \{210, 280, 315, 490, 525\}.
+\begin{enumerate}
+  \item What are the possible values for year (e.g. the object of recognized\_as\_endangered\_in)?
+  \item What are the possible values for type2 (e.g. the object of of)?
+\end{enumerate}
+
+% \begin{verbatim} */
+% ┌──────────────────┬─────────────────┬───────────────────┬──────┬─────┐ */
+% │ the_nibner_newt  │ the_other_type1 │ population_size_3 │ 2006 │ 315 │  */
+% │  the_eldar_elk   │     poland      │ population_size_1 │ 2007 │ 210 │  */
+% │ the_other_animal │      ghana      │ population_size_5 │ 2008 │ 525 │  */
+% │  the_perens_pig  │    slovakia     │ population_size_4 │ 2009 │ 490 │  */
+% │  the_byengo_bat  │     russia      │ population_size_2 │ 2010 │ 280 │  */
+% └──────────────────┴─────────────────┴───────────────────┴──────┴─────┘ */
+% \end{verbatim} */
+
+De oplossing die het systeem genereert is correct en ziet er uit als volgt
+\begin{table}[h]
+\begin{tabular}{|c|c|c|c|c|}
+  \hline
+ the\_nibner\_newt  & the\_other\_type1 & population\_size\_3 & 2006 & 315 \\ 
+  the\_eldar\_elk   &     poland      & population\_size\_1 & 2007 & 210 \\ 
+ the\_other\_animal &      ghana      & population\_size\_5 & 2008 & 525 \\ 
+  the\_perens\_pig  &    slovakia     & population\_size\_4 & 2009 & 490 \\ 
+  the\_byengo\_bat  &     russia      & population\_size\_2 & 2010 & 280 \\ 
+  \hline
+\end{tabular}
+\centering
+\caption{De oplossing van logigram 1}
+\label{tbl:log1opl}
+\end{table}
+
+\paragraph{} Het systeem genereert die oplossing aan de hand van de IDP \cite{IDP} specificatie hieronder
+\begin{lstlisting}
+// Logigram 1
+
+vocabulary V {
+    type year = {2006; 2007; 2008; 2009; 2010} isa int
+    type animal constructed from {
+      the_other_animal,
+      the_perens_pig,
+      the_eldar_elk,
+      the_byengo_bat,
+      the_nibner_newt
+    }
+    type type1 constructed from {
+      the_other_type1,
+      slovakia,
+      ghana,
+      russia,
+      poland
+    }
+    type type2 = {210; 280; 315; 490; 525} isa int
+    type population_size constructed from {
+      population_size_1,
+      population_size_2,
+      population_size_3,
+      population_size_4,
+      population_size_5
+    }
+    // differences between values of type year
+    type type3 = {-1; 1; -2; 2; -3; 3; -4; 4} isa int 
+
+    recognized_as_endangered_in(animal, year)
+    lives_in(animal, type1)
+    of(population_size, type2)
+    has(animal, population_size)
+    from(animal, type1)
+    listed_in(animal, year)
+    with(animal, population_size)
+}
+
+structure S : V {
+}
+
+theory T : V {
+    // The perens pig lives in Slovakia and
+    // was recognized as endangered in 2009
+    lives_in(the_perens_pig,slovakia) &
+    recognized_as_endangered_in(the_perens_pig,2009).
+
+    // The eldar elk has a population size of 210
+    ?a [population_size]: of(a,210) & has(the_eldar_elk,a).
+
+    // The byengo bat doesn't live in Ghana
+    ~ lives_in(the_byengo_bat,ghana).
+
+    // The animal that lives in Slovakia was listed
+    // sometime before the animal from Russia
+    ?b [animal] c [type3] d [year] e [animal] f [year]:
+    lives_in(b,slovakia) & c>0 & from(e,russia) &
+    listed_in(e,d) & f = d-c & listed_in(b,f).
+
+    // Of the species with a population size of 490
+    // and the eldar elk, one lives in Poland and the other
+    // was recognized as endangered in 2009
+    ?g [animal] h [population_size]: of(h,490) &
+    with(g,h) & ~ (g = the_eldar_elk) &
+    (lives_in(g,poland) & recognized_as_endangered_in(the_eldar_elk,2009) |
+    lives_in(the_eldar_elk,poland) & recognized_as_endangered_in(g,2009)).
+
+    // Neither the nibner newt nor the byengo bat
+    // has a surviving population size of 525
+    ~ (?i [population_size]: of(i,525) & has(the_nibner_newt,i)) &
+    ~ (?j [population_size]: of(j,525) & has(the_byengo_bat,j)).
+
+    // The species that lives in Ghana was
+    // listed 2 years after the nibner newt
+    ?k [animal] l [year] m [year]: lives_in(k,ghana) &
+    listed_in(the_nibner_newt,l) & m = l+2 & listed_in(k,m).
+
+    // The animal that lives in Russia
+    // doesn't have a surviving population size of 315
+    ?n [animal]: lives_in(n,russia) &
+    ~ (?o [population_size]: of(o,315) & has(n,o)).
+
+
+    // Logigram bijection axioms:
+    ! x [animal]: ?=1 y [year]: recognized_as_endangered_in(x, y).
+    ! x [year]: ?=1 y [animal]: recognized_as_endangered_in(y, x).
+
+    ! x [animal]: ?=1 y [type1]: lives_in(x, y).
+    ! x [type1]: ?=1 y [animal]: lives_in(y, x).
+
+    ! x [population_size]: ?=1 y [type2]: of(x, y).
+    ! x [type2]: ?=1 y [population_size]: of(y, x).
+
+    ! x [animal]: ?=1 y [population_size]: has(x, y).
+    ! x [population_size]: ?=1 y [animal]: has(y, x).
+
+    ! x [animal]: ?=1 y [type1]: from(x, y).
+    ! x [type1]: ?=1 y [animal]: from(y, x).
+
+    ! x [animal]: ?=1 y [year]: listed_in(x, y).
+    ! x [year]: ?=1 y [animal]: listed_in(y, x).
+
+    ! x [animal]: ?=1 y [population_size]: with(x, y).
+    ! x [population_size]: ?=1 y [animal]: with(y, x).
+
+    // Logigram synonym axioms:
+    ! x [animal] y [year]: recognized_as_endangered_in(x, y) <=> listed_in(x, y).
+    ! x [animal] y [type1]: lives_in(x, y) <=> from(x, y).
+    ! x [animal] y [population_size]: has(x, y) <=> with(x, y).
+
+    // Logigram transitivity axioms:
+
+    // Logigram symmetry axioms:
+
+    // Logigram symmetry breaking axioms:
+    of(population_size_1, 210).
+    of(population_size_2, 280).
+    of(population_size_3, 315).
+    of(population_size_4, 490).
+    of(population_size_5, 525).
+}
+
+procedure main() {
+    // Search for 10 possible solutions to the logigram.
+    // It should and does only find one
+    stdoptions.nbmodels = 10;
+    printmodels(modelexpand(T,S))
+}
+\end{lstlisting}

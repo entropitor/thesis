@@ -1,5 +1,39 @@
 \chapter{Een overzicht van het systeem}
 
-\todo[inline]{Verschillende stappen}
-\todo[inline]{Voorbeeld output}
-\todo[inline]{Verschillende inferenties}
+In dit hoofdstuk beschrijven we het systeem achter deze thesis. Dit systeem stelt een formele specificatie op van een logigram.
+
+Eerst leggen we uit wat we met zo'n specificatie kunnen doen. Daarna geven we de stappen die het systeem onderneemt om de specificatie op te stellen. Ten slotte geven we een voorbeeld van het resultaat van het systeem.
+
+\section{Inferenties op logigrammen}
+In deze thesis stellen we een gecontroleerde natuurlijke taal op. Deze CNL wordt afgeleid uit de zinnen van de eerste tien logigrammen uit Puzzle Baron's Logic Puzzles Volume 3 \cite{logigrammen}. Bovendien geven we deze taal een formele semantiek. Daardoor kan men deze taal zien als een kennisrepresentatietaal (voor logigrammen).
+
+Een logigram dat uitgedrukt is in deze CNL kan dan omgezet worden tot een formele specificatie die als invoer van een \textit{Knowlegde Base System} kan dienen. Het KBS kan dan nadenken over het logigram. Zo een systeem kan
+
+\begin{itemize}
+  \item Een logigram automatisch oplossen
+  \item Gegeven een (partiële) oplossing, aangeven aan welke zinnen voldaan is, welke zinnen nog nieuwe informatie bevatten en welke zinnen niet overeenkomen met de gegeven oplossing.
+  \item Gegeven een partiële oplossing, automatisch een subset van de zinnen afleiden die gebruikt kan worden om de oplossing verder aan te vullen. De gebruiker kan zo een hint krijgen om het logigram verder op te lossen.
+  \item Gegeven een set van zinnen, aangegeven welke oplossingen nog mogelijk zijn. Dit kan de auteur helpen bij het schrijven van nieuwe logigrammen. Afhankelijk van welke oplossingen nog mogelijk zijn, kan de auteur een nieuwe zin toevoegen om een aantal van de mogelijkheden te elimineren tot er maar één oplossing overblijft.
+\end{itemize}
+
+\section{De stappen}
+Om een specificatie op te stellen van een logigram vanuit de zinnen in een gecontroleerde natuurlijke taal en een logigram-specifiek lexicon, neemt het systeem de volgende stappen:
+
+\begin{enumerate}
+  \item Het vertaalt de zinnen naar logica met het (aangepaste) framework van Blackburn en Bos. Hierbij verzamelt het informatie i.v.m. de types van woorden.
+  \item Het systeem gebruikt die informatie i.v.m. de types van woorden om de domeinen van een logigram af te leiden. Indien nodig stelt het systeem vragen aan de gebruiker om te helpen bij deze type-inferentie.
+  \item Gebaseerd op deze domeinen en taalkundige informatie stelt het systeem een formeel vocabularium op
+  \item Het systeem formuleert ook een aantal axioma's die de impliciete assumpties van een logigram modelleren
+  \item Ten slotte geeft het deze specificatie (bestaande uit het formele vocabularium en de theorie met de axioma's en de vertaling van de zinnen van het logigram) aan IDP \cite{IDP}. Het systeem kan dan aan IDP vragen om de oplossing te berekenen (of een andere soort van inferentie toe te passen op de specificatie).
+\end{enumerate}
+
+Voor de eerste stap maken we gebruik van het framework van Blackburn en Bos (hoofdstuk~\ref{ch:framework}). We stellen een set van lexicale categorieën (hoofdstuk~\ref{ch:lexicon}) en een grammatica (hoofdstuk~\ref{ch:grammatica}) op om te gebruiken in dit framework. We breiden het framework ook uit met types (hoofdstuk~\ref{ch:types}). Daardoor kunnen we vertalen naar een getypeerde logica en kunnen we de informatie i.v.m. de types van woorden verzamelen.
+
+Voor de tweede stap veronderstellen we dat elk woord exact één type heeft per logigram (zie ook hoofdstuk~\ref{ch:types}). Indien deze assumptie niet genoeg is, stelt het systeem een aantal vragen aan de gebruiker totdat het de domeinen heeft afgeleid. 
+
+Met behulp van de afgeleide domeinen en taalkundige informatie kan het systeem de specificatie vervolledigen met een formeel vocabularium en de impliciete axioma's (hoofdstuk~\ref{ch:specificatie}).
+
+In hoofdstuk~\ref{ch:evaluatie} testen we dit systeem uit op ongezien logigrammen. 
+
+\section{Een voorbeeld specificatie}
+In appendix~\ref{app:idp} staat de specificatie die het systeem genereert voor logigram 1 uit Puzzle Baron's Logic Puzzles Volume 3 \cite{logigrammen}. Deze appendix bevat ook de invoer die het systeem nodig heeft en alle vragen die het systeem stelt voor deze logigram.
