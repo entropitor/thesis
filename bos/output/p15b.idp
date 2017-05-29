@@ -25,7 +25,7 @@ theory T : V {
     // The student who got the B-minus talked about Augustus
     ?a [student]: got(a,bminus) & talked_about(a,augustus).
 
-    // Johnnie, the student who gave the presentation on Augustus and the person who got the B-plus were three different students
+    // Johnnie, the student who gave the presentation on Augustus and whoever got the B-plus were three different students
     ?b [student] c [presentation] d [student]: ~ (johnnie = b) & ~ (johnnie = d) & ~ (b = d) & on(c,augustus) & gave(b,c) & got(d,bplus).
 
     // Gina didn't get the B-plus
@@ -94,12 +94,12 @@ theory T : V {
     ! x [presentation] y [minute]: lasted_for(x, y) <=> is_long(x, y).
 
     // Logigram transitive relation axioms:
-    ! x [student] y [type1] z [presentation]: talked_about(x, y) & given_by(z, x) => on(z, y).
-    ! x [student] y [type2] z [presentation]: got(x, y) & given_by(z, x) => received(z, y).
-    ! x [student] y [presentation] z [minute]: gave(x, y) & spoke_for(x, z) => lasted_for(y, z).
-    ! x [student] y [presentation] z [minute]: gave(x, y) & spoke_for(x, z) => is_long(y, z).
-    ! x [student] y [minute] z [presentation]: spoke_for(x, y) & given_by(z, x) => lasted_for(z, y).
-    ! x [student] y [minute] z [presentation]: spoke_for(x, y) & given_by(z, x) => is_long(z, y).
+    ! x [student] y [type1]: talked_about(x, y) <=> ? z [presentation]: given_by(z, x) & on(z, y).
+    ! x [student] y [type2]: got(x, y) <=> ? z [presentation]: given_by(z, x) & received(z, y).
+    ! x [student] y [presentation]: gave(x, y) <=> ? z [minute]: spoke_for(x, z) & lasted_for(y, z).
+    ! x [student] y [presentation]: gave(x, y) <=> ? z [minute]: spoke_for(x, z) & is_long(y, z).
+    ! x [student] y [minute]: spoke_for(x, y) <=> ? z [presentation]: given_by(z, x) & lasted_for(z, y).
+    ! x [student] y [minute]: spoke_for(x, y) <=> ? z [presentation]: given_by(z, x) & is_long(z, y).
 
     // Logigram reflexive relation axioms:
     ! x [student] y [presentation]: gave(x, y) <=> given_by(y, x).

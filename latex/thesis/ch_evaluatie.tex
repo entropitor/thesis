@@ -342,6 +342,49 @@ Ten slotte zijn er 10 aanpassingen nodig voor het aanvullen of weglaten van woor
   \label{tbl:resultaten}
 \end{table}
 
+\section{Vragen aan de gebruiker}
+Tabel~\ref{tbl:vragen} geeft een overzicht van het aantal vragen dat het systeem stelt aan de gebruiker. De tabel is ingedeeld per logigram en per soort vraag. Soort 1 is een vraag van de vorm ``Zijn A en B dezelfde relatie (synoniemen)?''. Soort 2 is van de vorm ``Zijn A en B een omgekeerde relatie?''. Soort 3 ziet er uit als ``Is A een mogelijk lijdend voorwerp van B?''. Soort 4 ten slotte heeft de vorm ``Zijn A en B van hetzelfde type?''. De laatste vraag probeert het systeem te vermijden omdat dit het hele doel van de type-inferentie is.
+
+De tabel geeft enkel de vragen met de positieve antwoorden omdat het resultaat dan niet afhankelijk is van de volgorde waarin de vragen gesteld worden.
+
+\paragraph{} Gemiddeld stelt het systeem per logigram twee vragen (met een positief antwoord) aan de gebruiker. Vragen van soort 1 dienen om synoniemen aan te geven die het systeem zelf niet kan afleiden. Vragen van soort 2 zijn analoog maar dan voor de omgekeerde relatie (``to give'' en ``to be given by''). Vragen van soort 3 en 4 zijn vaak nodig omwille van naamwoordgroepen met een onbekende relatie (zie sectie~\ref{sec:npMissingRelation}). Omdat de types van de verschillende eigennamen in zo'n naamwoordgroepen niet geünificeerd zijn, leidt elk van die naamwoordgroepen tot een vraag van soort 3 of 4. Daardoor komen deze soort vragen meestal in grotere aantallen voor.
+
+Voor de meeste logigrammen heeft het systeem weinig vragen nodig. Er zijn vier logigrammen (logigram 8, 11, 13 en 17) die samen goed zijn voor de helft van de vragen. 
+
+\begin{table}[]
+  \centering
+  \begin{tabular}{lccccc}
+  \toprule
+              & \textbf{Soort 1} & \textbf{Soort 2} & \textbf{Soort 3} & \textbf{Soort 4} & \textbf{Totaal} \\
+  \hline
+  Logigram 1  & 1 & 0 & 0 & 0 & \textbf{1} \\
+  Logigram 2  & 1 & 0 & 0 & 0 & \textbf{1} \\
+  Logigram 3  & 0 & 0 & 0 & 0 & \textbf{0} \\
+  Logigram 4  & 0 & 0 & 3 & 0 & \textbf{3} \\
+  Logigram 5  & 0 & 0 & 1 & 0 & \textbf{1} \\
+  Logigram 6  & 0 & 0 & 1 & 0 & \textbf{1} \\
+  Logigram 7  & 1 & 0 & 1 & 0 & \textbf{2} \\
+  Logigram 8  & 0 & 0 & 3 & 3 & \textbf{6} \\
+  Logigram 9  & 0 & 0 & 3 & 0 & \textbf{3} \\
+  Logigram 10 & 1 & 0 & 0 & 0 & \textbf{1} \\
+  Logigram 11 & 0 & 0 & 0 & 4 & \textbf{4} \\
+  Logigram 12 & 1 & 0 & 0 & 0 & \textbf{1} \\
+  Logigram 13 & 1 & 0 & 4 & 0 & \textbf{5} \\
+  Logigram 14 & 1 & 0 & 0 & 0 & \textbf{1} \\
+  Logigram 15 & 0 & 1 & 0 & 0 & \textbf{1} \\
+  Logigram 16 & 2 & 0 & 0 & 0 & \textbf{2} \\
+  Logigram 17 & 1 & 0 & 3 & 0 & \textbf{4} \\
+  Logigram 18 & 0 & 0 & 0 & 0 & \textbf{0} \\
+  Logigram 19 & 1 & 0 & 0 & 0 & \textbf{1} \\
+  Logigram 20 & 0 & 0 & 0 & 0 & \textbf{0} \\
+  \hline
+  \textbf{Totaal} & \textbf{11} & \textbf{1} & \textbf{19} & \textbf{7} & \textbf{38} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Een overzicht van het aantal vragen met een positief antwoord}
+  \label{tbl:vragen}
+\end{table}
+
 \section{Conclusie}
 Ten eerste kunnen we al stellen dat we elk logigram zodanig kunnen herschrijven zodat het mogelijk wordt om automatisch een volledige en correcte specificatie op te stellen. In de meeste gevallen zijn de aanpassingen eerder klein. Er zijn slechts twee zinnen die vrij hard aangepast moeten worden (één van passief naar actief en één voor het verwijderen van het bezittelijke voornaamwoord). Het is echter niet zo dat we de logigrammen gewoon kunnen ingeven zonder aanpassingen te doen. Daarvoor is de grammatica nog te ruim. Het lijkt echter wel mogelijk om een grammatica op te stellen waaraan een schrijver zich kan houden zonder dat de lezer een verschil kan merken.
 
