@@ -67,31 +67,13 @@ vp([coord:no, inf:I, num:Num, gap:G, sem:Sem, vType:TypeSubj]) -->
 \end{dcg}
 
 \section{Type Inferentie}
-% If many
-% synonyms are used, the system enters an interactive
-% mode and asks the user some linguistic questions
-% that can be rewritten as “Is ... a meaningful sen-
-% tence?” until the types are unified enough.
-% This process fails if (and only if) a certain domain
-% always occurs as part of noun phrases with an
-% unknown relation (e.g. “the 2008 graduate”). In
-% such a scenario, the system cannot fallback on a
-% linguistic question and therefore asks the user if two
-% proper nouns are of the same type. This is the exact
-% question the system was supposed to solve.
-% The described system can thus correctly derive
-% which domain elements belong together based on
-% type constraints and the answers to some linguistic
-% questions. Only when they do not provide enough
-% information, is the user asked to help identify the
-% elements that belong together.
-\paragraph{} Om de types automatisch af te leiden veronderstellen we dat elk woord uit het lexicon één type heeft (maar dit type wordt niet meegegeven door de gebruiker). Vervolgens zoeken we de types van alle woorden. Tijdens het vertalen worden de types geünificeerd volgens het principe van één type per woord. Neem bijvoorbeeld de zinnen ``John lives in France'' en ``The man with the dog lives in Italy''. Op basis hiervan weten we dat ``France'' en ``Italy'' hetzelfde type hebben, beiden zijn namelijk het lijdende voorwerp van ``lives in''. Ook weten we dat ``John'' een ``man'' is. Ten slotte weten we dat ``lives in'' een relatie is tussen een man en iets van het type van ``France'' en ``Italy'', terwijl ``with'' een relatie is tussen een man en iets van het type van ``dog''.
+\paragraph{} Om de types automatisch af te leiden veronderstellen we dat elk woord uit het lexicon één type heeft (maar dat dit type niet wordt meegegeven door de gebruiker). Vervolgens zoeken we de types van alle woorden. Tijdens het vertalen worden de types geünificeerd volgens het principe van één type per woord. Neem bijvoorbeeld de zinnen ``John lives in France'' en ``The man with the dog lives in Italy''. Op basis hiervan weten we dat ``France'' en ``Italy'' hetzelfde type hebben, beiden zijn namelijk het lijdende voorwerp van ``lives in''. Ook weten we dat ``John'' een ``man'' is. Ten slotte weten we dat ``lives in'' een relatie is tussen een man en iets van het type van ``France'' en ``Italy'', terwijl ``with'' een relatie is tussen een man en iets van het type van ``dog''.
 
 Als een logigram veel synoniemen bevat, kan het systeem deze types niet automatisch af leiden. Stel bijvoorbeeld dat ``Mary is from Spain'' deel uitmaakt van het vorige voorbeeld. Dan kan het systeem niet afleiden dat ``Spain'' tot hetzelfde domein behoort als ``France'' en ``Italy''. Het systeem weet namelijk niet dat ``from'' en ``lives in'' dezelfde relatie uitdrukken. De gebruiker kan dit ook niet ingeven in het lexicon. In dat geval wordt één domein nog steeds voorgesteld door de combinatie van een aantal types. Om de onderliggende axioma's van een logigram correct te kunnen uitdrukken, moeten deze types overeenkomen met de domeinen.
 
 % De reden dat de groepering niet compleet hoeft te zijn, heeft te maken met synoniemen. Het programma is namelijk niet op de hoogte van welke woorden synoniemen zijn. De gebruiker kan deze (in ons syteem) namelijk niet opgeven in het lexicon. In het worst-case scenario komt elk woord maar één keer voor. In dat geval leert het principe ons niets en zijn alle eigennamen volledig gescheiden van elkaar. 
 
-\paragraph{} Daarom stelt het systeem een aantal ja-nee-vragen aan de gebruiker. Hiervoor gebruikt het zoveel mogelijk taalkundige informatie. Er zijn 4 soorten vragen: ``Zijn A en B dezelfde relatie (synoniemen)?'', ``Zijn A en B een omgekeerde relatie?'', ``Is A een mogelijk lijdend voorwerp van B?'' en ``Zijn A en B van hetzelfde type?''. De eerste drie soorten vragen zijn puur taalkundig en zouden herschreven kunnen worden ``Is ... een zin met een betekenis?'', bijvoorbeeld ``Is 'John lives in the dog' een zin met een betekenis?''.
+\paragraph{} Daarom stelt het systeem een aantal ja-nee-vragen aan de gebruiker. Hiervoor gebruikt het zoveel mogelijk taalkundige informatie. Er zijn 4 soorten vragen: ``Zijn A en B dezelfde relatie (synoniemen)?'', ``Zijn A en B een omgekeerde relatie?'', ``Is A een mogelijk lijdend voorwerp van B?'' en ``Zijn A en B van hetzelfde type?''. De eerste drie soorten vragen zijn puur taalkundig en zouden herschreven kunnen worden ``Is ... een goed getypeerde zin?'', bijvoorbeeld ``Is 'John lives in the dog' een goed getypeerde zin?''.
 
 De laatste soort vraag is eigenlijk het doel van het hele type-systeem, namelijk achterhalen of twee domeinelementen van hetzelfde type zijn. Indien een bepaald domein in het logigram altijd wordt voorgesteld door een naamwoordgroep met een onbekende relatie (zie sectie~\ref{sec:npMissingRelation}) dan heeft men geen informatie over het type van deze domeinelementen en geen mogelijke relatie waar deze domeinelementen deel van kunnen maken. Er is dus geen mogelijke taalkundige vraag in dat geval.
 
@@ -102,4 +84,4 @@ Met behulp van types is het mogelijk om natuurlijke taal te type-checken. Zo kan
 
 Een vraag die naar boven komt, is of men via type-checken van natuurlijke taal het aantal fouten in specificaties kan verlagen. Staat het toe om een betere suggestietool te maken die niet alleen rekening houdt met de grammatica maar ook met informatie omtrent types? De types kunnen namelijk het aantal suggesties beperken om zo de kwaliteit van de tool te verbeteren.
 
-In deze thesis werd er gebruik gemaakt van een zeer simpel type-systeem. Ook een onderzoek naar een moeilijker systeem, bijvoorbeeld met een hiërarchie van types, lijkt nodig. Bovendien is de vraag of de techniek ook toepasbaar is op andere problemen dan logigrammen.
+In deze thesis werd er gebruik gemaakt van een zeer simpel type-systeem. Ook een onderzoek naar een moeilijker systeem, bijvoorbeeld met een hiërarchie van types, lijkt nodig. Bovendien moet er ook onderzocht worden of de techniek toepasbaar is op andere problemen dan logigrammen.
