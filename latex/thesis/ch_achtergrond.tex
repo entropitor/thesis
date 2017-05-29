@@ -116,7 +116,7 @@ s() --> np([naamval:nom, getal:Getal]), vp([tijd:_, getal:Getal]).
 
 In deze thesis zullen we altijd bovenstaande notatie gebruiken om de argumenten van een DCG-grammatica te noteren. De argumenten zijn namelijk taalkundig verantwoord en kunnen aanzien worden als feature structures.
 
-\paragraph{} Feature structures (en dus ook argumenten in DCG's) zijn handig om de explosie van grammatica regels te voorkomen. Grammatica~\ref{dcg:withoutFS} is een voorbeeld van een grammatica zonder feature structures.
+\paragraph{} Feature structures (en dus ook argumenten in DCG's) zijn handig om de explosie van grammatica regels te voorkomen. Grammatica~\ref{dcg:withoutFS} (van Blackburn en Striegnitz \cite{NLPCourse}) is een voorbeeld van een grammatica zonder feature structures.
 
 \begin{dcg}{Een grammatica zonder feature structures (uit \cite{NLPCourse})}{dcg:withoutFS}
 s() --> np_singular(), vp_singular().
@@ -134,7 +134,7 @@ vp_plural() --> transitive_verb_plural(), np_plural().
 n_singular() --> [man].
 ...
 \end{dcg}
-Hierbij staat de \texttt{n} voor zelfstandig naamwoord (van het Engelse \texttt{noun}) en \texttt{det} voor determinator. Deze grammatica can veel korter gemaakt worden door gebruik te maken van feature structures. Grammatica~\ref{dcg:withFS} is equivalent aan grammatica~\ref{dcg:withoutFS} maar maakt gebruikt van feature structures.
+Hierbij staat de \texttt{n} voor zelfstandig naamwoord (van het Engelse \texttt{noun}) en \texttt{det} voor determinator. Deze grammatica can veel korter gemaakt worden door gebruik te maken van feature structures. Grammatica~\ref{dcg:withFS} (ook van Blackburn en Striegnitz \cite{NLPCourse}) is equivalent aan grammatica~\ref{dcg:withoutFS} maar maakt gebruikt van feature structures.
 
 \begin{dcg}{Een equivalente grammatica met feature structures (ook uit \cite{NLPCourse})}{dcg:withFS}
 s() --> np([num:Num]), vp([num:Num]).
@@ -148,7 +148,7 @@ n([num:singular]) --> [man].
 \paragraph{Conclusie} Door gebruik te maken van feature structures is de grammatica simpeler en leesbaarder. Bovendien hoeft het concept dat een zin bestaat uit een \texttt{np} gevolgd door een \texttt{vp} maar \'e\'en keer te worden uitgedrukt. De feature structures zorgen voor de congruentie in getal van het onderwerp met het werkwoord. 
 
 \section{Discourse Representation Theory}
-Voor het vertalen van natuurlijke taal naar logica zouden we graag gebruik maken van Frege's compositionaliteitsprincipe: De betekenis van een zin bestaat uit de combinatie van de betekenissen van de delen ervan. Als we eerste-orde-logica als doeltaal van onze vertaling nemen, komen we echter vrij snel in de problemen. Neem bijvoorbeeld de zin ``If a man lives, he breathes''. De vertaling hiervan in eerste-orde-logica is $\forall x \cdot man(x) \Rightarrow breathes(x)$. De vertaling van ``a man lives'' is echter $\exists x \cdot man(x)$, wat geen deel uit maakt van de betekenis van de hele zin. Blackburn en Bos \cite{Blackburn2006} geven nog een aantal andere voorbeelden waarvoor DRS-structuren beter geschikt zijn dan eerste-orde-logica (bijvoorbeeld voor het oplossen van anaforische referenties).
+Voor het vertalen van natuurlijke taal naar logica zouden we graag gebruik maken van Frege's compositionaliteitsprincipe: De betekenis van een zin bestaat uit de combinatie van de betekenissen van de delen ervan. Als we eerste-orde-logica als doeltaal van onze vertaling nemen, komen we echter vrij snel in de problemen. Neem bijvoorbeeld de zin ``If a man lives, he breathes''. De vertaling hiervan in eerste-orde-logica is $\forall x \cdot man(x) \Rightarrow breathes(x)$. De vertaling van ``a man lives'' is echter $\exists x \cdot man(x)$, wat geen deel uit maakt van de betekenis van de hele zin. Blackburn en Bos \cite{Blackburn2006} geven nog een aantal andere problemen met eerste-orde-logica als doeltaal. Zo is eerste-orde-logica ook niet handig voor het oplossen van anaforische referenties.
 
 Ze suggereren Discourse Representation Structures als alternatief. Bos \cite{Bos2011} definieert deze structuren als een lijst van \textit{discourse referents} (woordgroepen waarnaar andere woordgroepen kunnen verwijzen) en een lijst van condities i.v.m. die referenties. Blackburn en Bos \cite{Blackburn2006} geven o.a. een vertaling van deze DRS-structuren naar eerste-orde-logica. DRS-structuren hebben dus ook een formele betekenis. Zoals we verder zullen aantonen, zijn ze echter beter geschikt als doeltaal. Van hieruit kan dan verder vertaald worden naar eerste-orde-logica volgens de vertaling van Blackburn en Bos.
 
@@ -207,4 +207,4 @@ De eerste stap is echter wel compositioneel. De vertaling van ``If a man lives, 
 
 \paragraph{} De betekenis van het deel ``a man lives'' \drs{x}{man(x) \\ lives(x)} maakt deel uit van de betekenis van de hele zin.
 
-\section{Conclusie} Definite Clause Grammars vormen een expressieve grammatica die natuurlijke taal in al haar facetten makkelijk kan modelleren. Feature Structures kunnen gebruikt worden om grammatica's kort en leesbaar te houden. Ze geven een taalkundige verantwoording voor de argumenten van DCG's. Discourse Representation Structures vormen een representatie die tussen natuurlijke taal en eerste-orde-logica ligt. Ze zijn even expressief als eerste-orde-logica maar een aantal concepten in de natuurlijke taal zijn beter te modelleren met DRS-structuren.
+\section{Conclusie} Definite Clause Grammars vormen een expressieve grammatica die natuurlijke taal in al haar facetten makkelijk kan modelleren. Feature Structures kunnen gebruikt worden om grammatica's kort en leesbaar te houden. Ze geven een taalkundige verantwoording voor de argumenten van DCG's. Discourse Representation Structures vormen een representatie die tussen natuurlijke taal en eerste-orde-logica ligt. Ze zijn even expressief als eerste-orde-logica maar een aantal concepten in de natuurlijke taal zijn beter te modelleren met een DRS.
