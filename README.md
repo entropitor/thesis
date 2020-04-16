@@ -2,6 +2,7 @@
 
 This repo contains the code + report for my Master Thesis ["Automatic Translation of Logic Grid Puzzles into a Typed Logic"](https://github.com/entropitor/thesis/blob/master/deliverables/0masterproef-merged.pdf).
 
+Make sure to also check out the extension of this work at https://github.com/bartbog/holygrail/ with which we won [The 2019 Holy Grail Challenge](https://freuder.wordpress.com/pthg-19-the-third-workshop-on-progress-towards-the-holy-grail/). 
 
 ## Directory Structure
 ```
